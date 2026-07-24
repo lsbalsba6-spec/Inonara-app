@@ -11,7 +11,7 @@ import {
 } from "../lib/api";
 import { Slider } from "../components/ui/slider";
 import { useI18n } from "../i18n";
-import WorldMap, { WORLD_MAP_COLORS } from "../components/WorldMap";
+import WorldMap from "../components/WorldMap";
 import { SLIDER_MIN, SLIDER_MAX, sliderToYear, yearToSlider, modeForYear, eraLabel } from "../lib/timeScale";
 
 // Milestone markers shown along the non-linear slider track, so users stay
@@ -40,6 +40,8 @@ const Atlas = () => {
   const [showDiaspora, setShowDiaspora] = useState(true);
   const [showPolities, setShowPolities] = useState(true);
   const [project, setProject] = useState(null);
+  const [geoProject, setGeoProject] = useState(null);
+  const [zoomScale, setZoomScale] = useState(1);
   const [selected, setSelected] = useState(null);
 
   useEffect(() => {
@@ -59,6 +61,7 @@ const Atlas = () => {
   const mode = useMemo(() => modeForYear(year), [year]);
 
   const onProjectionReady = useCallback((fn) => setProject(() => fn), []);
+  const onGeoProjectionReady = useCallback((fn) => setGeoProject(() => fn), []);
 
   const jumpToYear = (y) => {
     setSliderPos(yearToSlider(y));
@@ -114,33 +117,24 @@ const Atlas = () => {
 
       {/* Map */}
       <div className="flex-1 relative">
-        <WorldMap width={1000} height={560} onProjectionReady={onProjectionReady} highlightAfrica={mode !== "geological"}>
-          {/* Geological mode */}
-          {mode === "geological" && currentEpoch && project && (
-            <>
-              {currentEpoch.landmasses.map((lm) => (
-                <polygon
-                  key={lm.name}
-                  points={toPolyPoints(lm.polygon)}
-                  fill={WORLD_MAP_COLORS.landAfrica}
-                  stroke={WORLD_MAP_COLORS.landAfricaBorder}
-                  strokeWidth={1.2}
-                  strokeOpacity={0.85}
-                  fillOpacity={0.9}
-                />
-              ))}
-              {currentEpoch.labels.map((l) => {
-                const p = project(l.lat, l.lon);
-                if (!p) return null;
-                return (
-                  <text key={l.text} x={p[0]} y={p[1]} fontSize={l.size} fill="#F5F5F0" textAnchor="middle"
-                    style={{ fontFamily: "serif", letterSpacing: "0.05em", pointerEvents: "none" }}>
-                    {l.text}
-                  </text>
-                );
-              })}
-            </>
-          )}
+        <WorldMap
+          onProjectionReady={onProjectionReady}
+          onGeoProjectionReady={onGeoProjectionReady}
+          onZoomChange={setZoomScale}
+          highlightAfrica={mode !== "geological"}
+          geoFusion={mode === "geological" && currentEpoch ? currentEpoch.fusion_factor : null}
+        >
+          {/* Geological mode: labels anchored to their drifting plate group */}
+          {mode === "geological" && currentEpoch && geoProject && currentEpoch.labels.map((l) => {
+            const p = geoProject(l.group || "Africa", l.lat, l.lon);
+            if (!p) return null;
+            return (
+              <text key={l.text} x={p[0]} y={p[1]} fontSize={l.size} fill="#F5F5F0" textAnchor="middle"
+                style={{ fontFamily: "serif", letterSpacing: "0.05em", pointerEvents: "none" }}>
+                {l.text}
+              </text>
+            );
+          })}
 
           {/* Prehistoric mode: land bridges */}
           {mode === "prehistoric" && project && visiblePaleo.map((p) => (
@@ -177,12 +171,18 @@ const Atlas = () => {
             const c = project(p.coords[0], p.coords[1]);
             if (!c) return null;
             const r = Math.max(6, Math.min(28, p.radius_km / 60));
+            // Zoom-based label reveal: at zoom=1 only the largest territories
+            // show their name; smaller ones appear progressively as the user
+            // zooms in, so labels don't overlap into unreadable clutter.
+            const showLabel = p.radius_km * zoomScale > 300;
             return (
               <g key={p.id} onClick={() => setSelected({ kind: "polity", ...p })} style={{ cursor: "pointer" }}>
                 <circle cx={c[0]} cy={c[1]} r={r} fill={p.color} fillOpacity={0.14} stroke={p.color} strokeWidth={1.3} strokeDasharray="4 3" />
-                <text x={c[0]} y={c[1] - r - 4} fontSize={11} fill="#F5F5F0" textAnchor="middle" style={{ fontFamily: "serif", pointerEvents: "none" }}>
-                  {p.name}
-                </text>
+                {showLabel && (
+                  <text x={c[0]} y={c[1] - r - 4} fontSize={11 / Math.max(1, zoomScale * 0.6)} fill="#F5F5F0" textAnchor="middle" style={{ fontFamily: "serif", pointerEvents: "none" }}>
+                    {p.name}
+                  </text>
+                )}
               </g>
             );
           })}
