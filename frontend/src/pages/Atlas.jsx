@@ -1,5 +1,4 @@
-import { useEffect, useState, useMemo } from "react";
-import { MapContainer, TileLayer, CircleMarker, Circle, Polygon, Polyline, Popup } from "react-leaflet";
+import { useEffect, useState, useMemo, useCallback } from "react";
 import { Link } from "react-router-dom";
 import {
   fetchCivilizations,
@@ -12,22 +11,22 @@ import {
 } from "../lib/api";
 import { Slider } from "../components/ui/slider";
 import { useI18n } from "../i18n";
+import WorldMap, { WORLD_MAP_COLORS } from "../components/WorldMap";
+import { SLIDER_MIN, SLIDER_MAX, sliderToYear, yearToSlider, modeForYear, eraLabel } from "../lib/timeScale";
 
-const HISTORICAL_MIN_YEAR = -3500;
-const HISTORICAL_MAX_YEAR = 2025;
-const PREHISTORIC_MIN_YEAR = -70000;
-const PREHISTORIC_MAX_YEAR = -3500;
-
-const eraLabel = (year, mode) => {
-  if (mode === "prehistoric") {
-    return `il y a ${Math.abs(year).toLocaleString("fr-FR")} ans`;
-  }
-  return year < 0 ? `${Math.abs(year)} av. J.-C.` : `${year} apr. J.-C.`;
-};
+// Milestone markers shown along the non-linear slider track, so users stay
+// oriented even though early (geological) time is heavily compressed.
+const MILESTONES = [
+  { year: -300000000, label: "Pangée" },
+  { year: -66000000, label: "Fin des dinosaures" },
+  { year: -70000, label: "Sortie d'Afrique" },
+  { year: -3500, label: "Civilisations" },
+  { year: 1885, label: "Colonisation" },
+  { year: 2025, label: "Aujourd'hui" },
+];
 
 const Atlas = () => {
   const { t } = useI18n();
-  const [mode, setMode] = useState("historical"); // "historical" | "prehistoric"
   const [civs, setCivs] = useState([]);
   const [routes, setRoutes] = useState([]);
   const [places, setPlaces] = useState([]);
@@ -35,12 +34,13 @@ const Atlas = () => {
   const [polities, setPolities] = useState([]);
   const [paleo, setPaleo] = useState([]);
   const [plateEpochs, setPlateEpochs] = useState([]);
-  const [epochIndex, setEpochIndex] = useState(0);
-  const [year, setYear] = useState(1300);
+  const [sliderPos, setSliderPos] = useState(yearToSlider(1300));
   const [activeRoutes, setActiveRoutes] = useState({});
   const [showPlaces, setShowPlaces] = useState(true);
   const [showDiaspora, setShowDiaspora] = useState(true);
   const [showPolities, setShowPolities] = useState(true);
+  const [project, setProject] = useState(null);
+  const [selected, setSelected] = useState(null);
 
   useEffect(() => {
     fetchCivilizations().then(setCivs).catch(() => {});
@@ -55,223 +55,172 @@ const Atlas = () => {
     }).catch(() => {});
   }, []);
 
-  const switchMode = (nextMode) => {
-    setMode(nextMode);
-    if (nextMode === "prehistoric") setYear(-50000);
-    if (nextMode === "historical") setYear(1300);
-  };
+  const year = useMemo(() => sliderToYear(sliderPos), [sliderPos]);
+  const mode = useMemo(() => modeForYear(year), [year]);
 
-  const currentEpoch = plateEpochs[epochIndex] || null;
+  const onProjectionReady = useCallback((fn) => setProject(() => fn), []);
+
+  const jumpToYear = (y) => {
+    setSliderPos(yearToSlider(y));
+    setSelected(null);
+  };
 
   const visibleCivs = useMemo(
     () => (mode === "historical" ? civs.filter((c) => year >= c.era_start && year <= c.era_end) : []),
     [civs, year, mode]
   );
-
   const visiblePolities = useMemo(
     () => (mode === "historical" ? polities.filter((p) => year >= p.era_start && year <= p.era_end) : []),
     [polities, year, mode]
   );
-
   const visiblePaleo = useMemo(
     () => (mode === "prehistoric" ? paleo.filter((p) => year >= p.era_start && year <= p.era_end) : []),
     [paleo, year, mode]
   );
+  const visibleRoutes = useMemo(
+    () => routes.filter((r) => year >= (r.era_start ?? -Infinity) && year <= (r.era_end ?? Infinity)),
+    [routes, year]
+  );
 
-  const minYear = mode === "prehistoric" ? PREHISTORIC_MIN_YEAR : HISTORICAL_MIN_YEAR;
-  const maxYear = mode === "prehistoric" ? PREHISTORIC_MAX_YEAR : HISTORICAL_MAX_YEAR;
-  const stepYear = mode === "prehistoric" ? 500 : 25;
+  const currentEpoch = useMemo(() => {
+    if (mode !== "geological" || plateEpochs.length === 0) return null;
+    let best = plateEpochs[0];
+    let bestDiff = Infinity;
+    for (const e of plateEpochs) {
+      const diff = Math.abs(e.era_mya * 1000000 - year);
+      if (diff < bestDiff) {
+        bestDiff = diff;
+        best = e;
+      }
+    }
+    return best;
+  }, [mode, plateEpochs, year]);
+
+  const toPolyPoints = (coords) => {
+    if (!project) return "";
+    return coords
+      .map(([lat, lon]) => project(lat, lon))
+      .filter(Boolean)
+      .map(([x, y]) => `${x},${y}`)
+      .join(" ");
+  };
 
   return (
     <div className="pt-[72px] h-screen flex flex-col" data-testid="atlas-page">
-      {/* Mode toggle */}
-      <div className="absolute top-[88px] left-1/2 -translate-x-1/2 z-[500] glass flex rounded-full p-1" data-testid="atlas-mode-toggle">
-        <button
-          onClick={() => switchMode("historical")}
-          className={`px-4 py-1.5 rounded-full text-xs uppercase tracking-[0.15em] transition-colors ${mode === "historical" ? "bg-gold text-[#0A0908]" : "text-bone/70 hover:text-bone"}`}
-          data-testid="mode-historical"
-        >
-          Histoire (-3500 &rarr; 2025)
-        </button>
-        <button
-          onClick={() => switchMode("prehistoric")}
-          className={`px-4 py-1.5 rounded-full text-xs uppercase tracking-[0.15em] transition-colors ${mode === "prehistoric" ? "bg-gold text-[#0A0908]" : "text-bone/70 hover:text-bone"}`}
-          data-testid="mode-prehistoric"
-        >
-          Préhistoire (sortie d'Afrique)
-        </button>
-        <button
-          onClick={() => switchMode("geological")}
-          className={`px-4 py-1.5 rounded-full text-xs uppercase tracking-[0.15em] transition-colors ${mode === "geological" ? "bg-gold text-[#0A0908]" : "text-bone/70 hover:text-bone"}`}
-          data-testid="mode-geological"
-        >
-          Époque géologique (Pangée)
-        </button>
+      {/* Current era indicator */}
+      <div className="absolute top-[84px] left-1/2 -translate-x-1/2 z-[500] glass px-6 py-2 rounded-full" data-testid="atlas-era-indicator">
+        <p className="font-serif text-gold text-sm md:text-base whitespace-nowrap">{eraLabel(year)}</p>
       </div>
 
       {/* Map */}
       <div className="flex-1 relative">
-        <MapContainer
-          center={[5, 20]}
-          zoom={3}
-          minZoom={2}
-          maxZoom={6}
-          worldCopyJump
-          className="w-full h-full"
-          style={{ background: "#0A0908" }}
-        >
-          {mode !== "geological" && (
-            <TileLayer
-              url="https://{s}.basemaps.cartocdn.com/dark_nolabels/{z}/{x}/{y}{r}.png"
-              attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OSM</a> &copy; <a href="https://carto.com/attributions">CARTO</a>'
-              subdomains="abcd"
-            />
+        <WorldMap width={1000} height={560} onProjectionReady={onProjectionReady} highlightAfrica={mode !== "geological"}>
+          {/* Geological mode */}
+          {mode === "geological" && currentEpoch && project && (
+            <>
+              {currentEpoch.landmasses.map((lm) => (
+                <polygon
+                  key={lm.name}
+                  points={toPolyPoints(lm.polygon)}
+                  fill={WORLD_MAP_COLORS.landAfrica}
+                  stroke={WORLD_MAP_COLORS.landAfricaBorder}
+                  strokeWidth={1.2}
+                  strokeOpacity={0.85}
+                  fillOpacity={0.9}
+                />
+              ))}
+              {currentEpoch.labels.map((l) => {
+                const p = project(l.lat, l.lon);
+                if (!p) return null;
+                return (
+                  <text key={l.text} x={p[0]} y={p[1]} fontSize={l.size} fill="#F5F5F0" textAnchor="middle"
+                    style={{ fontFamily: "serif", letterSpacing: "0.05em", pointerEvents: "none" }}>
+                    {l.text}
+                  </text>
+                );
+              })}
+            </>
           )}
-          {mode === "historical" && (
-            <TileLayer
-              url="https://{s}.basemaps.cartocdn.com/dark_only_labels/{z}/{x}/{y}{r}.png"
-              subdomains="abcd"
-              opacity={0.6}
-            />
-          )}
 
-          {/* Prehistoric mode: land bridges + Out-of-Africa route */}
-          {mode === "prehistoric" && visiblePaleo.map((p) => (
-            <Polygon
+          {/* Prehistoric mode: land bridges */}
+          {mode === "prehistoric" && project && visiblePaleo.map((p) => (
+            <polygon
               key={p.id}
-              positions={p.polygon}
-              pathOptions={{ color: p.color, fillColor: p.color, fillOpacity: 0.22, weight: 1.5, dashArray: "4 4" }}
-            >
-              <Popup>
-                <div className="text-xs space-y-1 min-w-[220px]">
-                  <p className="overline text-[0.6rem]" style={{ color: p.color }}>Reconstitution approximative</p>
-                  <p className="font-serif text-lg" style={{ color: "#F5F5F0" }}>{p.name}</p>
-                  <p style={{ color: "#A39E98" }}>{p.summary}</p>
-                  <p className="mt-2 text-[0.65rem] italic" style={{ color: "#6b6660" }}>Sources : {p.sources.join(" · ")}</p>
-                </div>
-              </Popup>
-            </Polygon>
-          ))}
-
-          {mode === "prehistoric" && routes.filter((r) => r.id === "out-of-africa").map((r) => (
-            <Polyline
-              key={r.id}
-              positions={r.points}
-              pathOptions={{ color: "#D4AF37", weight: 3, opacity: 0.95, dashArray: "6 8" }}
+              points={toPolyPoints(p.polygon)}
+              fill={p.color}
+              fillOpacity={0.22}
+              stroke={p.color}
+              strokeWidth={1}
+              strokeDasharray="3 3"
+              onClick={() => setSelected({ kind: "paleo", ...p })}
+              style={{ cursor: "pointer" }}
             />
           ))}
 
-          {/* Geological mode: schematic continental-drift landmasses, no human content */}
-          {mode === "geological" && currentEpoch && currentEpoch.landmasses.map((lm) => (
-            <Polygon
-              key={lm.name}
-              positions={lm.polygon}
-              pathOptions={{ color: "#8a7a5c", fillColor: "#8a7a5c", fillOpacity: 0.35, weight: 1.5 }}
-            >
-              <Popup>
-                <div className="text-xs space-y-1 min-w-[200px]">
-                  <p className="overline text-[0.6rem]" style={{ color: "#8a7a5c" }}>Schéma simplifié, pas à l'échelle</p>
-                  <p className="font-serif text-lg" style={{ color: "#F5F5F0" }}>{lm.name}</p>
-                </div>
-              </Popup>
-            </Polygon>
-          ))}
-
-          {/* Historical mode: empires/kingdoms as approximate circles */}
-          {mode === "historical" && showPolities && visiblePolities.map((p) => (
-            <Circle
-              key={p.id}
-              center={p.coords}
-              radius={p.radius_km * 1000}
-              pathOptions={{ color: p.color, fillColor: p.color, fillOpacity: 0.12, weight: 1.5, dashArray: "5 5" }}
-            >
-              <Popup>
-                <div className="text-xs space-y-1 min-w-[220px]">
-                  <p className="overline text-[0.6rem]" style={{ color: p.color }}>Territoire approximatif</p>
-                  <p className="font-serif text-lg" style={{ color: "#F5F5F0" }}>{p.name}</p>
-                  <p style={{ color: "#A39E98" }}>{p.summary}</p>
-                  <p className="mt-2 text-[0.65rem] italic" style={{ color: "#6b6660" }}>Sources : {p.sources.join(" · ")}</p>
-                </div>
-              </Popup>
-            </Circle>
-          ))}
-
-          {mode === "historical" && routes.map((r) =>
-            activeRoutes[r.id] ? (
-              <Polyline
+          {/* Migration routes — shown in prehistoric AND historical modes, filtered by year */}
+          {mode !== "geological" && project && visibleRoutes.map((r) =>
+            activeRoutes[r.id] !== false ? (
+              <polyline
                 key={r.id}
-                positions={r.points}
-                pathOptions={{ color: r.color, weight: 2.5, opacity: 0.9, dashArray: "6 8" }}
+                points={toPolyPoints(r.points)}
+                fill="none"
+                stroke={r.color}
+                strokeWidth={2.2}
+                strokeDasharray="5 5"
+                opacity={0.88}
               />
             ) : null
           )}
 
-          {mode === "historical" && visibleCivs.map((c) => (
-            <CircleMarker
-              key={c.id}
-              center={c.coords}
-              radius={9}
-              pathOptions={{
-                color: "#D4AF37",
-                fillColor: "#D4AF37",
-                fillOpacity: 0.85,
-                weight: 2,
-              }}
-            >
-              <Popup className="afroatlas-popup">
-                <div className="text-xs space-y-1 min-w-[220px]">
-                  <p className="overline text-[0.6rem]" style={{color:'#D4AF37'}}>Civilization · {t(`region.${c.region}`)}</p>
-                  <p className="font-serif text-lg" style={{color:'#F5F5F0'}}>{c.name}</p>
-                  <p style={{color:'#A39E98'}}>{c.summary.slice(0, 140)}…</p>
-                  <Link to={`/civilization/${c.id}`} style={{color:'#D4AF37'}} className="inline-block mt-2 uppercase tracking-[0.18em] text-[0.65rem]">{t("atlas.openDeepDive")}</Link>
-                </div>
-              </Popup>
-            </CircleMarker>
-          ))}
+          {/* Historical mode: empires (permanent labels), civs, places, diaspora */}
+          {mode === "historical" && showPolities && project && visiblePolities.map((p) => {
+            const c = project(p.coords[0], p.coords[1]);
+            if (!c) return null;
+            const r = Math.max(6, Math.min(28, p.radius_km / 60));
+            return (
+              <g key={p.id} onClick={() => setSelected({ kind: "polity", ...p })} style={{ cursor: "pointer" }}>
+                <circle cx={c[0]} cy={c[1]} r={r} fill={p.color} fillOpacity={0.14} stroke={p.color} strokeWidth={1.3} strokeDasharray="4 3" />
+                <text x={c[0]} y={c[1] - r - 4} fontSize={11} fill="#F5F5F0" textAnchor="middle" style={{ fontFamily: "serif", pointerEvents: "none" }}>
+                  {p.name}
+                </text>
+              </g>
+            );
+          })}
 
-          {mode === "historical" && showPlaces && places.map((p) => (
-            <CircleMarker
-              key={p.id}
-              center={p.coords}
-              radius={5}
-              pathOptions={{ color: "#C18C42", fillColor: "#C18C42", fillOpacity: 0.85, weight: 1.5 }}
-            >
-              <Popup>
-                <div className="text-xs space-y-1 min-w-[220px]">
-                  <p className="overline text-[0.6rem]" style={{color:'#C18C42'}}>{p.type} · {p.era}</p>
-                  <p className="font-serif text-base" style={{color:'#F5F5F0'}}>{p.name}</p>
-                  <p style={{color:'#A39E98'}}>{p.blurb}</p>
-                  <Link to={`/place/${p.id}`} style={{color:'#D4AF37'}} className="inline-block mt-2 uppercase tracking-[0.18em] text-[0.65rem]">{t("atlas.openDeepDive")}</Link>
-                </div>
-              </Popup>
-            </CircleMarker>
-          ))}
+          {mode === "historical" && project && visibleCivs.map((c) => {
+            const p = project(c.coords[0], c.coords[1]);
+            if (!p) return null;
+            return (
+              <circle key={c.id} cx={p[0]} cy={p[1]} r={6} fill="#D4AF37" stroke="#D4AF37" strokeWidth={2} fillOpacity={0.9}
+                onClick={() => setSelected({ kind: "civ", ...c })} style={{ cursor: "pointer" }} />
+            );
+          })}
 
-          {mode === "historical" && showDiaspora && diaspora.map((d) => (
-            <CircleMarker
-              key={d.id}
-              center={d.coords}
-              radius={7}
-              pathOptions={{ color: "#7B2D26", fillColor: "#7B2D26", fillOpacity: 0.9, weight: 2 }}
-            >
-              <Popup>
-                <div className="text-xs space-y-1 min-w-[220px]">
-                  <p className="overline text-[0.6rem]" style={{color:'#A0522D'}}>Diaspora · {t(`region.${d.region}`)}</p>
-                  <p className="font-serif text-lg" style={{color:'#F5F5F0'}}>{d.name}</p>
-                  <p style={{color:'#A39E98'}}>{d.summary.slice(0, 140)}…</p>
-                  <Link to={`/diaspora/${d.id}`} style={{color:'#D4AF37'}} className="inline-block mt-2 uppercase tracking-[0.18em] text-[0.65rem]">{t("atlas.visitCommunity")}</Link>
-                </div>
-              </Popup>
-            </CircleMarker>
-          ))}
-        </MapContainer>
+          {mode === "historical" && showPlaces && project && places.map((p) => {
+            const pt = project(p.coords[0], p.coords[1]);
+            if (!pt) return null;
+            return (
+              <circle key={p.id} cx={pt[0]} cy={pt[1]} r={3.5} fill="#C18C42" stroke="#C18C42" strokeWidth={1.5} fillOpacity={0.9}
+                onClick={() => setSelected({ kind: "place", ...p })} style={{ cursor: "pointer" }} />
+            );
+          })}
+
+          {mode === "historical" && showDiaspora && project && diaspora.map((d) => {
+            const pt = project(d.coords[0], d.coords[1]);
+            if (!pt) return null;
+            return (
+              <circle key={d.id} cx={pt[0]} cy={pt[1]} r={5} fill="#7B2D26" stroke="#7B2D26" strokeWidth={2} fillOpacity={0.9}
+                onClick={() => setSelected({ kind: "diaspora", ...d })} style={{ cursor: "pointer" }} />
+            );
+          })}
+        </WorldMap>
 
         {/* Side panel */}
         <aside className="hidden lg:block absolute top-6 left-6 z-[400] glass w-[320px] max-h-[70vh] overflow-y-auto" data-testid="atlas-side-panel">
           {mode === "historical" && (
             <>
               <div className="p-5 border-b border-[#2A2421]">
-                <p className="overline">{t("atlas.activeIn").replace("{era}", eraLabel(year, mode))}</p>
+                <p className="overline">{t("atlas.activeIn").replace("{era}", eraLabel(year))}</p>
                 <p className="font-serif text-2xl text-bone mt-2">{t("atlas.civsCount").replace("{n}", visibleCivs.length)}</p>
                 {visiblePolities.length > 0 && (
                   <p className="text-bone/50 text-xs mt-1">{visiblePolities.length} territoire(s) historique(s) approximatif(s)</p>
@@ -280,19 +229,13 @@ const Atlas = () => {
               <ul className="divide-y divide-[#2A2421]">
                 {visibleCivs.map((c) => (
                   <li key={c.id}>
-                    <Link
-                      to={`/civilization/${c.id}`}
-                      className="block px-5 py-4 hover:bg-[#1A1614] transition-colors group"
-                      data-testid={`atlas-civ-${c.id}`}
-                    >
+                    <Link to={`/civilization/${c.id}`} className="block px-5 py-4 hover:bg-[#1A1614] transition-colors group" data-testid={`atlas-civ-${c.id}`}>
                       <p className="font-serif text-lg text-bone group-hover:text-gold transition-colors">{c.name}</p>
                       <p className="text-bone/60 text-xs uppercase tracking-[0.15em] mt-1">{t(`region.${c.region}`)}</p>
                     </Link>
                   </li>
                 ))}
-                {visibleCivs.length === 0 && (
-                  <li className="p-5 text-bone/60 text-sm">{t("atlas.empty")}</li>
-                )}
+                {visibleCivs.length === 0 && <li className="p-5 text-bone/60 text-sm">{t("atlas.empty")}</li>}
               </ul>
             </>
           )}
@@ -300,23 +243,21 @@ const Atlas = () => {
           {mode === "prehistoric" && (
             <>
               <div className="p-5 border-b border-[#2A2421]">
-                <p className="overline">Il y a {Math.abs(year).toLocaleString("fr-FR")} ans</p>
+                <p className="overline">{eraLabel(year)}</p>
                 <p className="font-serif text-xl text-bone mt-2">Sortie d'Afrique &amp; ponts terrestres</p>
                 <p className="text-bone/60 text-xs mt-2 leading-relaxed">
-                  Contrairement aux continents (formés il y a des centaines de millions d'années), le niveau des mers a varié de ~120m
-                  pendant les glaciations, exposant de vrais ponts terrestres empruntés par les premières migrations humaines.
+                  Le niveau des mers a varié de ~120m pendant les glaciations, exposant de vrais ponts terrestres empruntés
+                  par les premières migrations humaines.
                 </p>
               </div>
               <ul className="divide-y divide-[#2A2421]">
                 {visiblePaleo.map((p) => (
-                  <li key={p.id} className="px-5 py-4">
+                  <li key={p.id} className="px-5 py-4 cursor-pointer" onClick={() => setSelected({ kind: "paleo", ...p })}>
                     <p className="font-serif text-base text-bone">{p.name}</p>
                     <p className="text-bone/60 text-xs mt-1 leading-relaxed">{p.summary}</p>
                   </li>
                 ))}
-                {visiblePaleo.length === 0 && (
-                  <li className="p-5 text-bone/60 text-sm">Aucun pont terrestre actif à cette période.</li>
-                )}
+                {visiblePaleo.length === 0 && <li className="p-5 text-bone/60 text-sm">Aucun pont terrestre actif à cette période.</li>}
               </ul>
             </>
           )}
@@ -328,17 +269,9 @@ const Atlas = () => {
                 <p className="font-serif text-xl text-bone mt-2">{currentEpoch.name}</p>
                 <p className="text-bone/60 text-xs mt-2 leading-relaxed">{currentEpoch.summary}</p>
                 <p className="text-bone/40 text-[0.65rem] mt-3 italic leading-relaxed">
-                  Schéma simplifié à but pédagogique, pas une reconstitution paléogéographique précise. Aucun humain n'existait
-                  encore à cette échelle de temps — ce mode est purement géologique, sans rapport avec les migrations ou les empires.
+                  Schéma simplifié à but pédagogique. Aucun humain n'existait encore à cette échelle de temps.
                 </p>
               </div>
-              <ul className="divide-y divide-[#2A2421]">
-                {currentEpoch.landmasses.map((lm) => (
-                  <li key={lm.name} className="px-5 py-3">
-                    <p className="font-serif text-base text-bone">{lm.name}</p>
-                  </li>
-                ))}
-              </ul>
               <div className="p-5 border-t border-[#2A2421]">
                 <p className="text-bone/40 text-[0.65rem] italic leading-relaxed">Sources : {currentEpoch.sources.join(" · ")}</p>
               </div>
@@ -346,9 +279,9 @@ const Atlas = () => {
           )}
         </aside>
 
-        {/* Legend */}
+        {/* Legend (historical only) */}
         {mode === "historical" && (
-          <div className="absolute bottom-32 right-6 z-[400] glass p-4 hidden md:block" data-testid="route-legend">
+          <div className="absolute bottom-28 right-6 z-[400] glass p-4 hidden md:block" data-testid="route-legend">
             <p className="overline mb-3">{t("atlas.layers")}</p>
             <div className="space-y-2">
               <label className="flex items-center gap-3 cursor-pointer">
@@ -371,7 +304,7 @@ const Atlas = () => {
                 <label key={r.id} className="flex items-center gap-3 cursor-pointer">
                   <input
                     type="checkbox"
-                    checked={!!activeRoutes[r.id]}
+                    checked={activeRoutes[r.id] !== false}
                     onChange={(e) => setActiveRoutes((s) => ({ ...s, [r.id]: e.target.checked }))}
                     className="accent-gold"
                     data-testid={`route-toggle-${r.id}`}
@@ -383,65 +316,64 @@ const Atlas = () => {
             </div>
           </div>
         )}
-      </div>
 
-      {/* Timeline bar */}
-      <div className="glass border-t border-gold/20 px-6 md:px-10 py-5" data-testid="atlas-timeline">
-        {mode === "geological" ? (
-          <div className="max-w-[1600px] mx-auto">
-            <p className="overline mb-3">Époques géologiques — étapes discrètes, pas un curseur continu</p>
-            <div className="flex flex-wrap gap-2" data-testid="geological-epoch-buttons">
-              {plateEpochs.map((e, i) => (
-                <button
-                  key={e.id}
-                  onClick={() => setEpochIndex(i)}
-                  className={`px-4 py-2 rounded-full text-xs uppercase tracking-[0.1em] border transition-colors ${
-                    i === epochIndex
-                      ? "bg-gold text-[#0A0908] border-gold"
-                      : "text-bone/70 border-[#2A2421] hover:border-gold/50"
-                  }`}
-                  data-testid={`epoch-button-${e.id}`}
-                >
-                  {e.era_label}
-                </button>
-              ))}
-            </div>
-          </div>
-        ) : (
-          <div className="flex items-center justify-between max-w-[1600px] mx-auto gap-6">
-            <div className="hidden md:block">
-              <p className="overline">{mode === "prehistoric" ? "Il y a" : t("atlas.year")}</p>
-              <p className="font-serif text-2xl md:text-3xl text-gold mt-1 whitespace-nowrap">{eraLabel(year, mode)}</p>
-            </div>
-            <div className="flex-1">
-              <Slider
-                value={[year]}
-                min={minYear}
-                max={maxYear}
-                step={stepYear}
-                onValueChange={(v) => setYear(v[0])}
-                data-testid="timeline-slider"
-              />
-              <div className="flex justify-between mt-3 text-[10px] uppercase tracking-[0.2em] text-bone/40">
-                {mode === "prehistoric" ? (
-                  <>
-                    <span>-70 000 ans</span>
-                    <span>-50 000</span>
-                    <span>-20 000</span>
-                    <span>-3 500</span>
-                  </>
-                ) : (
-                  <>
-                    <span>3500 av. J.-C.</span>
-                    <span>0</span>
-                    <span>1000 apr. J.-C.</span>
-                    <span>2025</span>
-                  </>
-                )}
-              </div>
-            </div>
+        {/* Selected marker detail card */}
+        {selected && (
+          <div className="absolute bottom-28 left-1/2 -translate-x-1/2 z-[600] glass w-[92%] max-w-[420px] p-5" data-testid="marker-detail-card">
+            <button onClick={() => setSelected(null)} className="absolute top-3 right-4 text-bone/50 hover:text-bone text-lg" data-testid="close-detail">×</button>
+            <p className="overline text-[0.6rem]" style={{ color: selected.color || "#D4AF37" }}>
+              {selected.kind === "civ" && `Civilisation · ${t(`region.${selected.region}`)}`}
+              {selected.kind === "place" && `${selected.type} · ${selected.era}`}
+              {selected.kind === "diaspora" && `Diaspora · ${t(`region.${selected.region}`)}`}
+              {selected.kind === "polity" && "Territoire historique approximatif"}
+              {selected.kind === "paleo" && "Reconstitution préhistorique approximative"}
+            </p>
+            <p className="font-serif text-xl text-bone mt-1">{selected.name}</p>
+            <p className="text-bone/70 text-sm mt-2 leading-relaxed">
+              {(selected.summary || selected.blurb || "").slice(0, 220)}
+              {(selected.summary || selected.blurb || "").length > 220 ? "…" : ""}
+            </p>
+            {selected.sources && (
+              <p className="text-bone/40 text-[0.65rem] mt-3 italic leading-relaxed">Sources : {selected.sources.join(" · ")}</p>
+            )}
+            {selected.kind === "civ" && (
+              <Link to={`/civilization/${selected.id}`} className="inline-block mt-3 uppercase tracking-[0.18em] text-[0.65rem] text-gold">{t("atlas.openDeepDive")}</Link>
+            )}
+            {selected.kind === "place" && (
+              <Link to={`/place/${selected.id}`} className="inline-block mt-3 uppercase tracking-[0.18em] text-[0.65rem] text-gold">{t("atlas.openDeepDive")}</Link>
+            )}
+            {selected.kind === "diaspora" && (
+              <Link to={`/diaspora/${selected.id}`} className="inline-block mt-3 uppercase tracking-[0.18em] text-[0.65rem] text-gold">{t("atlas.visitCommunity")}</Link>
+            )}
           </div>
         )}
+      </div>
+
+      {/* Unified timeline bar — one continuous non-linear slider, Pangée to today */}
+      <div className="glass border-t border-gold/20 px-6 md:px-10 py-5" data-testid="atlas-timeline">
+        <div className="max-w-[1600px] mx-auto">
+          <Slider
+            value={[sliderPos]}
+            min={SLIDER_MIN}
+            max={SLIDER_MAX}
+            step={1}
+            onValueChange={(v) => { setSliderPos(v[0]); setSelected(null); }}
+            data-testid="timeline-slider"
+          />
+          <div className="relative mt-3 h-8">
+            {MILESTONES.map((m) => (
+              <button
+                key={m.label}
+                onClick={() => jumpToYear(m.year)}
+                className="absolute -translate-x-1/2 text-[9px] md:text-[10px] uppercase tracking-[0.15em] text-bone/40 hover:text-gold transition-colors whitespace-nowrap"
+                style={{ left: `${(yearToSlider(m.year) / SLIDER_MAX) * 100}%` }}
+                data-testid={`milestone-${m.label}`}
+              >
+                {m.label}
+              </button>
+            ))}
+          </div>
+        </div>
       </div>
     </div>
   );
