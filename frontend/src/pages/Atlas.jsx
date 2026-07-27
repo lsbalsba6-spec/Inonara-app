@@ -230,32 +230,24 @@ const Atlas = () => {
             ) : null
           )}
 
-          {/* Historical mode: empires (permanent labels), civs, places, diaspora */}
+          {/* Historical mode: empires, civs, places, diaspora, pilot v3.
+              FIX: shapes and labels are now rendered in TWO SEPARATE passes
+              — all circles/shapes first, then ALL text labels afterward —
+              so a later-drawn marker's circle can never cover an
+              earlier-drawn marker's name label (a real z-order bug: SVG
+              draws later elements on top of earlier ones, and with many
+              overlapping entities, labels were sometimes hidden behind
+              other points). */}
           {mode === "historical" && showPolities && project && visiblePolities.map((p) => {
             const c = project(p.coords[0], p.coords[1]);
             if (!c) return null;
             const r = Math.max(6, Math.min(28, p.radius_km / 60)) / zoomScale;
-            // Zoom-based label reveal: at zoom=1 only the largest territories
-            // show their name; smaller ones appear progressively as the user
-            // zooms in, so labels don't overlap into unreadable clutter.
-            const showLabel = p.radius_km * zoomScale > 300;
             return (
-              <g key={p.id} onClick={() => setSelected({ kind: "polity", ...p })} style={{ cursor: "pointer" }}>
-                <circle cx={c[0]} cy={c[1]} r={r} fill={p.color} fillOpacity={0.14} stroke={p.color} strokeWidth={1.3 / zoomScale} strokeDasharray="4 3" />
-                {showLabel && (
-                  <text x={c[0]} y={c[1] - r - 4} fontSize={11 / Math.max(1, zoomScale * 0.6)} fill={ATLAS_COLORS.textBone} textAnchor="middle" style={{ fontFamily: "serif", pointerEvents: "none" }}>
-                    {p.name}
-                  </text>
-                )}
-              </g>
+              <circle key={p.id} cx={c[0]} cy={c[1]} r={r} fill={p.color} fillOpacity={0.14} stroke={p.color} strokeWidth={1.3 / zoomScale} strokeDasharray="4 3"
+                onClick={() => setSelected({ kind: "polity", ...p })} style={{ cursor: "pointer" }} />
             );
           })}
 
-          {/* PR pilote 3: additive Gabon/Central Africa core_v3 pilot overlay.
-              Diamond markers (distinct from the circle polities above) so
-              it never gets confused with v1/v2 data. Dash pattern + opacity
-              come from each marker's resolved style (ready/provisional/
-              disputed/research-gap) — see lib/pilotV3Resolver.js. */}
           {mode === "historical" && project && pilotV3Markers.map((marker) => {
             const c = project(marker.coords[0], marker.coords[1]);
             if (!c) return null;
@@ -268,11 +260,6 @@ const Atlas = () => {
                 style={{ cursor: "pointer" }}
                 data-testid={`pilot-v3-marker-${marker.id}`}
               >
-                {/* Invisible, larger touch target — an SVG rect with
-                    fill="none" is only hit-testable on its stroke outline,
-                    not its interior, which would make mobile tapping
-                    unreliable. This transparent circle fixes that without
-                    changing the visible diamond's appearance. */}
                 <circle cx={c[0]} cy={c[1]} r={Math.max(10, 16 / zoomScale)} fill="transparent" />
                 <rect
                   x={c[0] - size / 2}
@@ -289,17 +276,6 @@ const Atlas = () => {
                 {style.warningBadge && (
                   <circle cx={c[0] + size / 2 + 2} cy={c[1] - size / 2 - 2} r={3 / zoomScale} fill={ATLAS_COLORS.deepRed} />
                 )}
-                <text
-                  x={c[0]}
-                  y={c[1] - size - 4}
-                  fontSize={10 / zoomScale}
-                  fill={ATLAS_COLORS.textBone}
-                  textAnchor="middle"
-                  opacity={style.opacity}
-                  style={{ fontFamily: "serif", pointerEvents: "none" }}
-                >
-                  {marker.primaryName.value}
-                </text>
               </g>
             );
           })}
@@ -328,6 +304,44 @@ const Atlas = () => {
             return (
               <circle key={d.id} cx={pt[0]} cy={pt[1]} r={5 / zoomScale} fill={ATLAS_COLORS.deepRed} stroke={ATLAS_COLORS.deepRed} strokeWidth={2 / zoomScale} fillOpacity={0.9}
                 onClick={() => setSelected({ kind: "diaspora", ...d })} style={{ cursor: "pointer" }} />
+            );
+          })}
+
+          {/* LABELS PASS — always rendered last, on top of every shape above. */}
+          {mode === "historical" && showPolities && project && visiblePolities.map((p) => {
+            const c = project(p.coords[0], p.coords[1]);
+            if (!c) return null;
+            const r = Math.max(6, Math.min(28, p.radius_km / 60)) / zoomScale;
+            // Zoom-based label reveal: at zoom=1 only the largest territories
+            // show their name; smaller ones appear progressively as the user
+            // zooms in, so labels don't overlap into unreadable clutter.
+            const showLabel = p.radius_km * zoomScale > 300;
+            if (!showLabel) return null;
+            return (
+              <text key={`label-${p.id}`} x={c[0]} y={c[1] - r - 4} fontSize={11 / Math.max(1, zoomScale * 0.6)} fill={ATLAS_COLORS.textBone} textAnchor="middle" style={{ fontFamily: "serif", pointerEvents: "none" }}>
+                {p.name}
+              </text>
+            );
+          })}
+
+          {mode === "historical" && project && pilotV3Markers.map((marker) => {
+            const c = project(marker.coords[0], marker.coords[1]);
+            if (!c) return null;
+            const size = 10 / zoomScale;
+            const { style } = marker;
+            return (
+              <text
+                key={`label-${marker.id}`}
+                x={c[0]}
+                y={c[1] - size - 4}
+                fontSize={10 / zoomScale}
+                fill={ATLAS_COLORS.textBone}
+                textAnchor="middle"
+                opacity={style.opacity}
+                style={{ fontFamily: "serif", pointerEvents: "none" }}
+              >
+                {marker.primaryName.value}
+              </text>
             );
           })}
         </WorldMap>
