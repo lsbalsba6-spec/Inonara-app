@@ -6,16 +6,20 @@ import { feature } from "topojson-client";
 import worldTopo from "../data/world-countries-50m.json";
 import countryContinentMap from "../data/country-continent-map.json";
 import { getPlateGroup, lerpTransform } from "../lib/plateGroups";
+import { ATLAS_COLORS } from "../lib/designTokens";
 
-// Brand palette, matching the rest of AfroAtlas (see Atlas.jsx / brand tokens).
+// PR1: colors now come from the centralized lib/designTokens.js instead of
+// a local object — same values (no visual change), single source of truth.
+// The "geological"/"geologicalBorder" aliases below reuse the Africa land
+// tokens (they were already the same hex values before this change).
 const COLORS = {
-  ocean: "#0A0908",
-  landDefault: "#241C14",
-  landDefaultBorder: "#4A3826",
-  landAfrica: "#3D2E12",
-  landAfricaBorder: "#D4AF37",
-  geological: "#3D2E12",
-  geologicalBorder: "#D4AF37",
+  ocean: ATLAS_COLORS.ocean,
+  landDefault: ATLAS_COLORS.landDefault,
+  landDefaultBorder: ATLAS_COLORS.landDefaultBorder,
+  landAfrica: ATLAS_COLORS.landAfrica,
+  landAfricaBorder: ATLAS_COLORS.landAfricaBorder,
+  geological: ATLAS_COLORS.landAfrica,
+  geologicalBorder: ATLAS_COLORS.landAfricaBorder,
 };
 
 /**
@@ -111,17 +115,31 @@ const WorldMap = ({ onProjectionReady, onGeoProjectionReady, onZoomChange, highl
     (lat, lon) => {
       const p = projection([lon, lat]);
       if (!p) return null;
-      return [transform.applyX(p[0]), transform.applyY(p[1])];
+      // FIX: return RAW projected coordinates. The zoom/pan transform is
+      // applied ONCE, uniformly, by the <g transform={transform.toString()}>
+      // wrapper below (which contains both the map paths AND {children} —
+      // i.e. every marker rendered via this callback). Previously this
+      // function also applied transform.applyX/Y here, which combined with
+      // the wrapper's transform to apply zoom/pan TWICE to every marker —
+      // harmless at the initial identity transform, but causing markers to
+      // drift away from their correct position as soon as the user panned
+      // or zoomed (the exact bug reported: points scatter away from the
+      // map on interaction).
+      return [p[0], p[1]];
     },
-    [projection, transform]
+    [projection]
   );
 
   useEffect(() => {
     if (onProjectionReady) onProjectionReady((lat, lon) => projectRef.current(lat, lon));
-  }, [projection, transform, onProjectionReady]);
+  }, [projection, onProjectionReady]);
 
   // Geological-mode projection: applies a group's transform (translate+rotate
-  // around its own centroid) to a modern lat/lon point, then the zoom transform.
+  // around its own centroid) to a modern lat/lon point. Returns RAW
+  // coordinates for the same reason as projectRef above — the <g transform>
+  // wrapper (and each group's own nested <g transform> for the Pangaea
+  // rigid-body shift) already handles positioning; applying the zoom
+  // transform again here was the same double-transform bug.
   const geoProjectRef = useRef(null);
   geoProjectRef.current = useCallback(
     (group, lat, lon) => {
@@ -138,14 +156,14 @@ const WorldMap = ({ onProjectionReady, onGeoProjectionReady, onZoomChange, highl
       const rotY = rx * Math.sin(rad) + ry * Math.cos(rad);
       const fx = cx + rotX + dx;
       const fy = cy + rotY + dy;
-      return [transform.applyX(fx), transform.applyY(fy)];
+      return [fx, fy];
     },
-    [projection, transform, geoFusion, groupCentroids, width, height]
+    [projection, geoFusion, groupCentroids, width, height]
   );
 
   useEffect(() => {
     if (onGeoProjectionReady) onGeoProjectionReady((group, lat, lon) => geoProjectRef.current(group, lat, lon));
-  }, [projection, transform, geoFusion, groupCentroids, onGeoProjectionReady]);
+  }, [projection, geoFusion, groupCentroids, onGeoProjectionReady]);
 
   const geoGroupTransformStr = useCallback(
     (group) => {
