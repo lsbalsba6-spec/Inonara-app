@@ -563,13 +563,16 @@ const Atlas = () => {
             onValueChange={(v) => { setSliderPos(v[0]); setSelected(null); }}
             data-testid="timeline-slider"
           />
-          <div className="relative mt-3 h-8">
-            {MILESTONES.map((m) => (
+          <div className="relative mt-3 h-12">
+            {MILESTONES.map((m, i) => (
               <button
                 key={m.label}
                 onClick={() => jumpToYear(m.year)}
                 className="absolute -translate-x-1/2 text-[9px] md:text-[10px] uppercase tracking-[0.15em] text-bone/40 hover:text-gold transition-colors whitespace-nowrap"
-                style={{ left: `${(yearToSlider(m.year) / SLIDER_MAX) * 100}%` }}
+                style={{
+                  left: `${Math.min(97, (yearToSlider(m.year) / SLIDER_MAX) * 100)}%`,
+                  top: i % 2 === 0 ? 0 : 16,
+                }}
                 data-testid={`milestone-${m.label}`}
               >
                 {m.label}
