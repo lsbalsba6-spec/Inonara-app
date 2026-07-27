@@ -13,6 +13,8 @@ export const fetchStory = (id) => api.get(`/stories/${id}`).then((r) => r.data);
 export const fetchCulture = (params = {}) => api.get("/culture", { params }).then((r) => r.data);
 export const fetchRoutes = () => api.get("/migration-routes").then((r) => r.data);
 export const fetchHistoricalPolities = () => api.get("/historical-polities").then((r) => r.data);
+export const fetchHistoricalEntitiesV2 = () => api.get("/historical-entities-v2").then((r) => r.data);
+export const fetchPilotV3 = () => api.get("/pilot-v3-gabon-central-africa").then((r) => r.data);
 export const fetchPaleoGeography = () => api.get("/paleo-geography").then((r) => r.data);
 export const fetchPlateTectonics = () => api.get("/plate-tectonics").then((r) => r.data);
 export const search = (q) => api.get("/search", { params: { q } }).then((r) => r.data);

@@ -6,13 +6,21 @@ import {
   fetchPlaces,
   fetchDiaspora,
   fetchHistoricalPolities,
+  fetchHistoricalEntitiesV2,
   fetchPaleoGeography,
   fetchPlateTectonics,
+  fetchPilotV3,
 } from "../lib/api";
 import { Slider } from "../components/ui/slider";
 import { useI18n } from "../i18n";
 import WorldMap from "../components/WorldMap";
 import { SLIDER_MIN, SLIDER_MAX, sliderToYear, yearToSlider, modeForYear, eraLabel } from "../lib/timeScale";
+import { ATLAS_COLORS } from "../lib/designTokens";
+import { getHistoricalDataSource, isPilotV3Enabled } from "../lib/featureFlags";
+import DevDataSourceIndicator from "../components/DevDataSourceIndicator";
+import { adaptHistoricalEntitiesToLegacyShape } from "../lib/historicalEntityAdapter";
+import { buildPilotV3Markers, buildFangProcessDisplay } from "../lib/pilotV3Adapter";
+import PilotV3InfoPanel from "../components/PilotV3InfoPanel";
 
 // Milestone markers shown along the non-linear slider track, so users stay
 // oriented even though early (geological) time is heavily compressed.
@@ -43,18 +51,38 @@ const Atlas = () => {
   const [geoProject, setGeoProject] = useState(null);
   const [zoomScale, setZoomScale] = useState(1);
   const [selected, setSelected] = useState(null);
+  const [pilotV3Data, setPilotV3Data] = useState(null);
+  const [selectedPilotV3Marker, setSelectedPilotV3Marker] = useState(null);
 
   useEffect(() => {
     fetchCivilizations().then(setCivs).catch(() => {});
     fetchPlaces().then(setPlaces).catch(() => {});
     fetchDiaspora().then(setDiaspora).catch(() => {});
-    fetchHistoricalPolities().then(setPolities).catch(() => {});
+    // PR3: feature-flagged data source (?historicalDataSource=v2 in the URL).
+    // v1 (default): fetch the original, already-shipped shape directly.
+    // v2 (opt-in): fetch the migrated HistoricalEntity schema and adapt it
+    // back to the exact same shape via lib/historicalEntityAdapter.js — the
+    // rest of this component and WorldMap.jsx render it identically either
+    // way, since the adapter's whole job is to make v2 indistinguishable
+    // from v1 at the rendering boundary.
+    if (getHistoricalDataSource() === "v2") {
+      fetchHistoricalEntitiesV2()
+        .then((entities) => setPolities(adaptHistoricalEntitiesToLegacyShape(entities)))
+        .catch(() => {});
+    } else {
+      fetchHistoricalPolities().then(setPolities).catch(() => {});
+    }
     fetchPaleoGeography().then(setPaleo).catch(() => {});
     fetchPlateTectonics().then(setPlateEpochs).catch(() => {});
     fetchRoutes().then((r) => {
       setRoutes(r);
       setActiveRoutes(Object.fromEntries(r.map((x) => [x.id, true])));
     }).catch(() => {});
+    // PR pilote 3: additive overlay, OFF by default, opt-in via ?pilotV3=1.
+    // Fetching this never affects v1/v2 historical-polities rendering above.
+    if (isPilotV3Enabled()) {
+      fetchPilotV3().then(setPilotV3Data).catch(() => {});
+    }
   }, []);
 
   const year = useMemo(() => sliderToYear(sliderPos), [sliderPos]);
@@ -67,6 +95,16 @@ const Atlas = () => {
     setSliderPos(yearToSlider(y));
     setSelected(null);
   };
+
+  const pilotV3Markers = useMemo(
+    () => (pilotV3Data ? buildPilotV3Markers(pilotV3Data.entities, year) : []),
+    [pilotV3Data, year]
+  );
+  const pilotV3FangProcess = useMemo(() => {
+    if (!pilotV3Data) return null;
+    const proc = pilotV3Data.entities.find((e) => e.category === "Process" && e.processType === "migration");
+    return buildFangProcessDisplay(proc);
+  }, [pilotV3Data]);
 
   const visibleCivs = useMemo(
     () => (mode === "historical" ? civs.filter((c) => year >= c.era_start && year <= c.era_end) : []),
@@ -110,6 +148,32 @@ const Atlas = () => {
 
   return (
     <div className="pt-[72px] h-screen flex flex-col" data-testid="atlas-page">
+      <DevDataSourceIndicator />
+      {isPilotV3Enabled() && (
+        <div
+          className="fixed top-[90px] right-2 z-[600] text-[0.6rem] px-2 py-1 rounded bg-black/70 text-gold font-mono"
+          data-testid="pilot-v3-active-indicator"
+        >
+          Prototype v3 actif (Gabon/Afrique centrale)
+        </div>
+      )}
+      {mode === "historical" && pilotV3FangProcess && (
+        <div
+          className="fixed bottom-4 right-2 z-[600] glass rounded-lg p-3 max-w-[220px] text-[0.65rem]"
+          data-testid="pilot-v3-fang-process-banner"
+        >
+          <p className="text-gold mb-1">{pilotV3FangProcess.label}</p>
+          {pilotV3FangProcess.phases.map((phase, i) => (
+            <p key={i} className="text-bone/70 mb-1">
+              • {phase.label} ({phase.period})
+            </p>
+          ))}
+          <p className="text-amber-400/80 mt-1">⚠ {pilotV3FangProcess.warningNote}</p>
+        </div>
+      )}
+      {selectedPilotV3Marker && (
+        <PilotV3InfoPanel marker={selectedPilotV3Marker} onClose={() => setSelectedPilotV3Marker(null)} />
+      )}
       {/* Current era indicator */}
       <div className="absolute top-[84px] left-1/2 -translate-x-1/2 z-[500] glass px-6 py-2 rounded-full" data-testid="atlas-era-indicator">
         <p className="font-serif text-gold text-sm md:text-base whitespace-nowrap">{eraLabel(year)}</p>
@@ -129,7 +193,7 @@ const Atlas = () => {
             const p = geoProject(l.group || "Africa", l.lat, l.lon);
             if (!p) return null;
             return (
-              <text key={l.text} x={p[0]} y={p[1]} fontSize={l.size} fill="#F5F5F0" textAnchor="middle"
+              <text key={l.text} x={p[0]} y={p[1]} fontSize={l.size} fill={ATLAS_COLORS.textBone} textAnchor="middle"
                 style={{ fontFamily: "serif", letterSpacing: "0.05em", pointerEvents: "none" }}>
                 {l.text}
               </text>
@@ -179,10 +243,57 @@ const Atlas = () => {
               <g key={p.id} onClick={() => setSelected({ kind: "polity", ...p })} style={{ cursor: "pointer" }}>
                 <circle cx={c[0]} cy={c[1]} r={r} fill={p.color} fillOpacity={0.14} stroke={p.color} strokeWidth={1.3} strokeDasharray="4 3" />
                 {showLabel && (
-                  <text x={c[0]} y={c[1] - r - 4} fontSize={11 / Math.max(1, zoomScale * 0.6)} fill="#F5F5F0" textAnchor="middle" style={{ fontFamily: "serif", pointerEvents: "none" }}>
+                  <text x={c[0]} y={c[1] - r - 4} fontSize={11 / Math.max(1, zoomScale * 0.6)} fill={ATLAS_COLORS.textBone} textAnchor="middle" style={{ fontFamily: "serif", pointerEvents: "none" }}>
                     {p.name}
                   </text>
                 )}
+              </g>
+            );
+          })}
+
+          {/* PR pilote 3: additive Gabon/Central Africa core_v3 pilot overlay.
+              Diamond markers (distinct from the circle polities above) so
+              it never gets confused with v1/v2 data. Dash pattern + opacity
+              come from each marker's resolved style (ready/provisional/
+              disputed/research-gap) — see lib/pilotV3Resolver.js. */}
+          {mode === "historical" && project && pilotV3Markers.map((marker) => {
+            const c = project(marker.coords[0], marker.coords[1]);
+            if (!c) return null;
+            const size = 10;
+            const { style } = marker;
+            return (
+              <g
+                key={marker.id}
+                onClick={() => setSelectedPilotV3Marker(marker)}
+                style={{ cursor: "pointer" }}
+                data-testid={`pilot-v3-marker-${marker.id}`}
+              >
+                <rect
+                  x={c[0] - size / 2}
+                  y={c[1] - size / 2}
+                  width={size}
+                  height={size}
+                  transform={`rotate(45 ${c[0]} ${c[1]})`}
+                  fill="none"
+                  stroke={ATLAS_COLORS.gold}
+                  strokeWidth={1.5}
+                  strokeOpacity={style.opacity}
+                  strokeDasharray={style.dash === "dotted" ? "2 2" : style.dash === "dashed" ? "5 3" : undefined}
+                />
+                {style.warningBadge && (
+                  <circle cx={c[0] + size / 2 + 2} cy={c[1] - size / 2 - 2} r={3} fill={ATLAS_COLORS.deepRed} />
+                )}
+                <text
+                  x={c[0]}
+                  y={c[1] - size - 4}
+                  fontSize={10}
+                  fill={ATLAS_COLORS.textBone}
+                  textAnchor="middle"
+                  opacity={style.opacity}
+                  style={{ fontFamily: "serif", pointerEvents: "none" }}
+                >
+                  {marker.primaryName.value}
+                </text>
               </g>
             );
           })}
@@ -191,7 +302,7 @@ const Atlas = () => {
             const p = project(c.coords[0], c.coords[1]);
             if (!p) return null;
             return (
-              <circle key={c.id} cx={p[0]} cy={p[1]} r={6} fill="#D4AF37" stroke="#D4AF37" strokeWidth={2} fillOpacity={0.9}
+              <circle key={c.id} cx={p[0]} cy={p[1]} r={6} fill={ATLAS_COLORS.gold} stroke={ATLAS_COLORS.gold} strokeWidth={2} fillOpacity={0.9}
                 onClick={() => setSelected({ kind: "civ", ...c })} style={{ cursor: "pointer" }} />
             );
           })}
@@ -200,7 +311,7 @@ const Atlas = () => {
             const pt = project(p.coords[0], p.coords[1]);
             if (!pt) return null;
             return (
-              <circle key={p.id} cx={pt[0]} cy={pt[1]} r={3.5} fill="#C18C42" stroke="#C18C42" strokeWidth={1.5} fillOpacity={0.9}
+              <circle key={p.id} cx={pt[0]} cy={pt[1]} r={3.5} fill={ATLAS_COLORS.amber} stroke={ATLAS_COLORS.amber} strokeWidth={1.5} fillOpacity={0.9}
                 onClick={() => setSelected({ kind: "place", ...p })} style={{ cursor: "pointer" }} />
             );
           })}
@@ -209,7 +320,7 @@ const Atlas = () => {
             const pt = project(d.coords[0], d.coords[1]);
             if (!pt) return null;
             return (
-              <circle key={d.id} cx={pt[0]} cy={pt[1]} r={5} fill="#7B2D26" stroke="#7B2D26" strokeWidth={2} fillOpacity={0.9}
+              <circle key={d.id} cx={pt[0]} cy={pt[1]} r={5} fill={ATLAS_COLORS.deepRed} stroke={ATLAS_COLORS.deepRed} strokeWidth={2} fillOpacity={0.9}
                 onClick={() => setSelected({ kind: "diaspora", ...d })} style={{ cursor: "pointer" }} />
             );
           })}
@@ -286,17 +397,17 @@ const Atlas = () => {
             <div className="space-y-2">
               <label className="flex items-center gap-3 cursor-pointer">
                 <input type="checkbox" checked={showPolities} onChange={(e) => setShowPolities(e.target.checked)} className="accent-gold" data-testid="toggle-polities" />
-                <span className="w-2 h-2 rounded-full border border-dashed" style={{ borderColor: "#D4AF37" }} />
+                <span className="w-2 h-2 rounded-full border border-dashed" style={{ borderColor: ATLAS_COLORS.gold }} />
                 <span className="text-bone/80 text-xs">Empires &amp; royaumes (approximatif)</span>
               </label>
               <label className="flex items-center gap-3 cursor-pointer">
                 <input type="checkbox" checked={showPlaces} onChange={(e) => setShowPlaces(e.target.checked)} className="accent-gold" data-testid="toggle-places" />
-                <span className="w-2 h-2 rounded-full" style={{ background: "#C18C42" }} />
+                <span className="w-2 h-2 rounded-full" style={{ background: ATLAS_COLORS.amber }} />
                 <span className="text-bone/80 text-xs">{t("atlas.heritagePlaces")}</span>
               </label>
               <label className="flex items-center gap-3 cursor-pointer">
                 <input type="checkbox" checked={showDiaspora} onChange={(e) => setShowDiaspora(e.target.checked)} className="accent-gold" data-testid="toggle-diaspora" />
-                <span className="w-2 h-2 rounded-full" style={{ background: "#7B2D26" }} />
+                <span className="w-2 h-2 rounded-full" style={{ background: ATLAS_COLORS.deepRed }} />
                 <span className="text-bone/80 text-xs">{t("atlas.diasporaCommunities")}</span>
               </label>
               <div className="h-px bg-[#2A2421] my-2" />
@@ -321,7 +432,7 @@ const Atlas = () => {
         {selected && (
           <div className="absolute bottom-28 left-1/2 -translate-x-1/2 z-[600] glass w-[92%] max-w-[420px] p-5" data-testid="marker-detail-card">
             <button onClick={() => setSelected(null)} className="absolute top-3 right-4 text-bone/50 hover:text-bone text-lg" data-testid="close-detail">×</button>
-            <p className="overline text-[0.6rem]" style={{ color: selected.color || "#D4AF37" }}>
+            <p className="overline text-[0.6rem]" style={{ color: selected.color || ATLAS_COLORS.gold }}>
               {selected.kind === "civ" && `Civilisation · ${t(`region.${selected.region}`)}`}
               {selected.kind === "place" && `${selected.type} · ${selected.era}`}
               {selected.kind === "diaspora" && `Diaspora · ${t(`region.${selected.region}`)}`}

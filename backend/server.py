@@ -35,6 +35,24 @@ from data import (
 )
 from db_seed import mirror_content_to_mongo
 
+# PR3: the v2 (migrated HistoricalEntity schema) dataset is a generated JSON
+# artifact (backend/scripts/migrate_historical_entities.py), not a Python
+# data module — loaded lazily and cached, kept separate from
+# HISTORICAL_POLITIES (v1), which remains the default/untouched source.
+_HISTORICAL_ENTITIES_V2_CACHE = None
+
+
+def _load_historical_entities_v2():
+    global _HISTORICAL_ENTITIES_V2_CACHE
+    if _HISTORICAL_ENTITIES_V2_CACHE is None:
+        import json
+        path = Path(__file__).parent / "data" / "historical_entities_migrated.json"
+        if path.exists():
+            _HISTORICAL_ENTITIES_V2_CACHE = json.loads(path.read_text())
+        else:
+            _HISTORICAL_ENTITIES_V2_CACHE = []
+    return _HISTORICAL_ENTITIES_V2_CACHE
+
 ROOT_DIR = Path(__file__).parent
 load_dotenv(ROOT_DIR / '.env')
 
@@ -159,8 +177,48 @@ async def get_country_ancestral_link(country_iso2: str):
 async def list_historical_polities():
     """Approximate historical empires/kingdoms/colonial powers for the Atlas
     map's historical mode (-3500 to 2025). Circles, not precise borders —
-    see the module docstring in data/historical_polities.py."""
+    see the module docstring in data/historical_polities.py.
+
+    This is the DEFAULT (v1) data source. See /historical-entities-v2 for
+    the migrated-schema version (PR3, opt-in via feature flag, frontend
+    adapts it back to this exact response shape before rendering)."""
     return HISTORICAL_POLITIES
+
+
+@api_router.get("/historical-entities-v2")
+async def list_historical_entities_v2():
+    """PR3: the same underlying data as /historical-polities, migrated to
+    the richer HistoricalEntity schema (see frontend/src/lib/historicalTypes.js
+    and backend/scripts/migrate_historical_entities.py). NOT used by default —
+    the frontend only fetches this when the historicalDataSource=v2 feature
+    flag is set (lib/featureFlags.js), and adapts it back to the v1 shape via
+    lib/historicalEntityAdapter.js before rendering, so this endpoint existing
+    changes nothing for users by default."""
+    return _load_historical_entities_v2()
+
+
+@api_router.get("/pilot-v3-gabon-central-africa")
+async def get_pilot_v3_gabon_central_africa():
+    """Prototype vertical pilot (Gabon/Central Africa) built on the core_v3
+    graph model (Polity/Place/People/Event/Process/PeriodInterpretation +
+    autonomous Source/Relation objects — see backend/data/core_v3/). NOT
+    wired into the default map at all — the frontend only fetches this when
+    the pilotV3=1 feature flag is set (lib/featureFlags.js), and renders it
+    as an ADDITIVE overlay via lib/pilotV3Adapter.js, never replacing v1/v2.
+    Returns the full corpus (entities, relations, and the editorial
+    assertion registry) as-is; temporal/style resolution happens
+    client-side (lib/pilotV3Resolver.js), matching how v1/v2 already do
+    client-side era filtering."""
+    from data.core_v3.pilot_gabon_central_africa import (
+        PILOT_ENTITIES,
+        PILOT_RELATIONS,
+        REGISTRY,
+    )
+    return {
+        "entities": list(PILOT_ENTITIES.values()),
+        "relations": PILOT_RELATIONS,
+        "registry": REGISTRY,
+    }
 
 
 @api_router.get("/paleo-geography")
