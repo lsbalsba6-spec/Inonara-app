@@ -587,6 +587,11 @@ const Atlas = () => {
                 En savoir plus sur cette migration →
               </Link>
             )}
+            {selected.kind === "route" && !selected.diaspora_id && selected.story_id && (
+              <Link to={`/story/${selected.story_id}`} className="inline-block mt-3 uppercase tracking-[0.18em] text-[0.65rem] text-gold">
+                Lire l'histoire complète →
+              </Link>
+            )}
           </div>
         )}
       </div>

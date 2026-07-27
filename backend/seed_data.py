@@ -471,6 +471,62 @@ STORIES = [
         ],
         "sources": ["Gunther Schuller, 'Early Jazz' (1968)", "Ned Sublette, 'The World That Made New Orleans' (2008)", "Library of Congress, American Folklife Center"],
     },
+    {
+        "id": "trans-saharan-trade-story",
+        "title": "Gold, Salt, and Camels — the Trans-Saharan Trade",
+        "civilization_id": None,
+        "era": "c. 700–1500 CE",
+        "summary": "How camel caravans turned the world's largest desert into a highway, linking West African gold to the Mediterranean world for eight centuries.",
+        "chapters": [
+            {"heading": "The Camel Changes Everything", "body": "The introduction of the camel to the Sahara, fully established by the early centuries CE, transformed a nearly impassable desert into a navigable trade corridor. Caravans of hundreds or even thousands of camels could now cross distances that had previously taken enormous risk on foot or with horses."},
+            {"heading": "Gold for Salt", "body": "West African kingdoms — first Ghana, then Mali and Songhai — controlled access to gold fields near the Senegal and Niger rivers. Salt, desperately needed for diet and food preservation but scarce south of the desert, moved the opposite direction from mines like Taghaza. The exchange was so central that chroniclers described it as trading gold for salt, ounce for ounce in value at times."},
+            {"heading": "Cities Born of Trade", "body": "Timbuktu, Gao, and Djenné grew wealthy and cosmopolitan as caravan termini, attracting scholars, architects, and merchants from across the Islamic world. Timbuktu's Sankore mosque-university became a center of manuscript scholarship studied by historians today."},
+            {"heading": "Decline", "body": "From the late 15th century, Portuguese ships began reaching West African coasts directly by sea, gradually redirecting trade away from the overland routes. Combined with political fragmentation after the fall of Songhai in 1591, the trans-Saharan network's centrality slowly diminished, though caravan trade continued in reduced form into the 20th century."},
+        ],
+        "sources": ["Standard historiography of the Ghana, Mali and Songhai empires", "E.W. Bovill, 'The Golden Trade of the Moors' (1958)"],
+    },
+    {
+        "id": "bantu-expansion-story",
+        "title": "The Long Walk — the Bantu Expansion",
+        "civilization_id": None,
+        "era": "c. 1500 BCE – 500 CE",
+        "summary": "Over two thousand years, Bantu-language speakers and their farming, ironworking way of life spread from a small homeland to cover most of the southern half of Africa.",
+        "chapters": [
+            {"heading": "A Homeland Near Nigeria and Cameroon", "body": "Linguists trace the roughly 500 related Bantu languages spoken today back to a common ancestor spoken in a relatively small region near the Nigeria-Cameroon border, several thousand years ago."},
+            {"heading": "Farming and Iron", "body": "Unlike earlier hunter-gatherer populations, Bantu-speaking communities practiced agriculture and, from roughly the last millennium BCE, ironworking — technologies that allowed population growth and gradual expansion into new territory across Central Africa's rainforest and savanna."},
+            {"heading": "Two Streams", "body": "Archaeological and linguistic evidence suggests the expansion followed at least two broad paths: one south through the Congo rainforest, another east and then south through the African Great Lakes region, eventually reconverging in southern Africa."},
+            {"heading": "A Continent Transformed", "body": "By roughly 500 CE, Bantu-speaking peoples and their languages predominated across most of Sub-Saharan Africa south of the original homeland — the linguistic and cultural map of a large part of the continent today is a direct legacy of this millennia-long process."},
+        ],
+        "sources": ["Standard linguistic and archaeological Bantu expansion scholarship (e.g. Vansina, 'Paths in the Rainforests', 1990)"],
+    },
+    {
+        "id": "islamic-conquest-maghreb-story",
+        "title": "The Conquest of the Maghreb",
+        "civilization_id": None,
+        "era": "647–709 CE",
+        "summary": "How Arab Muslim armies, expanding west from a collapsing Byzantine Egypt, brought all of North Africa into the Islamic world within six decades.",
+        "chapters": [
+            {"heading": "A Continent in Flux", "body": "By the early 640s CE, under Caliph Umar, Arab Muslim forces had already taken Egypt, Syria, and Mesopotamia from Byzantine and Sasanian control. With the Sasanian Empire collapsing after 642, attention turned west toward the Byzantine-held Maghreb."},
+            {"heading": "First Expeditions", "body": "Initial expeditions into the Maghreb began in 647 CE under the Rashidun Caliphate, testing Byzantine defenses and the resistance of local Berber kingdoms. Under Caliph Uthman (644–656), the effort broadened, with the Muslim navy expanding operations across the Mediterranean."},
+            {"heading": "The Fall of Carthage", "body": "Despite prolonged resistance from Byzantine garrisons and Berber tribes, Carthage — the last major Byzantine stronghold in the region — fell in 698 CE under the Umayyad Caliphate."},
+            {"heading": "Completion, 709 CE", "body": "The conquest concluded under Caliph al-Walid I with the capture of Septem (modern Ceuta), ending Byzantine rule in North Africa entirely and bringing the Maghreb into the Umayyad Caliphate — a political and religious reorientation whose linguistic and cultural legacy (Arabic, Islam) still defines the region today."},
+        ],
+        "sources": ["Muslim conquest of the Maghreb — standard historiography (history-maps.com; Humanities LibreTexts, 'Islamic Conquest of the Maghreb')"],
+    },
+    {
+        "id": "great-migration-us-story",
+        "title": "The Great Migration",
+        "civilization_id": None,
+        "era": "1916–1970",
+        "summary": "Why six million African Americans left the rural South for cities in the North, Midwest, and West over the course of six decades — and what they built when they got there.",
+        "chapters": [
+            {"heading": "Why Leave", "body": "In 1900, nearly eight million Black Americans — about 90 percent of the total — lived in the South, most on farms under Jim Crow segregation, sharecropping poverty, and the constant threat of racial violence and lynching."},
+            {"heading": "The First Wave", "body": "World War I cut off the flow of European immigrant labor to Northern factories just as war production demanded workers. Between 1916 and 1918 alone, some 400,000 African Americans moved north; the Pennsylvania Railroad even organized transport for over 10,000 workers in the summer of 1916."},
+            {"heading": "A Second, Larger Wave", "body": "Migration slowed during the Great Depression before surging again during and after World War II, this time reaching further west to Los Angeles, Seattle, and Portland as well as Northern and Midwestern cities."},
+            {"heading": "What Was Built", "body": "The migration fueled the Harlem Renaissance and built the urban Black communities — in Chicago, Detroit, New York, Philadelphia — that would go on to power the civil rights movement. By 1970, the demographic map of Black America was transformed: little more than half the population remained in the South, and the great majority now lived in cities rather than on farms."},
+        ],
+        "sources": ["Encyclopaedia Britannica, 'Great Migration'", "Isabel Wilkerson, 'The Warmth of Other Suns' (2010)"],
+    },
 ]
 
 CULTURE_ITEMS = [
@@ -491,6 +547,7 @@ CULTURE_ITEMS = [
 MIGRATION_ROUTES = [
     {
         "id": "out-of-africa-southern-route",
+        "story_id": "out-of-africa",
         "name": "Sortie d'Afrique — route méridionale (via Bab-el-Mandeb)",
         "era": "c. 70,000–50,000 BCE",
         "era_start": -70000, "era_end": -50000,
@@ -501,6 +558,7 @@ MIGRATION_ROUTES = [
     },
     {
         "id": "out-of-africa-northern-route",
+        "story_id": "out-of-africa",
         "name": "Sortie d'Afrique — route septentrionale (via le Levant)",
         "era": "c. 56,000–40,000 BCE",
         "era_start": -56000, "era_end": -40000,
@@ -521,6 +579,7 @@ MIGRATION_ROUTES = [
     },
     {
         "id": "trans-saharan",
+        "story_id": "trans-saharan-trade-story",
         "name": "Trans-Saharan Trade",
         "era": "c. 700–1500 CE",
         "era_start": 700, "era_end": 1500,
@@ -531,6 +590,7 @@ MIGRATION_ROUTES = [
     },
     {
         "id": "indian-ocean",
+        "story_id": "zanj-rebellion",
         "name": "Indian Ocean Trade",
         "era": "c. 800–1500 CE",
         "era_start": 800, "era_end": 1500,
@@ -541,6 +601,7 @@ MIGRATION_ROUTES = [
     },
     {
         "id": "transatlantic",
+        "story_id": "middle-passage",
         "name": "Transatlantic Forced Migration",
         "era": "16th–19th c.",
         "era_start": 1500, "era_end": 1888,
@@ -551,6 +612,7 @@ MIGRATION_ROUTES = [
     },
     {
         "id": "bantu-expansion",
+        "story_id": "bantu-expansion-story",
         "name": "Bantu Expansion",
         "era": "c. 1500 BCE – 500 CE",
         "era_start": -1500, "era_end": 500,
@@ -571,6 +633,7 @@ MIGRATION_ROUTES = [
     },
     {
         "id": "islamic-conquest-maghreb",
+        "story_id": "islamic-conquest-maghreb-story",
         "name": "Islamic Conquest of the Maghreb",
         "era": "647–709 CE",
         "era_start": 647, "era_end": 709,
@@ -581,6 +644,7 @@ MIGRATION_ROUTES = [
     },
     {
         "id": "great-migration-us",
+        "story_id": "great-migration-us-story",
         "name": "Great Migration (African American)",
         "era": "1916–1970",
         "era_start": 1916, "era_end": 1970,
