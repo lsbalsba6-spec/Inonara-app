@@ -220,8 +220,10 @@ const Atlas = () => {
               underneath handles the tap (a thin dashed polyline is hard to
               hit precisely on mobile), and clicking opens the same detail
               panel used for other markers. */}
-          {mode !== "geological" && project && visibleRoutes.map((r) =>
-            activeRoutes[r.id] !== false ? (
+          {mode !== "geological" && project && visibleRoutes.map((r) => {
+            if (activeRoutes[r.id] === false) return null;
+            const isSelected = selected?.kind === "route" && selected?.id === r.id;
+            return (
               <g key={r.id} onClick={() => setSelected({ kind: "route", ...r })} style={{ cursor: "pointer" }}>
                 <polyline
                   points={toPolyPoints(r.points)}
@@ -229,18 +231,28 @@ const Atlas = () => {
                   stroke="transparent"
                   strokeWidth={18}
                 />
+                {isSelected && (
+                  <polyline
+                    points={toPolyPoints(r.points)}
+                    fill="none"
+                    stroke="#F5F5F0"
+                    strokeWidth={5}
+                    opacity={0.5}
+                    style={{ pointerEvents: "none" }}
+                  />
+                )}
                 <polyline
                   points={toPolyPoints(r.points)}
                   fill="none"
                   stroke={r.color}
-                  strokeWidth={2.2}
+                  strokeWidth={isSelected ? 3.2 : 2.2}
                   strokeDasharray="5 5"
-                  opacity={0.88}
+                  opacity={isSelected ? 1 : 0.88}
                   style={{ pointerEvents: "none" }}
                 />
               </g>
-            ) : null
-          )}
+            );
+          })}
 
           {/* Historical mode: empires, civs, places, diaspora, pilot v3.
               FIX: shapes and labels are now rendered in TWO SEPARATE passes
@@ -364,6 +376,42 @@ const Atlas = () => {
               </text>
             );
           })}
+
+          {/* SELECTED-MARKER HIGHLIGHT — a pulsing bright ring around
+              whichever point is currently open in the detail panel, so it's
+              always clear which marker the displayed info belongs to.
+              Rendered last (on top of everything) and re-projects the
+              selected entity's own coords, so it works for any marker type. */}
+          {mode === "historical" && project && selected && selected.coords && (
+            (() => {
+              const c = project(selected.coords[0], selected.coords[1]);
+              if (!c) return null;
+              return (
+                <g style={{ pointerEvents: "none" }} data-testid="selected-marker-highlight">
+                  <circle cx={c[0]} cy={c[1]} r={10 / zoomScale} fill="none" stroke="#F5F5F0" strokeWidth={2 / zoomScale} opacity={0.95}>
+                    <animate attributeName="r" values={`${7 / zoomScale};${13 / zoomScale};${7 / zoomScale}`} dur="1.4s" repeatCount="indefinite" />
+                    <animate attributeName="opacity" values="0.95;0.4;0.95" dur="1.4s" repeatCount="indefinite" />
+                  </circle>
+                  <circle cx={c[0]} cy={c[1]} r={3 / zoomScale} fill="#F5F5F0" opacity={0.95} />
+                </g>
+              );
+            })()
+          )}
+
+          {mode === "historical" && project && selectedPilotV3Marker && (
+            (() => {
+              const c = project(selectedPilotV3Marker.coords[0], selectedPilotV3Marker.coords[1]);
+              if (!c) return null;
+              return (
+                <g style={{ pointerEvents: "none" }} data-testid="selected-pilot-v3-highlight">
+                  <circle cx={c[0]} cy={c[1]} r={10 / zoomScale} fill="none" stroke="#F5F5F0" strokeWidth={2 / zoomScale} opacity={0.95}>
+                    <animate attributeName="r" values={`${7 / zoomScale};${13 / zoomScale};${7 / zoomScale}`} dur="1.4s" repeatCount="indefinite" />
+                    <animate attributeName="opacity" values="0.95;0.4;0.95" dur="1.4s" repeatCount="indefinite" />
+                  </circle>
+                </g>
+              );
+            })()
+          )}
         </WorldMap>
 
         {/* Side panel */}
