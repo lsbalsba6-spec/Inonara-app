@@ -260,9 +260,30 @@ async def list_culture(category: Optional[str] = None, region: Optional[str] = N
     return items
 
 
+_DIASPORA_DERIVED_ROUTES_CACHE = None
+
+
+def _load_diaspora_derived_routes():
+    global _DIASPORA_DERIVED_ROUTES_CACHE
+    if _DIASPORA_DERIVED_ROUTES_CACHE is None:
+        import json
+        try:
+            path = Path(__file__).parent / "data" / "diaspora_derived_routes.json"
+            _DIASPORA_DERIVED_ROUTES_CACHE = json.loads(path.read_text())
+        except FileNotFoundError:
+            _DIASPORA_DERIVED_ROUTES_CACHE = []
+    return _DIASPORA_DERIVED_ROUTES_CACHE
+
+
 @api_router.get("/migration-routes")
 async def get_migration_routes():
-    return MIGRATION_ROUTES
+    """Returns the curated macro-routes (MIGRATION_ROUTES) PLUS one distinct
+    line per (diaspora entry x documented origin region) pair — 175 as of
+    this writing — generated from the already-sourced DIASPORA_COMMUNITIES
+    data (see scripts/generate_diaspora_routes.py). Per explicit user
+    requirement, these are never consolidated into a single summarizing
+    line; each keeps its own era_start/era_end and sources."""
+    return MIGRATION_ROUTES + _load_diaspora_derived_routes()
 
 
 @api_router.get("/diaspora-communities")

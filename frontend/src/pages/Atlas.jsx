@@ -45,6 +45,7 @@ const Atlas = () => {
   const [plateEpochs, setPlateEpochs] = useState([]);
   const [sliderPos, setSliderPos] = useState(yearToSlider(-70000));
   const [activeRoutes, setActiveRoutes] = useState({});
+  const [showDiasporaRoutesList, setShowDiasporaRoutesList] = useState(false);
   const [showPlaces, setShowPlaces] = useState(true);
   const [showDiaspora, setShowDiaspora] = useState(true);
   const [showPolities, setShowPolities] = useState(true);
@@ -500,7 +501,7 @@ const Atlas = () => {
                 <span className="text-bone/80 text-xs">{t("atlas.diasporaCommunities")}</span>
               </label>
               <div className="h-px bg-[#2A2421] my-2" />
-              {routes.map((r) => (
+              {routes.filter((r) => !r.id.startsWith("diaspora-")).map((r) => (
                 <label key={r.id} className="flex items-center gap-3 cursor-pointer">
                   <input
                     type="checkbox"
@@ -513,6 +514,38 @@ const Atlas = () => {
                   <span className="text-bone/80 text-xs">{r.name}</span>
                 </label>
               ))}
+
+              {routes.some((r) => r.id.startsWith("diaspora-")) && (
+                <div className="mt-2">
+                  <button
+                    onClick={() => setShowDiasporaRoutesList((v) => !v)}
+                    className="flex items-center justify-between w-full text-left"
+                    data-testid="toggle-diaspora-routes-section"
+                  >
+                    <span className="text-bone/60 text-xs uppercase tracking-wider">
+                      Routes par diaspora ({routes.filter((r) => r.id.startsWith("diaspora-")).length})
+                    </span>
+                    <span className="text-bone/40 text-xs">{showDiasporaRoutesList ? "▾" : "▸"}</span>
+                  </button>
+                  {showDiasporaRoutesList && (
+                    <div className="max-h-48 overflow-y-auto mt-2 pr-1 space-y-1.5">
+                      {routes.filter((r) => r.id.startsWith("diaspora-")).map((r) => (
+                        <label key={r.id} className="flex items-center gap-3 cursor-pointer">
+                          <input
+                            type="checkbox"
+                            checked={activeRoutes[r.id] !== false}
+                            onChange={(e) => setActiveRoutes((s) => ({ ...s, [r.id]: e.target.checked }))}
+                            className="accent-gold"
+                            data-testid={`route-toggle-${r.id}`}
+                          />
+                          <span className="w-6 h-[2px] shrink-0" style={{ background: r.color }} />
+                          <span className="text-bone/80 text-[0.65rem] leading-tight">{r.name}</span>
+                        </label>
+                      ))}
+                    </div>
+                  )}
+                </div>
+              )}
             </div>
           </div>
         )}
