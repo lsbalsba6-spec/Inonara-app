@@ -187,6 +187,7 @@ def generate_routes():
                 "points": [list(coords), list(d["coords"])],
                 "summary": f"Route dérivée de la fiche diaspora « {d['name']} » (déjà sourcée sur le site) : {d['summary'][:200]}",
                 "sources": d.get("sources", []),
+                "diaspora_id": d["id"],
             })
     return routes, skipped
 

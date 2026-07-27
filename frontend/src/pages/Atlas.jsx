@@ -582,6 +582,11 @@ const Atlas = () => {
             {selected.kind === "diaspora" && (
               <Link to={`/diaspora/${selected.id}`} className="inline-block mt-3 uppercase tracking-[0.18em] text-[0.65rem] text-gold">{t("atlas.visitCommunity")}</Link>
             )}
+            {selected.kind === "route" && selected.diaspora_id && (
+              <Link to={`/diaspora/${selected.diaspora_id}`} className="inline-block mt-3 uppercase tracking-[0.18em] text-[0.65rem] text-gold">
+                En savoir plus sur cette migration →
+              </Link>
+            )}
           </div>
         )}
       </div>
