@@ -30,6 +30,7 @@ const MILESTONES = [
   { year: -70000, label: "Sortie d'Afrique" },
   { year: -3500, label: "Civilisations" },
   { year: 1885, label: "Colonisation" },
+  { year: 1960, label: "Indépendances" },
   { year: 2025, label: "Aujourd'hui" },
 ];
 
