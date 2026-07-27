@@ -215,18 +215,30 @@ const Atlas = () => {
             />
           ))}
 
-          {/* Migration routes — shown in prehistoric AND historical modes, filtered by year */}
+          {/* Migration routes — shown in prehistoric AND historical modes,
+              filtered by year. Now clickable: a wider invisible stroke
+              underneath handles the tap (a thin dashed polyline is hard to
+              hit precisely on mobile), and clicking opens the same detail
+              panel used for other markers. */}
           {mode !== "geological" && project && visibleRoutes.map((r) =>
             activeRoutes[r.id] !== false ? (
-              <polyline
-                key={r.id}
-                points={toPolyPoints(r.points)}
-                fill="none"
-                stroke={r.color}
-                strokeWidth={2.2}
-                strokeDasharray="5 5"
-                opacity={0.88}
-              />
+              <g key={r.id} onClick={() => setSelected({ kind: "route", ...r })} style={{ cursor: "pointer" }}>
+                <polyline
+                  points={toPolyPoints(r.points)}
+                  fill="none"
+                  stroke="transparent"
+                  strokeWidth={18}
+                />
+                <polyline
+                  points={toPolyPoints(r.points)}
+                  fill="none"
+                  stroke={r.color}
+                  strokeWidth={2.2}
+                  strokeDasharray="5 5"
+                  opacity={0.88}
+                  style={{ pointerEvents: "none" }}
+                />
+              </g>
             ) : null
           )}
 
@@ -241,7 +253,7 @@ const Atlas = () => {
           {mode === "historical" && showPolities && project && visiblePolities.map((p) => {
             const c = project(p.coords[0], p.coords[1]);
             if (!c) return null;
-            const r = Math.max(6, Math.min(28, p.radius_km / 60)) / zoomScale;
+            const r = Math.max(4, Math.max(6, Math.min(28, p.radius_km / 60)) / zoomScale);
             return (
               <circle key={p.id} cx={c[0]} cy={c[1]} r={r} fill={p.color} fillOpacity={0.14} stroke={p.color} strokeWidth={1.3 / zoomScale} strokeDasharray="4 3"
                 onClick={() => setSelected({ kind: "polity", ...p })} style={{ cursor: "pointer" }} />
@@ -251,7 +263,7 @@ const Atlas = () => {
           {mode === "historical" && project && pilotV3Markers.map((marker) => {
             const c = project(marker.coords[0], marker.coords[1]);
             if (!c) return null;
-            const size = 10 / zoomScale;
+            const size = Math.max(7, 10 / zoomScale);
             const { style } = marker;
             return (
               <g
@@ -284,7 +296,7 @@ const Atlas = () => {
             const p = project(c.coords[0], c.coords[1]);
             if (!p) return null;
             return (
-              <circle key={c.id} cx={p[0]} cy={p[1]} r={6 / zoomScale} fill={ATLAS_COLORS.gold} stroke={ATLAS_COLORS.gold} strokeWidth={2 / zoomScale} fillOpacity={0.9}
+              <circle key={c.id} cx={p[0]} cy={p[1]} r={Math.max(4, 6 / zoomScale)} fill={ATLAS_COLORS.gold} stroke={ATLAS_COLORS.gold} strokeWidth={Math.max(1, 2 / zoomScale)} fillOpacity={0.9}
                 onClick={() => setSelected({ kind: "civ", ...c })} style={{ cursor: "pointer" }} />
             );
           })}
@@ -293,7 +305,7 @@ const Atlas = () => {
             const pt = project(p.coords[0], p.coords[1]);
             if (!pt) return null;
             return (
-              <circle key={p.id} cx={pt[0]} cy={pt[1]} r={3.5 / zoomScale} fill={ATLAS_COLORS.amber} stroke={ATLAS_COLORS.amber} strokeWidth={1.5 / zoomScale} fillOpacity={0.9}
+              <circle key={p.id} cx={pt[0]} cy={pt[1]} r={Math.max(3, 3.5 / zoomScale)} fill={ATLAS_COLORS.amber} stroke={ATLAS_COLORS.amber} strokeWidth={Math.max(0.8, 1.5 / zoomScale)} fillOpacity={0.9}
                 onClick={() => setSelected({ kind: "place", ...p })} style={{ cursor: "pointer" }} />
             );
           })}
@@ -302,7 +314,7 @@ const Atlas = () => {
             const pt = project(d.coords[0], d.coords[1]);
             if (!pt) return null;
             return (
-              <circle key={d.id} cx={pt[0]} cy={pt[1]} r={5 / zoomScale} fill={ATLAS_COLORS.deepRed} stroke={ATLAS_COLORS.deepRed} strokeWidth={2 / zoomScale} fillOpacity={0.9}
+              <circle key={d.id} cx={pt[0]} cy={pt[1]} r={Math.max(3.5, 5 / zoomScale)} fill={ATLAS_COLORS.deepRed} stroke={ATLAS_COLORS.deepRed} strokeWidth={Math.max(1, 2 / zoomScale)} fillOpacity={0.9}
                 onClick={() => setSelected({ kind: "diaspora", ...d })} style={{ cursor: "pointer" }} />
             );
           })}
@@ -311,7 +323,7 @@ const Atlas = () => {
           {mode === "historical" && showPolities && project && visiblePolities.map((p) => {
             const c = project(p.coords[0], p.coords[1]);
             if (!c) return null;
-            const r = Math.max(6, Math.min(28, p.radius_km / 60)) / zoomScale;
+            const r = Math.max(4, Math.max(6, Math.min(28, p.radius_km / 60)) / zoomScale);
             // Zoom-based label reveal: at zoom=1 only the largest territories
             // show their name; smaller ones appear progressively as the user
             // zooms in, so labels don't overlap into unreadable clutter.
@@ -327,7 +339,7 @@ const Atlas = () => {
           {mode === "historical" && project && pilotV3Markers.map((marker) => {
             const c = project(marker.coords[0], marker.coords[1]);
             if (!c) return null;
-            const size = 10 / zoomScale;
+            const size = Math.max(7, 10 / zoomScale);
             const { style } = marker;
             return (
               <text
@@ -458,8 +470,12 @@ const Atlas = () => {
               {selected.kind === "diaspora" && `Diaspora · ${t(`region.${selected.region}`)}`}
               {selected.kind === "polity" && "Territoire historique approximatif"}
               {selected.kind === "paleo" && "Reconstitution préhistorique approximative"}
+              {selected.kind === "route" && "Route migratoire / culturelle"}
             </p>
             <p className="font-serif text-xl text-bone mt-1">{selected.name}</p>
+            {selected.kind === "route" && (
+              <p className="text-bone/70 text-sm mt-2">{selected.era}</p>
+            )}
             <p className="text-bone/70 text-sm mt-2 leading-relaxed">
               {(selected.summary || selected.blurb || "").slice(0, 220)}
               {(selected.summary || selected.blurb || "").length > 220 ? "…" : ""}
