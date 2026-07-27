@@ -42,7 +42,7 @@ const Atlas = () => {
   const [polities, setPolities] = useState([]);
   const [paleo, setPaleo] = useState([]);
   const [plateEpochs, setPlateEpochs] = useState([]);
-  const [sliderPos, setSliderPos] = useState(yearToSlider(1300));
+  const [sliderPos, setSliderPos] = useState(yearToSlider(-70000));
   const [activeRoutes, setActiveRoutes] = useState({});
   const [showPlaces, setShowPlaces] = useState(true);
   const [showDiaspora, setShowDiaspora] = useState(true);

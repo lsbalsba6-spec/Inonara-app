@@ -496,6 +496,8 @@ MIGRATION_ROUTES = [
         "era_start": -70000, "era_end": -3500,
         "color": "#D4AF37",
         "points": [[7.0, 38.0], [12.0, 43.0], [20.0, 45.0], [30.0, 50.0], [40.0, 60.0], [25.0, 90.0], [20.0, 120.0]],
+        "summary": "Genetic and archaeological evidence indicates that anatomically modern humans (Homo sapiens), who first appeared in Africa, began dispersing out of the continent in one or more waves starting roughly 70,000 years ago, crossing near the Horn of Africa/Bab-el-Mandeb region and gradually populating Eurasia, Oceania, and eventually the Americas. This is the single migratory event from which all non-African human populations descend.",
+        "sources": ["Out-of-Africa model, population genetics and paleoanthropology consensus (see e.g. Nature Reviews Genetics summaries)"],
     },
     {
         "id": "trans-saharan",
@@ -504,6 +506,8 @@ MIGRATION_ROUTES = [
         "era_start": 700, "era_end": 1500,
         "color": "#C18C42",
         "points": [[16.77, -3.00], [25.00, -2.00], [31.00, 1.00], [34.02, -6.83]],
+        "summary": "Camel caravans crossed the Sahara for centuries, linking West African kingdoms (Ghana, Mali, Songhai) to North Africa and the Mediterranean world. Gold and enslaved people moved north; salt, textiles, and horses moved south. This exchange also carried Islam and literacy deep into West Africa, fueling cities like Timbuktu and Gao.",
+        "sources": ["Standard historiography of the Ghana, Mali and Songhai empires; trans-Saharan trade route scholarship"],
     },
     {
         "id": "indian-ocean",
@@ -512,6 +516,8 @@ MIGRATION_ROUTES = [
         "era_start": 800, "era_end": 1500,
         "color": "#A0522D",
         "points": [[-8.95, 39.50], [-1.30, 36.80], [12.78, 45.03], [19.07, 72.87], [22.30, 114.20]],
+        "summary": "Monsoon winds linked the Swahili coast of East Africa to Arabia, India, and beyond in a centuries-old commercial network trading gold, ivory, and textiles. From roughly the 9th century, this network also carried a large-scale slave trade — East Africans (the term 'Zanj' was used in medieval Arabic sources) were trafficked to the Middle East and the Indian Ocean islands, a trade that continued, under Omani/Zanzibari control, into the 19th century.",
+        "sources": ["Slavery in Zanzibar (Wikipedia, citing Omani-Zanzibari historical records)", "East Africa in the Early Indian Ocean World Slave Trade: The Zanj Revolt Reconsidered (academic chapter)"],
     },
     {
         "id": "transatlantic",
@@ -520,6 +526,8 @@ MIGRATION_ROUTES = [
         "era_start": 1500, "era_end": 1888,
         "color": "#7B2D26",
         "points": [[6.34, 5.62], [-6.27, 14.25], [-15.78, -47.93], [18.47, -69.95], [29.95, -90.07]],
+        "summary": "Between the 16th and 19th centuries, European traders forcibly transported an estimated 12.5 million enslaved Africans across the Atlantic; roughly 10.7 million survived the Middle Passage, disembarking mainly in Brazil, the Caribbean, and North America. This is the historical foundation of the African diaspora across the Americas.",
+        "sources": ["Henry Louis Gates Jr., cited by Re-Imagining Migration project (reimaginingmigration.org)", "Slave Voyages Database (established transatlantic slave trade scholarship)"],
     },
     {
         "id": "bantu-expansion",
@@ -528,6 +536,8 @@ MIGRATION_ROUTES = [
         "era_start": -1500, "era_end": 500,
         "color": "#8B5A2B",
         "points": [[6.0, 10.0], [2.0, 20.0], [-4.0, 25.0], [-12.0, 28.0], [-20.0, 28.0], [-26.0, 31.0]],
+        "summary": "Speakers of early Bantu languages spread gradually from a homeland near the Nigeria-Cameroon border across Central, Eastern, and Southern Africa over roughly two thousand years, bringing agriculture and ironworking and eventually giving rise to the majority of Bantu-speaking peoples across the southern half of the continent today.",
+        "sources": ["Standard linguistic and archaeological Bantu expansion scholarship"],
     },
     {
         "id": "austronesian-expansion",
@@ -536,5 +546,28 @@ MIGRATION_ROUTES = [
         "era_start": -3000, "era_end": 1250,
         "color": "#4A7C82",
         "points": [[23.5, 121.0], [14.6, 121.0], [-2.0, 118.0], [-8.5, 125.6], [-17.7, 168.3], [-17.7, -149.4], [-21.2, -159.8], [-38.7, 176.1]],
+        "summary": "Austronesian-speaking peoples spread from Taiwan across Southeast Asia and the Pacific over several thousand years. One branch sailed west across the Indian Ocean, reaching and settling Madagascar (likely by the first millennium CE) — this African connection is why the Malagasy language today is Austronesian, not African, in origin, a notable exception on the African continent.",
+        "sources": ["Austronesian expansion and Madagascar settlement scholarship (linguistic and archaeological consensus)"],
+    },
+    {
+        "id": "islamic-conquest-maghreb",
+        "name": "Islamic Conquest of the Maghreb",
+        "era": "647–709 CE",
+        "era_start": 647, "era_end": 709,
+        "color": "#6B7A3A",
+        "points": [[30.05, 31.25], [32.90, 13.19], [36.85, 10.19], [33.57, -7.60]],
+        "summary": "Following the death of Muhammad in 632, Arab Muslim armies expanded west from Egypt, reaching the Maghreb from 647 CE onward under the Rashidun and then Umayyad caliphates. Carthage fell in 698, and the conquest concluded by 709 with the capture of Ceuta, bringing North Africa into the Islamic world and eventually spreading Islam and Arabic across the region.",
+        "sources": ["Muslim conquest of the Maghreb — standard historiography (e.g. history-maps.com, Humanities LibreTexts)"],
+    },
+    {
+        "id": "great-migration-us",
+        "name": "Great Migration (African American)",
+        "era": "1916–1970",
+        "era_start": 1916, "era_end": 1970,
+        "color": "#B8860B",
+        "points": [[32.37, -86.30], [41.88, -87.63], [42.33, -83.05], [40.71, -74.01], [34.05, -118.24]],
+        "summary": "Between 1916 and 1970, roughly six million African Americans left the rural South for cities in the North, Midwest, and West, driven by Jim Crow segregation, racial violence, and sharecropping poverty, and pulled by wartime industrial jobs. The movement reshaped American cities, fueled the Harlem Renaissance, and built the urban Black communities that later powered the civil rights movement.",
+        "sources": ["Encyclopaedia Britannica, 'Great Migration'", "Isabel Wilkerson, The Warmth of Other Suns (2010)"],
     },
 ]
+
