@@ -268,6 +268,12 @@ const Atlas = () => {
                 style={{ cursor: "pointer" }}
                 data-testid={`pilot-v3-marker-${marker.id}`}
               >
+                {/* Invisible, larger touch target — an SVG rect with
+                    fill="none" is only hit-testable on its stroke outline,
+                    not its interior, which would make mobile tapping
+                    unreliable. This transparent circle fixes that without
+                    changing the visible diamond's appearance. */}
+                <circle cx={c[0]} cy={c[1]} r={16} fill="transparent" />
                 <rect
                   x={c[0] - size / 2}
                   y={c[1] - size / 2}
