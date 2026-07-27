@@ -253,17 +253,19 @@ const Atlas = () => {
           {mode === "historical" && showPolities && project && visiblePolities.map((p) => {
             const c = project(p.coords[0], p.coords[1]);
             if (!c) return null;
-            const r = Math.max(4, Math.max(6, Math.min(28, p.radius_km / 60)) / zoomScale);
+            const r = Math.max(1.2, Math.max(4, Math.min(14, p.radius_km / 90)) / zoomScale);
             return (
-              <circle key={p.id} cx={c[0]} cy={c[1]} r={r} fill={p.color} fillOpacity={0.14} stroke={p.color} strokeWidth={1.3 / zoomScale} strokeDasharray="4 3"
-                onClick={() => setSelected({ kind: "polity", ...p })} style={{ cursor: "pointer" }} />
+              <g key={p.id} onClick={() => setSelected({ kind: "polity", ...p })} style={{ cursor: "pointer" }}>
+                <circle cx={c[0]} cy={c[1]} r={Math.max(12, r)} fill="transparent" />
+                <circle cx={c[0]} cy={c[1]} r={r} fill={p.color} fillOpacity={0.14} stroke={p.color} strokeWidth={1.3 / zoomScale} strokeDasharray="4 3" style={{ pointerEvents: "none" }} />
+              </g>
             );
           })}
 
           {mode === "historical" && project && pilotV3Markers.map((marker) => {
             const c = project(marker.coords[0], marker.coords[1]);
             if (!c) return null;
-            const size = Math.max(7, 10 / zoomScale);
+            const size = Math.max(4, 10 / zoomScale);
             const { style } = marker;
             return (
               <g
@@ -296,8 +298,10 @@ const Atlas = () => {
             const p = project(c.coords[0], c.coords[1]);
             if (!p) return null;
             return (
-              <circle key={c.id} cx={p[0]} cy={p[1]} r={Math.max(4, 6 / zoomScale)} fill={ATLAS_COLORS.gold} stroke={ATLAS_COLORS.gold} strokeWidth={Math.max(1, 2 / zoomScale)} fillOpacity={0.9}
-                onClick={() => setSelected({ kind: "civ", ...c })} style={{ cursor: "pointer" }} />
+              <g key={c.id} onClick={() => setSelected({ kind: "civ", ...c })} style={{ cursor: "pointer" }}>
+                <circle cx={p[0]} cy={p[1]} r={12} fill="transparent" />
+                <circle cx={p[0]} cy={p[1]} r={Math.max(1.5, 6 / zoomScale)} fill={ATLAS_COLORS.gold} stroke={ATLAS_COLORS.gold} strokeWidth={Math.max(0.5, 2 / zoomScale)} fillOpacity={0.9} style={{ pointerEvents: "none" }} />
+              </g>
             );
           })}
 
@@ -305,8 +309,10 @@ const Atlas = () => {
             const pt = project(p.coords[0], p.coords[1]);
             if (!pt) return null;
             return (
-              <circle key={p.id} cx={pt[0]} cy={pt[1]} r={Math.max(3, 3.5 / zoomScale)} fill={ATLAS_COLORS.amber} stroke={ATLAS_COLORS.amber} strokeWidth={Math.max(0.8, 1.5 / zoomScale)} fillOpacity={0.9}
-                onClick={() => setSelected({ kind: "place", ...p })} style={{ cursor: "pointer" }} />
+              <g key={p.id} onClick={() => setSelected({ kind: "place", ...p })} style={{ cursor: "pointer" }}>
+                <circle cx={pt[0]} cy={pt[1]} r={12} fill="transparent" />
+                <circle cx={pt[0]} cy={pt[1]} r={Math.max(0.8, 3 / zoomScale)} fill={ATLAS_COLORS.amber} stroke={ATLAS_COLORS.amber} strokeWidth={Math.max(0.3, 1.2 / zoomScale)} fillOpacity={0.9} style={{ pointerEvents: "none" }} />
+              </g>
             );
           })}
 
@@ -314,8 +320,10 @@ const Atlas = () => {
             const pt = project(d.coords[0], d.coords[1]);
             if (!pt) return null;
             return (
-              <circle key={d.id} cx={pt[0]} cy={pt[1]} r={Math.max(3.5, 5 / zoomScale)} fill={ATLAS_COLORS.deepRed} stroke={ATLAS_COLORS.deepRed} strokeWidth={Math.max(1, 2 / zoomScale)} fillOpacity={0.9}
-                onClick={() => setSelected({ kind: "diaspora", ...d })} style={{ cursor: "pointer" }} />
+              <g key={d.id} onClick={() => setSelected({ kind: "diaspora", ...d })} style={{ cursor: "pointer" }}>
+                <circle cx={pt[0]} cy={pt[1]} r={12} fill="transparent" />
+                <circle cx={pt[0]} cy={pt[1]} r={Math.max(1, 4 / zoomScale)} fill={ATLAS_COLORS.deepRed} stroke={ATLAS_COLORS.deepRed} strokeWidth={Math.max(0.3, 1.2 / zoomScale)} fillOpacity={0.9} style={{ pointerEvents: "none" }} />
+              </g>
             );
           })}
 
@@ -323,14 +331,14 @@ const Atlas = () => {
           {mode === "historical" && showPolities && project && visiblePolities.map((p) => {
             const c = project(p.coords[0], p.coords[1]);
             if (!c) return null;
-            const r = Math.max(4, Math.max(6, Math.min(28, p.radius_km / 60)) / zoomScale);
+            const r = Math.max(1.2, Math.max(4, Math.min(14, p.radius_km / 90)) / zoomScale);
             // Zoom-based label reveal: at zoom=1 only the largest territories
             // show their name; smaller ones appear progressively as the user
             // zooms in, so labels don't overlap into unreadable clutter.
-            const showLabel = p.radius_km * zoomScale > 300;
+            const showLabel = p.radius_km * zoomScale > 700;
             if (!showLabel) return null;
             return (
-              <text key={`label-${p.id}`} x={c[0]} y={c[1] - r - 4} fontSize={11 / Math.max(1, zoomScale * 0.6)} fill={ATLAS_COLORS.textBone} textAnchor="middle" style={{ fontFamily: "serif", pointerEvents: "none" }}>
+              <text key={`label-${p.id}`} x={c[0]} y={c[1] - r - 4} fontSize={9 / Math.max(1, zoomScale * 0.6)} fill={ATLAS_COLORS.textBone} textAnchor="middle" style={{ fontFamily: "serif", pointerEvents: "none" }}>
                 {p.name}
               </text>
             );
@@ -339,7 +347,7 @@ const Atlas = () => {
           {mode === "historical" && project && pilotV3Markers.map((marker) => {
             const c = project(marker.coords[0], marker.coords[1]);
             if (!c) return null;
-            const size = Math.max(7, 10 / zoomScale);
+            const size = Math.max(4, 10 / zoomScale);
             const { style } = marker;
             return (
               <text
