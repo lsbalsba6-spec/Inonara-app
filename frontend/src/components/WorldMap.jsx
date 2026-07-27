@@ -206,20 +206,30 @@ const WorldMap = ({ onProjectionReady, onGeoProjectionReady, onZoomChange, highl
             })}
 
           {geoFusion !== null &&
-            Object.entries(groupedCountries).map(([group, feats]) => (
-              <g key={group} transform={geoGroupTransformStr(group)}>
-                {feats.map((c) => (
-                  <path
-                    key={c.id || c.properties?.name}
-                    d={pathGen(c)}
-                    fill={COLORS.geological}
-                    stroke={COLORS.geologicalBorder}
-                    strokeWidth={0.8}
-                    strokeOpacity={0.75}
-                  />
-                ))}
-              </g>
-            ))}
+            (() => {
+              // At full Pangaea (geoFusion=1), internal modern-country
+              // borders are hidden entirely so the supercontinent reads as
+              // ONE undivided landmass — not a patchwork of visible modern
+              // borders, per explicit user feedback ("la Pangée n'était pas
+              // délimitée, c'était une seule terre"). Borders fade back in
+              // progressively as geoFusion decreases toward 0 (modern day).
+              const borderOpacity = Math.max(0, (0.9 - geoFusion) / 0.9) * 0.75;
+              const borderWidth = borderOpacity > 0 ? 0.8 : 0;
+              return Object.entries(groupedCountries).map(([group, feats]) => (
+                <g key={group} transform={geoGroupTransformStr(group)}>
+                  {feats.map((c) => (
+                    <path
+                      key={c.id || c.properties?.name}
+                      d={pathGen(c)}
+                      fill={COLORS.geological}
+                      stroke={COLORS.geologicalBorder}
+                      strokeWidth={borderWidth}
+                      strokeOpacity={borderOpacity}
+                    />
+                  ))}
+                </g>
+              ));
+            })()}
 
           {children}
         </g>
