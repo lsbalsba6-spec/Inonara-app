@@ -24,6 +24,22 @@ import PilotV3InfoPanel from "../components/PilotV3InfoPanel";
 
 // Milestone markers shown along the non-linear slider track, so users stay
 // oriented even though early (geological) time is heavily compressed.
+// Visual distinction by migration type: forced (solid, thick — a chattel/
+// coerced displacement), voluntary (fine dotted — a matter of individual
+// choice, even under hardship), mixed (dash-dot — a route carrying both),
+// conquest (long dashes — military/political expansion, not a personal
+// migration decision at all). See PR: "difference between forced and
+// voluntary migration, varying honestly by period per the data found."
+function dashPatternForMigrationType(type) {
+  switch (type) {
+    case "forced": return undefined; // solid
+    case "voluntary": return "2 4";
+    case "mixed": return "8 3 2 3";
+    case "conquest": return "12 4";
+    default: return "5 5"; // unclassified/legacy routes without a migration_type yet
+  }
+}
+
 const MILESTONES = [
   { year: -300000000, label: "Pangée" },
   { year: -66000000, label: "Fin des dinosaures" },
@@ -248,8 +264,8 @@ const Atlas = () => {
                   points={toPolyPoints(r.points)}
                   fill="none"
                   stroke={r.color}
-                  strokeWidth={isSelected ? 3.2 : 2.2}
-                  strokeDasharray="5 5"
+                  strokeWidth={(isSelected ? 3.2 : 2.2) + (r.migration_type === "forced" ? 0.8 : 0)}
+                  strokeDasharray={dashPatternForMigrationType(r.migration_type)}
                   opacity={isSelected ? 1 : 0.88}
                   style={{ pointerEvents: "none" }}
                 />
@@ -540,6 +556,24 @@ const Atlas = () => {
 
             {mode === "historical" && (
               <div className="space-y-2">
+                <p className="text-bone/60 text-[0.65rem] uppercase tracking-wider mb-1">Style des lignes migratoires</p>
+                <div className="flex items-center gap-3">
+                  <span className="w-6 h-[2px]" style={{ background: "#7B2D26" }} />
+                  <span className="text-bone/80 text-xs">Migration forcée (trait plein, plus épais)</span>
+                </div>
+                <div className="flex items-center gap-3">
+                  <span className="w-6 h-[2px]" style={{ background: "#4ade80", borderTop: "2px dotted #4ade80", height: 0 }} />
+                  <span className="text-bone/80 text-xs">Migration volontaire (finement pointillé)</span>
+                </div>
+                <div className="flex items-center gap-3">
+                  <span className="w-6" style={{ borderTop: `2px dashed ${ATLAS_COLORS.amber}` }} />
+                  <span className="text-bone/80 text-xs">Mixte (tirets-points)</span>
+                </div>
+                <div className="flex items-center gap-3">
+                  <span className="w-6" style={{ borderTop: "2px dashed #9CA3AF" }} />
+                  <span className="text-bone/80 text-xs">Conquête / expansion militaire (longs tirets)</span>
+                </div>
+                <div className="h-px bg-[#2A2421] my-2" />
                 <label className="flex items-center gap-3 cursor-pointer">
                   <input type="checkbox" checked={showPolities} onChange={(e) => setShowPolities(e.target.checked)} className="accent-gold" data-testid="toggle-polities" />
                   <span className="w-2 h-2 rounded-full border border-dashed" style={{ borderColor: ATLAS_COLORS.gold }} />
@@ -621,6 +655,17 @@ const Atlas = () => {
             <p className="font-serif text-xl text-bone mt-1">{selected.name}</p>
             {selected.kind === "route" && (
               <p className="text-bone/70 text-sm mt-2">{selected.era}</p>
+            )}
+            {selected.kind === "route" && selected.migration_type && (
+              <span
+                className="inline-block mt-2 text-[0.6rem] uppercase tracking-wider px-2 py-0.5 rounded-full border"
+                style={{
+                  borderColor: { forced: "#7B2D26", voluntary: "#4ade80", mixed: ATLAS_COLORS.amber, conquest: "#9CA3AF" }[selected.migration_type] || "#9CA3AF",
+                  color: { forced: "#7B2D26", voluntary: "#4ade80", mixed: ATLAS_COLORS.amber, conquest: "#9CA3AF" }[selected.migration_type] || "#9CA3AF",
+                }}
+              >
+                {{ forced: "Migration forcée", voluntary: "Migration volontaire", mixed: "Migration mixte", conquest: "Conquête / expansion militaire" }[selected.migration_type]}
+              </span>
             )}
             <p className="text-bone/70 text-sm mt-2 leading-relaxed">
               {(selected.summary || selected.blurb || "").slice(0, 220)}

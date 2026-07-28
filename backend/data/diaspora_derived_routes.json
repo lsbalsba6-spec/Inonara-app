@@ -22,7 +22,8 @@
       "IBGE 2022 census",
       "João José Reis, 'Slave Rebellion in Brazil' (1993)"
     ],
-    "diaspora_id": "afro-brazilian"
+    "diaspora_id": "afro-brazilian",
+    "migration_type": "forced"
   },
   {
     "id": "diaspora-afro-brazilian-from-bight-of-benin-yoruba-ewe-fon",
@@ -47,7 +48,8 @@
       "IBGE 2022 census",
       "João José Reis, 'Slave Rebellion in Brazil' (1993)"
     ],
-    "diaspora_id": "afro-brazilian"
+    "diaspora_id": "afro-brazilian",
+    "migration_type": "forced"
   },
   {
     "id": "diaspora-afro-brazilian-from-mozambique",
@@ -72,7 +74,8 @@
       "IBGE 2022 census",
       "João José Reis, 'Slave Rebellion in Brazil' (1993)"
     ],
-    "diaspora_id": "afro-brazilian"
+    "diaspora_id": "afro-brazilian",
+    "migration_type": "forced"
   },
   {
     "id": "diaspora-african-american-from-senegambia-wolof-mande-fula",
@@ -97,7 +100,8 @@
       "Isabel Wilkerson, 'The Warmth of Other Suns' (2010)",
       "Henry Louis Gates Jr., 'Stony the Road' (2019)"
     ],
-    "diaspora_id": "african-american"
+    "diaspora_id": "african-american",
+    "migration_type": "forced"
   },
   {
     "id": "diaspora-african-american-from-sierra-leone-windward-coast",
@@ -122,7 +126,8 @@
       "Isabel Wilkerson, 'The Warmth of Other Suns' (2010)",
       "Henry Louis Gates Jr., 'Stony the Road' (2019)"
     ],
-    "diaspora_id": "african-american"
+    "diaspora_id": "african-american",
+    "migration_type": "forced"
   },
   {
     "id": "diaspora-african-american-from-gold-coast",
@@ -147,7 +152,8 @@
       "Isabel Wilkerson, 'The Warmth of Other Suns' (2010)",
       "Henry Louis Gates Jr., 'Stony the Road' (2019)"
     ],
-    "diaspora_id": "african-american"
+    "diaspora_id": "african-american",
+    "migration_type": "forced"
   },
   {
     "id": "diaspora-african-american-from-bight-of-biafra-igbo",
@@ -172,7 +178,8 @@
       "Isabel Wilkerson, 'The Warmth of Other Suns' (2010)",
       "Henry Louis Gates Jr., 'Stony the Road' (2019)"
     ],
-    "diaspora_id": "african-american"
+    "diaspora_id": "african-american",
+    "migration_type": "forced"
   },
   {
     "id": "diaspora-african-american-from-west-central-africa",
@@ -197,7 +204,8 @@
       "Isabel Wilkerson, 'The Warmth of Other Suns' (2010)",
       "Henry Louis Gates Jr., 'Stony the Road' (2019)"
     ],
-    "diaspora_id": "african-american"
+    "diaspora_id": "african-american",
+    "migration_type": "forced"
   },
   {
     "id": "diaspora-afro-caribbean-from-gold-coast-akan",
@@ -222,7 +230,8 @@
       "C.L.R. James, 'The Black Jacobins' (1938)",
       "Stuart Hall, 'Familiar Stranger' (2017)"
     ],
-    "diaspora_id": "afro-caribbean"
+    "diaspora_id": "afro-caribbean",
+    "migration_type": "forced"
   },
   {
     "id": "diaspora-afro-caribbean-from-bight-of-biafra-igbo",
@@ -247,7 +256,8 @@
       "C.L.R. James, 'The Black Jacobins' (1938)",
       "Stuart Hall, 'Familiar Stranger' (2017)"
     ],
-    "diaspora_id": "afro-caribbean"
+    "diaspora_id": "afro-caribbean",
+    "migration_type": "forced"
   },
   {
     "id": "diaspora-afro-caribbean-from-west-central-africa-kongo",
@@ -272,7 +282,8 @@
       "C.L.R. James, 'The Black Jacobins' (1938)",
       "Stuart Hall, 'Familiar Stranger' (2017)"
     ],
-    "diaspora_id": "afro-caribbean"
+    "diaspora_id": "afro-caribbean",
+    "migration_type": "forced"
   },
   {
     "id": "diaspora-afro-cuban-from-bight-of-benin-yoruba",
@@ -297,7 +308,8 @@
       "Ada Ferrer, 'Cuba: An American History' (2021)",
       "Fernando Ortiz, 'Cuban Counterpoint' (1940)"
     ],
-    "diaspora_id": "afro-cuban"
+    "diaspora_id": "afro-cuban",
+    "migration_type": "forced"
   },
   {
     "id": "diaspora-afro-cuban-from-west-central-africa-kongo",
@@ -322,7 +334,8 @@
       "Ada Ferrer, 'Cuba: An American History' (2021)",
       "Fernando Ortiz, 'Cuban Counterpoint' (1940)"
     ],
-    "diaspora_id": "afro-cuban"
+    "diaspora_id": "afro-cuban",
+    "migration_type": "forced"
   },
   {
     "id": "diaspora-afro-cuban-from-sierra-leone-in-late-period",
@@ -347,7 +360,8 @@
       "Ada Ferrer, 'Cuba: An American History' (2021)",
       "Fernando Ortiz, 'Cuban Counterpoint' (1940)"
     ],
-    "diaspora_id": "afro-cuban"
+    "diaspora_id": "afro-cuban",
+    "migration_type": "forced"
   },
   {
     "id": "diaspora-afro-haitian-from-bight-of-benin-fon-ewe-yoruba",
@@ -371,7 +385,8 @@
       "Laurent Dubois, 'Avengers of the New World' (2004)",
       "C.L.R. James, 'The Black Jacobins' (1938)"
     ],
-    "diaspora_id": "afro-haitian"
+    "diaspora_id": "afro-haitian",
+    "migration_type": "forced"
   },
   {
     "id": "diaspora-afro-haitian-from-west-central-africa-kongo",
@@ -395,7 +410,8 @@
       "Laurent Dubois, 'Avengers of the New World' (2004)",
       "C.L.R. James, 'The Black Jacobins' (1938)"
     ],
-    "diaspora_id": "afro-haitian"
+    "diaspora_id": "afro-haitian",
+    "migration_type": "forced"
   },
   {
     "id": "diaspora-afro-colombian-from-west-central-africa-kongo-angola",
@@ -419,7 +435,8 @@
       "Colombian DANE 2018 census",
       "Aquiles Escalante, 'El negro en Colombia' (1964)"
     ],
-    "diaspora_id": "afro-colombian"
+    "diaspora_id": "afro-colombian",
+    "migration_type": "forced"
   },
   {
     "id": "diaspora-afro-colombian-from-senegambia",
@@ -443,7 +460,8 @@
       "Colombian DANE 2018 census",
       "Aquiles Escalante, 'El negro en Colombia' (1964)"
     ],
-    "diaspora_id": "afro-colombian"
+    "diaspora_id": "afro-colombian",
+    "migration_type": "forced"
   },
   {
     "id": "diaspora-afro-european-from-west-africa-senegal-mali-c-te-d-ivoire-t",
@@ -467,7 +485,8 @@
       "Peter Fryer, 'Staying Power' (1984)",
       "Pap Ndiaye, 'La condition noire' (2008)"
     ],
-    "diaspora_id": "afro-european"
+    "diaspora_id": "afro-european",
+    "migration_type": "forced"
   },
   {
     "id": "diaspora-afro-european-from-nigeria-ghana-to-uk",
@@ -491,7 +510,8 @@
       "Peter Fryer, 'Staying Power' (1984)",
       "Pap Ndiaye, 'La condition noire' (2008)"
     ],
-    "diaspora_id": "afro-european"
+    "diaspora_id": "afro-european",
+    "migration_type": "forced"
   },
   {
     "id": "diaspora-afro-european-from-central-africa-drc-to-belgium-and-france",
@@ -515,7 +535,8 @@
       "Peter Fryer, 'Staying Power' (1984)",
       "Pap Ndiaye, 'La condition noire' (2008)"
     ],
-    "diaspora_id": "afro-european"
+    "diaspora_id": "afro-european",
+    "migration_type": "forced"
   },
   {
     "id": "diaspora-afro-indian-ocean-from-east-africa-via-the-swahili-coast-zanzib",
@@ -539,7 +560,8 @@
       "Edward Alpers, 'The Indian Ocean in World History' (2014)",
       "Richard Eaton, 'The Rise of Islam and the Bengal Frontier' (1993)"
     ],
-    "diaspora_id": "afro-indian-ocean"
+    "diaspora_id": "afro-indian-ocean",
+    "migration_type": "forced"
   },
   {
     "id": "diaspora-afro-indian-ocean-from-madagascar-malagasy-themselves-a-bantu-a",
@@ -563,7 +585,8 @@
       "Edward Alpers, 'The Indian Ocean in World History' (2014)",
       "Richard Eaton, 'The Rise of Islam and the Bengal Frontier' (1993)"
     ],
-    "diaspora_id": "afro-indian-ocean"
+    "diaspora_id": "afro-indian-ocean",
+    "migration_type": "forced"
   },
   {
     "id": "diaspora-afro-indian-ocean-from-mozambique",
@@ -587,7 +610,8 @@
       "Edward Alpers, 'The Indian Ocean in World History' (2014)",
       "Richard Eaton, 'The Rise of Islam and the Bengal Frontier' (1993)"
     ],
-    "diaspora_id": "afro-indian-ocean"
+    "diaspora_id": "afro-indian-ocean",
+    "migration_type": "forced"
   },
   {
     "id": "diaspora-afro-mexican-from-west-central-africa-kongo-angola",
@@ -612,7 +636,8 @@
       "Bobby Vaughn, 'Race and Nation' (2005)",
       "Ben Vinson III, 'Bearing Arms for His Majesty' (2001)"
     ],
-    "diaspora_id": "afro-mexican"
+    "diaspora_id": "afro-mexican",
+    "migration_type": "forced"
   },
   {
     "id": "diaspora-afro-mexican-from-bight-of-benin",
@@ -637,7 +662,8 @@
       "Bobby Vaughn, 'Race and Nation' (2005)",
       "Ben Vinson III, 'Bearing Arms for His Majesty' (2001)"
     ],
-    "diaspora_id": "afro-mexican"
+    "diaspora_id": "afro-mexican",
+    "migration_type": "forced"
   },
   {
     "id": "diaspora-afro-mexican-from-senegambia",
@@ -662,7 +688,8 @@
       "Bobby Vaughn, 'Race and Nation' (2005)",
       "Ben Vinson III, 'Bearing Arms for His Majesty' (2001)"
     ],
-    "diaspora_id": "afro-mexican"
+    "diaspora_id": "afro-mexican",
+    "migration_type": "forced"
   },
   {
     "id": "diaspora-afro-indian-sidi-from-east-african-coast-zanzibar-mozambique-s",
@@ -687,7 +714,8 @@
       "Helene Basu, 'Habshi-Sklaven, Sidi-Fakire' (1995)",
       "Ababu Minda Yimene, 'An African Indian Community in Hyderabad' (2004)"
     ],
-    "diaspora_id": "afro-indian-sidi"
+    "diaspora_id": "afro-indian-sidi",
+    "migration_type": "forced"
   },
   {
     "id": "diaspora-afro-indian-sidi-from-ethiopian-highlands-habesha",
@@ -712,7 +740,8 @@
       "Helene Basu, 'Habshi-Sklaven, Sidi-Fakire' (1995)",
       "Ababu Minda Yimene, 'An African Indian Community in Hyderabad' (2004)"
     ],
-    "diaspora_id": "afro-indian-sidi"
+    "diaspora_id": "afro-indian-sidi",
+    "migration_type": "forced"
   },
   {
     "id": "diaspora-afro-german-from-german-colonial-territories-tanzania-nam",
@@ -736,7 +765,8 @@
       "May Ayim et al., 'Farbe bekennen' (1986)",
       "Robbie Aitken & Eve Rosenhaft, 'Black Germany' (2013)"
     ],
-    "diaspora_id": "afro-german"
+    "diaspora_id": "afro-german",
+    "migration_type": "forced"
   },
   {
     "id": "diaspora-afro-german-from-west-african-migration-from-1980s",
@@ -760,7 +790,8 @@
       "May Ayim et al., 'Farbe bekennen' (1986)",
       "Robbie Aitken & Eve Rosenhaft, 'Black Germany' (2013)"
     ],
-    "diaspora_id": "afro-german"
+    "diaspora_id": "afro-german",
+    "migration_type": "forced"
   },
   {
     "id": "diaspora-afro-arab-gulf-from-east-african-coast-zanzibar-tanzania-ken",
@@ -784,7 +815,8 @@
       "Alexandre Popovic, 'The Revolt of African Slaves in Iraq' (1999)",
       "Behnaz Mirzai et al., 'Slavery, Islam and Diaspora' (2009)"
     ],
-    "diaspora_id": "afro-arab-gulf"
+    "diaspora_id": "afro-arab-gulf",
+    "migration_type": "forced"
   },
   {
     "id": "diaspora-afro-arab-gulf-from-ethiopian-highlands",
@@ -808,7 +840,8 @@
       "Alexandre Popovic, 'The Revolt of African Slaves in Iraq' (1999)",
       "Behnaz Mirzai et al., 'Slavery, Islam and Diaspora' (2009)"
     ],
-    "diaspora_id": "afro-arab-gulf"
+    "diaspora_id": "afro-arab-gulf",
+    "migration_type": "forced"
   },
   {
     "id": "diaspora-afro-arab-gulf-from-sudanese-nile-valley",
@@ -832,7 +865,8 @@
       "Alexandre Popovic, 'The Revolt of African Slaves in Iraq' (1999)",
       "Behnaz Mirzai et al., 'Slavery, Islam and Diaspora' (2009)"
     ],
-    "diaspora_id": "afro-arab-gulf"
+    "diaspora_id": "afro-arab-gulf",
+    "migration_type": "forced"
   },
   {
     "id": "diaspora-afro-venezuelan-from-west-central-africa-kongo-angola",
@@ -855,7 +889,8 @@
     "sources": [
       "Federico Brito Figueroa, 'El problema tierra y esclavos en la historia de Venezuela' (1973)"
     ],
-    "diaspora_id": "afro-venezuelan"
+    "diaspora_id": "afro-venezuelan",
+    "migration_type": "forced"
   },
   {
     "id": "diaspora-afro-venezuelan-from-bight-of-benin",
@@ -878,7 +913,8 @@
     "sources": [
       "Federico Brito Figueroa, 'El problema tierra y esclavos en la historia de Venezuela' (1973)"
     ],
-    "diaspora_id": "afro-venezuelan"
+    "diaspora_id": "afro-venezuelan",
+    "migration_type": "forced"
   },
   {
     "id": "diaspora-afro-dominican-from-west-central-africa",
@@ -901,7 +937,8 @@
     "sources": [
       "Frank Moya Pons, 'The Dominican Republic: A National History' (1995)"
     ],
-    "diaspora_id": "afro-dominican"
+    "diaspora_id": "afro-dominican",
+    "migration_type": "forced"
   },
   {
     "id": "diaspora-afro-dominican-from-bight-of-benin",
@@ -924,7 +961,8 @@
     "sources": [
       "Frank Moya Pons, 'The Dominican Republic: A National History' (1995)"
     ],
-    "diaspora_id": "afro-dominican"
+    "diaspora_id": "afro-dominican",
+    "migration_type": "forced"
   },
   {
     "id": "diaspora-afro-dominican-from-senegambia-very-early",
@@ -947,7 +985,8 @@
     "sources": [
       "Frank Moya Pons, 'The Dominican Republic: A National History' (1995)"
     ],
-    "diaspora_id": "afro-dominican"
+    "diaspora_id": "afro-dominican",
+    "migration_type": "forced"
   },
   {
     "id": "diaspora-afro-canadian-from-direct-african-migration-nigeria-ghana-s",
@@ -971,7 +1010,8 @@
       "Robin Winks, 'The Blacks in Canada' (1971)",
       "Afua Cooper, 'The Hanging of Angélique' (2006)"
     ],
-    "diaspora_id": "afro-canadian"
+    "diaspora_id": "afro-canadian",
+    "migration_type": "forced"
   },
   {
     "id": "diaspora-afro-italian-from-italian-colonial-era-migration-from-erit",
@@ -995,7 +1035,8 @@
       "Pap Khouma, 'I Was an Elephant Salesman' (1990)",
       "Heather Merrill, 'Black Spaces' (2018)"
     ],
-    "diaspora_id": "afro-italian"
+    "diaspora_id": "afro-italian",
+    "migration_type": "voluntary"
   },
   {
     "id": "diaspora-afro-italian-from-west-african-migration-nigeria-senegal-g",
@@ -1019,7 +1060,8 @@
       "Pap Khouma, 'I Was an Elephant Salesman' (1990)",
       "Heather Merrill, 'Black Spaces' (2018)"
     ],
-    "diaspora_id": "afro-italian"
+    "diaspora_id": "afro-italian",
+    "migration_type": "voluntary"
   },
   {
     "id": "diaspora-afro-iranian-from-east-african-coast-via-indian-ocean",
@@ -1043,7 +1085,8 @@
       "Behnaz Mirzai, 'A History of Slavery and Emancipation in Iran' (2017)",
       "Mahdi Ehsaei, 'Afro-Iran' (2015, photo book)"
     ],
-    "diaspora_id": "afro-iranian"
+    "diaspora_id": "afro-iranian",
+    "migration_type": "forced"
   },
   {
     "id": "diaspora-afro-iranian-from-ethiopia-and-zanzibar",
@@ -1067,7 +1110,8 @@
       "Behnaz Mirzai, 'A History of Slavery and Emancipation in Iran' (2017)",
       "Mahdi Ehsaei, 'Afro-Iran' (2015, photo book)"
     ],
-    "diaspora_id": "afro-iranian"
+    "diaspora_id": "afro-iranian",
+    "migration_type": "forced"
   },
   {
     "id": "diaspora-afro-french-from-west-african-migration-senegal-mali-c-te",
@@ -1093,7 +1137,8 @@
       "Jean-Luc Einaudi, 'La Bataille de Paris: 17 octobre 1961' (1991)",
       "French Presidency, official statement on the 1961 Paris massacre (2012)"
     ],
-    "diaspora_id": "afro-french"
+    "diaspora_id": "afro-french",
+    "migration_type": "mixed"
   },
   {
     "id": "diaspora-afro-french-from-maghreb-migration-with-sub-saharan-herit",
@@ -1119,7 +1164,8 @@
       "Jean-Luc Einaudi, 'La Bataille de Paris: 17 octobre 1961' (1991)",
       "French Presidency, official statement on the 1961 Paris massacre (2012)"
     ],
-    "diaspora_id": "afro-french"
+    "diaspora_id": "afro-french",
+    "migration_type": "mixed"
   },
   {
     "id": "diaspora-afro-filipino-from-africans-arriving-via-the-manila-galleon",
@@ -1143,7 +1189,8 @@
       "Eric Anderson Reyes, 'The Black Galleon' (2018 art-history thesis)",
       "Jean-Paul Rodrigue Rallu, 'Histoire des Philippines' (2000)"
     ],
-    "diaspora_id": "afro-filipino"
+    "diaspora_id": "afro-filipino",
+    "migration_type": "forced"
   },
   {
     "id": "diaspora-afro-argentine-from-west-central-africa-angola-kongo-via-bra",
@@ -1167,7 +1214,8 @@
       "George Reid Andrews, 'The Afro-Argentines of Buenos Aires, 1800–1900' (1980)",
       "Erika Edwards, 'Hiding in Plain Sight: Black Women, the Law, and the Making of a White Argentine Republic' (2020)"
     ],
-    "diaspora_id": "afro-argentine"
+    "diaspora_id": "afro-argentine",
+    "migration_type": "forced"
   },
   {
     "id": "diaspora-afro-argentine-from-mozambique",
@@ -1191,7 +1239,8 @@
       "George Reid Andrews, 'The Afro-Argentines of Buenos Aires, 1800–1900' (1980)",
       "Erika Edwards, 'Hiding in Plain Sight: Black Women, the Law, and the Making of a White Argentine Republic' (2020)"
     ],
-    "diaspora_id": "afro-argentine"
+    "diaspora_id": "afro-argentine",
+    "migration_type": "forced"
   },
   {
     "id": "diaspora-afro-peruvian-from-west-central-africa-angola-kongo",
@@ -1215,7 +1264,8 @@
       "Frederick Bowser, 'The African Slave in Colonial Peru, 1524–1650' (1974)",
       "Heidi Carolyn Feldman, 'Black Rhythms of Peru' (2006)"
     ],
-    "diaspora_id": "afro-peruvian"
+    "diaspora_id": "afro-peruvian",
+    "migration_type": "forced"
   },
   {
     "id": "diaspora-afro-peruvian-from-senegambia",
@@ -1239,7 +1289,8 @@
       "Frederick Bowser, 'The African Slave in Colonial Peru, 1524–1650' (1974)",
       "Heidi Carolyn Feldman, 'Black Rhythms of Peru' (2006)"
     ],
-    "diaspora_id": "afro-peruvian"
+    "diaspora_id": "afro-peruvian",
+    "migration_type": "forced"
   },
   {
     "id": "diaspora-afro-peruvian-from-mozambique-via-portuguese-routes",
@@ -1263,7 +1314,8 @@
       "Frederick Bowser, 'The African Slave in Colonial Peru, 1524–1650' (1974)",
       "Heidi Carolyn Feldman, 'Black Rhythms of Peru' (2006)"
     ],
-    "diaspora_id": "afro-peruvian"
+    "diaspora_id": "afro-peruvian",
+    "migration_type": "forced"
   },
   {
     "id": "diaspora-afro-chilean-from-west-and-west-central-africa-via-the-vic",
@@ -1287,7 +1339,8 @@
       "Chilean National Institute of Statistics (INE)",
       "Ley 21.151 (2019), Chilean official gazette"
     ],
-    "diaspora_id": "afro-chilean"
+    "diaspora_id": "afro-chilean",
+    "migration_type": "forced"
   },
   {
     "id": "diaspora-afro-bolivian-from-west-central-africa-via-the-viceroyalty-",
@@ -1311,7 +1364,8 @@
       "Bolivian National Institute of Statistics (INE)",
       "UNESCO documentation on Afro-Bolivian Saya"
     ],
-    "diaspora_id": "afro-bolivian"
+    "diaspora_id": "afro-bolivian",
+    "migration_type": "forced"
   },
   {
     "id": "diaspora-afro-uruguayan-from-west-central-africa-bantu-speaking-regio",
@@ -1334,7 +1388,8 @@
     "sources": [
       "UNESCO Representative List of Intangible Cultural Heritage — Candombe (2009)"
     ],
-    "diaspora_id": "afro-uruguayan"
+    "diaspora_id": "afro-uruguayan",
+    "migration_type": "forced"
   },
   {
     "id": "diaspora-afro-paraguayan-from-west-central-africa-via-the-r-o-de-la-pl",
@@ -1357,7 +1412,8 @@
     "sources": [
       "Paraguayan historical and demographic records on the War of the Triple Alliance"
     ],
-    "diaspora_id": "afro-paraguayan"
+    "diaspora_id": "afro-paraguayan",
+    "migration_type": "forced"
   },
   {
     "id": "diaspora-afro-surinamese-maroons-from-west-and-west-central-africa-via-dutch-p",
@@ -1381,7 +1437,8 @@
       "Richard Price, 'Alabi's World' (1990)",
       "UNESCO documentation, Central Suriname Nature Reserve"
     ],
-    "diaspora_id": "afro-surinamese-maroons"
+    "diaspora_id": "afro-surinamese-maroons",
+    "migration_type": "forced"
   },
   {
     "id": "diaspora-afro-panamanian-from-west-and-west-central-africa-colonial-er",
@@ -1405,7 +1462,8 @@
       "Panama Canal Zone historical labor records",
       "Panamanian national census categorization of Afro-descendant populations"
     ],
-    "diaspora_id": "afro-panamanian"
+    "diaspora_id": "afro-panamanian",
+    "migration_type": "forced"
   },
   {
     "id": "diaspora-afro-bahamian-from-west-and-central-africa-via-american-loy",
@@ -1428,7 +1486,8 @@
     "sources": [
       "Michael Craton, 'Islanders in the Stream: A History of the Bahamian People' (1992)"
     ],
-    "diaspora_id": "afro-bahamian"
+    "diaspora_id": "afro-bahamian",
+    "migration_type": "mixed"
   },
   {
     "id": "diaspora-afro-bahamian-from-liberated-africans-from-intercepted-slav",
@@ -1451,7 +1510,8 @@
     "sources": [
       "Michael Craton, 'Islanders in the Stream: A History of the Bahamian People' (1992)"
     ],
-    "diaspora_id": "afro-bahamian"
+    "diaspora_id": "afro-bahamian",
+    "migration_type": "mixed"
   },
   {
     "id": "diaspora-garifuna-belize-from-west-and-central-africa-via-shipwrecks-a",
@@ -1475,7 +1535,8 @@
       "UNESCO Intangible Cultural Heritage, Garifuna Language, Dance and Music (2001)",
       "Historical records of the 1797 British deportation from St. Vincent"
     ],
-    "diaspora_id": "garifuna-belize"
+    "diaspora_id": "garifuna-belize",
+    "migration_type": "forced"
   },
   {
     "id": "diaspora-beta-israel-from-ethiopian-highlands-gondar-and-tigray-re",
@@ -1499,7 +1560,8 @@
       "Steven Kaplan, 'The Beta Israel (Falasha) in Ethiopia' (1992)",
       "Israeli government archival records on Operation Solomon (1991)"
     ],
-    "diaspora_id": "beta-israel"
+    "diaspora_id": "beta-israel",
+    "migration_type": "voluntary"
   },
   {
     "id": "diaspora-afro-jamaican-from-west-and-west-central-africa-akan-ashant",
@@ -1523,7 +1585,8 @@
       "Mavis Campbell, 'The Maroons of Jamaica, 1655–1796' (1988)",
       "UNESCO documentation, Blue and John Crow Mountains"
     ],
-    "diaspora_id": "afro-jamaican"
+    "diaspora_id": "afro-jamaican",
+    "migration_type": "forced"
   },
   {
     "id": "diaspora-afro-trinidadian-from-west-and-west-central-africa-including-a",
@@ -1547,7 +1610,8 @@
       "Bridget Brereton, 'A History of Modern Trinidad, 1783–1962' (1981)",
       "UNESCO documentation on the steelpan"
     ],
-    "diaspora_id": "afro-trinidadian"
+    "diaspora_id": "afro-trinidadian",
+    "migration_type": "mixed"
   },
   {
     "id": "diaspora-afro-guyanese-from-west-and-west-central-africa-via-dutch-a",
@@ -1571,7 +1635,8 @@
       "Historical records of the 1763 Berbice slave uprising",
       "Guyana National Archives"
     ],
-    "diaspora_id": "afro-guyanese"
+    "diaspora_id": "afro-guyanese",
+    "migration_type": "forced"
   },
   {
     "id": "diaspora-afro-barbadian-from-west-and-west-central-africa-via-the-bri",
@@ -1595,7 +1660,8 @@
       "Hilary Beckles, 'A History of Barbados: From Amerindian Settlement to Caribbean Single Market' (2006)",
       "Text of the 1661 Barbados Slave Code"
     ],
-    "diaspora_id": "afro-barbadian"
+    "diaspora_id": "afro-barbadian",
+    "migration_type": "forced"
   },
   {
     "id": "diaspora-afro-puerto-rican-from-west-and-west-central-africa-via-the-spa",
@@ -1619,7 +1685,8 @@
       "Jorge Duany, 'Puerto Rico: What Everyone Needs to Know' (2017)",
       "UNESCO documentation on Bomba"
     ],
-    "diaspora_id": "afro-puerto-rican"
+    "diaspora_id": "afro-puerto-rican",
+    "migration_type": "forced"
   },
   {
     "id": "diaspora-afro-nicaraguan-from-west-and-west-central-africa-via-british",
@@ -1642,7 +1709,8 @@
     "sources": [
       "Historical records of the British Mosquito Coast protectorate (1655–1860/1894)"
     ],
-    "diaspora_id": "afro-nicaraguan"
+    "diaspora_id": "afro-nicaraguan",
+    "migration_type": "forced"
   },
   {
     "id": "diaspora-afro-portuguese-from-cape-verde",
@@ -1666,7 +1734,8 @@
       "Statistics Portugal (INE), demographic records on African-origin populations",
       "Historical records of Portuguese decolonization (1974–1975)"
     ],
-    "diaspora_id": "afro-portuguese"
+    "diaspora_id": "afro-portuguese",
+    "migration_type": "voluntary"
   },
   {
     "id": "diaspora-afro-portuguese-from-angola",
@@ -1690,7 +1759,8 @@
       "Statistics Portugal (INE), demographic records on African-origin populations",
       "Historical records of Portuguese decolonization (1974–1975)"
     ],
-    "diaspora_id": "afro-portuguese"
+    "diaspora_id": "afro-portuguese",
+    "migration_type": "voluntary"
   },
   {
     "id": "diaspora-afro-portuguese-from-guinea-bissau",
@@ -1714,7 +1784,8 @@
       "Statistics Portugal (INE), demographic records on African-origin populations",
       "Historical records of Portuguese decolonization (1974–1975)"
     ],
-    "diaspora_id": "afro-portuguese"
+    "diaspora_id": "afro-portuguese",
+    "migration_type": "voluntary"
   },
   {
     "id": "diaspora-afro-portuguese-from-mozambique",
@@ -1738,7 +1809,8 @@
       "Statistics Portugal (INE), demographic records on African-origin populations",
       "Historical records of Portuguese decolonization (1974–1975)"
     ],
-    "diaspora_id": "afro-portuguese"
+    "diaspora_id": "afro-portuguese",
+    "migration_type": "voluntary"
   },
   {
     "id": "diaspora-afro-portuguese-from-s-o-tom-and-pr-ncipe",
@@ -1762,7 +1834,8 @@
       "Statistics Portugal (INE), demographic records on African-origin populations",
       "Historical records of Portuguese decolonization (1974–1975)"
     ],
-    "diaspora_id": "afro-portuguese"
+    "diaspora_id": "afro-portuguese",
+    "migration_type": "voluntary"
   },
   {
     "id": "diaspora-afro-belgian-from-democratic-republic-of-the-congo",
@@ -1786,7 +1859,8 @@
       "Statbel (Belgian statistical office), demographic data",
       "King Philippe of Belgium, letter to DRC President Tshisekedi (June 2020)"
     ],
-    "diaspora_id": "afro-belgian"
+    "diaspora_id": "afro-belgian",
+    "migration_type": "voluntary"
   },
   {
     "id": "diaspora-afro-belgian-from-rwanda",
@@ -1810,7 +1884,8 @@
       "Statbel (Belgian statistical office), demographic data",
       "King Philippe of Belgium, letter to DRC President Tshisekedi (June 2020)"
     ],
-    "diaspora_id": "afro-belgian"
+    "diaspora_id": "afro-belgian",
+    "migration_type": "voluntary"
   },
   {
     "id": "diaspora-afro-belgian-from-burundi",
@@ -1834,7 +1909,8 @@
       "Statbel (Belgian statistical office), demographic data",
       "King Philippe of Belgium, letter to DRC President Tshisekedi (June 2020)"
     ],
-    "diaspora_id": "afro-belgian"
+    "diaspora_id": "afro-belgian",
+    "migration_type": "voluntary"
   },
   {
     "id": "diaspora-afro-spanish-from-equatorial-guinea-postcolonial-migration",
@@ -1858,7 +1934,8 @@
       "Spanish National Statistics Institute (INE)",
       "International Organization for Migration (IOM), Missing Migrants Project — Atlantic route data"
     ],
-    "diaspora_id": "afro-spanish"
+    "diaspora_id": "afro-spanish",
+    "migration_type": "voluntary"
   },
   {
     "id": "diaspora-afro-spanish-from-senegal-gambia-nigeria-and-other-west-af",
@@ -1882,7 +1959,8 @@
       "Spanish National Statistics Institute (INE)",
       "International Organization for Migration (IOM), Missing Migrants Project — Atlantic route data"
     ],
-    "diaspora_id": "afro-spanish"
+    "diaspora_id": "afro-spanish",
+    "migration_type": "voluntary"
   },
   {
     "id": "diaspora-afro-swedish-from-somalia-post-1991-civil-war",
@@ -1905,7 +1983,8 @@
     "sources": [
       "Statistics Sweden (SCB), population by country of birth"
     ],
-    "diaspora_id": "afro-swedish"
+    "diaspora_id": "afro-swedish",
+    "migration_type": "voluntary"
   },
   {
     "id": "diaspora-afro-swedish-from-eritrea",
@@ -1928,7 +2007,8 @@
     "sources": [
       "Statistics Sweden (SCB), population by country of birth"
     ],
-    "diaspora_id": "afro-swedish"
+    "diaspora_id": "afro-swedish",
+    "migration_type": "voluntary"
   },
   {
     "id": "diaspora-afro-swedish-from-ethiopia",
@@ -1951,7 +2031,8 @@
     "sources": [
       "Statistics Sweden (SCB), population by country of birth"
     ],
-    "diaspora_id": "afro-swedish"
+    "diaspora_id": "afro-swedish",
+    "migration_type": "voluntary"
   },
   {
     "id": "diaspora-afro-chinese-guangzhou-from-nigeria",
@@ -1975,7 +2056,8 @@
       "Adams Bodomo, 'Africans in China: A Sociocultural Study' (2012)",
       "Reuters and international news coverage of the April 2020 Guangzhou incidents"
     ],
-    "diaspora_id": "afro-chinese-guangzhou"
+    "diaspora_id": "afro-chinese-guangzhou",
+    "migration_type": "voluntary"
   },
   {
     "id": "diaspora-afro-turk-from-east-and-central-africa-via-ottoman-era-",
@@ -1999,7 +2081,8 @@
       "Mustafa Olpak, 'Kenya–Kristal–Kocatepe' (2004), memoir of an Afro-Turk descendant",
       "Africans' Culture and Solidarity Society (İzmir), community documentation"
     ],
-    "diaspora_id": "afro-turk"
+    "diaspora_id": "afro-turk",
+    "migration_type": "forced"
   },
   {
     "id": "diaspora-afro-emirati-from-east-africa-historical-via-indian-ocean-",
@@ -2023,7 +2106,8 @@
       "Human Rights Watch, reporting on the kafala system in Gulf states",
       "Historical record of the 1963 Trucial States abolition of slavery"
     ],
-    "diaspora_id": "afro-emirati"
+    "diaspora_id": "afro-emirati",
+    "migration_type": "mixed"
   },
   {
     "id": "diaspora-afro-emirati-from-kenya-uganda-nigeria-ethiopia-contempora",
@@ -2047,7 +2131,8 @@
       "Human Rights Watch, reporting on the kafala system in Gulf states",
       "Historical record of the 1963 Trucial States abolition of slavery"
     ],
-    "diaspora_id": "afro-emirati"
+    "diaspora_id": "afro-emirati",
+    "migration_type": "mixed"
   },
   {
     "id": "diaspora-afro-saudi-from-west-africa-via-centuries-of-hajj-pilgri",
@@ -2071,7 +2156,8 @@
       "Royal Decree of November 1962, Kingdom of Saudi Arabia, abolition of slavery",
       "Academic literature on the Takrouni community of the Hejaz"
     ],
-    "diaspora_id": "afro-saudi"
+    "diaspora_id": "afro-saudi",
+    "migration_type": "forced"
   },
   {
     "id": "diaspora-afro-saudi-from-east-africa-historical-via-red-sea-and-i",
@@ -2095,7 +2181,8 @@
       "Royal Decree of November 1962, Kingdom of Saudi Arabia, abolition of slavery",
       "Academic literature on the Takrouni community of the Hejaz"
     ],
-    "diaspora_id": "afro-saudi"
+    "diaspora_id": "afro-saudi",
+    "migration_type": "forced"
   },
   {
     "id": "diaspora-afro-omani-from-zanzibar-and-the-east-african-coast-via-",
@@ -2119,7 +2206,8 @@
       "Historical records of the Sultanate of Zanzibar (1698–1964)",
       "1970 Omani royal decree abolishing slavery"
     ],
-    "diaspora_id": "afro-omani"
+    "diaspora_id": "afro-omani",
+    "migration_type": "mixed"
   },
   {
     "id": "diaspora-akhdam-yemen-from-ethiopian-highlands-aksumite-era-militar",
@@ -2143,7 +2231,8 @@
       "Human Rights Watch, reporting on Muhamasheen discrimination in Yemen",
       "Minority Rights Group International, Yemen country profile"
     ],
-    "diaspora_id": "akhdam-yemen"
+    "diaspora_id": "akhdam-yemen",
+    "migration_type": "forced"
   },
   {
     "id": "diaspora-afro-iraqi-basra-from-east-african-coast-zanzibar-tanzania-ken",
@@ -2167,7 +2256,8 @@
       "Al-Tabari, medieval chronicle accounts of the Zanj Rebellion",
       "Alexandre Popovic, 'The Revolt of African Slaves in Iraq in the 3rd/9th Century' (1999)"
     ],
-    "diaspora_id": "afro-iraqi-basra"
+    "diaspora_id": "afro-iraqi-basra",
+    "migration_type": "forced"
   },
   {
     "id": "diaspora-afro-kuwaiti-from-east-african-coast-via-the-historical-gu",
@@ -2191,7 +2281,8 @@
       "Historical records of Kuwait's pre-oil pearling economy",
       "1949 Kuwaiti abolition of slavery"
     ],
-    "diaspora_id": "afro-kuwaiti"
+    "diaspora_id": "afro-kuwaiti",
+    "migration_type": "forced"
   },
   {
     "id": "diaspora-abram-gannibal-russia-from-central-africa-lake-chad-logone-birni-re",
@@ -2215,7 +2306,8 @@
       "Hugh Barnes, 'Gannibal: The Moor of Petersburg' (2005)",
       "Vladimir Nabokov, commentary on Pushkin's ancestry in his annotated translation of 'Eugene Onegin' (1964)"
     ],
-    "diaspora_id": "abram-gannibal-russia"
+    "diaspora_id": "abram-gannibal-russia",
+    "migration_type": "forced"
   },
   {
     "id": "diaspora-yasuke-japan-from-mozambique-most-historians-best-supporte",
@@ -2239,7 +2331,8 @@
       "Thomas Lockley & Geoffrey Girard, 'African Samurai: The True Story of Yasuke' (2019)",
       "Shinchō Kōki, contemporary chronicle of Oda Nobunaga's life"
     ],
-    "diaspora_id": "yasuke-japan"
+    "diaspora_id": "yasuke-japan",
+    "migration_type": "forced"
   },
   {
     "id": "diaspora-afro-australian-from-south-sudan",
@@ -2263,7 +2356,8 @@
       "Australian Bureau of Statistics, country-of-birth census data",
       "Monash University criminology research on the 2016–2018 'African gangs' media narrative"
     ],
-    "diaspora_id": "afro-australian"
+    "diaspora_id": "afro-australian",
+    "migration_type": "voluntary"
   },
   {
     "id": "diaspora-afro-australian-from-sudan",
@@ -2287,7 +2381,8 @@
       "Australian Bureau of Statistics, country-of-birth census data",
       "Monash University criminology research on the 2016–2018 'African gangs' media narrative"
     ],
-    "diaspora_id": "afro-australian"
+    "diaspora_id": "afro-australian",
+    "migration_type": "voluntary"
   },
   {
     "id": "diaspora-afro-australian-from-somalia",
@@ -2311,7 +2406,8 @@
       "Australian Bureau of Statistics, country-of-birth census data",
       "Monash University criminology research on the 2016–2018 'African gangs' media narrative"
     ],
-    "diaspora_id": "afro-australian"
+    "diaspora_id": "afro-australian",
+    "migration_type": "voluntary"
   },
   {
     "id": "diaspora-afro-australian-from-ethiopia-predominantly-via-refugee-reset",
@@ -2335,7 +2431,8 @@
       "Australian Bureau of Statistics, country-of-birth census data",
       "Monash University criminology research on the 2016–2018 'African gangs' media narrative"
     ],
-    "diaspora_id": "afro-australian"
+    "diaspora_id": "afro-australian",
+    "migration_type": "voluntary"
   },
   {
     "id": "diaspora-afro-danish-from-ghana-via-danish-gold-coast-forts",
@@ -2359,7 +2456,8 @@
       "Danish National Museum records on the Danish Gold Coast forts",
       "Denmark–Ghana heritage cooperation agreements (from 2017)"
     ],
-    "diaspora_id": "afro-danish"
+    "diaspora_id": "afro-danish",
+    "migration_type": "forced"
   },
   {
     "id": "diaspora-afro-norwegian-from-somalia-post-1991-civil-war",
@@ -2382,7 +2480,8 @@
     "sources": [
       "Statistics Norway (SSB), population by country background"
     ],
-    "diaspora_id": "afro-norwegian"
+    "diaspora_id": "afro-norwegian",
+    "migration_type": "mixed"
   },
   {
     "id": "diaspora-afro-norwegian-from-eritrea",
@@ -2405,7 +2504,8 @@
     "sources": [
       "Statistics Norway (SSB), population by country background"
     ],
-    "diaspora_id": "afro-norwegian"
+    "diaspora_id": "afro-norwegian",
+    "migration_type": "mixed"
   },
   {
     "id": "diaspora-sri-lankan-kaffir-from-east-african-coast-mozambique-and-other-",
@@ -2429,7 +2529,8 @@
       "Ethnomusicological documentation of Sri Lankan Kaffir Kaffringha music",
       "Sri Lankan historical records on Portuguese, Dutch, and British colonial-era African labor recruitment"
     ],
-    "diaspora_id": "sri-lankan-kaffir"
+    "diaspora_id": "sri-lankan-kaffir",
+    "migration_type": "forced"
   },
   {
     "id": "diaspora-sheedi-pakistan-from-east-african-coast-zanzibar-mozambique-s",
@@ -2453,7 +2554,8 @@
       "Amy Catlin-Jairazbhoy & Edward Alpers (eds.), 'Sidis and Scholars' (2004)",
       "Academic and journalistic documentation of the Sheedi Mela festival at Manghopir"
     ],
-    "diaspora_id": "sheedi-pakistan"
+    "diaspora_id": "sheedi-pakistan",
+    "migration_type": "forced"
   },
   {
     "id": "diaspora-afro-grenadian-from-west-and-west-central-africa-via-the-fre",
@@ -2476,7 +2578,8 @@
     "sources": [
       "Historical records of Fédon's Rebellion (1795–1796)"
     ],
-    "diaspora_id": "afro-grenadian"
+    "diaspora_id": "afro-grenadian",
+    "migration_type": "forced"
   },
   {
     "id": "diaspora-afro-saint-lucian-from-west-and-west-central-africa-via-french-",
@@ -2499,7 +2602,8 @@
     "sources": [
       "Saint Lucian historical and cultural heritage records on Kwéyòl culture"
     ],
-    "diaspora_id": "afro-saint-lucian"
+    "diaspora_id": "afro-saint-lucian",
+    "migration_type": "forced"
   },
   {
     "id": "diaspora-garifuna-st-vincent-from-west-and-central-africa-via-shipwreck-an",
@@ -2523,7 +2627,8 @@
       "Historical records of the Second Carib War and Joseph Chatoyer (1795–1797)",
       "UNESCO Intangible Cultural Heritage, Garifuna Language, Dance and Music (2001)"
     ],
-    "diaspora_id": "garifuna-st-vincent"
+    "diaspora_id": "garifuna-st-vincent",
+    "migration_type": "forced"
   },
   {
     "id": "diaspora-afro-antiguan-from-west-and-west-central-africa-via-the-bri",
@@ -2546,7 +2651,8 @@
     "sources": [
       "Betty's Hope Trust, historical and archaeological documentation"
     ],
-    "diaspora_id": "afro-antiguan"
+    "diaspora_id": "afro-antiguan",
+    "migration_type": "forced"
   },
   {
     "id": "diaspora-afro-dominican-commonwealth-from-west-and-west-central-africa-via-french-",
@@ -2569,7 +2675,8 @@
     "sources": [
       "Historical records of the Dominica Maroon Wars (1785–1814)"
     ],
-    "diaspora_id": "afro-dominican-commonwealth"
+    "diaspora_id": "afro-dominican-commonwealth",
+    "migration_type": "forced"
   },
   {
     "id": "diaspora-afro-kittitian-from-west-and-west-central-africa-via-the-ear",
@@ -2593,7 +2700,8 @@
       "UNESCO World Heritage, Brimstone Hill Fortress National Park",
       "Historical records of early English Caribbean colonization"
     ],
-    "diaspora_id": "afro-kittitian"
+    "diaspora_id": "afro-kittitian",
+    "migration_type": "forced"
   },
   {
     "id": "diaspora-maroon-french-guiana-from-west-and-west-central-africa-via-dutch-s",
@@ -2616,7 +2724,8 @@
     "sources": [
       "Richard Price, 'Alabi's World' (1990) and related scholarship on Suriname/French Guiana Maroon societies"
     ],
-    "diaspora_id": "maroon-french-guiana"
+    "diaspora_id": "maroon-french-guiana",
+    "migration_type": "forced"
   },
   {
     "id": "diaspora-afro-curacaoan-from-west-and-west-central-africa-via-the-dut",
@@ -2640,7 +2749,8 @@
       "UNESCO World Heritage, Historic Area of Willemstad",
       "Historical records of Tula's rebellion (1795)"
     ],
-    "diaspora_id": "afro-curacaoan"
+    "diaspora_id": "afro-curacaoan",
+    "migration_type": "forced"
   },
   {
     "id": "diaspora-angelo-soliman-austria-from-central-west-africa-present-day-nigeria-",
@@ -2664,7 +2774,8 @@
       "Academic biographical research on Angelo Soliman (c. 1721–1796)",
       "Vienna Natural History Museum historical records on the Soliman collection"
     ],
-    "diaspora_id": "angelo-soliman-austria"
+    "diaspora_id": "angelo-soliman-austria",
+    "migration_type": "forced"
   },
   {
     "id": "diaspora-frederick-douglass-ireland-from-contemporary-nigeria-and-other-west-afri",
@@ -2688,7 +2799,8 @@
       "Frederick Douglass, personal letters and speeches from his 1845 Irish tour",
       "Historical scholarship on the Douglass–O'Connell relationship"
     ],
-    "diaspora_id": "frederick-douglass-ireland"
+    "diaspora_id": "frederick-douglass-ireland",
+    "migration_type": "forced"
   },
   {
     "id": "diaspora-afro-bermudian-from-west-and-west-central-africa-via-the-bri",
@@ -2712,7 +2824,8 @@
       "Historical records on Bermuda's maritime slavery economy",
       "St. David's Islander community historical and genealogical documentation"
     ],
-    "diaspora_id": "afro-bermudian"
+    "diaspora_id": "afro-bermudian",
+    "migration_type": "forced"
   },
   {
     "id": "diaspora-afro-aruban-from-west-and-west-central-africa-via-the-dut",
@@ -2735,7 +2848,8 @@
     "sources": [
       "Aruban historical and demographic records on Dutch colonial-era slavery"
     ],
-    "diaspora_id": "afro-aruban"
+    "diaspora_id": "afro-aruban",
+    "migration_type": "forced"
   },
   {
     "id": "diaspora-afro-caymanian-from-west-and-west-central-africa-largely-via",
@@ -2758,7 +2872,8 @@
     "sources": [
       "Cayman Islands National Archive, historical records on slavery and the maritime economy"
     ],
-    "diaspora_id": "afro-caymanian"
+    "diaspora_id": "afro-caymanian",
+    "migration_type": "forced"
   },
   {
     "id": "diaspora-afro-irish-montserrat-from-west-and-west-central-africa-via-british",
@@ -2782,7 +2897,8 @@
       "Historical records of the 1768 Montserrat slave uprising plot",
       "Montserrat National Trust, documentation of Irish colonial heritage"
     ],
-    "diaspora_id": "afro-irish-montserrat"
+    "diaspora_id": "afro-irish-montserrat",
+    "migration_type": "forced"
   },
   {
     "id": "diaspora-afro-bvi-from-west-and-west-central-africa-via-the-bri",
@@ -2805,7 +2921,8 @@
     "sources": [
       "Historical records of British Virgin Islands plantation slavery and 1834 emancipation"
     ],
-    "diaspora_id": "afro-bvi"
+    "diaspora_id": "afro-bvi",
+    "migration_type": "forced"
   },
   {
     "id": "diaspora-afro-usvi-emancipation-from-west-and-west-central-africa-via-the-dan",
@@ -2828,7 +2945,8 @@
     "sources": [
       "Danish and US Virgin Islands archival records on the 1848 emancipation and 1878 Fireburn uprising"
     ],
-    "diaspora_id": "afro-usvi-emancipation"
+    "diaspora_id": "afro-usvi-emancipation",
+    "migration_type": "forced"
   },
   {
     "id": "diaspora-afro-anguillan-from-west-and-west-central-africa-via-the-bri",
@@ -2851,7 +2969,8 @@
     "sources": [
       "Anguillian historical records on the island's salt-based colonial economy"
     ],
-    "diaspora_id": "afro-anguillan"
+    "diaspora_id": "afro-anguillan",
+    "migration_type": "forced"
   },
   {
     "id": "diaspora-afro-sint-maarten-from-west-and-west-central-africa-via-both-fr",
@@ -2874,7 +2993,8 @@
     "sources": [
       "Historical records of the 1648 Franco-Dutch division of St. Martin and its colonial-era salt economy"
     ],
-    "diaspora_id": "afro-sint-maarten"
+    "diaspora_id": "afro-sint-maarten",
+    "migration_type": "forced"
   },
   {
     "id": "diaspora-afro-turks-caicos-from-west-and-west-central-africa-largely-via",
@@ -2897,7 +3017,8 @@
     "sources": [
       "Turks and Caicos National Museum, historical records on the salt-raking economy"
     ],
-    "diaspora_id": "afro-turks-caicos"
+    "diaspora_id": "afro-turks-caicos",
+    "migration_type": "forced"
   },
   {
     "id": "diaspora-afro-saint-martin-french-from-west-and-west-central-africa-via-french-",
@@ -2920,7 +3041,8 @@
     "sources": [
       "French Caribbean colonial archival records on Saint-Martin"
     ],
-    "diaspora_id": "afro-saint-martin-french"
+    "diaspora_id": "afro-saint-martin-french",
+    "migration_type": "forced"
   },
   {
     "id": "diaspora-afro-saint-barthelemy-from-west-and-west-central-africa-via-the-fre",
@@ -2943,7 +3065,8 @@
     "sources": [
       "Swedish National Archives, records on the Saint-Barthélemy colonial period (1784–1878)"
     ],
-    "diaspora_id": "afro-saint-barthelemy"
+    "diaspora_id": "afro-saint-barthelemy",
+    "migration_type": "forced"
   },
   {
     "id": "diaspora-afro-dutch-caribbean-bes-from-west-and-west-central-africa-via-the-dut",
@@ -2967,7 +3090,8 @@
       "Bonaire National Heritage documentation of the slave huts at the Willemstoren salt pans",
       "Historical records of Sint Eustatius's 18th-century free-port trade economy"
     ],
-    "diaspora_id": "afro-dutch-caribbean-bes"
+    "diaspora_id": "afro-dutch-caribbean-bes",
+    "migration_type": "forced"
   },
   {
     "id": "diaspora-chungking-mansions-hongkong-from-nigeria-and-other-west-african-trading-n",
@@ -2990,7 +3114,8 @@
     "sources": [
       "Gordon Mathews, 'Ghetto at the Center of the World: Chungking Mansions, Hong Kong' (2011)"
     ],
-    "diaspora_id": "chungking-mansions-hongkong"
+    "diaspora_id": "chungking-mansions-hongkong",
+    "migration_type": "voluntary"
   },
   {
     "id": "diaspora-afro-qatari-from-east-african-coast-historical-via-pearli",
@@ -3014,7 +3139,8 @@
       "Amnesty International and Human Rights Watch reporting on Qatar's kafala system and 2022 World Cup labor conditions",
       "Historical record of Qatar's 1952 abolition of slavery"
     ],
-    "diaspora_id": "afro-qatari"
+    "diaspora_id": "afro-qatari",
+    "migration_type": "mixed"
   },
   {
     "id": "diaspora-afro-qatari-from-kenya-uganda-nigeria-ghana-contemporary-",
@@ -3038,7 +3164,8 @@
       "Amnesty International and Human Rights Watch reporting on Qatar's kafala system and 2022 World Cup labor conditions",
       "Historical record of Qatar's 1952 abolition of slavery"
     ],
-    "diaspora_id": "afro-qatari"
+    "diaspora_id": "afro-qatari",
+    "migration_type": "mixed"
   },
   {
     "id": "diaspora-afro-bahraini-from-east-african-coast-via-the-historical-gu",
@@ -3062,7 +3189,8 @@
       "Bahrain National Museum, historical records on the pearling economy",
       "1937 Bahraini decree abolishing slavery"
     ],
-    "diaspora_id": "afro-bahraini"
+    "diaspora_id": "afro-bahraini",
+    "migration_type": "forced"
   },
   {
     "id": "diaspora-kafala-lebanon-from-ethiopia-predominant-source-country",
@@ -3085,7 +3213,8 @@
     "sources": [
       "Human Rights Watch, reporting on Lebanon's kafala system and 2020 domestic worker abandonment cases"
     ],
-    "diaspora_id": "kafala-lebanon"
+    "diaspora_id": "kafala-lebanon",
+    "migration_type": "voluntary"
   },
   {
     "id": "diaspora-kafala-lebanon-from-kenya",
@@ -3108,7 +3237,8 @@
     "sources": [
       "Human Rights Watch, reporting on Lebanon's kafala system and 2020 domestic worker abandonment cases"
     ],
-    "diaspora_id": "kafala-lebanon"
+    "diaspora_id": "kafala-lebanon",
+    "migration_type": "voluntary"
   },
   {
     "id": "diaspora-kafala-jordan-from-ethiopia",
@@ -3131,7 +3261,8 @@
     "sources": [
       "Human Rights Watch and International Labour Organization reporting on Jordan's migrant domestic worker sector"
     ],
-    "diaspora_id": "kafala-jordan"
+    "diaspora_id": "kafala-jordan",
+    "migration_type": "voluntary"
   },
   {
     "id": "diaspora-kafala-jordan-from-kenya",
@@ -3154,7 +3285,8 @@
     "sources": [
       "Human Rights Watch and International Labour Organization reporting on Jordan's migrant domestic worker sector"
     ],
-    "diaspora_id": "kafala-jordan"
+    "diaspora_id": "kafala-jordan",
+    "migration_type": "voluntary"
   },
   {
     "id": "diaspora-kafala-jordan-from-other-east-african-countries",
@@ -3177,7 +3309,8 @@
     "sources": [
       "Human Rights Watch and International Labour Organization reporting on Jordan's migrant domestic worker sector"
     ],
-    "diaspora_id": "kafala-jordan"
+    "diaspora_id": "kafala-jordan",
+    "migration_type": "voluntary"
   },
   {
     "id": "diaspora-afro-guadeloupean-from-west-and-west-central-africa-via-the-fre",
@@ -3201,7 +3334,8 @@
       "Historical records of the 1802 Delgrès resistance at Matouba",
       "UNESCO Intangible Cultural Heritage, Gwoka of Guadeloupe (2014)"
     ],
-    "diaspora_id": "afro-guadeloupean"
+    "diaspora_id": "afro-guadeloupean",
+    "migration_type": "forced"
   },
   {
     "id": "diaspora-afro-martinican-from-west-and-west-central-africa-via-the-fre",
@@ -3226,7 +3360,8 @@
       "Frantz Fanon, 'Peau noire, masques blancs' (1952) and biographical scholarship",
       "Historical records of the 1902 Mount Pelée eruption"
     ],
-    "diaspora_id": "afro-martinican"
+    "diaspora_id": "afro-martinican",
+    "migration_type": "forced"
   },
   {
     "id": "diaspora-afro-finnish-from-somalia-post-1991-civil-war",
@@ -3249,7 +3384,8 @@
     "sources": [
       "Statistics Finland, population by background country"
     ],
-    "diaspora_id": "afro-finnish"
+    "diaspora_id": "afro-finnish",
+    "migration_type": "voluntary"
   },
   {
     "id": "diaspora-afro-maltese-migration-from-sub-saharan-africa-particularly-somalia-",
@@ -3273,7 +3409,8 @@
       "UNHCR Malta, country operational updates",
       "European Union asylum policy documentation on central Mediterranean migration routes"
     ],
-    "diaspora_id": "afro-maltese-migration"
+    "diaspora_id": "afro-maltese-migration",
+    "migration_type": "voluntary"
   },
   {
     "id": "diaspora-afro-new-zealander-from-somalia",
@@ -3296,7 +3433,8 @@
     "sources": [
       "Statistics New Zealand, census data on ethnicity and birthplace"
     ],
-    "diaspora_id": "afro-new-zealander"
+    "diaspora_id": "afro-new-zealander",
+    "migration_type": "voluntary"
   },
   {
     "id": "diaspora-afro-new-zealander-from-ethiopia",
@@ -3319,7 +3457,8 @@
     "sources": [
       "Statistics New Zealand, census data on ethnicity and birthplace"
     ],
-    "diaspora_id": "afro-new-zealander"
+    "diaspora_id": "afro-new-zealander",
+    "migration_type": "voluntary"
   },
   {
     "id": "diaspora-afro-new-zealander-from-south-sudan-predominantly-via-refugee-re",
@@ -3342,7 +3481,8 @@
     "sources": [
       "Statistics New Zealand, census data on ethnicity and birthplace"
     ],
-    "diaspora_id": "afro-new-zealander"
+    "diaspora_id": "afro-new-zealander",
+    "migration_type": "voluntary"
   },
   {
     "id": "diaspora-afro-abkhazian-from-east-africa-or-the-ottoman-empire-s-afri",
@@ -3365,7 +3505,8 @@
     "sources": [
       "Academic ethnographic studies on the Afro-Abkhazian community of the Black Sea coast"
     ],
-    "diaspora_id": "afro-abkhazian"
+    "diaspora_id": "afro-abkhazian",
+    "migration_type": "forced"
   },
   {
     "id": "diaspora-cape-verdean-luxembourg-from-cape-verde",
@@ -3388,7 +3529,8 @@
     "sources": [
       "Luxembourg National Institute of Statistics and Economic Studies (STATEC), demographic data"
     ],
-    "diaspora_id": "cape-verdean-luxembourg"
+    "diaspora_id": "cape-verdean-luxembourg",
+    "migration_type": "voluntary"
   },
   {
     "id": "diaspora-tirailleurs-senegalais-vietnam-from-west-and-central-africa-french-colonial-",
@@ -3412,7 +3554,8 @@
       "Myron Echenberg, 'Colonial Conscripts: The Tirailleurs Sénégalais in French West Africa, 1857–1960' (1991)",
       "Historical records of tirailleurs sénégalais deployment in the First Indochina War"
     ],
-    "diaspora_id": "tirailleurs-senegalais-vietnam"
+    "diaspora_id": "tirailleurs-senegalais-vietnam",
+    "migration_type": "forced"
   },
   {
     "id": "diaspora-tirailleurs-senegalais-cambodia-from-west-and-central-africa-via-french-colon",
@@ -3435,7 +3578,8 @@
     "sources": [
       "Myron Echenberg, 'Colonial Conscripts: The Tirailleurs Sénégalais in French West Africa, 1857–1960' (1991)"
     ],
-    "diaspora_id": "tirailleurs-senegalais-cambodia"
+    "diaspora_id": "tirailleurs-senegalais-cambodia",
+    "migration_type": "forced"
   },
   {
     "id": "diaspora-tirailleurs-senegalais-syria-from-west-and-central-africa-via-french-colon",
@@ -3458,7 +3602,8 @@
     "sources": [
       "Historical records of the Great Syrian Revolt (1925–1927) and French Mandate colonial military deployment"
     ],
-    "diaspora_id": "tirailleurs-senegalais-syria"
+    "diaspora_id": "tirailleurs-senegalais-syria",
+    "migration_type": "forced"
   },
   {
     "id": "diaspora-maldives-historical-slavery-from-east-african-coast-via-historical-indian",
@@ -3482,7 +3627,8 @@
       "Historical and scholarly literature on Indian Ocean slavery, including the Maldives",
       "1962 Maldivian abolition of slavery, official record"
     ],
-    "diaspora_id": "maldives-historical-slavery"
+    "diaspora_id": "maldives-historical-slavery",
+    "migration_type": "forced"
   },
   {
     "id": "diaspora-chagossians-biot-from-mozambique-and-madagascar-predominant-or",
@@ -3506,7 +3652,8 @@
       "Human Rights Watch, 'That's When the Nightmare Started': UK and US Forced Displacement of the Chagossians (2023)",
       "Britannica, Chagos Archipelago historical entry"
     ],
-    "diaspora_id": "chagossians-biot"
+    "diaspora_id": "chagossians-biot",
+    "migration_type": "forced"
   },
   {
     "id": "diaspora-african-quarter-jerusalem-from-chad",
@@ -3530,7 +3677,8 @@
       "The Jerusalem Fund, 'Guardians of the Mosque: African Palestinians of Jerusalem'",
       "This Week in Palestine, 'The Africans of Jerusalem'"
     ],
-    "diaspora_id": "african-quarter-jerusalem"
+    "diaspora_id": "african-quarter-jerusalem",
+    "migration_type": "voluntary"
   },
   {
     "id": "diaspora-african-quarter-jerusalem-from-sudan",
@@ -3554,7 +3702,8 @@
       "The Jerusalem Fund, 'Guardians of the Mosque: African Palestinians of Jerusalem'",
       "This Week in Palestine, 'The Africans of Jerusalem'"
     ],
-    "diaspora_id": "african-quarter-jerusalem"
+    "diaspora_id": "african-quarter-jerusalem",
+    "migration_type": "voluntary"
   },
   {
     "id": "diaspora-african-quarter-jerusalem-from-nigeria",
@@ -3578,7 +3727,8 @@
       "The Jerusalem Fund, 'Guardians of the Mosque: African Palestinians of Jerusalem'",
       "This Week in Palestine, 'The Africans of Jerusalem'"
     ],
-    "diaspora_id": "african-quarter-jerusalem"
+    "diaspora_id": "african-quarter-jerusalem",
+    "migration_type": "voluntary"
   },
   {
     "id": "diaspora-african-quarter-jerusalem-from-senegal-via-centuries-of-hajj-pilgrimage",
@@ -3602,7 +3752,8 @@
       "The Jerusalem Fund, 'Guardians of the Mosque: African Palestinians of Jerusalem'",
       "This Week in Palestine, 'The Africans of Jerusalem'"
     ],
-    "diaspora_id": "african-quarter-jerusalem"
+    "diaspora_id": "african-quarter-jerusalem",
+    "migration_type": "voluntary"
   },
   {
     "id": "diaspora-habshi-dynasty-bengal-from-ethiopia-abyssinia-brought-to-the-bengal",
@@ -3626,7 +3777,8 @@
       "Richard M. Eaton, 'India in the Persianate Age: 1000–1765' (2019)",
       "The Daily Star, 'Habshi rule in Bengal (1487–94)'"
     ],
-    "diaspora_id": "habshi-dynasty-bengal"
+    "diaspora_id": "habshi-dynasty-bengal",
+    "migration_type": "forced"
   },
   {
     "id": "diaspora-afro-romanian-from-sudan",
@@ -3650,7 +3802,8 @@
       "Wikipedia-documented academic sourcing on Afro-Romanians and Ceaușescu-era scholarship programs",
       "Academic studies on 'Representations of Africa in Communist Romania'"
     ],
-    "diaspora_id": "afro-romanian"
+    "diaspora_id": "afro-romanian",
+    "migration_type": "voluntary"
   },
   {
     "id": "diaspora-afro-romanian-from-central-african-republic",
@@ -3674,7 +3827,8 @@
       "Wikipedia-documented academic sourcing on Afro-Romanians and Ceaușescu-era scholarship programs",
       "Academic studies on 'Representations of Africa in Communist Romania'"
     ],
-    "diaspora_id": "afro-romanian"
+    "diaspora_id": "afro-romanian",
+    "migration_type": "voluntary"
   },
   {
     "id": "diaspora-afro-romanian-from-democratic-republic-of-the-congo",
@@ -3698,7 +3852,8 @@
       "Wikipedia-documented academic sourcing on Afro-Romanians and Ceaușescu-era scholarship programs",
       "Academic studies on 'Representations of Africa in Communist Romania'"
     ],
-    "diaspora_id": "afro-romanian"
+    "diaspora_id": "afro-romanian",
+    "migration_type": "voluntary"
   },
   {
     "id": "diaspora-afro-romanian-from-republic-of-the-congo",
@@ -3722,7 +3877,8 @@
       "Wikipedia-documented academic sourcing on Afro-Romanians and Ceaușescu-era scholarship programs",
       "Academic studies on 'Representations of Africa in Communist Romania'"
     ],
-    "diaspora_id": "afro-romanian"
+    "diaspora_id": "afro-romanian",
+    "migration_type": "voluntary"
   },
   {
     "id": "diaspora-african-students-bulgaria-from-various-newly-independent-african-states",
@@ -3746,7 +3902,8 @@
       "Frontiers in Education, 'African graduates in Bulgaria (1960–1990)' (2024)",
       "Contemporary news wire reporting on the 1962 Sofia African student clash with police"
     ],
-    "diaspora_id": "african-students-bulgaria"
+    "diaspora_id": "african-students-bulgaria",
+    "migration_type": "voluntary"
   },
   {
     "id": "diaspora-belanda-hitam-indonesia-from-dutch-gold-coast-present-day-ghana-predo",
@@ -3770,7 +3927,8 @@
       "Ineke van Kessel, 'The Black Dutchmen: African Soldiers in the Netherlands East Indies' (2005, African Studies Centre Leiden)",
       "J. Verhoog, 'De werving van Westafrikanen voor het Nederlands-Indische leger, 1831–1872' (1989)"
     ],
-    "diaspora_id": "belanda-hitam-indonesia"
+    "diaspora_id": "belanda-hitam-indonesia",
+    "migration_type": "forced"
   },
   {
     "id": "diaspora-afro-macanese-from-mozambique-and-other-portuguese-african-",
@@ -3794,7 +3952,8 @@
       "World History Encyclopedia, 'Portuguese Macao'",
       "Annabel Jackson, 'The Making of Macau's Cuisine: From Family Table to World Stage' (2020)"
     ],
-    "diaspora_id": "afro-macanese"
+    "diaspora_id": "afro-macanese",
+    "migration_type": "forced"
   },
   {
     "id": "diaspora-algerians-of-the-pacific-new-caledonia-from-kabylia-and-other-regions-of-algeria-fol",
@@ -3818,7 +3977,8 @@
       "Al Jazeera, 'Exile in New Caledonia' (2015 documentary)",
       "New Lines Magazine, 'The Algerians of New Caledonia' (2022)"
     ],
-    "diaspora_id": "algerians-of-the-pacific-new-caledonia"
+    "diaspora_id": "algerians-of-the-pacific-new-caledonia",
+    "migration_type": "forced"
   },
   {
     "id": "diaspora-african-arab-students-sarajevo-bosnia-from-algeria-specifically-documented-among-ot",
@@ -3841,7 +4001,8 @@
     "sources": [
       "'Transnational Educational Strategies during the Cold War: Students from the Global South in Socialist Yugoslavia, 1961–91'"
     ],
-    "diaspora_id": "african-arab-students-sarajevo-bosnia"
+    "diaspora_id": "african-arab-students-sarajevo-bosnia",
+    "migration_type": "voluntary"
   },
   {
     "id": "diaspora-afro-albanian-montenegro-from-tanzania-kenya-sudan-niger-and-libya-via",
@@ -3866,7 +4027,8 @@
       "Mustafa Canka, 'Only Memories and Emptiness Remain: The History of Ulcinj's Afro-Albanian Community in Montenegro', Lefteast (2013)",
       "African American Intellectual History Society (AAIHS), 'Mapping Blackness in Yugoslavia and Post-Yugoslav Space'"
     ],
-    "diaspora_id": "afro-albanian-montenegro"
+    "diaspora_id": "afro-albanian-montenegro",
+    "migration_type": "forced"
   },
   {
     "id": "diaspora-afro-albanian-from-tanzania-kenya-sudan-niger-and-libya-ori",
@@ -3890,7 +4052,8 @@
       "Mustafa Canka, 'Only Memories and Emptiness Remain: The History of Ulcinj's Afro-Albanian Community in Montenegro', Lefteast (2013)",
       "Grokipedia, 'Slavery in Albania' (citing Ottoman-era Ulcinj slave trade records)"
     ],
-    "diaspora_id": "afro-albanian"
+    "diaspora_id": "afro-albanian",
+    "migration_type": "forced"
   },
   {
     "id": "diaspora-afro-cypriot-from-sub-saharan-africa-via-the-trans-saharan",
@@ -3914,7 +4077,8 @@
       "Wikipedia, 'Slavery in Cyprus'",
       "Ronald Jennings (1993), cited in Cyprus Visual Arts and Research Centre (CVAR), 'Did You Know? Slaves in Cyprus'"
     ],
-    "diaspora_id": "afro-cypriot"
+    "diaspora_id": "afro-cypriot",
+    "migration_type": "forced"
   },
   {
     "id": "diaspora-southern-route-papua-new-guinea-from-east-africa-via-the-southern-coastal-mig",
@@ -3938,7 +4102,8 @@
       "Reyes-Centeno et al., 'Genomic and cranial phenotype data support multiple modern human dispersals from Africa and a southern route into Asia', PNAS (2014)",
       "Metspalu et al., 'Out-of-Africa, the peopling of continents and islands: tracing uniparental gene trees across the map', Phil. Trans. R. Soc. B (PMC3267120)"
     ],
-    "diaspora_id": "southern-route-papua-new-guinea"
+    "diaspora_id": "southern-route-papua-new-guinea",
+    "migration_type": "forced"
   },
   {
     "id": "diaspora-southern-route-solomon-islands-from-east-africa-via-the-southern-coastal-mig",
@@ -3961,7 +4126,8 @@
     "sources": [
       "Metspalu et al., 'Out-of-Africa, the peopling of continents and islands: tracing uniparental gene trees across the map', Phil. Trans. R. Soc. B (PMC3267120)"
     ],
-    "diaspora_id": "southern-route-solomon-islands"
+    "diaspora_id": "southern-route-solomon-islands",
+    "migration_type": "forced"
   },
   {
     "id": "diaspora-southern-route-vanuatu-from-east-africa-via-the-ancient-southern-coa",
@@ -3985,7 +4151,8 @@
       "Metspalu et al., 'Out-of-Africa, the peopling of continents and islands: tracing uniparental gene trees across the map', Phil. Trans. R. Soc. B (PMC3267120)",
       "Grokipedia, 'Australo-Melanesian'"
     ],
-    "diaspora_id": "southern-route-vanuatu"
+    "diaspora_id": "southern-route-vanuatu",
+    "migration_type": "forced"
   },
   {
     "id": "diaspora-southern-route-fiji-from-east-africa-via-the-ancient-southern-coa",
@@ -4009,7 +4176,8 @@
       "Race and History, 'African Presence in Fiji' (documented Fijian oral tradition)",
       "Metspalu et al., 'Out-of-Africa, the peopling of continents and islands: tracing uniparental gene trees across the map', Phil. Trans. R. Soc. B (PMC3267120)"
     ],
-    "diaspora_id": "southern-route-fiji"
+    "diaspora_id": "southern-route-fiji",
+    "migration_type": "forced"
   },
   {
     "id": "diaspora-southern-route-fiji-from-indigenous-fijian-oral-tradition-specifi",
@@ -4033,7 +4201,8 @@
       "Race and History, 'African Presence in Fiji' (documented Fijian oral tradition)",
       "Metspalu et al., 'Out-of-Africa, the peopling of continents and islands: tracing uniparental gene trees across the map', Phil. Trans. R. Soc. B (PMC3267120)"
     ],
-    "diaspora_id": "southern-route-fiji"
+    "diaspora_id": "southern-route-fiji",
+    "migration_type": "forced"
   },
   {
     "id": "diaspora-semang-batek-malaysia-from-east-africa-via-the-ancient-southern-coa",
@@ -4056,7 +4225,8 @@
     "sources": [
       "Reyes-Centeno et al., 'Genomic and cranial phenotype data support multiple modern human dispersals from Africa and a southern route into Asia', PNAS (2014)"
     ],
-    "diaspora_id": "semang-batek-malaysia"
+    "diaspora_id": "semang-batek-malaysia",
+    "migration_type": "forced"
   },
   {
     "id": "diaspora-southern-route-timor-leste-from-east-africa-via-the-ancient-southern-coa",
@@ -4079,7 +4249,8 @@
     "sources": [
       "Reyes-Centeno et al., 'Genomic and cranial phenotype data support multiple modern human dispersals from Africa and a southern route into Asia', PNAS (2014)"
     ],
-    "diaspora_id": "southern-route-timor-leste"
+    "diaspora_id": "southern-route-timor-leste",
+    "migration_type": "forced"
   },
   {
     "id": "diaspora-southern-route-aboriginal-australia-from-east-africa-via-the-ancient-southern-coa",
@@ -4103,7 +4274,8 @@
       "Reyes-Centeno et al., 'Genomic and cranial phenotype data support multiple modern human dispersals from Africa and a southern route into Asia', PNAS (2014)",
       "Grokipedia, 'Australo-Melanesian'"
     ],
-    "diaspora_id": "southern-route-aboriginal-australia"
+    "diaspora_id": "southern-route-aboriginal-australia",
+    "migration_type": "voluntary"
   },
   {
     "id": "diaspora-maniq-thailand-from-east-africa-via-the-ancient-southern-coa",
@@ -4127,7 +4299,8 @@
       "Discerning the Origins of the Negritos, First Sundaland People: Deep Divergence and Archaic Admixture, Genome Biology and Evolution (Oxford Academic)",
       "Bulbeck, 'Craniodental Affinities of Southeast Asia's Negritos and the Concordance with Their Genetic Affinities' (2013)"
     ],
-    "diaspora_id": "maniq-thailand"
+    "diaspora_id": "maniq-thailand",
+    "migration_type": "forced"
   },
   {
     "id": "diaspora-ancient-migration-corridor-myanmar-from-east-africa-via-the-ancient-southern-coa",
@@ -4150,7 +4323,8 @@
     "sources": [
       "'Enrichment of basal lineages... Myanmar was likely one of the differentiation centers of early modern humans', Scientific Reports (Springer, 2015)"
     ],
-    "diaspora_id": "ancient-migration-corridor-myanmar"
+    "diaspora_id": "ancient-migration-corridor-myanmar",
+    "migration_type": "forced"
   },
   {
     "id": "diaspora-ancient-cold-adaptation-greenland-from-east-africa-via-an-early-out-of-africa-m",
@@ -4174,7 +4348,8 @@
       "Polar Journal, 'Inuit genome sheds light on human migration', citing PNAS research by Yassine Souilmi et al.",
       "Genes to Genomes (Genetics Society of America), 'The unique genetic variation of the Greenlandic Inuit population'"
     ],
-    "diaspora_id": "ancient-cold-adaptation-greenland"
+    "diaspora_id": "ancient-cold-adaptation-greenland",
+    "migration_type": "forced"
   },
   {
     "id": "diaspora-afro-gabonese-atlantic-from-gabon-estuary-and-ogoou-river-mouths-oru",
@@ -4199,7 +4374,8 @@
       "Henry Bucher, cited in 'Slave Trade of the Gabon Estuary' (University of Wisconsin digital archive)",
       "The Maritime Heritage Project, 'Gabon, Africa' (1800s maritime history)"
     ],
-    "diaspora_id": "afro-gabonese-atlantic"
+    "diaspora_id": "afro-gabonese-atlantic",
+    "migration_type": "forced"
   },
   {
     "id": "diaspora-gabonese-france-from-gabon-post-independence-voluntary-emigra",
@@ -4224,6 +4400,7 @@
       "Migrants & Refugees Section (migrants-refugees.va), 'Gabon' country profile (2023)",
       "Grokipedia, 'Gabonese people in France' (2018 census figures)"
     ],
-    "diaspora_id": "gabonese-france"
+    "diaspora_id": "gabonese-france",
+    "migration_type": "voluntary"
   }
 ]

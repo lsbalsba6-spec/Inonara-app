@@ -527,6 +527,34 @@ STORIES = [
         ],
         "sources": ["Encyclopaedia Britannica, 'Great Migration'", "Isabel Wilkerson, 'The Warmth of Other Suns' (2010)"],
     },
+    {
+        "id": "peopling-of-the-americas-story",
+        "title": "Crossing Beringia — the Peopling of the Americas",
+        "civilization_id": None,
+        "era": "c. 20,000–15,000 BCE",
+        "summary": "How descendants of Africa's earliest migrants, after tens of thousands of years and thousands of miles across Siberia, became the last continent's first inhabitants.",
+        "chapters": [
+            {"heading": "A Long Chain of Descent", "body": "The peoples who crossed into the Americas were, many millennia removed, descendants of the same out-of-Africa dispersals that populated Eurasia — their ancestors had continued east and north across Siberia over tens of thousands of years before this final crossing."},
+            {"heading": "A Bridge Made of Ice Age Geography", "body": "During the Last Glacial Maximum, so much of the world's water was locked in ice sheets that sea levels fell dramatically, exposing a wide land connection — Beringia — between Siberia and Alaska, rather than today's narrow strait."},
+            {"heading": "The Crossing", "body": "Genetic and archaeological evidence places the crossing and initial settlement of the Americas at roughly 15,000 to 20,000 years ago, though the exact timing and number of migratory waves remain debated among researchers."},
+            {"heading": "A Continent Filled in Millennia, Not Centuries", "body": "Once south of the ice sheets, populations spread rapidly by the standards of foot migration, reaching the southern tip of South America within a few thousand years — one of the fastest large-scale human dispersals in the archaeological record."},
+        ],
+        "sources": ["Bering land bridge migration chronology, Last Glacial Maximum sea-level evidence"],
+    },
+    {
+        "id": "austronesian-expansion-story",
+        "title": "From Taiwan to Madagascar — the Austronesian Expansion",
+        "civilization_id": None,
+        "era": "c. 3000 BCE – 1250 CE",
+        "summary": "A seafaring people from Taiwan, without compasses or metal tools, eventually settled islands spanning nearly half the globe — including, remarkably, one African island.",
+        "chapters": [
+            {"heading": "Out of Taiwan", "body": "Linguistic, archaeological, and genetic evidence traces the Austronesian expansion to Taiwan, where Neolithic farming communities began spreading south roughly 5,000–6,000 years ago, leaving Taiwan itself around 4,000 years ago."},
+            {"heading": "The Lapita Culture", "body": "Distinctive dentate-stamped pottery marks the Lapita culture, which emerged from the intermixing of incoming Austronesian voyagers with existing Papuan populations in the Bismarck Archipelago roughly 3,500 years ago, then spread rapidly across Island Melanesia."},
+            {"heading": "The Long Pause, Then the Deep Pacific", "body": "After reaching Fiji, Tonga, and Samoa by around 900 BCE, the expansion paused for close to a thousand years before navigators finally pushed into the most remote Pacific — Hawaii and Rapa Nui (Easter Island) by roughly 900–1000 CE, New Zealand as the last major landmass settled, around 1250–1300 CE."},
+            {"heading": "The Unexpected African Landfall", "body": "In the opposite direction, Austronesian voyagers crossed the Indian Ocean and settled Madagascar during the first millennium CE — the reason the Malagasy language is Austronesian, not African, in origin: a rare case of a Pacific-descended people settling permanently on the African continent."},
+        ],
+        "sources": ["Ko et al., 'Early Austronesians: Into and Out of Taiwan' (cited in History Guild)", "Reich Lab, 'Austronesian Archaeolinguistics' chapter"],
+    },
 ]
 
 CULTURE_ITEMS = [
@@ -547,6 +575,7 @@ CULTURE_ITEMS = [
 MIGRATION_ROUTES = [
     {
         "id": "out-of-africa-southern-route",
+        "migration_type": "voluntary",
         "story_id": "out-of-africa",
         "name": "Sortie d'Afrique — route méridionale (via Bab-el-Mandeb)",
         "era": "c. 70,000–50,000 BCE",
@@ -558,6 +587,7 @@ MIGRATION_ROUTES = [
     },
     {
         "id": "out-of-africa-northern-route",
+        "migration_type": "voluntary",
         "story_id": "out-of-africa",
         "name": "Sortie d'Afrique — route septentrionale (via le Levant)",
         "era": "c. 56,000–40,000 BCE",
@@ -569,6 +599,8 @@ MIGRATION_ROUTES = [
     },
     {
         "id": "peopling-of-the-americas",
+        "migration_type": "voluntary",
+        "story_id": "peopling-of-the-americas-story",
         "name": "Peuplement des Amériques (via le détroit de Béring)",
         "era": "c. 20,000–15,000 BCE",
         "era_start": -20000, "era_end": -15000,
@@ -579,6 +611,7 @@ MIGRATION_ROUTES = [
     },
     {
         "id": "trans-saharan",
+        "migration_type": "mixed",
         "story_id": "trans-saharan-trade-story",
         "name": "Trans-Saharan Trade",
         "era": "c. 700–1500 CE",
@@ -590,6 +623,7 @@ MIGRATION_ROUTES = [
     },
     {
         "id": "indian-ocean",
+        "migration_type": "mixed",
         "story_id": "zanj-rebellion",
         "name": "Indian Ocean Trade",
         "era": "c. 800–1500 CE",
@@ -601,6 +635,7 @@ MIGRATION_ROUTES = [
     },
     {
         "id": "transatlantic",
+        "migration_type": "forced",
         "story_id": "middle-passage",
         "name": "Transatlantic Forced Migration",
         "era": "16th–19th c.",
@@ -612,6 +647,7 @@ MIGRATION_ROUTES = [
     },
     {
         "id": "bantu-expansion",
+        "migration_type": "voluntary",
         "story_id": "bantu-expansion-story",
         "name": "Bantu Expansion",
         "era": "c. 1500 BCE – 500 CE",
@@ -623,6 +659,8 @@ MIGRATION_ROUTES = [
     },
     {
         "id": "austronesian-expansion",
+        "migration_type": "voluntary",
+        "story_id": "austronesian-expansion-story",
         "name": "Austronesian Expansion (Out of Taiwan)",
         "era": "c. 3000 BCE – 1250 CE",
         "era_start": -3000, "era_end": 1250,
@@ -633,6 +671,7 @@ MIGRATION_ROUTES = [
     },
     {
         "id": "islamic-conquest-maghreb",
+        "migration_type": "conquest",
         "story_id": "islamic-conquest-maghreb-story",
         "name": "Islamic Conquest of the Maghreb",
         "era": "647–709 CE",
@@ -644,6 +683,7 @@ MIGRATION_ROUTES = [
     },
     {
         "id": "great-migration-us",
+        "migration_type": "voluntary",
         "story_id": "great-migration-us-story",
         "name": "Great Migration (African American)",
         "era": "1916–1970",

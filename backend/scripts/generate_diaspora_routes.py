@@ -157,6 +157,46 @@ REGION_COORDS = [
 ]
 
 
+FORCED_KEYWORDS = [
+    "enslaved", "slave trade", "forcibly", "captives", "forced migration", "slavery", "trafficked",
+    "abducted", "bondage", "plantation", "middle passage", "indentured", "coerced", "kidnap",
+    "conscript", "recruited from", "colonial infantry", "colonial troops", "deployed to fight",
+]
+VOLUNTARY_KEYWORDS = [
+    "voluntary", "emigrat", "immigrat", "sought", "moved for", "migrant workers", "labor migration",
+    "economic migra", "settled in", "arrived seeking", "came to study", "guest worker", "refugee", "fled",
+]
+
+
+def classify_migration_type(diaspora_entry):
+    """Classifies a diaspora entry's underlying migration as forced/
+    voluntary/mixed, based on keywords ALREADY present in its sourced
+    summary/story/modern/origin_routes text — not a new historical claim,
+    just a derived reading of existing documented content. Falls back to an
+    era-based heuristic (pre-1885 Americas/Indian-Ocean diaspora formation
+    is almost always trade-era = forced; post-1950 is generally voluntary
+    economic/political migration) only when no explicit keyword is found.
+    This is a heuristic, not a certainty — see the honesty note in
+    generate_routes()'s docstring."""
+    text = (
+        diaspora_entry.get("summary", "") + " " + diaspora_entry.get("story", "") + " "
+        + diaspora_entry.get("modern", "") + " " + str(diaspora_entry.get("origin_routes", ""))
+    ).lower()
+    forced = any(k in text for k in FORCED_KEYWORDS)
+    voluntary = any(k in text for k in VOLUNTARY_KEYWORDS)
+    if forced and voluntary:
+        return "mixed"
+    if forced:
+        return "forced"
+    if voluntary:
+        return "voluntary"
+    if diaspora_entry["era_start"] < 1885:
+        return "forced"
+    if diaspora_entry["era_start"] >= 1950:
+        return "voluntary"
+    return "unclear"
+
+
 def slugify(text):
     return re.sub(r"[^a-z0-9]+", "-", text.lower()).strip("-")[:40]
 
@@ -190,6 +230,7 @@ def generate_routes():
                 "summary": f"Route dérivée de la fiche diaspora « {d['name']} » (déjà sourcée sur le site) : {d['summary'][:200]}",
                 "sources": d.get("sources", []),
                 "diaspora_id": d["id"],
+                "migration_type": classify_migration_type(d),
             })
     return routes, skipped
 
