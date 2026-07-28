@@ -151,6 +151,8 @@ REGION_COORDS = [
     ("sub-saharan africa (particularly somalia, eritrea, nigeria", (9.0, 20.0)),
     ("sub-saharan africa via the trans-saharan", (17.0, 10.0)),
     ("central/west africa (present-day nigeria or chad", (9.08, 8.68)),
+    ("gabon estuary and ogooué river mouths (orungu, mpongwe intermediaries)", (0.39, 9.45)),
+    ("gabon (post-independence, voluntary emigration)", (0.39, 9.45)),
     ("central africa (lake chad/logone-birni", (12.3, 15.0)),
 ]
 

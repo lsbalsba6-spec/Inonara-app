@@ -16,6 +16,7 @@ import AskPage from "@/pages/AskPage";
 import SearchPage from "@/pages/SearchPage";
 import Journey from "@/pages/Journey";
 import { DiasporaList, DiasporaDetail } from "@/pages/Diaspora";
+import CountryDetail from "@/pages/CountryDetail";
 import { EthnicGroupsList, EthnicGroupDetail } from "@/pages/EthnicGroups";
 import { FiguresList, FigureDetail } from "@/pages/Figures";
 import Timeline from "@/pages/Timeline";
@@ -77,6 +78,7 @@ const Shell = () => {
           <Route path="/journey" element={<Journey />} />
           <Route path="/diaspora" element={<DiasporaList />} />
           <Route path="/diaspora/:id" element={<DiasporaDetail />} />
+          <Route path="/country/:id" element={<CountryDetail />} />
           <Route path="/people" element={<EthnicGroupsList />} />
           <Route path="/people/:id" element={<EthnicGroupDetail />} />
           <Route path="/figures" element={<FiguresList />} />

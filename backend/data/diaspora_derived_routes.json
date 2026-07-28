@@ -4175,5 +4175,55 @@
       "Genes to Genomes (Genetics Society of America), 'The unique genetic variation of the Greenlandic Inuit population'"
     ],
     "diaspora_id": "ancient-cold-adaptation-greenland"
+  },
+  {
+    "id": "diaspora-afro-gabonese-atlantic-from-gabon-estuary-and-ogoou-river-mouths-oru",
+    "name": "Gabonese Atlantic Diaspora (historical) ← Gabon estuary and Ogooué river mouths (Orungu, Mpongwe inter",
+    "era": "1760–1850",
+    "era_start": 1760,
+    "era_end": 1850,
+    "color": "#7B2D26",
+    "points": [
+      [
+        0.39,
+        9.45
+      ],
+      [
+        0.39,
+        9.45
+      ]
+    ],
+    "summary": "Route dérivée de la fiche diaspora « Gabonese Atlantic Diaspora (historical) » (déjà sourcée sur le site) : The Gabon estuary and the Ogooué river mouths were active nodes of the transatlantic slave trade, particularly from the 1760s-1790s (French trade centered at Ntsantome) and continuing illegally after ",
+    "sources": [
+      "Encyclopaedia Britannica, 'History of Gabon'",
+      "Henry Bucher, cited in 'Slave Trade of the Gabon Estuary' (University of Wisconsin digital archive)",
+      "The Maritime Heritage Project, 'Gabon, Africa' (1800s maritime history)"
+    ],
+    "diaspora_id": "afro-gabonese-atlantic"
+  },
+  {
+    "id": "diaspora-gabonese-france-from-gabon-post-independence-voluntary-emigra",
+    "name": "Gabonese Community in France (contemporary) ← Gabon (post-independence, voluntary emigration)",
+    "era": "1970–2025",
+    "era_start": 1970,
+    "era_end": 2025,
+    "color": "#7B2D26",
+    "points": [
+      [
+        0.39,
+        9.45
+      ],
+      [
+        48.8566,
+        2.3522
+      ]
+    ],
+    "summary": "Route dérivée de la fiche diaspora « Gabonese Community in France (contemporary) » (déjà sourcée sur le site) : A contemporary, voluntary migration distinct from the historical Atlantic trade: the first Gabonese immigrants arrived in France in the 1970s, some years after the first wave of Black African immigrat",
+    "sources": [
+      "Wikipedia, 'Gabonese people in France', citing INSEE data",
+      "Migrants & Refugees Section (migrants-refugees.va), 'Gabon' country profile (2023)",
+      "Grokipedia, 'Gabonese people in France' (2018 census figures)"
+    ],
+    "diaspora_id": "gabonese-france"
   }
 ]
