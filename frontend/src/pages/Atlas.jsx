@@ -46,6 +46,7 @@ const Atlas = () => {
   const [sliderPos, setSliderPos] = useState(yearToSlider(-70000));
   const [activeRoutes, setActiveRoutes] = useState({});
   const [showDiasporaRoutesList, setShowDiasporaRoutesList] = useState(false);
+  const [showLegendPanel, setShowLegendPanel] = useState(false);
   const [showPlaces, setShowPlaces] = useState(true);
   const [showDiaspora, setShowDiaspora] = useState(true);
   const [showPolities, setShowPolities] = useState(true);
@@ -480,73 +481,128 @@ const Atlas = () => {
           )}
         </aside>
 
-        {/* Legend (historical only) */}
-        {mode === "historical" && (
-          <div className="absolute bottom-28 right-6 z-[400] glass p-4 hidden md:block" data-testid="route-legend">
-            <p className="overline mb-3">{t("atlas.layers")}</p>
-            <div className="space-y-2">
-              <label className="flex items-center gap-3 cursor-pointer">
-                <input type="checkbox" checked={showPolities} onChange={(e) => setShowPolities(e.target.checked)} className="accent-gold" data-testid="toggle-polities" />
-                <span className="w-2 h-2 rounded-full border border-dashed" style={{ borderColor: ATLAS_COLORS.gold }} />
-                <span className="text-bone/80 text-xs">Empires &amp; royaumes (approximatif)</span>
-              </label>
-              <label className="flex items-center gap-3 cursor-pointer">
-                <input type="checkbox" checked={showPlaces} onChange={(e) => setShowPlaces(e.target.checked)} className="accent-gold" data-testid="toggle-places" />
-                <span className="w-2 h-2 rounded-full" style={{ background: ATLAS_COLORS.amber }} />
-                <span className="text-bone/80 text-xs">{t("atlas.heritagePlaces")}</span>
-              </label>
-              <label className="flex items-center gap-3 cursor-pointer">
-                <input type="checkbox" checked={showDiaspora} onChange={(e) => setShowDiaspora(e.target.checked)} className="accent-gold" data-testid="toggle-diaspora" />
-                <span className="w-2 h-2 rounded-full" style={{ background: ATLAS_COLORS.deepRed }} />
-                <span className="text-bone/80 text-xs">{t("atlas.diasporaCommunities")}</span>
-              </label>
-              <div className="h-px bg-[#2A2421] my-2" />
-              {routes.filter((r) => !r.id.startsWith("diaspora-")).map((r) => (
-                <label key={r.id} className="flex items-center gap-3 cursor-pointer">
-                  <input
-                    type="checkbox"
-                    checked={activeRoutes[r.id] !== false}
-                    onChange={(e) => setActiveRoutes((s) => ({ ...s, [r.id]: e.target.checked }))}
-                    className="accent-gold"
-                    data-testid={`route-toggle-${r.id}`}
-                  />
-                  <span className="w-6 h-[2px]" style={{ background: r.color }} />
-                  <span className="text-bone/80 text-xs">{r.name}</span>
-                </label>
-              ))}
+        {/* Legend toggle — always visible, on mobile too (previously the
+            legend itself was hidden below the md breakpoint, meaning it
+            never appeared on phones at all). */}
+        <button
+          onClick={() => setShowLegendPanel((v) => !v)}
+          className="absolute bottom-28 right-6 z-[401] glass px-3 py-2 text-[0.65rem] uppercase tracking-[0.15em] text-gold"
+          data-testid="legend-toggle-button"
+        >
+          {showLegendPanel ? "✕ Légende" : "☰ Légende"}
+        </button>
 
-              {routes.some((r) => r.id.startsWith("diaspora-")) && (
-                <div className="mt-2">
-                  <button
-                    onClick={() => setShowDiasporaRoutesList((v) => !v)}
-                    className="flex items-center justify-between w-full text-left"
-                    data-testid="toggle-diaspora-routes-section"
-                  >
-                    <span className="text-bone/60 text-xs uppercase tracking-wider">
-                      Routes par diaspora ({routes.filter((r) => r.id.startsWith("diaspora-")).length})
-                    </span>
-                    <span className="text-bone/40 text-xs">{showDiasporaRoutesList ? "▾" : "▸"}</span>
-                  </button>
-                  {showDiasporaRoutesList && (
-                    <div className="max-h-48 overflow-y-auto mt-2 pr-1 space-y-1.5">
-                      {routes.filter((r) => r.id.startsWith("diaspora-")).map((r) => (
-                        <label key={r.id} className="flex items-center gap-3 cursor-pointer">
-                          <input
-                            type="checkbox"
-                            checked={activeRoutes[r.id] !== false}
-                            onChange={(e) => setActiveRoutes((s) => ({ ...s, [r.id]: e.target.checked }))}
-                            className="accent-gold"
-                            data-testid={`route-toggle-${r.id}`}
-                          />
-                          <span className="w-6 h-[2px] shrink-0" style={{ background: r.color }} />
-                          <span className="text-bone/80 text-[0.65rem] leading-tight">{r.name}</span>
-                        </label>
-                      ))}
-                    </div>
-                  )}
+        {/* Legend — content adapts to the active mode (geological /
+            prehistoric / historical), since lines and points appear in all
+            three, not just "historical". */}
+        {showLegendPanel && (
+          <div className="absolute bottom-44 right-6 z-[400] glass p-4 max-h-[60vh] overflow-y-auto w-[85vw] max-w-xs" data-testid="route-legend">
+            <p className="overline mb-3">{t("atlas.layers")}</p>
+
+            {mode === "geological" && (
+              <div className="space-y-2">
+                <p className="text-bone/80 text-xs">
+                  <span className="text-gold">PANGÉE</span> : une seule terre — les frontières et noms de continents
+                  apparaissent progressivement à mesure que le supercontinent se fracture.
+                </p>
+                <div className="flex items-center gap-3">
+                  <span className="w-6 h-[2px]" style={{ background: ATLAS_COLORS.landAfricaBorder }} />
+                  <span className="text-bone/80 text-xs">Contours de masses continentales (approximatif)</span>
                 </div>
-              )}
-            </div>
+              </div>
+            )}
+
+            {mode === "prehistoric" && (
+              <div className="space-y-2">
+                <div className="flex items-center gap-3">
+                  <span className="w-3 h-3 rounded-sm" style={{ background: ATLAS_COLORS.amber, opacity: 0.5 }} />
+                  <span className="text-bone/80 text-xs">Ponts terrestres (zone approximative, mer basse)</span>
+                </div>
+                <div className="h-px bg-[#2A2421] my-2" />
+                {routes.filter((r) => !r.id.startsWith("diaspora-") && activeRoutes[r.id] !== false).length > 0 && (
+                  <p className="text-bone/60 text-[0.65rem] mb-1">Routes migratoires actives à cette période :</p>
+                )}
+                {routes.filter((r) => !r.id.startsWith("diaspora-")).map((r) => (
+                  <label key={r.id} className="flex items-center gap-3 cursor-pointer">
+                    <input
+                      type="checkbox"
+                      checked={activeRoutes[r.id] !== false}
+                      onChange={(e) => setActiveRoutes((s) => ({ ...s, [r.id]: e.target.checked }))}
+                      className="accent-gold"
+                      data-testid={`route-toggle-${r.id}`}
+                    />
+                    <span className="w-6 h-[2px]" style={{ background: r.color }} />
+                    <span className="text-bone/80 text-xs">{r.name}</span>
+                  </label>
+                ))}
+              </div>
+            )}
+
+            {mode === "historical" && (
+              <div className="space-y-2">
+                <label className="flex items-center gap-3 cursor-pointer">
+                  <input type="checkbox" checked={showPolities} onChange={(e) => setShowPolities(e.target.checked)} className="accent-gold" data-testid="toggle-polities" />
+                  <span className="w-2 h-2 rounded-full border border-dashed" style={{ borderColor: ATLAS_COLORS.gold }} />
+                  <span className="text-bone/80 text-xs">Empires &amp; royaumes (approximatif)</span>
+                </label>
+                <label className="flex items-center gap-3 cursor-pointer">
+                  <input type="checkbox" checked={showPlaces} onChange={(e) => setShowPlaces(e.target.checked)} className="accent-gold" data-testid="toggle-places" />
+                  <span className="w-2 h-2 rounded-full" style={{ background: ATLAS_COLORS.amber }} />
+                  <span className="text-bone/80 text-xs">{t("atlas.heritagePlaces")}</span>
+                </label>
+                <label className="flex items-center gap-3 cursor-pointer">
+                  <input type="checkbox" checked={showDiaspora} onChange={(e) => setShowDiaspora(e.target.checked)} className="accent-gold" data-testid="toggle-diaspora" />
+                  <span className="w-2 h-2 rounded-full" style={{ background: ATLAS_COLORS.deepRed }} />
+                  <span className="text-bone/80 text-xs">{t("atlas.diasporaCommunities")}</span>
+                </label>
+                <div className="h-px bg-[#2A2421] my-2" />
+                {routes.filter((r) => !r.id.startsWith("diaspora-")).map((r) => (
+                  <label key={r.id} className="flex items-center gap-3 cursor-pointer">
+                    <input
+                      type="checkbox"
+                      checked={activeRoutes[r.id] !== false}
+                      onChange={(e) => setActiveRoutes((s) => ({ ...s, [r.id]: e.target.checked }))}
+                      className="accent-gold"
+                      data-testid={`route-toggle-${r.id}`}
+                    />
+                    <span className="w-6 h-[2px]" style={{ background: r.color }} />
+                    <span className="text-bone/80 text-xs">{r.name}</span>
+                  </label>
+                ))}
+
+                {routes.some((r) => r.id.startsWith("diaspora-")) && (
+                  <div className="mt-2">
+                    <button
+                      onClick={() => setShowDiasporaRoutesList((v) => !v)}
+                      className="flex items-center justify-between w-full text-left"
+                      data-testid="toggle-diaspora-routes-section"
+                    >
+                      <span className="text-bone/60 text-xs uppercase tracking-wider">
+                        Routes par diaspora ({routes.filter((r) => r.id.startsWith("diaspora-")).length})
+                      </span>
+                      <span className="text-bone/40 text-xs">{showDiasporaRoutesList ? "▾" : "▸"}</span>
+                    </button>
+                    {showDiasporaRoutesList && (
+                      <div className="max-h-48 overflow-y-auto mt-2 pr-1 space-y-1.5">
+                        {routes.filter((r) => r.id.startsWith("diaspora-")).map((r) => (
+                          <label key={r.id} className="flex items-center gap-3 cursor-pointer">
+                            <input
+                              type="checkbox"
+                              checked={activeRoutes[r.id] !== false}
+                              onChange={(e) => setActiveRoutes((s) => ({ ...s, [r.id]: e.target.checked }))}
+                              className="accent-gold"
+                              data-testid={`route-toggle-${r.id}`}
+                            />
+                            <span className="w-6 h-[2px] shrink-0" style={{ background: r.color }} />
+                            <span className="text-bone/80 text-[0.65rem] leading-tight">{r.name}</span>
+                          </label>
+                        ))}
+                      </div>
+                    )}
+                  </div>
+                )}
+              </div>
+            )}
           </div>
         )}
 
