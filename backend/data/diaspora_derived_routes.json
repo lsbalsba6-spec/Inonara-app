@@ -2,9 +2,9 @@
   {
     "id": "diaspora-afro-brazilian-from-west-central-africa-kongo-angola-benguel",
     "name": "Afro-Brazilian ← West-Central Africa (Kongo, Angola, Benguela)",
-    "era": "1538–2025",
+    "era": "1538–1850",
     "era_start": 1538,
-    "era_end": 2025,
+    "era_end": 1850,
     "color": "#7B2D26",
     "points": [
       [
@@ -28,9 +28,9 @@
   {
     "id": "diaspora-afro-brazilian-from-bight-of-benin-yoruba-ewe-fon",
     "name": "Afro-Brazilian ← Bight of Benin (Yoruba, Ewe, Fon)",
-    "era": "1538–2025",
+    "era": "1538–1850",
     "era_start": 1538,
-    "era_end": 2025,
+    "era_end": 1850,
     "color": "#7B2D26",
     "points": [
       [
@@ -54,9 +54,9 @@
   {
     "id": "diaspora-afro-brazilian-from-mozambique",
     "name": "Afro-Brazilian ← Mozambique",
-    "era": "1538–2025",
+    "era": "1538–1850",
     "era_start": 1538,
-    "era_end": 2025,
+    "era_end": 1850,
     "color": "#7B2D26",
     "points": [
       [
@@ -80,9 +80,9 @@
   {
     "id": "diaspora-african-american-from-senegambia-wolof-mande-fula",
     "name": "African American ← Senegambia (Wolof, Mande, Fula)",
-    "era": "1619–2025",
+    "era": "1619–1808",
     "era_start": 1619,
-    "era_end": 2025,
+    "era_end": 1808,
     "color": "#7B2D26",
     "points": [
       [
@@ -106,9 +106,9 @@
   {
     "id": "diaspora-african-american-from-sierra-leone-windward-coast",
     "name": "African American ← Sierra Leone / Windward Coast",
-    "era": "1619–2025",
+    "era": "1619–1808",
     "era_start": 1619,
-    "era_end": 2025,
+    "era_end": 1808,
     "color": "#7B2D26",
     "points": [
       [
@@ -132,9 +132,9 @@
   {
     "id": "diaspora-african-american-from-gold-coast",
     "name": "African American ← Gold Coast",
-    "era": "1619–2025",
+    "era": "1619–1808",
     "era_start": 1619,
-    "era_end": 2025,
+    "era_end": 1808,
     "color": "#7B2D26",
     "points": [
       [
@@ -158,9 +158,9 @@
   {
     "id": "diaspora-african-american-from-bight-of-biafra-igbo",
     "name": "African American ← Bight of Biafra (Igbo)",
-    "era": "1619–2025",
+    "era": "1619–1808",
     "era_start": 1619,
-    "era_end": 2025,
+    "era_end": 1808,
     "color": "#7B2D26",
     "points": [
       [
@@ -184,9 +184,9 @@
   {
     "id": "diaspora-african-american-from-west-central-africa",
     "name": "African American ← West-Central Africa",
-    "era": "1619–2025",
+    "era": "1619–1808",
     "era_start": 1619,
-    "era_end": 2025,
+    "era_end": 1808,
     "color": "#7B2D26",
     "points": [
       [
@@ -210,9 +210,9 @@
   {
     "id": "diaspora-afro-caribbean-from-gold-coast-akan",
     "name": "Afro-Caribbean (Jamaica & Anglophone) ← Gold Coast (Akan)",
-    "era": "1655–2025",
+    "era": "1655–1838",
     "era_start": 1655,
-    "era_end": 2025,
+    "era_end": 1838,
     "color": "#7B2D26",
     "points": [
       [
@@ -236,9 +236,9 @@
   {
     "id": "diaspora-afro-caribbean-from-bight-of-biafra-igbo",
     "name": "Afro-Caribbean (Jamaica & Anglophone) ← Bight of Biafra (Igbo)",
-    "era": "1655–2025",
+    "era": "1655–1838",
     "era_start": 1655,
-    "era_end": 2025,
+    "era_end": 1838,
     "color": "#7B2D26",
     "points": [
       [
@@ -262,9 +262,9 @@
   {
     "id": "diaspora-afro-caribbean-from-west-central-africa-kongo",
     "name": "Afro-Caribbean (Jamaica & Anglophone) ← West-Central Africa (Kongo)",
-    "era": "1655–2025",
+    "era": "1655–1838",
     "era_start": 1655,
-    "era_end": 2025,
+    "era_end": 1838,
     "color": "#7B2D26",
     "points": [
       [
@@ -288,9 +288,9 @@
   {
     "id": "diaspora-afro-cuban-from-bight-of-benin-yoruba",
     "name": "Afro-Cuban ← Bight of Benin (Yoruba)",
-    "era": "1526–2025",
+    "era": "1526–1867",
     "era_start": 1526,
-    "era_end": 2025,
+    "era_end": 1867,
     "color": "#7B2D26",
     "points": [
       [
@@ -314,9 +314,9 @@
   {
     "id": "diaspora-afro-cuban-from-west-central-africa-kongo",
     "name": "Afro-Cuban ← West-Central Africa (Kongo)",
-    "era": "1526–2025",
+    "era": "1526–1867",
     "era_start": 1526,
-    "era_end": 2025,
+    "era_end": 1867,
     "color": "#7B2D26",
     "points": [
       [
@@ -340,9 +340,9 @@
   {
     "id": "diaspora-afro-cuban-from-sierra-leone-in-late-period",
     "name": "Afro-Cuban ← Sierra Leone (in late period)",
-    "era": "1526–2025",
+    "era": "1526–1867",
     "era_start": 1526,
-    "era_end": 2025,
+    "era_end": 1867,
     "color": "#7B2D26",
     "points": [
       [
@@ -366,9 +366,9 @@
   {
     "id": "diaspora-afro-haitian-from-bight-of-benin-fon-ewe-yoruba",
     "name": "Haitian ← Bight of Benin (Fon, Ewe, Yoruba)",
-    "era": "1697–2025",
+    "era": "1697–1804",
     "era_start": 1697,
-    "era_end": 2025,
+    "era_end": 1804,
     "color": "#7B2D26",
     "points": [
       [
@@ -391,9 +391,9 @@
   {
     "id": "diaspora-afro-haitian-from-west-central-africa-kongo",
     "name": "Haitian ← West-Central Africa (Kongo)",
-    "era": "1697–2025",
+    "era": "1697–1804",
     "era_start": 1697,
-    "era_end": 2025,
+    "era_end": 1804,
     "color": "#7B2D26",
     "points": [
       [
@@ -416,9 +416,9 @@
   {
     "id": "diaspora-afro-colombian-from-west-central-africa-kongo-angola",
     "name": "Afro-Colombian ← West-Central Africa (Kongo, Angola)",
-    "era": "1533–2025",
+    "era": "1533–1830",
     "era_start": 1533,
-    "era_end": 2025,
+    "era_end": 1830,
     "color": "#7B2D26",
     "points": [
       [
@@ -441,9 +441,9 @@
   {
     "id": "diaspora-afro-colombian-from-senegambia",
     "name": "Afro-Colombian ← Senegambia",
-    "era": "1533–2025",
+    "era": "1533–1830",
     "era_start": 1533,
-    "era_end": 2025,
+    "era_end": 1830,
     "color": "#7B2D26",
     "points": [
       [
@@ -466,9 +466,9 @@
   {
     "id": "diaspora-afro-european-from-west-africa-senegal-mali-c-te-d-ivoire-t",
     "name": "Afro-European (Britain & France) ← West Africa (Senegal, Mali, Côte d'Ivoire to France)",
-    "era": "1500–2025",
+    "era": "1500–1888",
     "era_start": 1500,
-    "era_end": 2025,
+    "era_end": 1888,
     "color": "#7B2D26",
     "points": [
       [
@@ -491,9 +491,9 @@
   {
     "id": "diaspora-afro-european-from-nigeria-ghana-to-uk",
     "name": "Afro-European (Britain & France) ← Nigeria, Ghana to UK",
-    "era": "1500–2025",
+    "era": "1500–1888",
     "era_start": 1500,
-    "era_end": 2025,
+    "era_end": 1888,
     "color": "#7B2D26",
     "points": [
       [
@@ -516,9 +516,9 @@
   {
     "id": "diaspora-afro-european-from-central-africa-drc-to-belgium-and-france",
     "name": "Afro-European (Britain & France) ← Central Africa (DRC to Belgium and France)",
-    "era": "1500–2025",
+    "era": "1500–1888",
     "era_start": 1500,
-    "era_end": 2025,
+    "era_end": 1888,
     "color": "#7B2D26",
     "points": [
       [
@@ -541,9 +541,9 @@
   {
     "id": "diaspora-afro-indian-ocean-from-east-africa-via-the-swahili-coast-zanzib",
     "name": "Indian Ocean African Diasporas ← East Africa via the Swahili coast (Zanzibar, Kilwa)",
-    "era": "700–2025",
+    "era": "700–1848",
     "era_start": 700,
-    "era_end": 2025,
+    "era_end": 1848,
     "color": "#7B2D26",
     "points": [
       [
@@ -566,9 +566,9 @@
   {
     "id": "diaspora-afro-indian-ocean-from-madagascar-malagasy-themselves-a-bantu-a",
     "name": "Indian Ocean African Diasporas ← Madagascar (Malagasy themselves a Bantu-Austronesian people)",
-    "era": "700–2025",
+    "era": "700–1848",
     "era_start": 700,
-    "era_end": 2025,
+    "era_end": 1848,
     "color": "#7B2D26",
     "points": [
       [
@@ -591,9 +591,9 @@
   {
     "id": "diaspora-afro-indian-ocean-from-mozambique",
     "name": "Indian Ocean African Diasporas ← Mozambique",
-    "era": "700–2025",
+    "era": "700–1848",
     "era_start": 700,
-    "era_end": 2025,
+    "era_end": 1848,
     "color": "#7B2D26",
     "points": [
       [
@@ -616,9 +616,9 @@
   {
     "id": "diaspora-afro-mexican-from-west-central-africa-kongo-angola",
     "name": "Afro-Mexican ← West-Central Africa (Kongo, Angola)",
-    "era": "1519–2025",
+    "era": "1519–1830",
     "era_start": 1519,
-    "era_end": 2025,
+    "era_end": 1830,
     "color": "#7B2D26",
     "points": [
       [
@@ -642,9 +642,9 @@
   {
     "id": "diaspora-afro-mexican-from-bight-of-benin",
     "name": "Afro-Mexican ← Bight of Benin",
-    "era": "1519–2025",
+    "era": "1519–1830",
     "era_start": 1519,
-    "era_end": 2025,
+    "era_end": 1830,
     "color": "#7B2D26",
     "points": [
       [
@@ -668,9 +668,9 @@
   {
     "id": "diaspora-afro-mexican-from-senegambia",
     "name": "Afro-Mexican ← Senegambia",
-    "era": "1519–2025",
+    "era": "1519–1830",
     "era_start": 1519,
-    "era_end": 2025,
+    "era_end": 1830,
     "color": "#7B2D26",
     "points": [
       [
@@ -694,9 +694,9 @@
   {
     "id": "diaspora-afro-indian-sidi-from-east-african-coast-zanzibar-mozambique-s",
     "name": "Sidi (Afro-Indian) ← East African coast (Zanzibar, Mozambique, Somalia)",
-    "era": "700–2025",
+    "era": "700–1888",
     "era_start": 700,
-    "era_end": 2025,
+    "era_end": 1888,
     "color": "#7B2D26",
     "points": [
       [
@@ -720,9 +720,9 @@
   {
     "id": "diaspora-afro-indian-sidi-from-ethiopian-highlands-habesha",
     "name": "Sidi (Afro-Indian) ← Ethiopian highlands (Habesha)",
-    "era": "700–2025",
+    "era": "700–1888",
     "era_start": 700,
-    "era_end": 2025,
+    "era_end": 1888,
     "color": "#7B2D26",
     "points": [
       [
@@ -746,9 +746,9 @@
   {
     "id": "diaspora-afro-german-from-german-colonial-territories-tanzania-nam",
     "name": "Afro-German ← German colonial territories (Tanzania, Namibia, Cameroon, To",
-    "era": "1884–2025",
+    "era": "1884–1888",
     "era_start": 1884,
-    "era_end": 2025,
+    "era_end": 1888,
     "color": "#7B2D26",
     "points": [
       [
@@ -771,9 +771,9 @@
   {
     "id": "diaspora-afro-german-from-west-african-migration-from-1980s",
     "name": "Afro-German ← West African migration from 1980s",
-    "era": "1884–2025",
+    "era": "1884–1888",
     "era_start": 1884,
-    "era_end": 2025,
+    "era_end": 1888,
     "color": "#7B2D26",
     "points": [
       [
@@ -796,9 +796,9 @@
   {
     "id": "diaspora-afro-arab-gulf-from-east-african-coast-zanzibar-tanzania-ken",
     "name": "Afro-Arab (Gulf & Levant) ← East African coast (Zanzibar, Tanzania, Kenya)",
-    "era": "700–2025",
+    "era": "700–1970",
     "era_start": 700,
-    "era_end": 2025,
+    "era_end": 1970,
     "color": "#7B2D26",
     "points": [
       [
@@ -821,9 +821,9 @@
   {
     "id": "diaspora-afro-arab-gulf-from-ethiopian-highlands",
     "name": "Afro-Arab (Gulf & Levant) ← Ethiopian highlands",
-    "era": "700–2025",
+    "era": "700–1970",
     "era_start": 700,
-    "era_end": 2025,
+    "era_end": 1970,
     "color": "#7B2D26",
     "points": [
       [
@@ -846,9 +846,9 @@
   {
     "id": "diaspora-afro-arab-gulf-from-sudanese-nile-valley",
     "name": "Afro-Arab (Gulf & Levant) ← Sudanese Nile valley",
-    "era": "700–2025",
+    "era": "700–1970",
     "era_start": 700,
-    "era_end": 2025,
+    "era_end": 1970,
     "color": "#7B2D26",
     "points": [
       [
@@ -871,9 +871,9 @@
   {
     "id": "diaspora-afro-venezuelan-from-west-central-africa-kongo-angola",
     "name": "Afro-Venezuelan ← West-Central Africa (Kongo, Angola)",
-    "era": "1520–2025",
+    "era": "1520–1830",
     "era_start": 1520,
-    "era_end": 2025,
+    "era_end": 1830,
     "color": "#7B2D26",
     "points": [
       [
@@ -895,9 +895,9 @@
   {
     "id": "diaspora-afro-venezuelan-from-bight-of-benin",
     "name": "Afro-Venezuelan ← Bight of Benin",
-    "era": "1520–2025",
+    "era": "1520–1830",
     "era_start": 1520,
-    "era_end": 2025,
+    "era_end": 1830,
     "color": "#7B2D26",
     "points": [
       [
@@ -919,9 +919,9 @@
   {
     "id": "diaspora-afro-dominican-from-west-central-africa",
     "name": "Afro-Dominican ← West-Central Africa",
-    "era": "1502–2025",
+    "era": "1502–1830",
     "era_start": 1502,
-    "era_end": 2025,
+    "era_end": 1830,
     "color": "#7B2D26",
     "points": [
       [
@@ -943,9 +943,9 @@
   {
     "id": "diaspora-afro-dominican-from-bight-of-benin",
     "name": "Afro-Dominican ← Bight of Benin",
-    "era": "1502–2025",
+    "era": "1502–1830",
     "era_start": 1502,
-    "era_end": 2025,
+    "era_end": 1830,
     "color": "#7B2D26",
     "points": [
       [
@@ -967,9 +967,9 @@
   {
     "id": "diaspora-afro-dominican-from-senegambia-very-early",
     "name": "Afro-Dominican ← Senegambia (very early)",
-    "era": "1502–2025",
+    "era": "1502–1830",
     "era_start": 1502,
-    "era_end": 2025,
+    "era_end": 1830,
     "color": "#7B2D26",
     "points": [
       [
@@ -991,9 +991,9 @@
   {
     "id": "diaspora-afro-canadian-from-direct-african-migration-nigeria-ghana-s",
     "name": "Afro-Canadian ← Direct African migration (Nigeria, Ghana, Somalia, DRC)",
-    "era": "1605–2025",
+    "era": "1605–1888",
     "era_start": 1605,
-    "era_end": 2025,
+    "era_end": 1888,
     "color": "#7B2D26",
     "points": [
       [
@@ -1066,9 +1066,9 @@
   {
     "id": "diaspora-afro-iranian-from-east-african-coast-via-indian-ocean",
     "name": "Afro-Iranian / Zanj ← East African coast via Indian Ocean",
-    "era": "800–2025",
+    "era": "800–1888",
     "era_start": 800,
-    "era_end": 2025,
+    "era_end": 1888,
     "color": "#7B2D26",
     "points": [
       [
@@ -1091,9 +1091,9 @@
   {
     "id": "diaspora-afro-iranian-from-ethiopia-and-zanzibar",
     "name": "Afro-Iranian / Zanj ← Ethiopia and Zanzibar",
-    "era": "800–2025",
+    "era": "800–1888",
     "era_start": 800,
-    "era_end": 2025,
+    "era_end": 1888,
     "color": "#7B2D26",
     "points": [
       [
@@ -1170,9 +1170,9 @@
   {
     "id": "diaspora-afro-filipino-from-africans-arriving-via-the-manila-galleon",
     "name": "Afro-Filipino ← Africans arriving via the Manila Galleon (1565–1815) — sailo",
-    "era": "1565–2025",
+    "era": "1565–1888",
     "era_start": 1565,
-    "era_end": 2025,
+    "era_end": 1888,
     "color": "#7B2D26",
     "points": [
       [
@@ -1195,9 +1195,9 @@
   {
     "id": "diaspora-afro-argentine-from-west-central-africa-angola-kongo-via-bra",
     "name": "Afro-Argentine ← West-Central Africa (Angola, Kongo) via Brazilian and Río de",
-    "era": "1587–2025",
+    "era": "1587–1830",
     "era_start": 1587,
-    "era_end": 2025,
+    "era_end": 1830,
     "color": "#7B2D26",
     "points": [
       [
@@ -1220,9 +1220,9 @@
   {
     "id": "diaspora-afro-argentine-from-mozambique",
     "name": "Afro-Argentine ← Mozambique",
-    "era": "1587–2025",
+    "era": "1587–1830",
     "era_start": 1587,
-    "era_end": 2025,
+    "era_end": 1830,
     "color": "#7B2D26",
     "points": [
       [
@@ -1245,9 +1245,9 @@
   {
     "id": "diaspora-afro-peruvian-from-west-central-africa-angola-kongo",
     "name": "Afro-Peruvian ← West-Central Africa (Angola, Kongo)",
-    "era": "1532–2025",
+    "era": "1532–1830",
     "era_start": 1532,
-    "era_end": 2025,
+    "era_end": 1830,
     "color": "#7B2D26",
     "points": [
       [
@@ -1270,9 +1270,9 @@
   {
     "id": "diaspora-afro-peruvian-from-senegambia",
     "name": "Afro-Peruvian ← Senegambia",
-    "era": "1532–2025",
+    "era": "1532–1830",
     "era_start": 1532,
-    "era_end": 2025,
+    "era_end": 1830,
     "color": "#7B2D26",
     "points": [
       [
@@ -1295,9 +1295,9 @@
   {
     "id": "diaspora-afro-peruvian-from-mozambique-via-portuguese-routes",
     "name": "Afro-Peruvian ← Mozambique via Portuguese routes",
-    "era": "1532–2025",
+    "era": "1532–1830",
     "era_start": 1532,
-    "era_end": 2025,
+    "era_end": 1830,
     "color": "#7B2D26",
     "points": [
       [
@@ -1320,9 +1320,9 @@
   {
     "id": "diaspora-afro-chilean-from-west-and-west-central-africa-via-the-vic",
     "name": "Afro-Chilean ← West and West-Central Africa via the Viceroyalty of Peru",
-    "era": "1536–2025",
+    "era": "1536–1823",
     "era_start": 1536,
-    "era_end": 2025,
+    "era_end": 1823,
     "color": "#7B2D26",
     "points": [
       [
@@ -1345,9 +1345,9 @@
   {
     "id": "diaspora-afro-bolivian-from-west-central-africa-via-the-viceroyalty-",
     "name": "Afro-Bolivian ← West-Central Africa via the Viceroyalty of Peru and Potosí",
-    "era": "1544–2025",
+    "era": "1544–1830",
     "era_start": 1544,
-    "era_end": 2025,
+    "era_end": 1830,
     "color": "#7B2D26",
     "points": [
       [
@@ -1370,9 +1370,9 @@
   {
     "id": "diaspora-afro-uruguayan-from-west-central-africa-bantu-speaking-regio",
     "name": "Afro-Uruguayan ← West-Central Africa (Bantu-speaking regions) via the Río de ",
-    "era": "1750–2025",
+    "era": "1750–1830",
     "era_start": 1750,
-    "era_end": 2025,
+    "era_end": 1830,
     "color": "#7B2D26",
     "points": [
       [
@@ -1394,9 +1394,9 @@
   {
     "id": "diaspora-afro-paraguayan-from-west-central-africa-via-the-r-o-de-la-pl",
     "name": "Afro-Paraguayan ← West-Central Africa via the Río de la Plata region",
-    "era": "1820–2025",
+    "era": "1820–1830",
     "era_start": 1820,
-    "era_end": 2025,
+    "era_end": 1830,
     "color": "#7B2D26",
     "points": [
       [
@@ -1418,9 +1418,9 @@
   {
     "id": "diaspora-afro-surinamese-maroons-from-west-and-west-central-africa-via-dutch-p",
     "name": "Suriname Maroons (Saamaka, Ndyuka, Aluku) ← West and West-Central Africa via Dutch plantation colonies",
-    "era": "1650–2025",
+    "era": "1650–1863",
     "era_start": 1650,
-    "era_end": 2025,
+    "era_end": 1863,
     "color": "#7B2D26",
     "points": [
       [
@@ -1443,9 +1443,9 @@
   {
     "id": "diaspora-afro-panamanian-from-west-and-west-central-africa-colonial-er",
     "name": "Afro-Panamanian (Colonial and Antillean) ← West and West-Central Africa (colonial era)",
-    "era": "1513–2025",
+    "era": "1513–1830",
     "era_start": 1513,
-    "era_end": 2025,
+    "era_end": 1830,
     "color": "#7B2D26",
     "points": [
       [
@@ -1516,9 +1516,9 @@
   {
     "id": "diaspora-garifuna-belize-from-west-and-central-africa-via-shipwrecks-a",
     "name": "Garifuna ← West and Central Africa (via shipwrecks and escape) merged w",
-    "era": "1635–2025",
+    "era": "1635–1838",
     "era_start": 1635,
-    "era_end": 2025,
+    "era_end": 1838,
     "color": "#7B2D26",
     "points": [
       [
@@ -1566,9 +1566,9 @@
   {
     "id": "diaspora-afro-jamaican-from-west-and-west-central-africa-akan-ashant",
     "name": "Afro-Jamaican ← West and West-Central Africa (Akan/Ashanti, Kongo, and other",
-    "era": "1655–2025",
+    "era": "1655–1838",
     "era_start": 1655,
-    "era_end": 2025,
+    "era_end": 1838,
     "color": "#7B2D26",
     "points": [
       [
@@ -1616,9 +1616,9 @@
   {
     "id": "diaspora-afro-guyanese-from-west-and-west-central-africa-via-dutch-a",
     "name": "Afro-Guyanese ← West and West-Central Africa via Dutch and later British Gui",
-    "era": "1763–2025",
+    "era": "1763–1838",
     "era_start": 1763,
-    "era_end": 2025,
+    "era_end": 1838,
     "color": "#7B2D26",
     "points": [
       [
@@ -1641,9 +1641,9 @@
   {
     "id": "diaspora-afro-barbadian-from-west-and-west-central-africa-via-the-bri",
     "name": "Afro-Barbadian ← West and West-Central Africa via the British sugar-colony tr",
-    "era": "1640–2025",
+    "era": "1640–1838",
     "era_start": 1640,
-    "era_end": 2025,
+    "era_end": 1838,
     "color": "#7B2D26",
     "points": [
       [
@@ -1666,9 +1666,9 @@
   {
     "id": "diaspora-afro-puerto-rican-from-west-and-west-central-africa-via-the-spa",
     "name": "Afro-Puerto Rican ← West and West-Central Africa via the Spanish Caribbean slave",
-    "era": "1513–2025",
+    "era": "1513–1873",
     "era_start": 1513,
-    "era_end": 2025,
+    "era_end": 1873,
     "color": "#7B2D26",
     "points": [
       [
@@ -1691,9 +1691,9 @@
   {
     "id": "diaspora-afro-nicaraguan-from-west-and-west-central-africa-via-british",
     "name": "Afro-Nicaraguan (Caribbean/Mosquito Coast) ← West and West-Central Africa via British Caribbean trade net",
-    "era": "1655–2025",
+    "era": "1655–1830",
     "era_start": 1655,
-    "era_end": 2025,
+    "era_end": 1830,
     "color": "#7B2D26",
     "points": [
       [
@@ -2062,9 +2062,9 @@
   {
     "id": "diaspora-afro-turk-from-east-and-central-africa-via-ottoman-era-",
     "name": "Afro-Turk ← East and Central Africa via Ottoman-era trade and enslavemen",
-    "era": "1850–2025",
+    "era": "1850–1888",
     "era_start": 1850,
-    "era_end": 2025,
+    "era_end": 1888,
     "color": "#7B2D26",
     "points": [
       [
@@ -2137,9 +2137,9 @@
   {
     "id": "diaspora-afro-saudi-from-west-africa-via-centuries-of-hajj-pilgri",
     "name": "Takrouni and African-descended Saudis ← West Africa (via centuries of Hajj pilgrimage and settlement",
-    "era": "900–2025",
+    "era": "900–1962",
     "era_start": 900,
-    "era_end": 2025,
+    "era_end": 1962,
     "color": "#7B2D26",
     "points": [
       [
@@ -2162,9 +2162,9 @@
   {
     "id": "diaspora-afro-saudi-from-east-africa-historical-via-red-sea-and-i",
     "name": "Takrouni and African-descended Saudis ← East Africa (historical, via Red Sea and Indian Ocean trade ",
-    "era": "900–2025",
+    "era": "900–1962",
     "era_start": 900,
-    "era_end": 2025,
+    "era_end": 1962,
     "color": "#7B2D26",
     "points": [
       [
@@ -2212,9 +2212,9 @@
   {
     "id": "diaspora-akhdam-yemen-from-ethiopian-highlands-aksumite-era-militar",
     "name": "Akhdam (Muhamasheen) ← Ethiopian highlands (Aksumite-era military presence and sett",
-    "era": "525–2025",
+    "era": "525–1962",
     "era_start": 525,
-    "era_end": 2025,
+    "era_end": 1962,
     "color": "#7B2D26",
     "points": [
       [
@@ -2237,9 +2237,9 @@
   {
     "id": "diaspora-afro-iraqi-basra-from-east-african-coast-zanzibar-tanzania-ken",
     "name": "Afro-Iraqi ← East African coast (Zanzibar, Tanzania, Kenya) via the medie",
-    "era": "869–2025",
+    "era": "869–1924",
     "era_start": 869,
-    "era_end": 2025,
+    "era_end": 1924,
     "color": "#7B2D26",
     "points": [
       [
@@ -2262,9 +2262,9 @@
   {
     "id": "diaspora-afro-kuwaiti-from-east-african-coast-via-the-historical-gu",
     "name": "Afro-Kuwaiti ← East African coast via the historical Gulf pearling and trad",
-    "era": "1700–2025",
+    "era": "1700–1962",
     "era_start": 1700,
-    "era_end": 2025,
+    "era_end": 1962,
     "color": "#7B2D26",
     "points": [
       [
@@ -2287,9 +2287,9 @@
   {
     "id": "diaspora-abram-gannibal-russia-from-central-africa-lake-chad-logone-birni-re",
     "name": "Afro-Russian (Gannibal legacy) ← Central Africa (Lake Chad/Logone-Birni region, per the most-",
-    "era": "1704–2025",
+    "era": "1704–1888",
     "era_start": 1704,
-    "era_end": 2025,
+    "era_end": 1888,
     "color": "#7B2D26",
     "points": [
       [
@@ -2312,9 +2312,9 @@
   {
     "id": "diaspora-yasuke-japan-from-mozambique-most-historians-best-supporte",
     "name": "Yasuke and Afro-Japanese history ← Mozambique (most historians' best-supported origin) via Port",
-    "era": "1579–2025",
+    "era": "1579–1888",
     "era_start": 1579,
-    "era_end": 2025,
+    "era_end": 1888,
     "color": "#7B2D26",
     "points": [
       [
@@ -2437,9 +2437,9 @@
   {
     "id": "diaspora-afro-danish-from-ghana-via-danish-gold-coast-forts",
     "name": "Afro-Danish (Gold Coast and West Indies heritage) ← Ghana (via Danish Gold Coast forts)",
-    "era": "1658–2025",
+    "era": "1658–1888",
     "era_start": 1658,
-    "era_end": 2025,
+    "era_end": 1888,
     "color": "#7B2D26",
     "points": [
       [
@@ -2510,9 +2510,9 @@
   {
     "id": "diaspora-sri-lankan-kaffir-from-east-african-coast-mozambique-and-other-",
     "name": "Sri Lankan Kaffir ← East African coast (Mozambique and other regions) via Portug",
-    "era": "1505–2025",
+    "era": "1505–1888",
     "era_start": 1505,
-    "era_end": 2025,
+    "era_end": 1888,
     "color": "#7B2D26",
     "points": [
       [
@@ -2535,9 +2535,9 @@
   {
     "id": "diaspora-sheedi-pakistan-from-east-african-coast-zanzibar-mozambique-s",
     "name": "Sheedi ← East African coast (Zanzibar, Mozambique, Somalia) via the m",
-    "era": "700–2025",
+    "era": "700–1888",
     "era_start": 700,
-    "era_end": 2025,
+    "era_end": 1888,
     "color": "#7B2D26",
     "points": [
       [
@@ -2560,9 +2560,9 @@
   {
     "id": "diaspora-afro-grenadian-from-west-and-west-central-africa-via-the-fre",
     "name": "Afro-Grenadian ← West and West-Central Africa via the French and British Cari",
-    "era": "1650–2025",
+    "era": "1650–1838",
     "era_start": 1650,
-    "era_end": 2025,
+    "era_end": 1838,
     "color": "#7B2D26",
     "points": [
       [
@@ -2584,9 +2584,9 @@
   {
     "id": "diaspora-afro-saint-lucian-from-west-and-west-central-africa-via-french-",
     "name": "Afro-Saint Lucian ← West and West-Central Africa via French and British Caribbea",
-    "era": "1650–2025",
+    "era": "1650–1838",
     "era_start": 1650,
-    "era_end": 2025,
+    "era_end": 1838,
     "color": "#7B2D26",
     "points": [
       [
@@ -2633,9 +2633,9 @@
   {
     "id": "diaspora-afro-antiguan-from-west-and-west-central-africa-via-the-bri",
     "name": "Afro-Antiguan and Barbudan ← West and West-Central Africa via the British Caribbean sugar",
-    "era": "1632–2025",
+    "era": "1632–1838",
     "era_start": 1632,
-    "era_end": 2025,
+    "era_end": 1838,
     "color": "#7B2D26",
     "points": [
       [
@@ -2657,9 +2657,9 @@
   {
     "id": "diaspora-afro-dominican-commonwealth-from-west-and-west-central-africa-via-french-",
     "name": "Afro-Dominican (Commonwealth of Dominica) ← West and West-Central Africa via French and British Caribbea",
-    "era": "1690–2025",
+    "era": "1690–1838",
     "era_start": 1690,
-    "era_end": 2025,
+    "era_end": 1838,
     "color": "#7B2D26",
     "points": [
       [
@@ -2681,9 +2681,9 @@
   {
     "id": "diaspora-afro-kittitian-from-west-and-west-central-africa-via-the-ear",
     "name": "Afro-Kittitian and Nevisian ← West and West-Central Africa via the earliest English and Fr",
-    "era": "1623–2025",
+    "era": "1623–1838",
     "era_start": 1623,
-    "era_end": 2025,
+    "era_end": 1838,
     "color": "#7B2D26",
     "points": [
       [
@@ -2706,9 +2706,9 @@
   {
     "id": "diaspora-maroon-french-guiana-from-west-and-west-central-africa-via-dutch-s",
     "name": "Businenge (Maroon communities of French Guiana) ← West and West-Central Africa via Dutch Suriname plantations,",
-    "era": "1690–2025",
+    "era": "1690–1848",
     "era_start": 1690,
-    "era_end": 2025,
+    "era_end": 1848,
     "color": "#7B2D26",
     "points": [
       [
@@ -2730,9 +2730,9 @@
   {
     "id": "diaspora-afro-curacaoan-from-west-and-west-central-africa-via-the-dut",
     "name": "Afro-Curaçaoan ← West and West-Central Africa via the Dutch Caribbean slave t",
-    "era": "1634–2025",
+    "era": "1634–1863",
     "era_start": 1634,
-    "era_end": 2025,
+    "era_end": 1863,
     "color": "#7B2D26",
     "points": [
       [
@@ -2755,9 +2755,9 @@
   {
     "id": "diaspora-angelo-soliman-austria-from-central-west-africa-present-day-nigeria-",
     "name": "Angelo Soliman and Afro-Austrian history ← Central/West Africa (present-day Nigeria or Chad region, per",
-    "era": "1721–2025",
+    "era": "1721–1888",
     "era_start": 1721,
-    "era_end": 2025,
+    "era_end": 1888,
     "color": "#7B2D26",
     "points": [
       [
@@ -2780,9 +2780,9 @@
   {
     "id": "diaspora-frederick-douglass-ireland-from-contemporary-nigeria-and-other-west-afri",
     "name": "Frederick Douglass's Irish tour and Afro-Irish community ← Contemporary: Nigeria and other West African countries",
-    "era": "1845–2025",
+    "era": "1845–1888",
     "era_start": 1845,
-    "era_end": 2025,
+    "era_end": 1888,
     "color": "#7B2D26",
     "points": [
       [
@@ -2805,9 +2805,9 @@
   {
     "id": "diaspora-afro-bermudian-from-west-and-west-central-africa-via-the-bri",
     "name": "Afro-Bermudian ← West and West-Central Africa via the British Atlantic mariti",
-    "era": "1616–2025",
+    "era": "1616–1838",
     "era_start": 1616,
-    "era_end": 2025,
+    "era_end": 1838,
     "color": "#7B2D26",
     "points": [
       [
@@ -2830,9 +2830,9 @@
   {
     "id": "diaspora-afro-aruban-from-west-and-west-central-africa-via-the-dut",
     "name": "Afro-Aruban ← West and West-Central Africa via the Dutch Caribbean slave t",
-    "era": "1636–2025",
+    "era": "1636–1863",
     "era_start": 1636,
-    "era_end": 2025,
+    "era_end": 1863,
     "color": "#7B2D26",
     "points": [
       [
@@ -2854,9 +2854,9 @@
   {
     "id": "diaspora-afro-caymanian-from-west-and-west-central-africa-largely-via",
     "name": "Afro-Caymanian ← West and West-Central Africa, largely via Jamaica",
-    "era": "1671–2025",
+    "era": "1671–1838",
     "era_start": 1671,
-    "era_end": 2025,
+    "era_end": 1838,
     "color": "#7B2D26",
     "points": [
       [
@@ -2878,9 +2878,9 @@
   {
     "id": "diaspora-afro-irish-montserrat-from-west-and-west-central-africa-via-british",
     "name": "Afro-Montserratian ('Black Irish' heritage) ← West and West-Central Africa via British Caribbean plantatio",
-    "era": "1632–2025",
+    "era": "1632–1838",
     "era_start": 1632,
-    "era_end": 2025,
+    "era_end": 1838,
     "color": "#7B2D26",
     "points": [
       [
@@ -2903,9 +2903,9 @@
   {
     "id": "diaspora-afro-bvi-from-west-and-west-central-africa-via-the-bri",
     "name": "Afro-British Virgin Islander ← West and West-Central Africa via the British Caribbean plant",
-    "era": "1672–2025",
+    "era": "1672–1838",
     "era_start": 1672,
-    "era_end": 2025,
+    "era_end": 1838,
     "color": "#7B2D26",
     "points": [
       [
@@ -2927,9 +2927,9 @@
   {
     "id": "diaspora-afro-usvi-emancipation-from-west-and-west-central-africa-via-the-dan",
     "name": "Afro-Virgin Islander (self-emancipation of 1848) ← West and West-Central Africa via the Danish Caribbean slave ",
-    "era": "1672–2025",
+    "era": "1672–1848",
     "era_start": 1672,
-    "era_end": 2025,
+    "era_end": 1848,
     "color": "#7B2D26",
     "points": [
       [
@@ -2951,9 +2951,9 @@
   {
     "id": "diaspora-afro-anguillan-from-west-and-west-central-africa-via-the-bri",
     "name": "Afro-Anguillan ← West and West-Central Africa via the British Caribbean trade",
-    "era": "1650–2025",
+    "era": "1650–1838",
     "era_start": 1650,
-    "era_end": 2025,
+    "era_end": 1838,
     "color": "#7B2D26",
     "points": [
       [
@@ -2975,9 +2975,9 @@
   {
     "id": "diaspora-afro-sint-maarten-from-west-and-west-central-africa-via-both-fr",
     "name": "Afro-Sint Maarten ← West and West-Central Africa via both French and Dutch Carib",
-    "era": "1648–2025",
+    "era": "1648–1863",
     "era_start": 1648,
-    "era_end": 2025,
+    "era_end": 1863,
     "color": "#7B2D26",
     "points": [
       [
@@ -2999,9 +2999,9 @@
   {
     "id": "diaspora-afro-turks-caicos-from-west-and-west-central-africa-largely-via",
     "name": "Afro-Turks and Caicos Islander ← West and West-Central Africa, largely via the Bahamas and Ja",
-    "era": "1680–2025",
+    "era": "1680–1838",
     "era_start": 1680,
-    "era_end": 2025,
+    "era_end": 1838,
     "color": "#7B2D26",
     "points": [
       [
@@ -3023,9 +3023,9 @@
   {
     "id": "diaspora-afro-saint-martin-french-from-west-and-west-central-africa-via-french-",
     "name": "Afro-Saint-Martinois (French side) ← West and West-Central Africa via French Caribbean trade netw",
-    "era": "1648–2025",
+    "era": "1648–1848",
     "era_start": 1648,
-    "era_end": 2025,
+    "era_end": 1848,
     "color": "#7B2D26",
     "points": [
       [
@@ -3047,9 +3047,9 @@
   {
     "id": "diaspora-afro-saint-barthelemy-from-west-and-west-central-africa-via-the-fre",
     "name": "Afro-Saint-Barthélemois ← West and West-Central Africa via the French and, later, Swed",
-    "era": "1784–2025",
+    "era": "1784–1848",
     "era_start": 1784,
-    "era_end": 2025,
+    "era_end": 1848,
     "color": "#7B2D26",
     "points": [
       [
@@ -3071,9 +3071,9 @@
   {
     "id": "diaspora-afro-dutch-caribbean-bes-from-west-and-west-central-africa-via-the-dut",
     "name": "Afro-Bonairian, Statian and Saban ← West and West-Central Africa via the Dutch Caribbean salt an",
-    "era": "1636–2025",
+    "era": "1636–1863",
     "era_start": 1636,
-    "era_end": 2025,
+    "era_end": 1863,
     "color": "#7B2D26",
     "points": [
       [
@@ -3170,9 +3170,9 @@
   {
     "id": "diaspora-afro-bahraini-from-east-african-coast-via-the-historical-gu",
     "name": "Afro-Bahraini ← East African coast via the historical Gulf pearling and trad",
-    "era": "1783–2025",
+    "era": "1783–1937",
     "era_start": 1783,
-    "era_end": 2025,
+    "era_end": 1937,
     "color": "#7B2D26",
     "points": [
       [
@@ -3315,9 +3315,9 @@
   {
     "id": "diaspora-afro-guadeloupean-from-west-and-west-central-africa-via-the-fre",
     "name": "Afro-Guadeloupean ← West and West-Central Africa via the French Caribbean slave ",
-    "era": "1635–2025",
+    "era": "1635–1848",
     "era_start": 1635,
-    "era_end": 2025,
+    "era_end": 1848,
     "color": "#7B2D26",
     "points": [
       [
@@ -3340,9 +3340,9 @@
   {
     "id": "diaspora-afro-martinican-from-west-and-west-central-africa-via-the-fre",
     "name": "Afro-Martinican ← West and West-Central Africa via the French Caribbean slave ",
-    "era": "1635–2025",
+    "era": "1635–1848",
     "era_start": 1635,
-    "era_end": 2025,
+    "era_end": 1848,
     "color": "#7B2D26",
     "points": [
       [
@@ -3487,9 +3487,9 @@
   {
     "id": "diaspora-afro-abkhazian-from-east-africa-or-the-ottoman-empire-s-afri",
     "name": "Afro-Abkhazian ← East Africa or the Ottoman Empire's African trade networks (",
-    "era": "1700–2025",
+    "era": "1700–1888",
     "era_start": 1700,
-    "era_end": 2025,
+    "era_end": 1888,
     "color": "#7B2D26",
     "points": [
       [
@@ -3535,9 +3535,9 @@
   {
     "id": "diaspora-tirailleurs-senegalais-vietnam-from-west-and-central-africa-french-colonial-",
     "name": "Tirailleurs sénégalais in French Indochina ← West and Central Africa (French colonial recruitment, not li",
-    "era": "1946–1954",
+    "era": "1946–1888",
     "era_start": 1946,
-    "era_end": 1954,
+    "era_end": 1888,
     "color": "#7B2D26",
     "points": [
       [
@@ -3560,9 +3560,9 @@
   {
     "id": "diaspora-tirailleurs-senegalais-cambodia-from-west-and-central-africa-via-french-colon",
     "name": "Tirailleurs sénégalais in Cambodia ← West and Central Africa via French colonial military recruit",
-    "era": "1946–1954",
+    "era": "1946–1888",
     "era_start": 1946,
-    "era_end": 1954,
+    "era_end": 1888,
     "color": "#7B2D26",
     "points": [
       [
@@ -3584,9 +3584,9 @@
   {
     "id": "diaspora-tirailleurs-senegalais-syria-from-west-and-central-africa-via-french-colon",
     "name": "Tirailleurs sénégalais and the Great Syrian Revolt ← West and Central Africa via French colonial military recruit",
-    "era": "1925–1946",
+    "era": "1925–1888",
     "era_start": 1925,
-    "era_end": 1946,
+    "era_end": 1888,
     "color": "#7B2D26",
     "points": [
       [
@@ -3608,9 +3608,9 @@
   {
     "id": "diaspora-maldives-historical-slavery-from-east-african-coast-via-historical-indian",
     "name": "Historical slavery and its abolition in the Maldives ← East African coast via historical Indian Ocean trade network",
-    "era": "1200–1962",
+    "era": "1200–1888",
     "era_start": 1200,
-    "era_end": 1962,
+    "era_end": 1888,
     "color": "#7B2D26",
     "points": [
       [
@@ -3633,9 +3633,9 @@
   {
     "id": "diaspora-chagossians-biot-from-mozambique-and-madagascar-predominant-or",
     "name": "Chagossians ← Mozambique and Madagascar (predominant origins of the enslav",
-    "era": "1776–2025",
+    "era": "1776–1888",
     "era_start": 1776,
-    "era_end": 2025,
+    "era_end": 1888,
     "color": "#7B2D26",
     "points": [
       [
@@ -3908,9 +3908,9 @@
   {
     "id": "diaspora-belanda-hitam-indonesia-from-dutch-gold-coast-present-day-ghana-predo",
     "name": "Belanda Hitam (Black Dutchmen) ← Dutch Gold Coast (present-day Ghana), predominantly Ashanti ",
-    "era": "1831–1949",
+    "era": "1831–1888",
     "era_start": 1831,
-    "era_end": 1949,
+    "era_end": 1888,
     "color": "#7B2D26",
     "points": [
       [
@@ -3933,9 +3933,9 @@
   {
     "id": "diaspora-afro-macanese-from-mozambique-and-other-portuguese-african-",
     "name": "African presence in colonial Macao ← Mozambique and other Portuguese African territories, via the",
-    "era": "1557–1999",
+    "era": "1557–1888",
     "era_start": 1557,
-    "era_end": 1999,
+    "era_end": 1888,
     "color": "#7B2D26",
     "points": [
       [
@@ -3958,9 +3958,9 @@
   {
     "id": "diaspora-algerians-of-the-pacific-new-caledonia-from-kabylia-and-other-regions-of-algeria-fol",
     "name": "Algerians of the Pacific ← Kabylia and other regions of Algeria, following the suppress",
-    "era": "1871–2025",
+    "era": "1871–1888",
     "era_start": 1871,
-    "era_end": 2025,
+    "era_end": 1888,
     "color": "#7B2D26",
     "points": [
       [
@@ -4007,9 +4007,9 @@
   {
     "id": "diaspora-afro-albanian-montenegro-from-tanzania-kenya-sudan-niger-and-libya-via",
     "name": "Black Montenegrins (Afro-Albanian community of Ulcinj) ← Tanzania, Kenya, Sudan, Niger, and Libya, via Ottoman-admini",
-    "era": "1650–2025",
+    "era": "1650–1888",
     "era_start": 1650,
-    "era_end": 2025,
+    "era_end": 1888,
     "color": "#7B2D26",
     "points": [
       [
@@ -4033,9 +4033,9 @@
   {
     "id": "diaspora-afro-albanian-from-tanzania-kenya-sudan-niger-and-libya-ori",
     "name": "Afro-Albanian ← Tanzania, Kenya, Sudan, Niger, and Libya (originally, via Ul",
-    "era": "1880–2025",
+    "era": "1880–1888",
     "era_start": 1880,
-    "era_end": 2025,
+    "era_end": 1888,
     "color": "#7B2D26",
     "points": [
       [

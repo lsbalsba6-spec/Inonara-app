@@ -201,6 +201,67 @@ def slugify(text):
     return re.sub(r"[^a-z0-9]+", "-", text.lower()).strip("-")[:40]
 
 
+# Real, documented dates when the TRANSPORT/TRADE itself effectively ended
+# for a given destination — distinct from when slavery/servitude was fully
+# abolished there, and distinct from the diaspora COMMUNITY's ongoing
+# existence (which correctly extends to today). A "forced migration" route
+# should show as active only while people were actually being forcibly
+# transported, not indefinitely just because their descendants still live
+# there. Grouped by colonial/legal jurisdiction since abolition was usually
+# jurisdiction-wide, not country-by-country in the modern sense.
+FORCED_ROUTE_END_YEAR_BY_COUNTRY = {
+    # British Caribbean/colonies: Slavery Abolition Act 1833, effective 1838 after apprenticeship
+    "Jamaica": 1838, "Barbados": 1838, "Bahamas": 1838, "Trinidad and Tobago": 1838,
+    "Guyana": 1838, "Belize": 1838, "Grenada": 1838, "Dominica": 1838,
+    "Saint Lucia": 1838, "Saint Kitts and Nevis": 1838, "Antigua and Barbuda": 1838,
+    "Montserrat": 1838, "Anguilla": 1838, "British Virgin Islands": 1838,
+    "Cayman Islands": 1838, "Turks and Caicos Islands": 1838, "Bermuda": 1838,
+    "Jamaica, Trinidad, Barbados, Guyana": 1838,
+    # French colonies: abolition 1848
+    "Guadeloupe": 1848, "Martinique": 1848, "French Guiana": 1848,
+    "Saint Martin": 1848, "Saint Barthélemy": 1848, "Réunion, Mauritius, Madagascar, Gulf": 1848,
+    # Dutch colonies: abolition 1863
+    "Suriname": 1863, "Curaçao": 1863, "Aruba": 1863,
+    "Bonaire, Sint Eustatius and Saba": 1863, "Sint Maarten": 1863,
+    # Danish colonies (Virgin Islands): abolition 1848
+    "United States Virgin Islands": 1848,
+    # United States: international slave trade banned 1808 (the ROUTE ended, though
+    # domestic slavery persisted until 1865 — this route represents the transatlantic
+    # trafficking specifically, not the whole institution)
+    "United States": 1808, "Mexico & United States": 1808,
+    # Brazil: Eusébio de Queirós Law effectively ended the trade in 1850
+    # (slavery itself persisted until 1888)
+    "Brazil": 1850,
+    # Cuba: trade continued longer, last documented voyages ~1867
+    "Cuba": 1867,
+    # Spanish American mainland: trade effectively ended around/soon after independence era
+    "Mexico": 1830, "Colombia": 1830, "Venezuela": 1830, "Peru": 1830,
+    "Ecuador": 1830, "Bolivia": 1830, "Chile": 1823, "Argentina": 1830,
+    "Uruguay": 1830, "Paraguay": 1830, "Guatemala": 1830, "Honduras": 1830,
+    "Nicaragua": 1830, "Costa Rica": 1830, "Panama": 1830, "Dominican Republic": 1830,
+    "Puerto Rico": 1873,
+    "Haiti": 1804,  # Haitian Revolution ends slavery there specifically
+    # Indian Ocean / Arab world: documented as persisting notably later
+    "Oman": 1970, "Saudi Arabia": 1962, "Kuwait": 1962, "United Arab Emirates": 1963,
+    "Yemen": 1962, "Iraq": 1924, "Iraq, Saudi Arabia, Oman, Kuwait, Yemen": 1970,
+    "Bahrain": 1937,
+}
+DEFAULT_FORCED_ROUTE_END_YEAR = 1888  # Brazil's final abolition — the conventional close of the Atlantic slave-trade era, used only when a destination isn't explicitly mapped above
+
+
+def compute_route_era_end(diaspora_entry, migration_type):
+    """For 'forced' routes, cap era_end at the real, documented date the
+    TRADE/TRANSPORT itself ended for that destination — never at the
+    diaspora entry's own era_end=2025 (which correctly represents the
+    community's ongoing existence today, not the migration event itself).
+    Other migration types keep the diaspora entry's own era_end as-is."""
+    if migration_type != "forced":
+        return diaspora_entry["era_end"]
+    country = diaspora_entry.get("country", "")
+    documented_end = FORCED_ROUTE_END_YEAR_BY_COUNTRY.get(country, DEFAULT_FORCED_ROUTE_END_YEAR)
+    return min(diaspora_entry["era_end"], documented_end)
+
+
 def find_coords(origin_text):
     t = origin_text.lower()
     for key, coords in REGION_COORDS:
@@ -219,18 +280,20 @@ def generate_routes():
                 skipped.append((d["id"], origin))
                 continue
             route_id = f"diaspora-{d['id']}-from-{slugify(origin)}"
+            migration_type = classify_migration_type(d)
+            corrected_era_end = compute_route_era_end(d, migration_type)
             routes.append({
                 "id": route_id,
                 "name": f"{d['name']} ← {origin[:60]}",
-                "era": f"{d['era_start']}–{d['era_end']}",
+                "era": f"{d['era_start']}–{corrected_era_end}",
                 "era_start": d["era_start"],
-                "era_end": d["era_end"],
+                "era_end": corrected_era_end,
                 "color": "#7B2D26",
                 "points": [list(coords), list(d["coords"])],
                 "summary": f"Route dérivée de la fiche diaspora « {d['name']} » (déjà sourcée sur le site) : {d['summary'][:200]}",
                 "sources": d.get("sources", []),
                 "diaspora_id": d["id"],
-                "migration_type": classify_migration_type(d),
+                "migration_type": migration_type,
             })
     return routes, skipped
 
