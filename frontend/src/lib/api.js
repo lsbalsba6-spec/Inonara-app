@@ -20,6 +20,8 @@ export const fetchPlateTectonics = () => api.get("/plate-tectonics").then((r) =>
 export const search = (q) => api.get("/search", { params: { q } }).then((r) => r.data);
 export const fetchDiaspora = () => api.get("/diaspora-communities").then((r) => r.data);
 export const fetchDiasporaOne = (id) => api.get(`/diaspora-communities/${id}`).then((r) => r.data);
+export const fetchAfricaOriginCountries = () => api.get("/africa/origin-countries").then((r) => r.data);
+export const fetchAfricaOriginCountry = (iso2) => api.get(`/africa/origin-countries/${iso2}`).then((r) => r.data);
 export const fetchPlaces = () => api.get("/places").then((r) => r.data);
 export const fetchJourney = () => api.get("/journey").then((r) => r.data);
 export const fetchEthnicGroups = () => api.get("/ethnic-groups").then((r) => r.data);
