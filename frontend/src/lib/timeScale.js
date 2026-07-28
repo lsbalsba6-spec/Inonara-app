@@ -27,20 +27,20 @@
 // Anchor points: [sliderFraction, year]. Both must be strictly increasing.
 export const TIME_ANCHORS = [
   [0.00, -300000000], // Pangaea assembles
-  [0.08, -200000000], // Pangaea begins to rift
-  [0.14, -150000000], // Laurasia / Gondwana separate
-  [0.20, -100000000], // Atlantic Ocean opens
-  [0.26, -66000000],  // End of the dinosaurs
-  [0.32, -35000000],  // India collides with Asia
-  [0.38, -14000000],  // Near-modern world (geological mode ends here)
-  [0.45, -70000],     // Out-of-Africa dispersal begins (prehistoric mode starts)
-  [0.55, -10000],      // Last Ice Age ends, land bridges submerge
-  [0.62, -3500],       // Recorded civilizations begin (historical mode starts)
-  [0.72, 1000],        // Medieval period / early West African empires
-  [0.80, 1500],        // Eve of the transatlantic slave trade
-  [0.88, 1885],        // Berlin Conference — height of colonization
-  [0.95, 1960],        // Wave of African independence
-  [1.00, 2025],        // Today — now clearly separated from the colonial era
+  [0.03, -200000000], // Pangaea begins to rift
+  [0.06, -150000000], // Laurasia / Gondwana separate
+  [0.09, -100000000], // Atlantic Ocean opens
+  [0.12, -66000000],  // End of the dinosaurs
+  [0.135, -35000000], // India collides with Asia
+  [0.15, -14000000],  // Near-modern world (geological mode ends here — shrunk from 38% to 15% of the slider, since little is shown during this era)
+  [0.25, -70000],     // Out-of-Africa dispersal begins (prehistoric mode starts)
+  [0.35, -10000],      // Last Ice Age ends, land bridges submerge
+  [0.38, -3500],       // Recorded civilizations begin (historical mode starts)
+  [0.55, 1000],        // Medieval period / early West African empires
+  [0.68, 1500],        // Eve of the transatlantic slave trade
+  [0.82, 1885],        // Berlin Conference — height of colonization
+  [0.92, 1960],        // Wave of African independence — clearly distinct from colonization
+  [1.00, 2025],        // Today — clearly distinct from independence
 ];
 
 export const SLIDER_MIN = 0;
