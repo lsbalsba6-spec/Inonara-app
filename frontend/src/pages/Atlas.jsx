@@ -150,7 +150,7 @@ const Atlas = () => {
   };
 
   return (
-    <div className="pt-[72px] h-screen flex flex-col" data-testid="atlas-page">
+    <div className="pt-[72px] h-screen h-[100dvh] flex flex-col" data-testid="atlas-page">
       <DevDataSourceIndicator />
       {isPilotV3Enabled() && (
         <div
