@@ -54,6 +54,69 @@ function Timeline({ items, sourceMap }) {
   );
 }
 
+
+function MigrationChapters({ items = [], sourceMap }) {
+  return (
+    <div className="space-y-5">
+      {items.map((item) => (
+        <article key={item.id} className="rounded-xl border border-bone/10 bg-bone/[0.025] p-5">
+          <div className="flex flex-wrap items-center justify-between gap-3">
+            <div>
+              <p className="overline text-gold/70">{item.period}</p>
+              <h3 className="font-serif text-xl text-bone mt-1">{item.title}</h3>
+            </div>
+            <div className="flex gap-2">
+              <span className="rounded-full border border-bone/15 px-2 py-1 text-[10px] uppercase tracking-wider text-bone/55">{item.movement_type}</span>
+              <StatusBadge status={item.status} />
+            </div>
+          </div>
+          <p className="text-bone/75 leading-relaxed mt-4">{item.summary}</p>
+          {item.details?.length > 0 && (
+            <ul className="mt-4 space-y-2 list-disc pl-5 text-sm text-bone/65">
+              {item.details.map((detail) => <li key={detail}>{detail}</li>)}
+            </ul>
+          )}
+          {item.map_policy && (
+            <div className="mt-4 rounded-lg border border-gold/15 bg-gold/[0.04] p-3">
+              <p className="text-[10px] uppercase tracking-widest text-gold/70">Règle cartographique</p>
+              <p className="text-sm text-bone/65 mt-1">{item.map_policy}</p>
+            </div>
+          )}
+          <SourceLinks ids={item.sources} sourceMap={sourceMap} />
+        </article>
+      ))}
+    </div>
+  );
+}
+
+function DiasporaSection({ data, sourceMap }) {
+  if (!data) return null;
+  const renderGroup = (title, items = []) => (
+    <div>
+      <h2 className="font-serif text-2xl text-gold mb-3">{title}</h2>
+      <div className="grid gap-4 md:grid-cols-2">
+        {items.map((item) => (
+          <article key={item.name} className="rounded-lg border border-bone/10 bg-bone/[0.025] p-4">
+            <div className="flex items-start justify-between gap-3">
+              <h3 className="font-serif text-lg text-bone">{item.name}</h3>
+              <StatusBadge status={item.status} />
+            </div>
+            <p className="text-sm text-bone/70 leading-relaxed mt-2">{item.summary}</p>
+            <SourceLinks ids={item.sources} sourceMap={sourceMap} />
+          </article>
+        ))}
+      </div>
+    </div>
+  );
+  return (
+    <div className="space-y-8">
+      <div className="rounded-lg border border-gold/15 bg-gold/[0.04] p-4 text-sm text-bone/70 leading-relaxed">{data.editorial_note}</div>
+      {renderGroup("Communautés et diasporas en Afrique du Sud", data.inside_south_africa)}
+      {renderGroup("Sud-Africains à l’étranger", data.south_africans_abroad)}
+    </div>
+  );
+}
+
 function SimpleCards({ items, sourceMap, titleField = "name", bodyField = "note" }) {
   return (
     <div className="grid gap-4 md:grid-cols-2">
@@ -85,7 +148,7 @@ export default function CountryDossierView({ dossier }) {
   const tabs = [
     ["overview", "Présentation"], ["visuals", "Cartes & drapeaux"], ["geography", "Géographie"], ["institutions", "Institutions"], ["timeline", "Histoire"], ["peoples", "Peuples"],
     ["languages", "Langues"], ["religions", "Religions"], ["polities", "Royaumes & États"],
-    ["migrations", "Migrations"], ["culture", "Culture"], ["heritage", "Patrimoine"],
+    ["migrations", "Migrations"], ["diasporas", "Diasporas"], ["culture", "Culture"], ["heritage", "Patrimoine"],
     ["figures", "Personnalités"], ["historiography", "Débats"],
     ["research", "À approfondir"], ["sources", "Sources"],
   ];
@@ -170,7 +233,8 @@ export default function CountryDossierView({ dossier }) {
           </article>)}</div>
         </div>}
         {active === "polities" && <SimpleCards items={dossier.polities} sourceMap={sourceMap} bodyField="mapping" />}
-        {active === "migrations" && <SimpleCards items={dossier.migrations} sourceMap={sourceMap} titleField="label" bodyField="reason" />}
+        {active === "migrations" && <div className="space-y-8"><div className="rounded-lg border border-bone/10 p-4"><p className="text-bone/70 leading-relaxed">Les routes ci-dessous sont des mouvements historiques distincts. L’existence actuelle d’une communauté ne prolonge jamais automatiquement une route jusqu’à aujourd’hui.</p></div><MigrationChapters items={dossier.migration_chapters || []} sourceMap={sourceMap} /></div>}
+        {active === "diasporas" && <DiasporaSection data={dossier.diasporas} sourceMap={sourceMap} />}
         {active === "heritage" && <SimpleCards items={dossier.heritage} sourceMap={sourceMap} />}
         {active === "figures" && <SimpleCards items={dossier.figures} sourceMap={sourceMap} bodyField="reason" />}
         {active === "culture" && <div className="space-y-7">

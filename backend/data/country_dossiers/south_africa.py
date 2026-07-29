@@ -952,3 +952,219 @@ SOUTH_AFRICA_DOSSIER = {
         {"id": "src-saho-british-settlers", "category": "C", "title": "The 1820 British Settlers", "publisher": "South African History Online", "year": 2011, "url": "https://sahistory.org.za/article/1820-settlers"},
     ],
 }
+
+# ---------------------------------------------------------------------------
+# PART 6 — MIGRATIONS AND DIASPORAS
+# Route-level dates are kept separate from the continued existence of a
+# community. No movement below is automatically published on the global atlas.
+# ---------------------------------------------------------------------------
+SOUTH_AFRICA_DOSSIER["migration_chapters"] = [
+    {
+        "id": "za-mig-cap-slavery",
+        "title": "Esclavage et déplacements forcés vers le Cap",
+        "period": "1658–1834 (émancipation complète en 1838)",
+        "movement_type": "forced",
+        "summary": "La colonie du Cap reçoit des personnes réduites en esclavage depuis plusieurs régions de l'océan Indien et de l'Afrique. Les provenances attestées comprennent notamment Madagascar, le sous-continent indien, l'Indonésie et l'Asie du Sud-Est, le Mozambique et la côte est-africaine. Ces circulations ne forment pas une seule route homogène : elles varient selon les décennies, les ports, les réseaux de la VOC et les captures maritimes.",
+        "details": [
+            "Les premières cargaisons de 1658 incluent des personnes prises sur un navire portugais et d'autres amenées depuis la côte ouest-africaine ; elles ne représentent pas la majorité des arrivées ultérieures.",
+            "Madagascar, l'Inde, l'Asie du Sud-Est et l'Afrique orientale deviennent des zones majeures d'origine pendant la période VOC.",
+            "La fin juridique de l'esclavage ne signifie pas la disparition immédiate des contraintes : l'apprentissage obligatoire prolonge la dépendance jusqu'en 1838.",
+        ],
+        "map_policy": "Afficher des routes historiques distinctes et bornées ; ne jamais les prolonger jusqu'à aujourd'hui.",
+        "status": "ready",
+        "sources": ["src-saho-early-cape-slave-trade", "src-saho-slavery-cape", "src-saho-cape-slavery-origins"],
+    },
+    {
+        "id": "za-mig-voc-settlement",
+        "title": "Établissement néerlandais et colonisation de peuplement",
+        "period": "à partir de 1652, avec phases distinctes",
+        "movement_type": "settler-colonial",
+        "summary": "L'installation de la VOC au Cap en 1652 commence comme station de ravitaillement, puis s'étend par l'attribution de terres à des colons libres. Cette expansion entraîne des conflits, des pertes foncières et des déplacements pour les communautés khoekhoe et san. Elle doit être cartographiée comme colonisation de peuplement et expansion territoriale, non comme migration volontaire ordinaire.",
+        "details": [
+            "L'origine européenne des colons comprend principalement les Provinces-Unies, mais aussi des apports allemands et huguenots français.",
+            "Les Trekboers étendent ensuite la frontière coloniale vers l'intérieur ; leurs trajectoires doivent être séparées de l'établissement initial du Cap.",
+            "La croissance de la colonie repose simultanément sur la terre, le travail forcé et l'esclavage.",
+        ],
+        "map_policy": "Séparer l'arrivée maritime, l'expansion foncière et les déplacements internes de frontière.",
+        "status": "ready",
+        "sources": ["src-saho-dutch-settlement", "src-saho-slavery-cape"],
+    },
+    {
+        "id": "za-mig-british-1820",
+        "title": "Colons britanniques de 1820 vers le Cap oriental",
+        "period": "1820, puis implantations au XIXe siècle",
+        "movement_type": "settler-colonial",
+        "summary": "Environ 4 000 à 4 500 migrants britanniques sont envoyés vers le Cap en 1820, puis installés principalement dans la zone d'Algoa Bay et sur la frontière orientale de la colonie. Le programme répond à des objectifs sociaux en Grande-Bretagne et à une stratégie coloniale de consolidation de la frontière face aux sociétés xhosa.",
+        "details": [
+            "La route maritime depuis la Grande-Bretagne est ponctuelle et concentrée en 1820 ; elle ne doit pas rester active sur la carte contemporaine.",
+            "L'installation est liée à une politique de frontière et à des conflits fonciers : elle relève de la colonisation de peuplement.",
+            "Les trajectoires ultérieures des communautés anglophones ne doivent pas être fusionnées automatiquement avec ce programme précis.",
+        ],
+        "map_policy": "Afficher Royaume-Uni → Algoa Bay/Cap oriental en 1820, puis arrêter la route.",
+        "status": "ready",
+        "sources": ["src-saho-1820-settlers", "src-saho-britain-cape"],
+    },
+    {
+        "id": "za-mig-indenture",
+        "title": "Travail indien sous contrat vers le Natal",
+        "period": "1860–1911",
+        "movement_type": "indentured-coercive",
+        "summary": "Entre 1860 et 1911, environ 152 184 travailleurs sous contrat arrivent d'Inde au Natal, principalement pour les plantations sucrières, puis pour d'autres secteurs. Le système est juridiquement contractuel mais fortement contraignant. Il doit être distingué à la fois de l'esclavage et des migrations libres de commerçants, artisans et familles indiennes.",
+        "details": [
+            "Les principaux ports d'embarquement sont Madras et Calcutta, couvrant des régions d'origine diverses du sous-continent.",
+            "Le premier navire, le Truro, arrive en novembre 1860 ; le dernier voyage du système est associé à l'Umlazi en juillet 1911.",
+            "Après leur contrat, certaines personnes retournent en Inde, tandis qu'une majorité reste et contribue à la formation des communautés indiennes sud-africaines.",
+        ],
+        "map_policy": "Afficher plusieurs origines régionales vers Durban/Natal entre 1860 et 1911 ; type « travail sous contrat », jamais « volontaire » simple.",
+        "status": "ready",
+        "sources": ["src-saho-indian-indentured", "src-saho-indian-south-africans", "src-saho-indenture-ship-list"],
+    },
+    {
+        "id": "za-mig-passenger-indians",
+        "title": "Migrations indiennes libres et réseaux commerciaux",
+        "period": "fin du XIXe siècle–XXe siècle, selon vagues",
+        "movement_type": "voluntary-commercial",
+        "summary": "Parallèlement à l'engagisme, des migrants indiens libres — souvent désignés dans les archives coloniales comme « passenger Indians » — arrivent comme commerçants, artisans et entrepreneurs. Ce mouvement est distinct du travail sous contrat et ne peut pas être représenté par la même route ni par la même couleur.",
+        "details": [
+            "Les périodes et lieux d'origine doivent être documentés par sous-vague avant publication sur l'Atlas.",
+            "Les politiques discriminatoires coloniales puis sud-africaines limitent la résidence, le commerce et la mobilité de ces communautés.",
+        ],
+        "map_policy": "Conserver hors Atlas global jusqu'à validation des sous-routes et des bornes temporelles.",
+        "status": "provisional",
+        "sources": ["src-saho-indian-south-africans"],
+    },
+    {
+        "id": "za-mig-regional-labour",
+        "title": "Travail migrant régional et économie minière",
+        "period": "fin du XIXe siècle–XXe siècle, avec continuités transformées",
+        "movement_type": "labour-coercive-system",
+        "summary": "L'essor des mines d'or et de diamants s'appuie sur un système de travail migrant recrutant en Afrique du Sud et dans l'Afrique australe. Des travailleurs viennent notamment du Mozambique, du Lesotho, de l'Eswatini, du Botswana et d'autres territoires de la région. Les contrats, taxes, contrôles de circulation et logements masculins créent une mobilité économique profondément encadrée.",
+        "details": [
+            "Il ne s'agit pas d'une route unique : les bassins de recrutement, les entreprises et les périodes changent.",
+            "Le système sépare durablement les travailleurs de leurs familles et influence l'urbanisation régionale.",
+            "Les flux contemporains de travail doivent être documentés séparément ; ils ne prolongent pas automatiquement les routes minières historiques.",
+        ],
+        "map_policy": "Créer ultérieurement des routes par pays d'origine, secteur et période ; aucune route continue jusqu'en 2026 sans preuve de flux.",
+        "status": "provisional",
+        "sources": ["src-statssa-migration-2022", "src-statssa-sadc-migrants"],
+    },
+    {
+        "id": "za-mig-apartheid-removals",
+        "title": "Déplacements forcés internes sous l'apartheid",
+        "period": "principalement 1950–1990",
+        "movement_type": "forced-internal",
+        "summary": "Les lois de l'apartheid entraînent des déplacements forcés massifs depuis des quartiers déclarés « blancs » vers des townships, des périphéries et des bantoustans. Ces mouvements sont internes au territoire administré par l'Afrique du Sud et ne doivent pas être confondus avec une diaspora internationale.",
+        "details": [
+            "District Six et Sophiatown sont des exemples connus, mais le phénomène concerne de nombreuses communautés rurales et urbaines.",
+            "La géométrie honnête est un ensemble de routes locales et régionales liées à des décisions administratives précises.",
+            "Les conséquences spatiales persistent après 1994, sans que les routes historiques restent actives aujourd'hui.",
+        ],
+        "map_policy": "Carte nationale dédiée, par décision et période ; ne pas afficher comme route mondiale.",
+        "status": "ready",
+        "sources": ["src-saho-apartheid"],
+    },
+    {
+        "id": "za-mig-contemporary-immigration",
+        "title": "Immigration internationale contemporaine",
+        "period": "mesurée notamment au recensement de 2022",
+        "movement_type": "multiple-current-contexts",
+        "summary": "L'Afrique du Sud est une destination majeure de migration en Afrique australe. Le recensement de 2022 comptabilise environ 2,4 millions de personnes nées hors du pays, soit près de 3,9 % de la population. La région de la SADC représente la majorité des pays de naissance. Ces chiffres décrivent une population immigrée présente, pas automatiquement des routes encore actives chaque année.",
+        "details": [
+            "Les motifs comprennent le travail, la famille, les études, le commerce, l'asile et d'autres formes de mobilité.",
+            "Le stock de personnes immigrées ne permet pas, à lui seul, de tracer une route pour 2022–2026.",
+            "Toute route contemporaine doit être fondée sur des données de flux, une période et un motif documentés séparément.",
+        ],
+        "map_policy": "Afficher des statistiques de présence dans la fiche ; publier des routes seulement après validation de données de flux.",
+        "status": "ready",
+        "sources": ["src-statssa-migration-2022", "src-statssa-sadc-migrants"],
+    },
+]
+
+SOUTH_AFRICA_DOSSIER["diasporas"] = {
+    "editorial_note": "Une diaspora peut continuer d'exister après la fin du mouvement qui l'a constituée. Cette section décrit des communautés et des héritages ; elle ne maintient aucune route migratoire active sans données de flux.",
+    "inside_south_africa": [
+        {
+            "name": "Communautés du Cap issues de l'esclavage et de l'exil dans l'océan Indien",
+            "summary": "Des descendants de personnes venues de Madagascar, d'Afrique orientale, d'Inde, du Sri Lanka et d'Asie du Sud-Est participent à la formation de communautés diverses au Cap. L'expression « Cape Malay » possède une histoire propre mais ne résume pas toutes les origines.",
+            "status": "ready",
+            "sources": ["src-saho-early-cape-slave-trade", "src-saho-cape-slavery-origins"],
+        },
+        {
+            "name": "Sud-Africains d'ascendance indienne",
+            "summary": "Ces communautés résultent de l'engagisme, de migrations libres et de trajectoires familiales ultérieures. Elles sont particulièrement importantes au KwaZulu-Natal, tout en étant présentes dans l'ensemble du pays.",
+            "status": "ready",
+            "sources": ["src-saho-indian-indentured", "src-saho-indian-south-africans"],
+        },
+        {
+            "name": "Immigrations régionales d'Afrique australe",
+            "summary": "Les personnes nées dans les pays de la SADC constituent la majorité de la population immigrée recensée. Les communautés, motifs et statuts juridiques sont hétérogènes et ne doivent pas être réduits à une seule catégorie.",
+            "status": "ready",
+            "sources": ["src-statssa-migration-2022", "src-statssa-sadc-migrants"],
+        },
+    ],
+    "south_africans_abroad": [
+        {
+            "name": "Émigration et communautés sud-africaines à l'étranger",
+            "summary": "Des Sud-Africains vivent dans de nombreux pays à la suite de migrations politiques, professionnelles, familiales et éducatives. Le dossier ne publie pas encore de classement mondial : les statistiques doivent être vérifiées pays par pays et par période.",
+            "status": "research-gap",
+            "sources": [],
+        },
+        {
+            "name": "Exils liés à l'apartheid",
+            "summary": "Des militants, familles et organisations s'établissent temporairement ou durablement dans des pays voisins et plus lointains. Les routes seront documentées par organisation, lieu d'accueil et période avant cartographie.",
+            "status": "provisional",
+            "sources": ["src-saho-apartheid"],
+        },
+    ],
+}
+
+SOUTH_AFRICA_DOSSIER["sources"].extend([
+    {
+        "id": "src-saho-cape-slavery-origins",
+        "category": "C",
+        "title": "How Unique was Slavery at the Cape?",
+        "publisher": "South African History Online",
+        "year": 2017,
+        "url": "https://sahistory.org.za/article/how-unique-was-slavery-cape",
+    },
+    {
+        "id": "src-saho-1820-settlers",
+        "category": "C",
+        "title": "The first 1820 British Settlers arrive in South Africa",
+        "publisher": "South African History Online",
+        "year": 2011,
+        "url": "https://sahistory.org.za/dated-event/first-1820-british-settlers-arrive-south-africa",
+    },
+    {
+        "id": "src-saho-britain-cape",
+        "category": "C",
+        "title": "Britain takes control of the Cape",
+        "publisher": "South African History Online",
+        "year": 2011,
+        "url": "https://sahistory.org.za/article/britain-takes-control-cape",
+    },
+    {
+        "id": "src-saho-indenture-ship-list",
+        "category": "C",
+        "title": "Ship list of Indian Indentured Labourers",
+        "publisher": "South African History Online",
+        "year": 2016,
+        "url": "https://sahistory.org.za/article/ship-list-indian-indentured-labourers",
+    },
+    {
+        "id": "src-statssa-migration-2022",
+        "category": "A",
+        "title": "Report on Migration Statistics based on Census 2022",
+        "publisher": "Statistics South Africa",
+        "year": 2025,
+        "url": "https://www.statssa.gov.za/publications/03-04-04/03-04-042022.pdf",
+    },
+    {
+        "id": "src-statssa-sadc-migrants",
+        "category": "A",
+        "title": "Most migrants to South Africa come from the SADC region",
+        "publisher": "Statistics South Africa",
+        "year": 2024,
+        "url": "https://www.statssa.gov.za/?p=17111",
+    },
+])

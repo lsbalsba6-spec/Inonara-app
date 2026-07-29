@@ -96,3 +96,39 @@ def test_south_africa_part5_religions_explain_counts():
     assert "history_chapters" not in religions
     assert religions.get("interpretation_note")
     assert len(religions.get("historical_contexts", [])) >= 5
+
+
+def test_south_africa_part6_migration_chapters_are_distinct_and_sourced():
+    dossier = SOUTH_AFRICA_DOSSIER
+    chapters = dossier.get("migration_chapters", [])
+    assert len(chapters) >= 8
+    source_ids = {source["id"] for source in dossier["sources"]}
+    for chapter in chapters:
+        assert chapter.get("movement_type")
+        assert len(chapter.get("summary", "")) >= 180
+        assert chapter.get("map_policy")
+        assert chapter.get("sources")
+        assert set(chapter["sources"]).issubset(source_ids)
+
+
+def test_south_africa_part6_diaspora_does_not_create_active_routes():
+    diaspora = SOUTH_AFRICA_DOSSIER.get("diasporas", {})
+    assert "route" not in diaspora
+    assert "routes" not in diaspora
+    assert diaspora.get("editorial_note")
+    assert len(diaspora.get("inside_south_africa", [])) >= 3
+    assert len(diaspora.get("south_africans_abroad", [])) >= 2
+
+
+def test_south_africa_part6_no_mixed_migration_category():
+    chapters = SOUTH_AFRICA_DOSSIER.get("migration_chapters", [])
+    assert all(chapter.get("movement_type") != "mixed" for chapter in chapters)
+
+
+def test_south_africa_part6_contemporary_stock_is_not_called_route():
+    chapter = next(
+        item for item in SOUTH_AFRICA_DOSSIER["migration_chapters"]
+        if item["id"] == "za-mig-contemporary-immigration"
+    )
+    assert "stock" in chapter["details"][1].lower()
+    assert "flux" in chapter["map_policy"].lower()
