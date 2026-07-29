@@ -1,0 +1,112 @@
+{
+  "migrationFamilies": 117,
+  "routeCandidates": 177,
+  "sources": 195,
+  "byLegacyType": {
+    "forced": 120,
+    "voluntary": 45,
+    "mixed": 12
+  },
+  "byReviewStatus": {
+    "provisional": 162,
+    "split-required": 12,
+    "data-error": 3
+  },
+  "byPeriod": {
+    "atlantic-slave-trades": 79,
+    "decolonization": 8,
+    "cold-war": 7,
+    "early-modern": 3,
+    "contemporary": 6,
+    "prehistory": 8,
+    "medieval": 2,
+    "antiquity": 1,
+    "colonial": 3
+  },
+  "mixedRoutesRequiringSplit": [
+    {
+      "id": "diaspora-afro-bahamian-from-west-and-central-africa-via-american-loy",
+      "origin": "West and Central Africa (via American Loyalist migration)",
+      "destination": "Bahamas",
+      "startYear": 1783,
+      "endYear": 2025
+    },
+    {
+      "id": "diaspora-afro-bahamian-from-liberated-africans-from-intercepted-slav",
+      "origin": "Liberated Africans from intercepted slave ships after 1807",
+      "destination": "Bahamas",
+      "startYear": 1783,
+      "endYear": 2025
+    },
+    {
+      "id": "diaspora-afro-emirati-from-east-africa-historical-via-indian-ocean-",
+      "origin": "East Africa (historical, via Indian Ocean/Gulf trade)",
+      "destination": "United Arab Emirates",
+      "startYear": 1800,
+      "endYear": 2025
+    },
+    {
+      "id": "diaspora-afro-emirati-from-kenya-uganda-nigeria-ethiopia-contempora",
+      "origin": "Kenya, Uganda, Nigeria, Ethiopia (contemporary labor migrati",
+      "destination": "United Arab Emirates",
+      "startYear": 1800,
+      "endYear": 2025
+    },
+    {
+      "id": "diaspora-afro-french-from-west-african-migration-senegal-mali-c-te",
+      "origin": "West African migration (Senegal, Mali, Côte d'Ivoire, Camero",
+      "destination": "France",
+      "startYear": 1500,
+      "endYear": 2025
+    },
+    {
+      "id": "diaspora-afro-french-from-maghreb-migration-with-sub-saharan-herit",
+      "origin": "Maghreb migration with sub-Saharan heritage",
+      "destination": "France",
+      "startYear": 1500,
+      "endYear": 2025
+    },
+    {
+      "id": "diaspora-afro-norwegian-from-somalia-post-1991-civil-war",
+      "origin": "Somalia (post-1991 civil war)",
+      "destination": "Norway",
+      "startYear": 1990,
+      "endYear": 2025
+    },
+    {
+      "id": "diaspora-afro-norwegian-from-eritrea",
+      "origin": "Eritrea",
+      "destination": "Norway",
+      "startYear": 1990,
+      "endYear": 2025
+    },
+    {
+      "id": "diaspora-afro-omani-from-zanzibar-and-the-east-african-coast-via-",
+      "origin": "Zanzibar and the East African coast (via centuries of Omani",
+      "destination": "Oman",
+      "startYear": 1698,
+      "endYear": 2025
+    },
+    {
+      "id": "diaspora-afro-qatari-from-east-african-coast-historical-via-pearli",
+      "origin": "East African coast (historical, via pearling economy)",
+      "destination": "Qatar",
+      "startYear": 1900,
+      "endYear": 2025
+    },
+    {
+      "id": "diaspora-afro-qatari-from-kenya-uganda-nigeria-ghana-contemporary-",
+      "origin": "Kenya, Uganda, Nigeria, Ghana (contemporary labor migration)",
+      "destination": "Qatar",
+      "startYear": 1900,
+      "endYear": 2025
+    },
+    {
+      "id": "diaspora-afro-trinidadian-from-west-and-west-central-africa-including-a",
+      "origin": "West and West-Central Africa, including a notable later wave",
+      "destination": "Trinidad and Tobago",
+      "startYear": 1783,
+      "endYear": 2025
+    }
+  ]
+}
