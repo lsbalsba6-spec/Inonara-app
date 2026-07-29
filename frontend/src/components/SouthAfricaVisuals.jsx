@@ -31,6 +31,8 @@ const SOUTH_AFRICA_BOUNDS = [
   [-22.0, 33.2],
 ];
 
+const DEFAULT_MAP_PADDING = [24, 24];
+
 const CITY_FILTERS = [
   ["all", "Tout afficher"],
   ["national", "Capitales nationales"],
@@ -38,14 +40,14 @@ const CITY_FILTERS = [
   ["major", "Grandes villes"],
 ];
 
-function FitBounds({ bounds, padding = [24, 24] }) {
+function FitBounds({ bounds, padding = DEFAULT_MAP_PADDING }) {
   const map = useMap();
 
   useEffect(() => {
     if (bounds?.length === 2) {
       map.fitBounds(bounds, { padding, animate: false });
     }
-  }, [bounds, map]);
+  }, [bounds, map, padding]);
 
   return null;
 }
