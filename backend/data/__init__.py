@@ -36,6 +36,7 @@ from .paleo_geography import PALEO_GEOGRAPHY
 from .plate_tectonics import PLATE_TECTONICS_EPOCHS
 from .africa_origins import AFRICA_ORIGIN_COUNTRIES
 from .world_diaspora import WORLD_DIASPORA_COMMUNITIES
+from .country_dossiers import COUNTRY_DOSSIERS
 from .diaspora_schema import (
     PERIOD_TAGS,
     STATUS_VALUES,
@@ -145,4 +146,5 @@ __all__ = [
     "STATUS_VALUES",
     "validate_diaspora_entry",
     "LEGACY_COUNTRY_ALIASES",
+    "COUNTRY_DOSSIERS",
 ]

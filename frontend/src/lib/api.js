@@ -5,6 +5,8 @@ export const API = `${BACKEND_URL}/api`;
 
 export const api = axios.create({ baseURL: API });
 
+export const fetchCountries = () => api.get("/countries").then((r) => r.data);
+export const fetchCountryDossier = (iso2) => api.get(`/country-dossiers/${iso2}`).then((r) => r.data);
 export const fetchModules = () => api.get("/modules").then((r) => r.data);
 export const fetchCivilizations = () => api.get("/civilizations").then((r) => r.data);
 export const fetchCivilization = (id) => api.get(`/civilizations/${id}`).then((r) => r.data);

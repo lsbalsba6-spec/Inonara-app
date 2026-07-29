@@ -32,6 +32,7 @@ from data import (
     HISTORICAL_POLITIES,
     PALEO_GEOGRAPHY,
     PLATE_TECTONICS_EPOCHS,
+    COUNTRY_DOSSIERS,
 )
 from db_seed import mirror_content_to_mongo
 
@@ -59,8 +60,6 @@ load_dotenv(ROOT_DIR / '.env')
 mongo_url = os.environ['MONGO_URL']
 client = AsyncIOMotorClient(mongo_url)
 db = client[os.environ['DB_NAME']]
-from data.migration_route_publication import get_public_migration_routes
-
 
 app = FastAPI(title="AfroAtlas API")
 api_router = APIRouter(prefix="/api")
@@ -123,6 +122,16 @@ async def get_civilization(civ_id: str):
 async def list_countries():
     """Full world registry (249 countries/territories) — used for coverage UI."""
     return COUNTRY_REGISTRY
+
+
+
+
+@api_router.get("/country-dossiers/{country_iso2}")
+async def get_country_dossier(country_iso2: str):
+    dossier = COUNTRY_DOSSIERS.get(country_iso2.upper())
+    if not dossier:
+        raise HTTPException(status_code=404, detail="Country dossier not documented yet")
+    return dossier
 
 
 @api_router.get("/africa/origin-countries")
@@ -262,16 +271,30 @@ async def list_culture(category: Optional[str] = None, region: Optional[str] = N
     return items
 
 
+_DIASPORA_DERIVED_ROUTES_CACHE = None
+
+
+def _load_diaspora_derived_routes():
+    global _DIASPORA_DERIVED_ROUTES_CACHE
+    if _DIASPORA_DERIVED_ROUTES_CACHE is None:
+        import json
+        try:
+            path = Path(__file__).parent / "data" / "diaspora_derived_routes.json"
+            _DIASPORA_DERIVED_ROUTES_CACHE = json.loads(path.read_text())
+        except FileNotFoundError:
+            _DIASPORA_DERIVED_ROUTES_CACHE = []
+    return _DIASPORA_DERIVED_ROUTES_CACHE
+
+
 @api_router.get("/migration-routes")
 async def get_migration_routes():
-    """Return curated macro-routes plus route-level reviewed diaspora routes.
-
-    Diaspora-card-derived candidates are not public by default: a community's
-    continued existence does not prove that the migration route that formed it
-    is still active. Candidates remain preserved in the migration registry for
-    country-by-country and diaspora-by-diaspora review.
-    """
-    return get_public_migration_routes()
+    """Returns the curated macro-routes (MIGRATION_ROUTES) PLUS one distinct
+    line per (diaspora entry x documented origin region) pair — 175 as of
+    this writing — generated from the already-sourced DIASPORA_COMMUNITIES
+    data (see scripts/generate_diaspora_routes.py). Per explicit user
+    requirement, these are never consolidated into a single summarizing
+    line; each keeps its own era_start/era_end and sources."""
+    return MIGRATION_ROUTES + _load_diaspora_derived_routes()
 
 
 @api_router.get("/diaspora-communities")

@@ -6,9 +6,11 @@ import {
   fetchRoutes,
   fetchAfricaOriginCountries,
   fetchAfricaOriginCountry,
+  fetchCountryDossier,
 } from "../lib/api";
 import { ATLAS_COLORS } from "../lib/designTokens";
 import CountryMiniMap from "../components/CountryMiniMap";
+import CountryDossierView from "../components/CountryDossierView";
 
 export function slugify(name) {
   return (name || "")
@@ -59,6 +61,7 @@ export default function CountryDetail() {
   const [routes, setRoutes] = useState([]);
   const [originCountry, setOriginCountry] = useState(null);
   const [loadingGeneric, setLoadingGeneric] = useState(true);
+  const [masterDossier, setMasterDossier] = useState(null);
 
   useEffect(() => {
     fetchHistoricalPolities().then(setPolities).catch(() => {});
@@ -69,11 +72,18 @@ export default function CountryDetail() {
   const bespoke = BESPOKE_COUNTRY_CONTENT[id];
 
   useEffect(() => {
+    let cancelled = false;
+    const dossierIso = id === "south-africa" || id === "afrique-du-sud" ? "ZA" : null;
+    if (dossierIso) {
+      fetchCountryDossier(dossierIso)
+        .then((data) => { if (!cancelled) { setMasterDossier(data); setLoadingGeneric(false); } })
+        .catch(() => { if (!cancelled) setLoadingGeneric(false); });
+      return () => { cancelled = true; };
+    }
     if (bespoke) {
       setLoadingGeneric(false);
-      return;
+      return () => { cancelled = true; };
     }
-    let cancelled = false;
     fetchAfricaOriginCountries()
       .then((list) => {
         const match = list.find((c) => slugify(c.country) === id);
@@ -96,6 +106,11 @@ export default function CountryDetail() {
 
   if (loadingGeneric) {
     return <div className="pt-[120px] text-center text-bone/50">Chargement…</div>;
+  }
+
+
+  if (masterDossier) {
+    return <CountryDossierView dossier={masterDossier} />;
   }
 
   if (!bespoke && !originCountry && genericDiasporaMatches.length === 0) {
