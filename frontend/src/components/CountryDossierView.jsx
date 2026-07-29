@@ -1,10 +1,11 @@
 import { useMemo, useState } from "react";
+import { SouthAfricaCountryMap, SouthAfricaFlagHistory, SouthAfricaMigrationMap } from "./SouthAfricaVisuals";
 
 const STATUS_LABELS = {
   ready: "Établi",
   provisional: "À nuancer",
   disputed: "Débattu",
-  "research-gap": "Recherche à poursuivre",
+  "research-gap": "À suivre",
 };
 
 function StatusBadge({ status }) {
@@ -75,7 +76,7 @@ export default function CountryDossierView({ dossier }) {
   const [active, setActive] = useState("overview");
   const sourceMap = useMemo(() => new Map(dossier.sources.map((s) => [s.id, s])), [dossier.sources]);
   const tabs = [
-    ["overview", "Présentation"], ["timeline", "Histoire"], ["peoples", "Peuples"],
+    ["overview", "Présentation"], ["visuals", "Cartes & drapeaux"], ["geography", "Géographie"], ["institutions", "Institutions"], ["timeline", "Histoire"], ["peoples", "Peuples"],
     ["languages", "Langues"], ["religions", "Religions"], ["polities", "Royaumes & États"],
     ["migrations", "Migrations"], ["culture", "Culture"], ["heritage", "Patrimoine"],
     ["figures", "Personnalités"], ["historiography", "Débats"],
@@ -99,16 +100,35 @@ export default function CountryDossierView({ dossier }) {
       <section className="mt-8">
         {active === "overview" && <div className="space-y-7">
           <p className="text-lg text-bone/80 leading-relaxed">{dossier.overview.summary}</p>
-          <div className="grid gap-3 sm:grid-cols-3">
+          <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
             <div className="border border-bone/10 rounded-lg p-4"><p className="overline text-bone/45">Population, recensement 2022</p><p className="font-serif text-2xl text-gold mt-1">≈ {(dossier.overview.population_census_2022 / 1000000).toLocaleString("fr-FR", { maximumFractionDigits: 1 })} millions</p></div>
+            <div className="border border-bone/10 rounded-lg p-4"><p className="overline text-bone/45">Président actuel</p><p className="font-serif text-xl text-gold mt-1">{dossier.overview.president_current?.name}</p><p className="text-xs text-bone/45 mt-1">Information vérifiée au {dossier.overview.president_current?.current_as_of}</p></div>
             <div className="border border-bone/10 rounded-lg p-4"><p className="overline text-bone/45">Langues officielles</p><p className="font-serif text-2xl text-gold mt-1">{dossier.overview.official_languages_count}</p></div>
             <div className="border border-bone/10 rounded-lg p-4"><p className="overline text-bone/45">Sources documentées</p><p className="font-serif text-2xl text-gold mt-1">{dossier.sources.length}</p></div>
           </div>
           <SourceLinks ids={dossier.overview.sources} sourceMap={sourceMap} />
           <div>
-            <h2 className="font-serif text-2xl text-gold mb-3">Limites assumées</h2>
+            <h2 className="font-serif text-2xl text-gold mb-3">À suivre dans ce dossier</h2>
             <ul className="space-y-2 text-bone/70 list-disc pl-5">{dossier.research_gaps.map((x) => <li key={x}>{x}</li>)}</ul>
           </div>
+        </div>}
+        {active === "visuals" && <div className="space-y-10">
+          <div><h2 className="font-serif text-2xl text-gold mb-4">Carte contemporaine</h2><SouthAfricaCountryMap cities={dossier.map_visuals?.cities || []} /></div>
+          <div><h2 className="font-serif text-2xl text-gold mb-4">Évolution des drapeaux nationaux</h2><SouthAfricaFlagHistory items={dossier.flag_history || []} /><p className="mt-3 text-xs text-bone/50">Les drapeaux sont présentés comme des objets historiques. Leur affichage ne constitue pas une valorisation des régimes auxquels ils ont été associés.</p></div>
+          <div><h2 className="font-serif text-2xl text-gold mb-4">Routes concernant l’Afrique du Sud</h2><SouthAfricaMigrationMap routes={dossier.map_visuals?.migration_routes || []} note={dossier.map_visuals?.note} /></div>
+        </div>}
+        {active === "geography" && <div className="space-y-8">
+          <div className="grid gap-3 sm:grid-cols-3"><div className="rounded-lg border border-bone/10 p-4"><p className="overline text-bone/45">Superficie</p><p className="font-serif text-2xl text-gold mt-1">{dossier.geography.area_km2.toLocaleString("fr-FR")} km²</p></div><div className="rounded-lg border border-bone/10 p-4"><p className="overline text-bone/45">Façades maritimes</p><p className="text-bone/75 mt-2">{dossier.geography.coasts.join(" · ")}</p></div><div className="rounded-lg border border-bone/10 p-4"><p className="overline text-bone/45">Voisins</p><p className="text-bone/75 mt-2">{dossier.geography.neighbours.join(", ")}</p></div></div>
+          <div><h2 className="font-serif text-2xl text-gold mb-3">Reliefs et régions physiques</h2><SimpleCards items={dossier.geography.relief} sourceMap={sourceMap} /></div>
+          <div><h2 className="font-serif text-2xl text-gold mb-3">Grands cours d’eau</h2><SimpleCards items={dossier.geography.rivers} sourceMap={sourceMap} /></div>
+          <div><h2 className="font-serif text-2xl text-gold mb-3">Biomes</h2><div className="flex flex-wrap gap-2">{dossier.geography.biomes.map((item) => <span key={item} className="rounded-full border border-bone/15 px-3 py-1 text-sm text-bone/70">{item}</span>)}</div></div>
+          <p className="rounded-lg border border-amber-400/20 bg-amber-400/[0.04] p-4 text-sm leading-relaxed text-bone/70">{dossier.geography.note}</p><SourceLinks ids={dossier.geography.sources} sourceMap={sourceMap} />
+        </div>}
+        {active === "institutions" && <div className="space-y-8">
+          <div><p className="overline text-bone/45">Forme de l’État</p><h2 className="font-serif text-2xl text-gold mt-1">{dossier.institutions.government_form}</h2></div>
+          <div><h2 className="font-serif text-2xl text-gold mb-3">Capitales et fonctions nationales</h2><SimpleCards items={dossier.institutions.capital_functions} sourceMap={sourceMap} titleField="city" bodyField="function" /></div>
+          <div><h2 className="font-serif text-2xl text-gold mb-3">Neuf provinces</h2><SimpleCards items={dossier.institutions.provinces} sourceMap={sourceMap} bodyField="capital" /></div>
+          <SourceLinks ids={dossier.institutions.sources} sourceMap={sourceMap} />
         </div>}
         {active === "timeline" && <Timeline items={dossier.timeline} sourceMap={sourceMap} />}
         {active === "peoples" && <SimpleCards items={dossier.peoples} sourceMap={sourceMap} />}
@@ -126,7 +146,8 @@ export default function CountryDossierView({ dossier }) {
           <SourceLinks ids={dossier.languages.sources} sourceMap={sourceMap} />
         </div>}
         {active === "religions" && <div className="space-y-5">
-          <div className="grid gap-3 sm:grid-cols-2">{dossier.religions.census_2022.map((r) => <div key={r.name} className="border border-bone/10 rounded-lg p-4"><p className="text-bone/65">{r.name}</p><p className="font-serif text-xl text-gold">{r.count.toLocaleString("fr-FR")}</p></div>)}</div>
+          <div className="rounded-lg border border-gold/20 bg-gold/[0.04] p-4"><p className="text-sm text-bone/75">{dossier.religions.measure_label}</p>{dossier.religions.christian_share_2022 && <p className="mt-2 font-serif text-2xl text-gold">Christianisme : {dossier.religions.christian_share_2022}% de la population selon l’analyse de Stats SA</p>}</div>
+          <div className="grid gap-3 sm:grid-cols-2">{dossier.religions.census_2022.map((r) => <div key={r.name} className="border border-bone/10 rounded-lg p-4"><p className="text-bone/65">{r.name}</p><p className="font-serif text-xl text-gold">{r.count.toLocaleString("fr-FR")} personnes</p></div>)}</div>
           <p className="text-bone/65 leading-relaxed">{dossier.religions.note}</p><SourceLinks ids={dossier.religions.sources} sourceMap={sourceMap} />
         </div>}
         {active === "historiography" && <div className="space-y-4">
@@ -134,7 +155,7 @@ export default function CountryDossierView({ dossier }) {
           {dossier.historiography.map((note, index) => <article key={index} className="rounded-lg border border-amber-400/20 bg-amber-400/[0.04] p-4"><div className="flex items-start gap-3"><span className="text-amber-300 text-sm">⚠</span><p className="text-bone/75 leading-relaxed">{note}</p></div></article>)}
         </div>}
         {active === "research" && <div className="space-y-4">
-          <p className="text-bone/65 leading-relaxed">Ces éléments restent volontairement ouverts. Ils ne sont pas présentés comme des faits établis ni transformés en routes ou frontières publiques.</p>
+          <p className="text-bone/65 leading-relaxed">Ces sujets seront ajoutés et développés au fil des prochaines mises à jour du dossier.</p>
           {dossier.research_gaps.map((gap, index) => <article key={index} className="rounded-lg border border-bone/10 p-4"><div className="flex items-start justify-between gap-3"><p className="text-bone/75 leading-relaxed">{gap}</p><StatusBadge status="research-gap" /></div></article>)}
         </div>}
         {active === "sources" && <div className="space-y-4">

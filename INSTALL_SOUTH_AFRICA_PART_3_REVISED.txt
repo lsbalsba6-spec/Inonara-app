@@ -1,0 +1,26 @@
+INONARA — Afrique du Sud, partie 3 révisée
+
+1. Depuis Termux :
+   cd ~/inonara-app || exit 1
+   git branch sauvegarde-avant-afrique-du-sud-partie-3-revisee 2>/dev/null || true
+   unzip -o /sdcard/Download/inonara-afrique-du-sud-partie-3-revisee.zip -d ~/inonara-app
+
+2. Tests backend :
+   PYTHONPATH=backend python -m pytest -q backend/tests/test_country_dossier_south_africa.py
+   python -m py_compile backend/data/country_dossiers/south_africa.py backend/tests/test_country_dossier_south_africa.py
+
+3. Tests frontend :
+   cd frontend
+   npm test -- --watchAll=false
+   npm run build
+   cd ..
+
+4. Commit :
+   git add backend/data/country_dossiers/south_africa.py \
+     backend/tests/test_country_dossier_south_africa.py \
+     frontend/src/components/CountryDossierView.jsx \
+     frontend/src/components/SouthAfricaVisuals.jsx \
+     INSTALL_SOUTH_AFRICA_PART_3_REVISED.txt \
+     SOUTH_AFRICA_PART_3_REVISED_CHANGELOG.md
+   git commit -m "feat: enrichir le dossier Afrique du Sud avec cartes et drapeaux"
+   git push

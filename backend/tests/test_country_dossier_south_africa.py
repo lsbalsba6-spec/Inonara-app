@@ -42,3 +42,25 @@ def test_every_published_figure_has_sources():
 def test_historiography_and_research_gaps_are_explicit():
     assert len(SOUTH_AFRICA_DOSSIER["historiography"]) >= 4
     assert len(SOUTH_AFRICA_DOSSIER["research_gaps"]) >= 5
+
+
+def test_south_africa_visual_and_public_fields_are_present():
+    dossier = SOUTH_AFRICA_DOSSIER
+    assert dossier["overview"]["president_current"]["name"] == "Cyril Ramaphosa"
+    assert dossier["overview"]["national_flag"]["current_since"] == "1994-04-27"
+    assert len(dossier["flag_history"]) == 3
+    assert len(dossier["map_visuals"]["cities"]) >= 6
+    assert len(dossier["map_visuals"]["migration_routes"]) >= 6
+    assert dossier["geography"]["area_km2"] > 1_000_000
+    assert len(dossier["institutions"]["provinces"]) == 9
+
+
+def test_south_africa_map_routes_are_bounded_and_sourced():
+    source_ids = {source["id"] for source in SOUTH_AFRICA_DOSSIER["sources"]}
+    for route in SOUTH_AFRICA_DOSSIER["map_visuals"]["migration_routes"]:
+        assert isinstance(route["start"], int)
+        assert isinstance(route["end"], int)
+        assert route["start"] <= route["end"]
+        assert route["sources"]
+        assert set(route["sources"]).issubset(source_ids)
+        assert route["type"] != "mixed"
