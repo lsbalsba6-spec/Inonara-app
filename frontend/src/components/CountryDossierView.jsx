@@ -141,7 +141,23 @@ export default function CountryDossierView({ dossier }) {
           <div><h2 className="font-serif text-2xl text-gold mb-3">Neuf provinces</h2><SimpleCards items={institutions.provinces || []} sourceMap={sourceMap} bodyField="capital" /></div>
           <SourceLinks ids={institutions.sources || []} sourceMap={sourceMap} />
         </div>}
-        {active === "timeline" && <Timeline items={dossier.timeline} sourceMap={sourceMap} />}
+        {active === "timeline" && <div className="space-y-10">
+          <Timeline items={dossier.timeline || []} sourceMap={sourceMap} />
+          {(dossier.history_chapters || []).length > 0 && <div className="space-y-6">
+            <div className="border-t border-bone/10 pt-8">
+              <p className="overline text-bone/45">Dossier approfondi</p>
+              <h2 className="mt-1 font-serif text-3xl text-gold">Comprendre les grandes transformations historiques</h2>
+              <p className="mt-3 max-w-3xl leading-relaxed text-bone/65">Ces chapitres développent la chronologie sans présenter les frontières modernes comme éternelles ni réduire l’histoire du pays à la seule période coloniale.</p>
+            </div>
+            {(dossier.history_chapters || []).map((chapter) => <article key={chapter.id} className="rounded-xl border border-bone/10 bg-bone/[0.025] p-5 md:p-7">
+              <div className="flex flex-wrap items-center gap-2"><p className="text-xs uppercase tracking-widest text-gold">{chapter.period}</p><StatusBadge status={chapter.status} /></div>
+              <h3 className="mt-2 font-serif text-2xl text-bone">{chapter.title}</h3>
+              <p className="mt-3 leading-relaxed text-bone/78">{chapter.summary}</p>
+              {(chapter.details || []).length > 0 && <ul className="mt-4 space-y-2 border-l border-gold/25 pl-4 text-sm leading-relaxed text-bone/65">{chapter.details.map((detail, index) => <li key={index}>{detail}</li>)}</ul>}
+              <SourceLinks ids={chapter.sources || []} sourceMap={sourceMap} />
+            </article>)}
+          </div>}
+        </div>}
         {active === "peoples" && <SimpleCards items={dossier.peoples} sourceMap={sourceMap} />}
         {active === "polities" && <SimpleCards items={dossier.polities} sourceMap={sourceMap} bodyField="mapping" />}
         {active === "migrations" && <SimpleCards items={dossier.migrations} sourceMap={sourceMap} titleField="label" bodyField="reason" />}

@@ -84,7 +84,7 @@ export function SouthAfricaCountryMap({ cities = [] }) {
     const southAfrica = all.find((item) => String(item.id).padStart(3, "0") === "710");
     if (!southAfrica) return null;
     const region = all.filter((item) => COUNTRY_IDS.has(String(item.id).padStart(3, "0")));
-    const projection = geoMercator().fitExtent([[34, 34], [866, 566]], southAfrica);
+    const projection = geoMercator().fitExtent([[22, 22], [1078, 678]], southAfrica);
     return { southAfrica, region, projection, path: geoPath(projection) };
   }, []);
 
@@ -102,12 +102,12 @@ export function SouthAfricaCountryMap({ cities = [] }) {
         ))}
       </div>
       <div className="overflow-hidden rounded-xl border border-bone/10 bg-[#151210] p-3">
-        <svg viewBox="0 0 900 600" className="w-full" role="img" aria-label="Carte détaillée de l'Afrique du Sud avec capitales et grandes villes">
-          <rect width="900" height="600" fill="#151210" />
+        <svg viewBox="0 0 1100 700" className="min-h-[520px] w-full md:min-h-[650px]" role="img" aria-label="Carte détaillée de l'Afrique du Sud avec capitales et grandes villes">
+          <rect width="1100" height="700" fill="#151210" />
           {region.map((country) => <path key={country.id} d={path(country)} fill={String(country.id).padStart(3,"0") === "710" ? "#744534" : "#2A2421"} stroke={String(country.id).padStart(3,"0") === "710" ? "#D4AF37" : "#554A43"} strokeWidth={String(country.id).padStart(3,"0") === "710" ? 2.2 : 0.8} />)}
           <path d={path(southAfrica)} fill="none" stroke="#E7C66D" strokeWidth="2.5" />
-          <text x="120" y="500" fill="#7797B8" fontSize="14">Océan Atlantique</text>
-          <text x="690" y="480" fill="#7797B8" fontSize="14">Océan Indien</text>
+          <text x="105" y="620" fill="#7797B8" fontSize="15">Océan Atlantique</text>
+          <text x="860" y="570" fill="#7797B8" fontSize="15">Océan Indien</text>
           {visibleCities.map((city) => {
             const point = projection(city.coordinates);
             if (!point) return null;
@@ -138,7 +138,11 @@ export function SouthAfricaMigrationMap({ routes = [], note }) {
   const periods = useMemo(() => [...new Set(routes.map((route) => `${route.start}-${route.end}`))], [routes]);
   const [selectedPeriod, setSelectedPeriod] = useState("all");
   const countries = useMemo(() => feature(worldTopo, worldTopo.objects.countries), []);
-  const projection = useMemo(() => geoMercator().scale(145).translate([500, 300]), []);
+  const projection = useMemo(() => {
+    const coordinates = routes.flatMap((route) => [route.origin_coordinates, route.destination_coordinates]).filter(Boolean);
+    const geometry = { type: "Feature", properties: {}, geometry: { type: "MultiPoint", coordinates } };
+    return geoMercator().fitExtent([[55, 45], [945, 555]], geometry);
+  }, [routes]);
   const path = useMemo(() => geoPath(projection), [projection]);
   const visibleRoutes = selectedPeriod === "all" ? routes : routes.filter((route) => `${route.start}-${route.end}` === selectedPeriod);
 
@@ -164,6 +168,14 @@ export function SouthAfricaMigrationMap({ routes = [], note }) {
             <circle cx={origin[0]} cy={origin[1]} r="4" fill={color} stroke="#151210" strokeWidth="1.5" />
             <circle cx={destination[0]} cy={destination[1]} r="5" fill={color} stroke="#F4E8D0" strokeWidth="1.3" />
           </g>;
+        })}
+        {[...new Map(visibleRoutes.flatMap((route) => [
+          [route.origin, route.origin_coordinates],
+          [route.destination, route.destination_coordinates],
+        ]).filter(([, coordinates]) => coordinates).map(([name, coordinates]) => [name, coordinates])).entries()].map(([name, coordinates]) => {
+          const point = projection(coordinates);
+          if (!point) return null;
+          return <text key={name} x={point[0] + 7} y={point[1] - 7} fill="#F4E8D0" fontSize="12" stroke="#151210" strokeWidth="3" paintOrder="stroke">{name}</text>;
         })}
       </svg>
     </div>

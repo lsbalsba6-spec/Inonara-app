@@ -27,18 +27,297 @@ SOUTH_AFRICA_DOSSIER = {
             {"city": "Le Cap", "function": "législative"},
             {"city": "Bloemfontein", "function": "judiciaire traditionnellement associée à la Cour suprême d'appel"},
         ],
-        "sources": ["src-statssa-census-2022", "src-constitution-1996", "src-sasl-2023", "src-gov-government-system"],
+        "history_chapters": [
+        {
+            "id": "za-history-deep-time",
+            "title": "Des hominines aux premières sociétés humaines documentées",
+            "period": "Plusieurs millions d’années – premier millénaire de notre ère",
+            "summary": "Le territoire sud-africain conserve des archives majeures de l’évolution humaine. Les sites fossilifères du Gauteng et du Nord-Ouest documentent plusieurs espèces d’hominines, tandis que les sites pléistocènes du littoral et de l’intérieur montrent des innovations techniques et symboliques anciennes. Ces découvertes ne racontent pas une progression simple et linéaire : elles témoignent de populations diverses, de changements climatiques et de réseaux de mobilité dont les détails restent débattus.",
+            "details": [
+                "Les expressions modernes comme « berceau de l’humanité » sont utiles pour la médiation, mais elles ne signifient pas qu’un seul lieu aurait produit toute l’humanité moderne.",
+                "Les sociétés san et khoekhoe possèdent des histoires distinctes. Les catégories actuelles ne doivent pas être projetées sans nuance sur toute la préhistoire.",
+                "L’arrivée progressive de communautés agricoles et métallurgiques de langues bantoues transforme les économies et les paysages à partir des premiers siècles de notre ère, sans remplacer uniformément les populations déjà présentes."
+            ],
+            "status": "ready",
+            "sources": ["src-unesco-fossil-hominid-sites", "src-unesco-pleistocene-sites", "src-saho-precolonial"]
+        },
+        {
+            "id": "za-history-mapungubwe",
+            "title": "Mapungubwe et les réseaux de l’Afrique australe",
+            "period": "environ 900–1300",
+            "summary": "Mapungubwe se développe près de la confluence du Limpopo et du Shashe. Son organisation sociale hiérarchisée, ses objets en or et ses importations témoignent d’un pouvoir régional intégré aux échanges reliant l’intérieur de l’Afrique australe aux ports de l’océan Indien. Le royaume ne doit pas être présenté comme l’ancêtre direct de l’État sud-africain moderne : il appartient à une histoire régionale qui traverse les frontières actuelles de l’Afrique du Sud, du Botswana et du Zimbabwe.",
+            "details": [
+                "Le paysage culturel classé par l’UNESCO documente la montée et le déclin d’un royaume entre environ 900 et 1300.",
+                "Les frontières exactes de son autorité ne sont pas connues ; une aire d’influence approximative est plus honnête qu’un polygone politique précis.",
+                "Son insertion dans les échanges d’or, d’ivoire, de verre et de textiles relie l’histoire intérieure du continent aux circuits de l’océan Indien."
+            ],
+            "status": "ready",
+            "sources": ["src-unesco-mapungubwe", "src-saho-pre1500"]
+        },
+        {
+            "id": "za-history-cape",
+            "title": "Le Cap néerlandais : établissement, esclavage et dépossession",
+            "period": "1652–1795",
+            "summary": "En 1652, la VOC établit une station de ravitaillement au Cap. L’expansion foncière des colons provoque des conflits et des pertes territoriales pour des communautés khoekhoe. La société coloniale repose aussi sur l’importation de personnes réduites en esclavage depuis Madagascar, l’Inde, l’Asie du Sud-Est, le Mozambique et l’Afrique orientale. Ces déplacements ont profondément façonné les langues, les religions, les cuisines et les identités du Cap.",
+            "details": [
+                "La fondation coloniale n’est pas la « naissance » de l’Afrique du Sud : des sociétés complexes existaient bien avant 1652.",
+                "Les personnes esclavisées ne formaient pas un groupe homogène et leurs routes d’arrivée doivent être séparées selon les périodes et les régions d’origine.",
+                "Les catégories raciales ultérieures ont souvent effacé les identités précises des Khoekhoe, des San, des esclaves africains et asiatiques et de leurs descendants."
+            ],
+            "status": "ready",
+            "sources": ["src-saho-slavery-cape", "src-saho-early-cape-slave-trade", "src-rama-forced-indian", "src-saho-dutch-settlement"]
+        },
+        {
+            "id": "za-history-nineteenth",
+            "title": "Le XIXe siècle : royaumes africains, expansion coloniale et nouvelles économies",
+            "period": "1795–1910",
+            "summary": "Le XIXe siècle combine l’expansion britannique, la formation et la transformation de polities africaines, le Grand Trek, la création de républiques boers, des guerres de frontière et l’intégration forcée de territoires. Les découvertes de diamants puis d’or accélèrent l’industrialisation, l’urbanisation et la mise en place d’un système de travail migrant contrôlé.",
+            "details": [
+                "Le royaume zoulou n’est qu’une des nombreuses formations politiques africaines de la période ; les histoires sotho, tswana, xhosa, ndebele, swazi, venda et tsonga doivent être traitées séparément.",
+                "Le terme « Mfecane » fait l’objet de débats historiographiques : il ne doit pas servir d’explication unique à toutes les violences et migrations régionales.",
+                "L’engagisme indien vers le Natal à partir de 1860 est un mouvement sous contrat et sous forte contrainte, distinct de la migration libre des commerçants et artisans indiens."
+            ],
+            "status": "provisional",
+            "sources": ["src-saho-zulu-natal", "src-stapleton-military-history", "src-saho-indian-indentured", "src-saho-indian-south-africans"]
+        },
+        {
+            "id": "za-history-union",
+            "title": "Union, ségrégation et dépossession légale",
+            "period": "1910–1948",
+            "summary": "L’Union sud-africaine réunit quatre colonies en 1910, mais ne crée pas une démocratie inclusive. La majorité noire est exclue du pouvoir national. Les politiques foncières, urbaines et professionnelles institutionnalisent une ségrégation déjà ancienne et structurent un système de travail migrant au bénéfice des mines et de l’agriculture commerciale.",
+            "details": [
+                "L’Union est un compromis entre élites blanches britanniques et afrikaners, et non une union politique consentie par l’ensemble de la population.",
+                "Les résistances prennent des formes syndicales, rurales, intellectuelles, religieuses et politiques ; elles ne commencent pas en 1948.",
+                "Les catégories administratives imposées par l’État deviennent progressivement des instruments de contrôle social et territorial."
+            ],
+            "status": "ready",
+            "sources": ["src-saho-union-democracy"]
+        },
+        {
+            "id": "za-history-apartheid",
+            "title": "Apartheid, résistances et déplacements forcés",
+            "period": "1948–1994",
+            "summary": "Après la victoire électorale du Parti national en 1948, l’apartheid systématise la classification raciale, la séparation résidentielle, l’éducation différenciée et la répression. Les « homelands » et les déplacements forcés cherchent à redessiner la citoyenneté et le territoire. Les résistances intérieures, les mobilisations syndicales, la lutte armée, les mouvements étudiants, les Églises, les sanctions et les solidarités internationales contribuent à l’affaiblissement du régime.",
+            "details": [
+                "L’apartheid ne se résume pas à la séparation des espaces publics : il organise l’accès à la terre, au travail, à la citoyenneté, à l’éducation et à la mobilité.",
+                "Les oppositions sont plurielles : ANC, PAC, Black Consciousness, syndicats, organisations civiques, mouvements féminins et nombreuses structures locales.",
+                "La fin juridique de l’apartheid ne supprime pas automatiquement les inégalités spatiales et économiques produites pendant plusieurs générations."
+            ],
+            "status": "ready",
+            "sources": ["src-saho-apartheid", "src-unesco-robben-island", "src-saho-elections"]
+        },
+        {
+            "id": "za-history-democracy",
+            "title": "Transition négociée et démocratie constitutionnelle",
+            "period": "1990–aujourd’hui",
+            "summary": "La transition s’ouvre avec la légalisation des organisations interdites, la libération de prisonniers politiques et des négociations menées dans un contexte de violences persistantes. Les élections d’avril 1994 installent un gouvernement démocratique. La Constitution de 1996 établit un État fondé sur la dignité, l’égalité, les droits fondamentaux et le contrôle constitutionnel.",
+            "details": [
+                "1994 est une rupture politique majeure, mais pas un point de départ absolu : les institutions démocratiques résultent de décennies de luttes et de négociations.",
+                "La Commission vérité et réconciliation constitue un mécanisme central mais controversé de la transition ; elle ne clôt pas tous les débats sur la justice et les réparations.",
+                "Les enjeux contemporains comprennent les inégalités, le chômage, la terre, la qualité des services publics, les violences, les migrations régionales et la consolidation institutionnelle."
+            ],
+            "status": "ready",
+            "sources": ["src-interim-constitution-1993", "src-constitution-1996", "src-saho-elections", "src-gov-government-system"]
+        }
+    ],
+    "sources": ["src-statssa-census-2022", "src-constitution-1996", "src-sasl-2023", "src-gov-government-system"],
         "president_current": {
             "name": "Cyril Ramaphosa",
             "title": "Président de la République",
             "in_office_since": "2018-02-15",
             "current_as_of": "2026-07-29",
-            "sources": ["src-presidency-current"],
+            "history_chapters": [
+        {
+            "id": "za-history-deep-time",
+            "title": "Des hominines aux premières sociétés humaines documentées",
+            "period": "Plusieurs millions d’années – premier millénaire de notre ère",
+            "summary": "Le territoire sud-africain conserve des archives majeures de l’évolution humaine. Les sites fossilifères du Gauteng et du Nord-Ouest documentent plusieurs espèces d’hominines, tandis que les sites pléistocènes du littoral et de l’intérieur montrent des innovations techniques et symboliques anciennes. Ces découvertes ne racontent pas une progression simple et linéaire : elles témoignent de populations diverses, de changements climatiques et de réseaux de mobilité dont les détails restent débattus.",
+            "details": [
+                "Les expressions modernes comme « berceau de l’humanité » sont utiles pour la médiation, mais elles ne signifient pas qu’un seul lieu aurait produit toute l’humanité moderne.",
+                "Les sociétés san et khoekhoe possèdent des histoires distinctes. Les catégories actuelles ne doivent pas être projetées sans nuance sur toute la préhistoire.",
+                "L’arrivée progressive de communautés agricoles et métallurgiques de langues bantoues transforme les économies et les paysages à partir des premiers siècles de notre ère, sans remplacer uniformément les populations déjà présentes."
+            ],
+            "status": "ready",
+            "sources": ["src-unesco-fossil-hominid-sites", "src-unesco-pleistocene-sites", "src-saho-precolonial"]
+        },
+        {
+            "id": "za-history-mapungubwe",
+            "title": "Mapungubwe et les réseaux de l’Afrique australe",
+            "period": "environ 900–1300",
+            "summary": "Mapungubwe se développe près de la confluence du Limpopo et du Shashe. Son organisation sociale hiérarchisée, ses objets en or et ses importations témoignent d’un pouvoir régional intégré aux échanges reliant l’intérieur de l’Afrique australe aux ports de l’océan Indien. Le royaume ne doit pas être présenté comme l’ancêtre direct de l’État sud-africain moderne : il appartient à une histoire régionale qui traverse les frontières actuelles de l’Afrique du Sud, du Botswana et du Zimbabwe.",
+            "details": [
+                "Le paysage culturel classé par l’UNESCO documente la montée et le déclin d’un royaume entre environ 900 et 1300.",
+                "Les frontières exactes de son autorité ne sont pas connues ; une aire d’influence approximative est plus honnête qu’un polygone politique précis.",
+                "Son insertion dans les échanges d’or, d’ivoire, de verre et de textiles relie l’histoire intérieure du continent aux circuits de l’océan Indien."
+            ],
+            "status": "ready",
+            "sources": ["src-unesco-mapungubwe", "src-saho-pre1500"]
+        },
+        {
+            "id": "za-history-cape",
+            "title": "Le Cap néerlandais : établissement, esclavage et dépossession",
+            "period": "1652–1795",
+            "summary": "En 1652, la VOC établit une station de ravitaillement au Cap. L’expansion foncière des colons provoque des conflits et des pertes territoriales pour des communautés khoekhoe. La société coloniale repose aussi sur l’importation de personnes réduites en esclavage depuis Madagascar, l’Inde, l’Asie du Sud-Est, le Mozambique et l’Afrique orientale. Ces déplacements ont profondément façonné les langues, les religions, les cuisines et les identités du Cap.",
+            "details": [
+                "La fondation coloniale n’est pas la « naissance » de l’Afrique du Sud : des sociétés complexes existaient bien avant 1652.",
+                "Les personnes esclavisées ne formaient pas un groupe homogène et leurs routes d’arrivée doivent être séparées selon les périodes et les régions d’origine.",
+                "Les catégories raciales ultérieures ont souvent effacé les identités précises des Khoekhoe, des San, des esclaves africains et asiatiques et de leurs descendants."
+            ],
+            "status": "ready",
+            "sources": ["src-saho-slavery-cape", "src-saho-early-cape-slave-trade", "src-rama-forced-indian", "src-saho-dutch-settlement"]
+        },
+        {
+            "id": "za-history-nineteenth",
+            "title": "Le XIXe siècle : royaumes africains, expansion coloniale et nouvelles économies",
+            "period": "1795–1910",
+            "summary": "Le XIXe siècle combine l’expansion britannique, la formation et la transformation de polities africaines, le Grand Trek, la création de républiques boers, des guerres de frontière et l’intégration forcée de territoires. Les découvertes de diamants puis d’or accélèrent l’industrialisation, l’urbanisation et la mise en place d’un système de travail migrant contrôlé.",
+            "details": [
+                "Le royaume zoulou n’est qu’une des nombreuses formations politiques africaines de la période ; les histoires sotho, tswana, xhosa, ndebele, swazi, venda et tsonga doivent être traitées séparément.",
+                "Le terme « Mfecane » fait l’objet de débats historiographiques : il ne doit pas servir d’explication unique à toutes les violences et migrations régionales.",
+                "L’engagisme indien vers le Natal à partir de 1860 est un mouvement sous contrat et sous forte contrainte, distinct de la migration libre des commerçants et artisans indiens."
+            ],
+            "status": "provisional",
+            "sources": ["src-saho-zulu-natal", "src-stapleton-military-history", "src-saho-indian-indentured", "src-saho-indian-south-africans"]
+        },
+        {
+            "id": "za-history-union",
+            "title": "Union, ségrégation et dépossession légale",
+            "period": "1910–1948",
+            "summary": "L’Union sud-africaine réunit quatre colonies en 1910, mais ne crée pas une démocratie inclusive. La majorité noire est exclue du pouvoir national. Les politiques foncières, urbaines et professionnelles institutionnalisent une ségrégation déjà ancienne et structurent un système de travail migrant au bénéfice des mines et de l’agriculture commerciale.",
+            "details": [
+                "L’Union est un compromis entre élites blanches britanniques et afrikaners, et non une union politique consentie par l’ensemble de la population.",
+                "Les résistances prennent des formes syndicales, rurales, intellectuelles, religieuses et politiques ; elles ne commencent pas en 1948.",
+                "Les catégories administratives imposées par l’État deviennent progressivement des instruments de contrôle social et territorial."
+            ],
+            "status": "ready",
+            "sources": ["src-saho-union-democracy"]
+        },
+        {
+            "id": "za-history-apartheid",
+            "title": "Apartheid, résistances et déplacements forcés",
+            "period": "1948–1994",
+            "summary": "Après la victoire électorale du Parti national en 1948, l’apartheid systématise la classification raciale, la séparation résidentielle, l’éducation différenciée et la répression. Les « homelands » et les déplacements forcés cherchent à redessiner la citoyenneté et le territoire. Les résistances intérieures, les mobilisations syndicales, la lutte armée, les mouvements étudiants, les Églises, les sanctions et les solidarités internationales contribuent à l’affaiblissement du régime.",
+            "details": [
+                "L’apartheid ne se résume pas à la séparation des espaces publics : il organise l’accès à la terre, au travail, à la citoyenneté, à l’éducation et à la mobilité.",
+                "Les oppositions sont plurielles : ANC, PAC, Black Consciousness, syndicats, organisations civiques, mouvements féminins et nombreuses structures locales.",
+                "La fin juridique de l’apartheid ne supprime pas automatiquement les inégalités spatiales et économiques produites pendant plusieurs générations."
+            ],
+            "status": "ready",
+            "sources": ["src-saho-apartheid", "src-unesco-robben-island", "src-saho-elections"]
+        },
+        {
+            "id": "za-history-democracy",
+            "title": "Transition négociée et démocratie constitutionnelle",
+            "period": "1990–aujourd’hui",
+            "summary": "La transition s’ouvre avec la légalisation des organisations interdites, la libération de prisonniers politiques et des négociations menées dans un contexte de violences persistantes. Les élections d’avril 1994 installent un gouvernement démocratique. La Constitution de 1996 établit un État fondé sur la dignité, l’égalité, les droits fondamentaux et le contrôle constitutionnel.",
+            "details": [
+                "1994 est une rupture politique majeure, mais pas un point de départ absolu : les institutions démocratiques résultent de décennies de luttes et de négociations.",
+                "La Commission vérité et réconciliation constitue un mécanisme central mais controversé de la transition ; elle ne clôt pas tous les débats sur la justice et les réparations.",
+                "Les enjeux contemporains comprennent les inégalités, le chômage, la terre, la qualité des services publics, les violences, les migrations régionales et la consolidation institutionnelle."
+            ],
+            "status": "ready",
+            "sources": ["src-interim-constitution-1993", "src-constitution-1996", "src-saho-elections", "src-gov-government-system"]
+        }
+    ],
+    "sources": ["src-presidency-current"],
         },
         "national_flag": {
             "current_since": "1994-04-27",
             "designer": "Frederick G. Brownell",
-            "sources": ["src-gov-national-flag"],
+            "history_chapters": [
+        {
+            "id": "za-history-deep-time",
+            "title": "Des hominines aux premières sociétés humaines documentées",
+            "period": "Plusieurs millions d’années – premier millénaire de notre ère",
+            "summary": "Le territoire sud-africain conserve des archives majeures de l’évolution humaine. Les sites fossilifères du Gauteng et du Nord-Ouest documentent plusieurs espèces d’hominines, tandis que les sites pléistocènes du littoral et de l’intérieur montrent des innovations techniques et symboliques anciennes. Ces découvertes ne racontent pas une progression simple et linéaire : elles témoignent de populations diverses, de changements climatiques et de réseaux de mobilité dont les détails restent débattus.",
+            "details": [
+                "Les expressions modernes comme « berceau de l’humanité » sont utiles pour la médiation, mais elles ne signifient pas qu’un seul lieu aurait produit toute l’humanité moderne.",
+                "Les sociétés san et khoekhoe possèdent des histoires distinctes. Les catégories actuelles ne doivent pas être projetées sans nuance sur toute la préhistoire.",
+                "L’arrivée progressive de communautés agricoles et métallurgiques de langues bantoues transforme les économies et les paysages à partir des premiers siècles de notre ère, sans remplacer uniformément les populations déjà présentes."
+            ],
+            "status": "ready",
+            "sources": ["src-unesco-fossil-hominid-sites", "src-unesco-pleistocene-sites", "src-saho-precolonial"]
+        },
+        {
+            "id": "za-history-mapungubwe",
+            "title": "Mapungubwe et les réseaux de l’Afrique australe",
+            "period": "environ 900–1300",
+            "summary": "Mapungubwe se développe près de la confluence du Limpopo et du Shashe. Son organisation sociale hiérarchisée, ses objets en or et ses importations témoignent d’un pouvoir régional intégré aux échanges reliant l’intérieur de l’Afrique australe aux ports de l’océan Indien. Le royaume ne doit pas être présenté comme l’ancêtre direct de l’État sud-africain moderne : il appartient à une histoire régionale qui traverse les frontières actuelles de l’Afrique du Sud, du Botswana et du Zimbabwe.",
+            "details": [
+                "Le paysage culturel classé par l’UNESCO documente la montée et le déclin d’un royaume entre environ 900 et 1300.",
+                "Les frontières exactes de son autorité ne sont pas connues ; une aire d’influence approximative est plus honnête qu’un polygone politique précis.",
+                "Son insertion dans les échanges d’or, d’ivoire, de verre et de textiles relie l’histoire intérieure du continent aux circuits de l’océan Indien."
+            ],
+            "status": "ready",
+            "sources": ["src-unesco-mapungubwe", "src-saho-pre1500"]
+        },
+        {
+            "id": "za-history-cape",
+            "title": "Le Cap néerlandais : établissement, esclavage et dépossession",
+            "period": "1652–1795",
+            "summary": "En 1652, la VOC établit une station de ravitaillement au Cap. L’expansion foncière des colons provoque des conflits et des pertes territoriales pour des communautés khoekhoe. La société coloniale repose aussi sur l’importation de personnes réduites en esclavage depuis Madagascar, l’Inde, l’Asie du Sud-Est, le Mozambique et l’Afrique orientale. Ces déplacements ont profondément façonné les langues, les religions, les cuisines et les identités du Cap.",
+            "details": [
+                "La fondation coloniale n’est pas la « naissance » de l’Afrique du Sud : des sociétés complexes existaient bien avant 1652.",
+                "Les personnes esclavisées ne formaient pas un groupe homogène et leurs routes d’arrivée doivent être séparées selon les périodes et les régions d’origine.",
+                "Les catégories raciales ultérieures ont souvent effacé les identités précises des Khoekhoe, des San, des esclaves africains et asiatiques et de leurs descendants."
+            ],
+            "status": "ready",
+            "sources": ["src-saho-slavery-cape", "src-saho-early-cape-slave-trade", "src-rama-forced-indian", "src-saho-dutch-settlement"]
+        },
+        {
+            "id": "za-history-nineteenth",
+            "title": "Le XIXe siècle : royaumes africains, expansion coloniale et nouvelles économies",
+            "period": "1795–1910",
+            "summary": "Le XIXe siècle combine l’expansion britannique, la formation et la transformation de polities africaines, le Grand Trek, la création de républiques boers, des guerres de frontière et l’intégration forcée de territoires. Les découvertes de diamants puis d’or accélèrent l’industrialisation, l’urbanisation et la mise en place d’un système de travail migrant contrôlé.",
+            "details": [
+                "Le royaume zoulou n’est qu’une des nombreuses formations politiques africaines de la période ; les histoires sotho, tswana, xhosa, ndebele, swazi, venda et tsonga doivent être traitées séparément.",
+                "Le terme « Mfecane » fait l’objet de débats historiographiques : il ne doit pas servir d’explication unique à toutes les violences et migrations régionales.",
+                "L’engagisme indien vers le Natal à partir de 1860 est un mouvement sous contrat et sous forte contrainte, distinct de la migration libre des commerçants et artisans indiens."
+            ],
+            "status": "provisional",
+            "sources": ["src-saho-zulu-natal", "src-stapleton-military-history", "src-saho-indian-indentured", "src-saho-indian-south-africans"]
+        },
+        {
+            "id": "za-history-union",
+            "title": "Union, ségrégation et dépossession légale",
+            "period": "1910–1948",
+            "summary": "L’Union sud-africaine réunit quatre colonies en 1910, mais ne crée pas une démocratie inclusive. La majorité noire est exclue du pouvoir national. Les politiques foncières, urbaines et professionnelles institutionnalisent une ségrégation déjà ancienne et structurent un système de travail migrant au bénéfice des mines et de l’agriculture commerciale.",
+            "details": [
+                "L’Union est un compromis entre élites blanches britanniques et afrikaners, et non une union politique consentie par l’ensemble de la population.",
+                "Les résistances prennent des formes syndicales, rurales, intellectuelles, religieuses et politiques ; elles ne commencent pas en 1948.",
+                "Les catégories administratives imposées par l’État deviennent progressivement des instruments de contrôle social et territorial."
+            ],
+            "status": "ready",
+            "sources": ["src-saho-union-democracy"]
+        },
+        {
+            "id": "za-history-apartheid",
+            "title": "Apartheid, résistances et déplacements forcés",
+            "period": "1948–1994",
+            "summary": "Après la victoire électorale du Parti national en 1948, l’apartheid systématise la classification raciale, la séparation résidentielle, l’éducation différenciée et la répression. Les « homelands » et les déplacements forcés cherchent à redessiner la citoyenneté et le territoire. Les résistances intérieures, les mobilisations syndicales, la lutte armée, les mouvements étudiants, les Églises, les sanctions et les solidarités internationales contribuent à l’affaiblissement du régime.",
+            "details": [
+                "L’apartheid ne se résume pas à la séparation des espaces publics : il organise l’accès à la terre, au travail, à la citoyenneté, à l’éducation et à la mobilité.",
+                "Les oppositions sont plurielles : ANC, PAC, Black Consciousness, syndicats, organisations civiques, mouvements féminins et nombreuses structures locales.",
+                "La fin juridique de l’apartheid ne supprime pas automatiquement les inégalités spatiales et économiques produites pendant plusieurs générations."
+            ],
+            "status": "ready",
+            "sources": ["src-saho-apartheid", "src-unesco-robben-island", "src-saho-elections"]
+        },
+        {
+            "id": "za-history-democracy",
+            "title": "Transition négociée et démocratie constitutionnelle",
+            "period": "1990–aujourd’hui",
+            "summary": "La transition s’ouvre avec la légalisation des organisations interdites, la libération de prisonniers politiques et des négociations menées dans un contexte de violences persistantes. Les élections d’avril 1994 installent un gouvernement démocratique. La Constitution de 1996 établit un État fondé sur la dignité, l’égalité, les droits fondamentaux et le contrôle constitutionnel.",
+            "details": [
+                "1994 est une rupture politique majeure, mais pas un point de départ absolu : les institutions démocratiques résultent de décennies de luttes et de négociations.",
+                "La Commission vérité et réconciliation constitue un mécanisme central mais controversé de la transition ; elle ne clôt pas tous les débats sur la justice et les réparations.",
+                "Les enjeux contemporains comprennent les inégalités, le chômage, la terre, la qualité des services publics, les violences, les migrations régionales et la consolidation institutionnelle."
+            ],
+            "status": "ready",
+            "sources": ["src-interim-constitution-1993", "src-constitution-1996", "src-saho-elections", "src-gov-government-system"]
+        }
+    ],
+    "sources": ["src-gov-national-flag"],
         },
         "integrationStatus": "ready",
     },
@@ -59,7 +338,100 @@ SOUTH_AFRICA_DOSSIER = {
         ],
         "biomes": ["Savane", "Prairie", "Nama-Karoo", "Succulent Karoo", "Fynbos", "Forêt", "Fourré Albany", "Désert", "Végétation azonal"],
         "note": "Les frontières actuelles servent uniquement à la carte contemporaine. Elles ne doivent pas être projetées sur les royaumes, chefferies ou implantations des périodes anciennes.",
-        "sources": ["src-gov-geography", "src-sanbi-biomes"],
+        "history_chapters": [
+        {
+            "id": "za-history-deep-time",
+            "title": "Des hominines aux premières sociétés humaines documentées",
+            "period": "Plusieurs millions d’années – premier millénaire de notre ère",
+            "summary": "Le territoire sud-africain conserve des archives majeures de l’évolution humaine. Les sites fossilifères du Gauteng et du Nord-Ouest documentent plusieurs espèces d’hominines, tandis que les sites pléistocènes du littoral et de l’intérieur montrent des innovations techniques et symboliques anciennes. Ces découvertes ne racontent pas une progression simple et linéaire : elles témoignent de populations diverses, de changements climatiques et de réseaux de mobilité dont les détails restent débattus.",
+            "details": [
+                "Les expressions modernes comme « berceau de l’humanité » sont utiles pour la médiation, mais elles ne signifient pas qu’un seul lieu aurait produit toute l’humanité moderne.",
+                "Les sociétés san et khoekhoe possèdent des histoires distinctes. Les catégories actuelles ne doivent pas être projetées sans nuance sur toute la préhistoire.",
+                "L’arrivée progressive de communautés agricoles et métallurgiques de langues bantoues transforme les économies et les paysages à partir des premiers siècles de notre ère, sans remplacer uniformément les populations déjà présentes."
+            ],
+            "status": "ready",
+            "sources": ["src-unesco-fossil-hominid-sites", "src-unesco-pleistocene-sites", "src-saho-precolonial"]
+        },
+        {
+            "id": "za-history-mapungubwe",
+            "title": "Mapungubwe et les réseaux de l’Afrique australe",
+            "period": "environ 900–1300",
+            "summary": "Mapungubwe se développe près de la confluence du Limpopo et du Shashe. Son organisation sociale hiérarchisée, ses objets en or et ses importations témoignent d’un pouvoir régional intégré aux échanges reliant l’intérieur de l’Afrique australe aux ports de l’océan Indien. Le royaume ne doit pas être présenté comme l’ancêtre direct de l’État sud-africain moderne : il appartient à une histoire régionale qui traverse les frontières actuelles de l’Afrique du Sud, du Botswana et du Zimbabwe.",
+            "details": [
+                "Le paysage culturel classé par l’UNESCO documente la montée et le déclin d’un royaume entre environ 900 et 1300.",
+                "Les frontières exactes de son autorité ne sont pas connues ; une aire d’influence approximative est plus honnête qu’un polygone politique précis.",
+                "Son insertion dans les échanges d’or, d’ivoire, de verre et de textiles relie l’histoire intérieure du continent aux circuits de l’océan Indien."
+            ],
+            "status": "ready",
+            "sources": ["src-unesco-mapungubwe", "src-saho-pre1500"]
+        },
+        {
+            "id": "za-history-cape",
+            "title": "Le Cap néerlandais : établissement, esclavage et dépossession",
+            "period": "1652–1795",
+            "summary": "En 1652, la VOC établit une station de ravitaillement au Cap. L’expansion foncière des colons provoque des conflits et des pertes territoriales pour des communautés khoekhoe. La société coloniale repose aussi sur l’importation de personnes réduites en esclavage depuis Madagascar, l’Inde, l’Asie du Sud-Est, le Mozambique et l’Afrique orientale. Ces déplacements ont profondément façonné les langues, les religions, les cuisines et les identités du Cap.",
+            "details": [
+                "La fondation coloniale n’est pas la « naissance » de l’Afrique du Sud : des sociétés complexes existaient bien avant 1652.",
+                "Les personnes esclavisées ne formaient pas un groupe homogène et leurs routes d’arrivée doivent être séparées selon les périodes et les régions d’origine.",
+                "Les catégories raciales ultérieures ont souvent effacé les identités précises des Khoekhoe, des San, des esclaves africains et asiatiques et de leurs descendants."
+            ],
+            "status": "ready",
+            "sources": ["src-saho-slavery-cape", "src-saho-early-cape-slave-trade", "src-rama-forced-indian", "src-saho-dutch-settlement"]
+        },
+        {
+            "id": "za-history-nineteenth",
+            "title": "Le XIXe siècle : royaumes africains, expansion coloniale et nouvelles économies",
+            "period": "1795–1910",
+            "summary": "Le XIXe siècle combine l’expansion britannique, la formation et la transformation de polities africaines, le Grand Trek, la création de républiques boers, des guerres de frontière et l’intégration forcée de territoires. Les découvertes de diamants puis d’or accélèrent l’industrialisation, l’urbanisation et la mise en place d’un système de travail migrant contrôlé.",
+            "details": [
+                "Le royaume zoulou n’est qu’une des nombreuses formations politiques africaines de la période ; les histoires sotho, tswana, xhosa, ndebele, swazi, venda et tsonga doivent être traitées séparément.",
+                "Le terme « Mfecane » fait l’objet de débats historiographiques : il ne doit pas servir d’explication unique à toutes les violences et migrations régionales.",
+                "L’engagisme indien vers le Natal à partir de 1860 est un mouvement sous contrat et sous forte contrainte, distinct de la migration libre des commerçants et artisans indiens."
+            ],
+            "status": "provisional",
+            "sources": ["src-saho-zulu-natal", "src-stapleton-military-history", "src-saho-indian-indentured", "src-saho-indian-south-africans"]
+        },
+        {
+            "id": "za-history-union",
+            "title": "Union, ségrégation et dépossession légale",
+            "period": "1910–1948",
+            "summary": "L’Union sud-africaine réunit quatre colonies en 1910, mais ne crée pas une démocratie inclusive. La majorité noire est exclue du pouvoir national. Les politiques foncières, urbaines et professionnelles institutionnalisent une ségrégation déjà ancienne et structurent un système de travail migrant au bénéfice des mines et de l’agriculture commerciale.",
+            "details": [
+                "L’Union est un compromis entre élites blanches britanniques et afrikaners, et non une union politique consentie par l’ensemble de la population.",
+                "Les résistances prennent des formes syndicales, rurales, intellectuelles, religieuses et politiques ; elles ne commencent pas en 1948.",
+                "Les catégories administratives imposées par l’État deviennent progressivement des instruments de contrôle social et territorial."
+            ],
+            "status": "ready",
+            "sources": ["src-saho-union-democracy"]
+        },
+        {
+            "id": "za-history-apartheid",
+            "title": "Apartheid, résistances et déplacements forcés",
+            "period": "1948–1994",
+            "summary": "Après la victoire électorale du Parti national en 1948, l’apartheid systématise la classification raciale, la séparation résidentielle, l’éducation différenciée et la répression. Les « homelands » et les déplacements forcés cherchent à redessiner la citoyenneté et le territoire. Les résistances intérieures, les mobilisations syndicales, la lutte armée, les mouvements étudiants, les Églises, les sanctions et les solidarités internationales contribuent à l’affaiblissement du régime.",
+            "details": [
+                "L’apartheid ne se résume pas à la séparation des espaces publics : il organise l’accès à la terre, au travail, à la citoyenneté, à l’éducation et à la mobilité.",
+                "Les oppositions sont plurielles : ANC, PAC, Black Consciousness, syndicats, organisations civiques, mouvements féminins et nombreuses structures locales.",
+                "La fin juridique de l’apartheid ne supprime pas automatiquement les inégalités spatiales et économiques produites pendant plusieurs générations."
+            ],
+            "status": "ready",
+            "sources": ["src-saho-apartheid", "src-unesco-robben-island", "src-saho-elections"]
+        },
+        {
+            "id": "za-history-democracy",
+            "title": "Transition négociée et démocratie constitutionnelle",
+            "period": "1990–aujourd’hui",
+            "summary": "La transition s’ouvre avec la légalisation des organisations interdites, la libération de prisonniers politiques et des négociations menées dans un contexte de violences persistantes. Les élections d’avril 1994 installent un gouvernement démocratique. La Constitution de 1996 établit un État fondé sur la dignité, l’égalité, les droits fondamentaux et le contrôle constitutionnel.",
+            "details": [
+                "1994 est une rupture politique majeure, mais pas un point de départ absolu : les institutions démocratiques résultent de décennies de luttes et de négociations.",
+                "La Commission vérité et réconciliation constitue un mécanisme central mais controversé de la transition ; elle ne clôt pas tous les débats sur la justice et les réparations.",
+                "Les enjeux contemporains comprennent les inégalités, le chômage, la terre, la qualité des services publics, les violences, les migrations régionales et la consolidation institutionnelle."
+            ],
+            "status": "ready",
+            "sources": ["src-interim-constitution-1993", "src-constitution-1996", "src-saho-elections", "src-gov-government-system"]
+        }
+    ],
+    "sources": ["src-gov-geography", "src-sanbi-biomes"],
     },
     "institutions": {
         "government_form": "République constitutionnelle et démocratie parlementaire",
@@ -80,7 +452,100 @@ SOUTH_AFRICA_DOSSIER = {
             {"name": "Nord-Ouest", "capital": "Mahikeng"},
             {"name": "Cap-Occidental", "capital": "Le Cap"},
         ],
-        "sources": ["src-gov-government-system", "src-gov-geography"],
+        "history_chapters": [
+        {
+            "id": "za-history-deep-time",
+            "title": "Des hominines aux premières sociétés humaines documentées",
+            "period": "Plusieurs millions d’années – premier millénaire de notre ère",
+            "summary": "Le territoire sud-africain conserve des archives majeures de l’évolution humaine. Les sites fossilifères du Gauteng et du Nord-Ouest documentent plusieurs espèces d’hominines, tandis que les sites pléistocènes du littoral et de l’intérieur montrent des innovations techniques et symboliques anciennes. Ces découvertes ne racontent pas une progression simple et linéaire : elles témoignent de populations diverses, de changements climatiques et de réseaux de mobilité dont les détails restent débattus.",
+            "details": [
+                "Les expressions modernes comme « berceau de l’humanité » sont utiles pour la médiation, mais elles ne signifient pas qu’un seul lieu aurait produit toute l’humanité moderne.",
+                "Les sociétés san et khoekhoe possèdent des histoires distinctes. Les catégories actuelles ne doivent pas être projetées sans nuance sur toute la préhistoire.",
+                "L’arrivée progressive de communautés agricoles et métallurgiques de langues bantoues transforme les économies et les paysages à partir des premiers siècles de notre ère, sans remplacer uniformément les populations déjà présentes."
+            ],
+            "status": "ready",
+            "sources": ["src-unesco-fossil-hominid-sites", "src-unesco-pleistocene-sites", "src-saho-precolonial"]
+        },
+        {
+            "id": "za-history-mapungubwe",
+            "title": "Mapungubwe et les réseaux de l’Afrique australe",
+            "period": "environ 900–1300",
+            "summary": "Mapungubwe se développe près de la confluence du Limpopo et du Shashe. Son organisation sociale hiérarchisée, ses objets en or et ses importations témoignent d’un pouvoir régional intégré aux échanges reliant l’intérieur de l’Afrique australe aux ports de l’océan Indien. Le royaume ne doit pas être présenté comme l’ancêtre direct de l’État sud-africain moderne : il appartient à une histoire régionale qui traverse les frontières actuelles de l’Afrique du Sud, du Botswana et du Zimbabwe.",
+            "details": [
+                "Le paysage culturel classé par l’UNESCO documente la montée et le déclin d’un royaume entre environ 900 et 1300.",
+                "Les frontières exactes de son autorité ne sont pas connues ; une aire d’influence approximative est plus honnête qu’un polygone politique précis.",
+                "Son insertion dans les échanges d’or, d’ivoire, de verre et de textiles relie l’histoire intérieure du continent aux circuits de l’océan Indien."
+            ],
+            "status": "ready",
+            "sources": ["src-unesco-mapungubwe", "src-saho-pre1500"]
+        },
+        {
+            "id": "za-history-cape",
+            "title": "Le Cap néerlandais : établissement, esclavage et dépossession",
+            "period": "1652–1795",
+            "summary": "En 1652, la VOC établit une station de ravitaillement au Cap. L’expansion foncière des colons provoque des conflits et des pertes territoriales pour des communautés khoekhoe. La société coloniale repose aussi sur l’importation de personnes réduites en esclavage depuis Madagascar, l’Inde, l’Asie du Sud-Est, le Mozambique et l’Afrique orientale. Ces déplacements ont profondément façonné les langues, les religions, les cuisines et les identités du Cap.",
+            "details": [
+                "La fondation coloniale n’est pas la « naissance » de l’Afrique du Sud : des sociétés complexes existaient bien avant 1652.",
+                "Les personnes esclavisées ne formaient pas un groupe homogène et leurs routes d’arrivée doivent être séparées selon les périodes et les régions d’origine.",
+                "Les catégories raciales ultérieures ont souvent effacé les identités précises des Khoekhoe, des San, des esclaves africains et asiatiques et de leurs descendants."
+            ],
+            "status": "ready",
+            "sources": ["src-saho-slavery-cape", "src-saho-early-cape-slave-trade", "src-rama-forced-indian", "src-saho-dutch-settlement"]
+        },
+        {
+            "id": "za-history-nineteenth",
+            "title": "Le XIXe siècle : royaumes africains, expansion coloniale et nouvelles économies",
+            "period": "1795–1910",
+            "summary": "Le XIXe siècle combine l’expansion britannique, la formation et la transformation de polities africaines, le Grand Trek, la création de républiques boers, des guerres de frontière et l’intégration forcée de territoires. Les découvertes de diamants puis d’or accélèrent l’industrialisation, l’urbanisation et la mise en place d’un système de travail migrant contrôlé.",
+            "details": [
+                "Le royaume zoulou n’est qu’une des nombreuses formations politiques africaines de la période ; les histoires sotho, tswana, xhosa, ndebele, swazi, venda et tsonga doivent être traitées séparément.",
+                "Le terme « Mfecane » fait l’objet de débats historiographiques : il ne doit pas servir d’explication unique à toutes les violences et migrations régionales.",
+                "L’engagisme indien vers le Natal à partir de 1860 est un mouvement sous contrat et sous forte contrainte, distinct de la migration libre des commerçants et artisans indiens."
+            ],
+            "status": "provisional",
+            "sources": ["src-saho-zulu-natal", "src-stapleton-military-history", "src-saho-indian-indentured", "src-saho-indian-south-africans"]
+        },
+        {
+            "id": "za-history-union",
+            "title": "Union, ségrégation et dépossession légale",
+            "period": "1910–1948",
+            "summary": "L’Union sud-africaine réunit quatre colonies en 1910, mais ne crée pas une démocratie inclusive. La majorité noire est exclue du pouvoir national. Les politiques foncières, urbaines et professionnelles institutionnalisent une ségrégation déjà ancienne et structurent un système de travail migrant au bénéfice des mines et de l’agriculture commerciale.",
+            "details": [
+                "L’Union est un compromis entre élites blanches britanniques et afrikaners, et non une union politique consentie par l’ensemble de la population.",
+                "Les résistances prennent des formes syndicales, rurales, intellectuelles, religieuses et politiques ; elles ne commencent pas en 1948.",
+                "Les catégories administratives imposées par l’État deviennent progressivement des instruments de contrôle social et territorial."
+            ],
+            "status": "ready",
+            "sources": ["src-saho-union-democracy"]
+        },
+        {
+            "id": "za-history-apartheid",
+            "title": "Apartheid, résistances et déplacements forcés",
+            "period": "1948–1994",
+            "summary": "Après la victoire électorale du Parti national en 1948, l’apartheid systématise la classification raciale, la séparation résidentielle, l’éducation différenciée et la répression. Les « homelands » et les déplacements forcés cherchent à redessiner la citoyenneté et le territoire. Les résistances intérieures, les mobilisations syndicales, la lutte armée, les mouvements étudiants, les Églises, les sanctions et les solidarités internationales contribuent à l’affaiblissement du régime.",
+            "details": [
+                "L’apartheid ne se résume pas à la séparation des espaces publics : il organise l’accès à la terre, au travail, à la citoyenneté, à l’éducation et à la mobilité.",
+                "Les oppositions sont plurielles : ANC, PAC, Black Consciousness, syndicats, organisations civiques, mouvements féminins et nombreuses structures locales.",
+                "La fin juridique de l’apartheid ne supprime pas automatiquement les inégalités spatiales et économiques produites pendant plusieurs générations."
+            ],
+            "status": "ready",
+            "sources": ["src-saho-apartheid", "src-unesco-robben-island", "src-saho-elections"]
+        },
+        {
+            "id": "za-history-democracy",
+            "title": "Transition négociée et démocratie constitutionnelle",
+            "period": "1990–aujourd’hui",
+            "summary": "La transition s’ouvre avec la légalisation des organisations interdites, la libération de prisonniers politiques et des négociations menées dans un contexte de violences persistantes. Les élections d’avril 1994 installent un gouvernement démocratique. La Constitution de 1996 établit un État fondé sur la dignité, l’égalité, les droits fondamentaux et le contrôle constitutionnel.",
+            "details": [
+                "1994 est une rupture politique majeure, mais pas un point de départ absolu : les institutions démocratiques résultent de décennies de luttes et de négociations.",
+                "La Commission vérité et réconciliation constitue un mécanisme central mais controversé de la transition ; elle ne clôt pas tous les débats sur la justice et les réparations.",
+                "Les enjeux contemporains comprennent les inégalités, le chômage, la terre, la qualité des services publics, les violences, les migrations régionales et la consolidation institutionnelle."
+            ],
+            "status": "ready",
+            "sources": ["src-interim-constitution-1993", "src-constitution-1996", "src-saho-elections", "src-gov-government-system"]
+        }
+    ],
+    "sources": ["src-gov-government-system", "src-gov-geography"],
     },
     "map_visuals": {
         "cities": [
@@ -161,7 +626,100 @@ SOUTH_AFRICA_DOSSIER = {
             {"language": "Other official and non-official languages", "percent": None},
         ],
         "note": "Les pourcentages indiquent la langue la plus souvent parlée dans le ménage au recensement de 2022; ils ne mesurent ni la compétence multilingue ni l'identité ethnique.",
-        "sources": ["src-statssa-census-brief", "src-sasl-2023"],
+        "history_chapters": [
+        {
+            "id": "za-history-deep-time",
+            "title": "Des hominines aux premières sociétés humaines documentées",
+            "period": "Plusieurs millions d’années – premier millénaire de notre ère",
+            "summary": "Le territoire sud-africain conserve des archives majeures de l’évolution humaine. Les sites fossilifères du Gauteng et du Nord-Ouest documentent plusieurs espèces d’hominines, tandis que les sites pléistocènes du littoral et de l’intérieur montrent des innovations techniques et symboliques anciennes. Ces découvertes ne racontent pas une progression simple et linéaire : elles témoignent de populations diverses, de changements climatiques et de réseaux de mobilité dont les détails restent débattus.",
+            "details": [
+                "Les expressions modernes comme « berceau de l’humanité » sont utiles pour la médiation, mais elles ne signifient pas qu’un seul lieu aurait produit toute l’humanité moderne.",
+                "Les sociétés san et khoekhoe possèdent des histoires distinctes. Les catégories actuelles ne doivent pas être projetées sans nuance sur toute la préhistoire.",
+                "L’arrivée progressive de communautés agricoles et métallurgiques de langues bantoues transforme les économies et les paysages à partir des premiers siècles de notre ère, sans remplacer uniformément les populations déjà présentes."
+            ],
+            "status": "ready",
+            "sources": ["src-unesco-fossil-hominid-sites", "src-unesco-pleistocene-sites", "src-saho-precolonial"]
+        },
+        {
+            "id": "za-history-mapungubwe",
+            "title": "Mapungubwe et les réseaux de l’Afrique australe",
+            "period": "environ 900–1300",
+            "summary": "Mapungubwe se développe près de la confluence du Limpopo et du Shashe. Son organisation sociale hiérarchisée, ses objets en or et ses importations témoignent d’un pouvoir régional intégré aux échanges reliant l’intérieur de l’Afrique australe aux ports de l’océan Indien. Le royaume ne doit pas être présenté comme l’ancêtre direct de l’État sud-africain moderne : il appartient à une histoire régionale qui traverse les frontières actuelles de l’Afrique du Sud, du Botswana et du Zimbabwe.",
+            "details": [
+                "Le paysage culturel classé par l’UNESCO documente la montée et le déclin d’un royaume entre environ 900 et 1300.",
+                "Les frontières exactes de son autorité ne sont pas connues ; une aire d’influence approximative est plus honnête qu’un polygone politique précis.",
+                "Son insertion dans les échanges d’or, d’ivoire, de verre et de textiles relie l’histoire intérieure du continent aux circuits de l’océan Indien."
+            ],
+            "status": "ready",
+            "sources": ["src-unesco-mapungubwe", "src-saho-pre1500"]
+        },
+        {
+            "id": "za-history-cape",
+            "title": "Le Cap néerlandais : établissement, esclavage et dépossession",
+            "period": "1652–1795",
+            "summary": "En 1652, la VOC établit une station de ravitaillement au Cap. L’expansion foncière des colons provoque des conflits et des pertes territoriales pour des communautés khoekhoe. La société coloniale repose aussi sur l’importation de personnes réduites en esclavage depuis Madagascar, l’Inde, l’Asie du Sud-Est, le Mozambique et l’Afrique orientale. Ces déplacements ont profondément façonné les langues, les religions, les cuisines et les identités du Cap.",
+            "details": [
+                "La fondation coloniale n’est pas la « naissance » de l’Afrique du Sud : des sociétés complexes existaient bien avant 1652.",
+                "Les personnes esclavisées ne formaient pas un groupe homogène et leurs routes d’arrivée doivent être séparées selon les périodes et les régions d’origine.",
+                "Les catégories raciales ultérieures ont souvent effacé les identités précises des Khoekhoe, des San, des esclaves africains et asiatiques et de leurs descendants."
+            ],
+            "status": "ready",
+            "sources": ["src-saho-slavery-cape", "src-saho-early-cape-slave-trade", "src-rama-forced-indian", "src-saho-dutch-settlement"]
+        },
+        {
+            "id": "za-history-nineteenth",
+            "title": "Le XIXe siècle : royaumes africains, expansion coloniale et nouvelles économies",
+            "period": "1795–1910",
+            "summary": "Le XIXe siècle combine l’expansion britannique, la formation et la transformation de polities africaines, le Grand Trek, la création de républiques boers, des guerres de frontière et l’intégration forcée de territoires. Les découvertes de diamants puis d’or accélèrent l’industrialisation, l’urbanisation et la mise en place d’un système de travail migrant contrôlé.",
+            "details": [
+                "Le royaume zoulou n’est qu’une des nombreuses formations politiques africaines de la période ; les histoires sotho, tswana, xhosa, ndebele, swazi, venda et tsonga doivent être traitées séparément.",
+                "Le terme « Mfecane » fait l’objet de débats historiographiques : il ne doit pas servir d’explication unique à toutes les violences et migrations régionales.",
+                "L’engagisme indien vers le Natal à partir de 1860 est un mouvement sous contrat et sous forte contrainte, distinct de la migration libre des commerçants et artisans indiens."
+            ],
+            "status": "provisional",
+            "sources": ["src-saho-zulu-natal", "src-stapleton-military-history", "src-saho-indian-indentured", "src-saho-indian-south-africans"]
+        },
+        {
+            "id": "za-history-union",
+            "title": "Union, ségrégation et dépossession légale",
+            "period": "1910–1948",
+            "summary": "L’Union sud-africaine réunit quatre colonies en 1910, mais ne crée pas une démocratie inclusive. La majorité noire est exclue du pouvoir national. Les politiques foncières, urbaines et professionnelles institutionnalisent une ségrégation déjà ancienne et structurent un système de travail migrant au bénéfice des mines et de l’agriculture commerciale.",
+            "details": [
+                "L’Union est un compromis entre élites blanches britanniques et afrikaners, et non une union politique consentie par l’ensemble de la population.",
+                "Les résistances prennent des formes syndicales, rurales, intellectuelles, religieuses et politiques ; elles ne commencent pas en 1948.",
+                "Les catégories administratives imposées par l’État deviennent progressivement des instruments de contrôle social et territorial."
+            ],
+            "status": "ready",
+            "sources": ["src-saho-union-democracy"]
+        },
+        {
+            "id": "za-history-apartheid",
+            "title": "Apartheid, résistances et déplacements forcés",
+            "period": "1948–1994",
+            "summary": "Après la victoire électorale du Parti national en 1948, l’apartheid systématise la classification raciale, la séparation résidentielle, l’éducation différenciée et la répression. Les « homelands » et les déplacements forcés cherchent à redessiner la citoyenneté et le territoire. Les résistances intérieures, les mobilisations syndicales, la lutte armée, les mouvements étudiants, les Églises, les sanctions et les solidarités internationales contribuent à l’affaiblissement du régime.",
+            "details": [
+                "L’apartheid ne se résume pas à la séparation des espaces publics : il organise l’accès à la terre, au travail, à la citoyenneté, à l’éducation et à la mobilité.",
+                "Les oppositions sont plurielles : ANC, PAC, Black Consciousness, syndicats, organisations civiques, mouvements féminins et nombreuses structures locales.",
+                "La fin juridique de l’apartheid ne supprime pas automatiquement les inégalités spatiales et économiques produites pendant plusieurs générations."
+            ],
+            "status": "ready",
+            "sources": ["src-saho-apartheid", "src-unesco-robben-island", "src-saho-elections"]
+        },
+        {
+            "id": "za-history-democracy",
+            "title": "Transition négociée et démocratie constitutionnelle",
+            "period": "1990–aujourd’hui",
+            "summary": "La transition s’ouvre avec la légalisation des organisations interdites, la libération de prisonniers politiques et des négociations menées dans un contexte de violences persistantes. Les élections d’avril 1994 installent un gouvernement démocratique. La Constitution de 1996 établit un État fondé sur la dignité, l’égalité, les droits fondamentaux et le contrôle constitutionnel.",
+            "details": [
+                "1994 est une rupture politique majeure, mais pas un point de départ absolu : les institutions démocratiques résultent de décennies de luttes et de négociations.",
+                "La Commission vérité et réconciliation constitue un mécanisme central mais controversé de la transition ; elle ne clôt pas tous les débats sur la justice et les réparations.",
+                "Les enjeux contemporains comprennent les inégalités, le chômage, la terre, la qualité des services publics, les violences, les migrations régionales et la consolidation institutionnelle."
+            ],
+            "status": "ready",
+            "sources": ["src-interim-constitution-1993", "src-constitution-1996", "src-saho-elections", "src-gov-government-system"]
+        }
+    ],
+    "sources": ["src-statssa-census-brief", "src-sasl-2023"],
         "integrationStatus": "ready",
     },
     "religions": {
@@ -174,7 +732,100 @@ SOUTH_AFRICA_DOSSIER = {
             {"name": "Hindouisme", "count": 647346},
         ],
         "note": "Les nombres indiquent des personnes recensées, et non un score ni un classement. Statistics South Africa estime par ailleurs que 84,5 % de la population se déclarait chrétienne en 2022. Le paysage religieux comprend aussi judaïsme, bouddhisme, bahaïsme, athéisme, agnosticisme et absence d’affiliation. Une personne peut également combiner des pratiques que les catégories du recensement résument imparfaitement.",
-        "sources": ["src-statssa-census-brief", "src-statssa-religion-2025", "src-gov-people"],
+        "history_chapters": [
+        {
+            "id": "za-history-deep-time",
+            "title": "Des hominines aux premières sociétés humaines documentées",
+            "period": "Plusieurs millions d’années – premier millénaire de notre ère",
+            "summary": "Le territoire sud-africain conserve des archives majeures de l’évolution humaine. Les sites fossilifères du Gauteng et du Nord-Ouest documentent plusieurs espèces d’hominines, tandis que les sites pléistocènes du littoral et de l’intérieur montrent des innovations techniques et symboliques anciennes. Ces découvertes ne racontent pas une progression simple et linéaire : elles témoignent de populations diverses, de changements climatiques et de réseaux de mobilité dont les détails restent débattus.",
+            "details": [
+                "Les expressions modernes comme « berceau de l’humanité » sont utiles pour la médiation, mais elles ne signifient pas qu’un seul lieu aurait produit toute l’humanité moderne.",
+                "Les sociétés san et khoekhoe possèdent des histoires distinctes. Les catégories actuelles ne doivent pas être projetées sans nuance sur toute la préhistoire.",
+                "L’arrivée progressive de communautés agricoles et métallurgiques de langues bantoues transforme les économies et les paysages à partir des premiers siècles de notre ère, sans remplacer uniformément les populations déjà présentes."
+            ],
+            "status": "ready",
+            "sources": ["src-unesco-fossil-hominid-sites", "src-unesco-pleistocene-sites", "src-saho-precolonial"]
+        },
+        {
+            "id": "za-history-mapungubwe",
+            "title": "Mapungubwe et les réseaux de l’Afrique australe",
+            "period": "environ 900–1300",
+            "summary": "Mapungubwe se développe près de la confluence du Limpopo et du Shashe. Son organisation sociale hiérarchisée, ses objets en or et ses importations témoignent d’un pouvoir régional intégré aux échanges reliant l’intérieur de l’Afrique australe aux ports de l’océan Indien. Le royaume ne doit pas être présenté comme l’ancêtre direct de l’État sud-africain moderne : il appartient à une histoire régionale qui traverse les frontières actuelles de l’Afrique du Sud, du Botswana et du Zimbabwe.",
+            "details": [
+                "Le paysage culturel classé par l’UNESCO documente la montée et le déclin d’un royaume entre environ 900 et 1300.",
+                "Les frontières exactes de son autorité ne sont pas connues ; une aire d’influence approximative est plus honnête qu’un polygone politique précis.",
+                "Son insertion dans les échanges d’or, d’ivoire, de verre et de textiles relie l’histoire intérieure du continent aux circuits de l’océan Indien."
+            ],
+            "status": "ready",
+            "sources": ["src-unesco-mapungubwe", "src-saho-pre1500"]
+        },
+        {
+            "id": "za-history-cape",
+            "title": "Le Cap néerlandais : établissement, esclavage et dépossession",
+            "period": "1652–1795",
+            "summary": "En 1652, la VOC établit une station de ravitaillement au Cap. L’expansion foncière des colons provoque des conflits et des pertes territoriales pour des communautés khoekhoe. La société coloniale repose aussi sur l’importation de personnes réduites en esclavage depuis Madagascar, l’Inde, l’Asie du Sud-Est, le Mozambique et l’Afrique orientale. Ces déplacements ont profondément façonné les langues, les religions, les cuisines et les identités du Cap.",
+            "details": [
+                "La fondation coloniale n’est pas la « naissance » de l’Afrique du Sud : des sociétés complexes existaient bien avant 1652.",
+                "Les personnes esclavisées ne formaient pas un groupe homogène et leurs routes d’arrivée doivent être séparées selon les périodes et les régions d’origine.",
+                "Les catégories raciales ultérieures ont souvent effacé les identités précises des Khoekhoe, des San, des esclaves africains et asiatiques et de leurs descendants."
+            ],
+            "status": "ready",
+            "sources": ["src-saho-slavery-cape", "src-saho-early-cape-slave-trade", "src-rama-forced-indian", "src-saho-dutch-settlement"]
+        },
+        {
+            "id": "za-history-nineteenth",
+            "title": "Le XIXe siècle : royaumes africains, expansion coloniale et nouvelles économies",
+            "period": "1795–1910",
+            "summary": "Le XIXe siècle combine l’expansion britannique, la formation et la transformation de polities africaines, le Grand Trek, la création de républiques boers, des guerres de frontière et l’intégration forcée de territoires. Les découvertes de diamants puis d’or accélèrent l’industrialisation, l’urbanisation et la mise en place d’un système de travail migrant contrôlé.",
+            "details": [
+                "Le royaume zoulou n’est qu’une des nombreuses formations politiques africaines de la période ; les histoires sotho, tswana, xhosa, ndebele, swazi, venda et tsonga doivent être traitées séparément.",
+                "Le terme « Mfecane » fait l’objet de débats historiographiques : il ne doit pas servir d’explication unique à toutes les violences et migrations régionales.",
+                "L’engagisme indien vers le Natal à partir de 1860 est un mouvement sous contrat et sous forte contrainte, distinct de la migration libre des commerçants et artisans indiens."
+            ],
+            "status": "provisional",
+            "sources": ["src-saho-zulu-natal", "src-stapleton-military-history", "src-saho-indian-indentured", "src-saho-indian-south-africans"]
+        },
+        {
+            "id": "za-history-union",
+            "title": "Union, ségrégation et dépossession légale",
+            "period": "1910–1948",
+            "summary": "L’Union sud-africaine réunit quatre colonies en 1910, mais ne crée pas une démocratie inclusive. La majorité noire est exclue du pouvoir national. Les politiques foncières, urbaines et professionnelles institutionnalisent une ségrégation déjà ancienne et structurent un système de travail migrant au bénéfice des mines et de l’agriculture commerciale.",
+            "details": [
+                "L’Union est un compromis entre élites blanches britanniques et afrikaners, et non une union politique consentie par l’ensemble de la population.",
+                "Les résistances prennent des formes syndicales, rurales, intellectuelles, religieuses et politiques ; elles ne commencent pas en 1948.",
+                "Les catégories administratives imposées par l’État deviennent progressivement des instruments de contrôle social et territorial."
+            ],
+            "status": "ready",
+            "sources": ["src-saho-union-democracy"]
+        },
+        {
+            "id": "za-history-apartheid",
+            "title": "Apartheid, résistances et déplacements forcés",
+            "period": "1948–1994",
+            "summary": "Après la victoire électorale du Parti national en 1948, l’apartheid systématise la classification raciale, la séparation résidentielle, l’éducation différenciée et la répression. Les « homelands » et les déplacements forcés cherchent à redessiner la citoyenneté et le territoire. Les résistances intérieures, les mobilisations syndicales, la lutte armée, les mouvements étudiants, les Églises, les sanctions et les solidarités internationales contribuent à l’affaiblissement du régime.",
+            "details": [
+                "L’apartheid ne se résume pas à la séparation des espaces publics : il organise l’accès à la terre, au travail, à la citoyenneté, à l’éducation et à la mobilité.",
+                "Les oppositions sont plurielles : ANC, PAC, Black Consciousness, syndicats, organisations civiques, mouvements féminins et nombreuses structures locales.",
+                "La fin juridique de l’apartheid ne supprime pas automatiquement les inégalités spatiales et économiques produites pendant plusieurs générations."
+            ],
+            "status": "ready",
+            "sources": ["src-saho-apartheid", "src-unesco-robben-island", "src-saho-elections"]
+        },
+        {
+            "id": "za-history-democracy",
+            "title": "Transition négociée et démocratie constitutionnelle",
+            "period": "1990–aujourd’hui",
+            "summary": "La transition s’ouvre avec la légalisation des organisations interdites, la libération de prisonniers politiques et des négociations menées dans un contexte de violences persistantes. Les élections d’avril 1994 installent un gouvernement démocratique. La Constitution de 1996 établit un État fondé sur la dignité, l’égalité, les droits fondamentaux et le contrôle constitutionnel.",
+            "details": [
+                "1994 est une rupture politique majeure, mais pas un point de départ absolu : les institutions démocratiques résultent de décennies de luttes et de négociations.",
+                "La Commission vérité et réconciliation constitue un mécanisme central mais controversé de la transition ; elle ne clôt pas tous les débats sur la justice et les réparations.",
+                "Les enjeux contemporains comprennent les inégalités, le chômage, la terre, la qualité des services publics, les violences, les migrations régionales et la consolidation institutionnelle."
+            ],
+            "status": "ready",
+            "sources": ["src-interim-constitution-1993", "src-constitution-1996", "src-saho-elections", "src-gov-government-system"]
+        }
+    ],
+    "sources": ["src-statssa-census-brief", "src-statssa-religion-2025", "src-gov-people"],
         "integrationStatus": "ready",
     },
     "migrations": [
@@ -227,6 +878,99 @@ SOUTH_AFRICA_DOSSIER = {
         "Dossiers individuels pour chaque peuple, langue, religion, tradition orale et genre culturel.",
         "Chronologie détaillée des États xhosa, sotho-tswana, venda, pedi, ndebele, swazi et zoulou.",
         "Sources primaires et universitaires pour les personnalités avant publication de fiches détaillées.",
+    ],
+    "history_chapters": [
+        {
+            "id": "za-history-deep-time",
+            "title": "Des hominines aux premières sociétés humaines documentées",
+            "period": "Plusieurs millions d’années – premier millénaire de notre ère",
+            "summary": "Le territoire sud-africain conserve des archives majeures de l’évolution humaine. Les sites fossilifères du Gauteng et du Nord-Ouest documentent plusieurs espèces d’hominines, tandis que les sites pléistocènes du littoral et de l’intérieur montrent des innovations techniques et symboliques anciennes. Ces découvertes ne racontent pas une progression simple et linéaire : elles témoignent de populations diverses, de changements climatiques et de réseaux de mobilité dont les détails restent débattus.",
+            "details": [
+                "Les expressions modernes comme « berceau de l’humanité » sont utiles pour la médiation, mais elles ne signifient pas qu’un seul lieu aurait produit toute l’humanité moderne.",
+                "Les sociétés san et khoekhoe possèdent des histoires distinctes. Les catégories actuelles ne doivent pas être projetées sans nuance sur toute la préhistoire.",
+                "L’arrivée progressive de communautés agricoles et métallurgiques de langues bantoues transforme les économies et les paysages à partir des premiers siècles de notre ère, sans remplacer uniformément les populations déjà présentes."
+            ],
+            "status": "ready",
+            "sources": ["src-unesco-fossil-hominid-sites", "src-unesco-pleistocene-sites", "src-saho-precolonial"]
+        },
+        {
+            "id": "za-history-mapungubwe",
+            "title": "Mapungubwe et les réseaux de l’Afrique australe",
+            "period": "environ 900–1300",
+            "summary": "Mapungubwe se développe près de la confluence du Limpopo et du Shashe. Son organisation sociale hiérarchisée, ses objets en or et ses importations témoignent d’un pouvoir régional intégré aux échanges reliant l’intérieur de l’Afrique australe aux ports de l’océan Indien. Le royaume ne doit pas être présenté comme l’ancêtre direct de l’État sud-africain moderne : il appartient à une histoire régionale qui traverse les frontières actuelles de l’Afrique du Sud, du Botswana et du Zimbabwe.",
+            "details": [
+                "Le paysage culturel classé par l’UNESCO documente la montée et le déclin d’un royaume entre environ 900 et 1300.",
+                "Les frontières exactes de son autorité ne sont pas connues ; une aire d’influence approximative est plus honnête qu’un polygone politique précis.",
+                "Son insertion dans les échanges d’or, d’ivoire, de verre et de textiles relie l’histoire intérieure du continent aux circuits de l’océan Indien."
+            ],
+            "status": "ready",
+            "sources": ["src-unesco-mapungubwe", "src-saho-pre1500"]
+        },
+        {
+            "id": "za-history-cape",
+            "title": "Le Cap néerlandais : établissement, esclavage et dépossession",
+            "period": "1652–1795",
+            "summary": "En 1652, la VOC établit une station de ravitaillement au Cap. L’expansion foncière des colons provoque des conflits et des pertes territoriales pour des communautés khoekhoe. La société coloniale repose aussi sur l’importation de personnes réduites en esclavage depuis Madagascar, l’Inde, l’Asie du Sud-Est, le Mozambique et l’Afrique orientale. Ces déplacements ont profondément façonné les langues, les religions, les cuisines et les identités du Cap.",
+            "details": [
+                "La fondation coloniale n’est pas la « naissance » de l’Afrique du Sud : des sociétés complexes existaient bien avant 1652.",
+                "Les personnes esclavisées ne formaient pas un groupe homogène et leurs routes d’arrivée doivent être séparées selon les périodes et les régions d’origine.",
+                "Les catégories raciales ultérieures ont souvent effacé les identités précises des Khoekhoe, des San, des esclaves africains et asiatiques et de leurs descendants."
+            ],
+            "status": "ready",
+            "sources": ["src-saho-slavery-cape", "src-saho-early-cape-slave-trade", "src-rama-forced-indian", "src-saho-dutch-settlement"]
+        },
+        {
+            "id": "za-history-nineteenth",
+            "title": "Le XIXe siècle : royaumes africains, expansion coloniale et nouvelles économies",
+            "period": "1795–1910",
+            "summary": "Le XIXe siècle combine l’expansion britannique, la formation et la transformation de polities africaines, le Grand Trek, la création de républiques boers, des guerres de frontière et l’intégration forcée de territoires. Les découvertes de diamants puis d’or accélèrent l’industrialisation, l’urbanisation et la mise en place d’un système de travail migrant contrôlé.",
+            "details": [
+                "Le royaume zoulou n’est qu’une des nombreuses formations politiques africaines de la période ; les histoires sotho, tswana, xhosa, ndebele, swazi, venda et tsonga doivent être traitées séparément.",
+                "Le terme « Mfecane » fait l’objet de débats historiographiques : il ne doit pas servir d’explication unique à toutes les violences et migrations régionales.",
+                "L’engagisme indien vers le Natal à partir de 1860 est un mouvement sous contrat et sous forte contrainte, distinct de la migration libre des commerçants et artisans indiens."
+            ],
+            "status": "provisional",
+            "sources": ["src-saho-zulu-natal", "src-stapleton-military-history", "src-saho-indian-indentured", "src-saho-indian-south-africans"]
+        },
+        {
+            "id": "za-history-union",
+            "title": "Union, ségrégation et dépossession légale",
+            "period": "1910–1948",
+            "summary": "L’Union sud-africaine réunit quatre colonies en 1910, mais ne crée pas une démocratie inclusive. La majorité noire est exclue du pouvoir national. Les politiques foncières, urbaines et professionnelles institutionnalisent une ségrégation déjà ancienne et structurent un système de travail migrant au bénéfice des mines et de l’agriculture commerciale.",
+            "details": [
+                "L’Union est un compromis entre élites blanches britanniques et afrikaners, et non une union politique consentie par l’ensemble de la population.",
+                "Les résistances prennent des formes syndicales, rurales, intellectuelles, religieuses et politiques ; elles ne commencent pas en 1948.",
+                "Les catégories administratives imposées par l’État deviennent progressivement des instruments de contrôle social et territorial."
+            ],
+            "status": "ready",
+            "sources": ["src-saho-union-democracy"]
+        },
+        {
+            "id": "za-history-apartheid",
+            "title": "Apartheid, résistances et déplacements forcés",
+            "period": "1948–1994",
+            "summary": "Après la victoire électorale du Parti national en 1948, l’apartheid systématise la classification raciale, la séparation résidentielle, l’éducation différenciée et la répression. Les « homelands » et les déplacements forcés cherchent à redessiner la citoyenneté et le territoire. Les résistances intérieures, les mobilisations syndicales, la lutte armée, les mouvements étudiants, les Églises, les sanctions et les solidarités internationales contribuent à l’affaiblissement du régime.",
+            "details": [
+                "L’apartheid ne se résume pas à la séparation des espaces publics : il organise l’accès à la terre, au travail, à la citoyenneté, à l’éducation et à la mobilité.",
+                "Les oppositions sont plurielles : ANC, PAC, Black Consciousness, syndicats, organisations civiques, mouvements féminins et nombreuses structures locales.",
+                "La fin juridique de l’apartheid ne supprime pas automatiquement les inégalités spatiales et économiques produites pendant plusieurs générations."
+            ],
+            "status": "ready",
+            "sources": ["src-saho-apartheid", "src-unesco-robben-island", "src-saho-elections"]
+        },
+        {
+            "id": "za-history-democracy",
+            "title": "Transition négociée et démocratie constitutionnelle",
+            "period": "1990–aujourd’hui",
+            "summary": "La transition s’ouvre avec la légalisation des organisations interdites, la libération de prisonniers politiques et des négociations menées dans un contexte de violences persistantes. Les élections d’avril 1994 installent un gouvernement démocratique. La Constitution de 1996 établit un État fondé sur la dignité, l’égalité, les droits fondamentaux et le contrôle constitutionnel.",
+            "details": [
+                "1994 est une rupture politique majeure, mais pas un point de départ absolu : les institutions démocratiques résultent de décennies de luttes et de négociations.",
+                "La Commission vérité et réconciliation constitue un mécanisme central mais controversé de la transition ; elle ne clôt pas tous les débats sur la justice et les réparations.",
+                "Les enjeux contemporains comprennent les inégalités, le chômage, la terre, la qualité des services publics, les violences, les migrations régionales et la consolidation institutionnelle."
+            ],
+            "status": "ready",
+            "sources": ["src-interim-constitution-1993", "src-constitution-1996", "src-saho-elections", "src-gov-government-system"]
+        }
     ],
     "sources": [
         {"id": "src-statssa-census-2022", "category": "A", "title": "Census 2022 Statistical Release", "publisher": "Statistics South Africa", "year": 2023, "url": "https://census.statssa.gov.za/assets/documents/2022/P03014_Census_2022_Statistical_Release.pdf"},

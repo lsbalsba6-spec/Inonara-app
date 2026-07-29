@@ -1,0 +1,1 @@
+Installer depuis la racine du dépôt, tester le backend et le build frontend, puis commit/push.

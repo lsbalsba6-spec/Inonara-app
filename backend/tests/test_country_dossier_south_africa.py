@@ -64,3 +64,13 @@ def test_south_africa_map_routes_are_bounded_and_sourced():
         assert route["sources"]
         assert set(route["sources"]).issubset(source_ids)
         assert route["type"] != "mixed"
+
+
+def test_history_chapters_are_substantial_and_sourced():
+    dossier = SOUTH_AFRICA_DOSSIER
+    chapters = dossier.get("history_chapters", [])
+    assert len(chapters) >= 7
+    for chapter in chapters:
+        assert len(chapter.get("summary", "")) >= 180
+        assert chapter.get("sources")
+        assert chapter.get("status") in {"ready", "provisional", "disputed"}
