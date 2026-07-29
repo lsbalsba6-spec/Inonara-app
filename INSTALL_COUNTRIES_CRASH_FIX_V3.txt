@@ -1,0 +1,9 @@
+Correctif V3 de la page Pays.
+
+Cause confirmée dans la version récente du dépôt : displayName était utilisé dans un useMemo avant l'initialisation de la constante. Au second rendu, après réception de l'API, React déclenchait une ReferenceError et la page disparaissait.
+
+Ce patch :
+- déplace les helpers hors du composant ;
+- valide les réponses API avant map/filter ;
+- maintient la page visible si un endpoint échoue ;
+- ajoute un test de non-régression.
