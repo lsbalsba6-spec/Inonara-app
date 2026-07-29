@@ -59,6 +59,8 @@ load_dotenv(ROOT_DIR / '.env')
 mongo_url = os.environ['MONGO_URL']
 client = AsyncIOMotorClient(mongo_url)
 db = client[os.environ['DB_NAME']]
+from data.migration_route_publication import get_public_migration_routes
+
 
 app = FastAPI(title="AfroAtlas API")
 api_router = APIRouter(prefix="/api")
@@ -260,35 +262,16 @@ async def list_culture(category: Optional[str] = None, region: Optional[str] = N
     return items
 
 
-_DIASPORA_PUBLIC_ROUTES_CACHE = None
-
-
-def _load_diaspora_public_routes():
-    """Load only migration routes that passed the editorial publication gate.
-
-    ``diaspora_derived_routes.json`` remains the complete legacy working set.
-    ``diaspora_public_routes.json`` excludes reviewed mixed routes that combine
-    separate historical and contemporary movements.
-    """
-    global _DIASPORA_PUBLIC_ROUTES_CACHE
-    if _DIASPORA_PUBLIC_ROUTES_CACHE is None:
-        import json
-        try:
-            path = Path(__file__).parent / "data" / "diaspora_public_routes.json"
-            _DIASPORA_PUBLIC_ROUTES_CACHE = json.loads(path.read_text())
-        except FileNotFoundError:
-            _DIASPORA_PUBLIC_ROUTES_CACHE = []
-    return _DIASPORA_PUBLIC_ROUTES_CACHE
-
-
 @api_router.get("/migration-routes")
 async def get_migration_routes():
-    """Return curated macro-routes plus editorially publishable diaspora routes.
+    """Return curated macro-routes plus route-level reviewed diaspora routes.
 
-    Legacy mixed routes are deliberately excluded because they merge distinct
-    historical forced movements with modern voluntary/refugee movements.
+    Diaspora-card-derived candidates are not public by default: a community's
+    continued existence does not prove that the migration route that formed it
+    is still active. Candidates remain preserved in the migration registry for
+    country-by-country and diaspora-by-diaspora review.
     """
-    return MIGRATION_ROUTES + _load_diaspora_public_routes()
+    return get_public_migration_routes()
 
 
 @api_router.get("/diaspora-communities")
