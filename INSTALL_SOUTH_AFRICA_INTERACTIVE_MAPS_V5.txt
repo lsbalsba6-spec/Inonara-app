@@ -1,0 +1,7 @@
+INONARA — Afrique du Sud — cartes interactives V5
+
+Ce patch remplace les cartes SVG simplifiées par deux cartes Leaflet interactives :
+- carte générale de l'Afrique du Sud avec fond OpenStreetMap, zoom, déplacement, villes et capitales ;
+- carte migratoire mondiale avec routes courbes, filtres temporels, pays nommés et fenêtres d'information.
+
+Le projet contient déjà react-leaflet, leaflet et l'import CSS Leaflet. Aucune nouvelle dépendance n'est ajoutée.
