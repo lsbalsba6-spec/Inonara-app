@@ -6,6 +6,7 @@ import {
   fetchRoutes,
   fetchAfricaOriginCountries,
   fetchAfricaOriginCountry,
+  fetchCountryDossiers,
   fetchCountryDossier,
 } from "../lib/api";
 import { ATLAS_COLORS } from "../lib/designTokens";
@@ -62,18 +63,21 @@ export default function CountryDetail() {
   const [originCountry, setOriginCountry] = useState(null);
   const [loadingGeneric, setLoadingGeneric] = useState(true);
   const [masterDossier, setMasterDossier] = useState(null);
+  const [dossierIndex, setDossierIndex] = useState([]);
 
   useEffect(() => {
     fetchHistoricalPolities().then(setPolities).catch(() => {});
     fetchDiaspora().then(setAllDiaspora).catch(() => {});
     fetchRoutes().then(setRoutes).catch(() => {});
+    fetchCountryDossiers().then(setDossierIndex).catch(() => {});
   }, []);
 
   const bespoke = BESPOKE_COUNTRY_CONTENT[id];
 
   useEffect(() => {
     let cancelled = false;
-    const dossierIso = id === "south-africa" || id === "afrique-du-sud" ? "ZA" : null;
+    const indexedDossier = dossierIndex.find((dossier) => dossier.slug === id);
+    const dossierIso = indexedDossier?.iso2 || (id === "afrique-du-sud" ? "ZA" : null);
     if (dossierIso) {
       fetchCountryDossier(dossierIso)
         .then((data) => { if (!cancelled) { setMasterDossier(data); setLoadingGeneric(false); } })
@@ -100,7 +104,7 @@ export default function CountryDetail() {
       })
       .catch(() => setLoadingGeneric(false));
     return () => { cancelled = true; };
-  }, [id, bespoke]);
+  }, [id, bespoke, dossierIndex]);
 
   const genericDiasporaMatches = allDiaspora.filter((d) => slugify(d.country) === id);
 
@@ -216,7 +220,7 @@ export default function CountryDetail() {
       )}
 
       <p className="text-bone/40 text-xs mt-10">
-        Cette page utilise le contenu déjà validé du site. Le Gabon est pour l'instant le seul pays avec une page approfondie dédiée.
+        Cette page utilise le contenu déjà validé du site. Les dossiers maîtres sont publiés progressivement pays par pays.
       </p>
     </div>
   );

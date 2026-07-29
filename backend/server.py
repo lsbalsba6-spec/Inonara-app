@@ -33,6 +33,7 @@ from data import (
     PALEO_GEOGRAPHY,
     PLATE_TECTONICS_EPOCHS,
     COUNTRY_DOSSIERS,
+    country_dossier_index,
 )
 from db_seed import mirror_content_to_mongo
 
@@ -124,6 +125,12 @@ async def list_countries():
     return COUNTRY_REGISTRY
 
 
+
+
+@api_router.get("/country-dossiers")
+async def list_country_dossiers():
+    """Return a lightweight index of published country master dossiers."""
+    return country_dossier_index()
 
 
 @api_router.get("/country-dossiers/{country_iso2}")
