@@ -1,0 +1,23 @@
+INONARA — revue des 12 routes héritées « mixed »
+
+Ce paquet ne modifie pas encore la carte publique.
+Il crée une revue éditoriale route par route et interdit de considérer les
+12 routes mixtes comme des mouvements continus jusqu'en 2025.
+
+Installation / vérification :
+
+cd ~/inonara-app
+python backend/scripts/review_mixed_routes.py
+PYTHONPATH=backend python -m pytest -q \
+  backend/tests/test_mixed_route_review.py \
+  backend/tests/test_migration_registry.py
+
+Fichiers produits :
+- backend/data/migration_registry/mixed_route_review.json
+- backend/reports/mixed_route_review.md
+
+Résultat attendu :
+- 12 routes mixtes examinées
+- 13 mouvements distincts proposés
+- 0 route validée comme « mixed » continue
+- 12 tests passés
