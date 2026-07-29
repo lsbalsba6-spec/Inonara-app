@@ -1,0 +1,2 @@
+The program npm is not installed. Install it by executing:
+ pkg install npm
