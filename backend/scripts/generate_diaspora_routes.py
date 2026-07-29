@@ -248,6 +248,14 @@ FORCED_ROUTE_END_YEAR_BY_COUNTRY = {
 }
 DEFAULT_FORCED_ROUTE_END_YEAR = 1888  # Brazil's final abolition — the conventional close of the Atlantic slave-trade era, used only when a destination isn't explicitly mapped above
 
+MIGRATION_TYPE_COLORS = {
+    "forced": "#7B2D26",
+    "voluntary": "#4ade80",
+    "mixed": "#C18C42",
+    "conquest": "#9CA3AF",
+    "unclear": "#A78BFA",
+}
+
 
 def compute_route_era_end(diaspora_entry, migration_type):
     """For 'forced' routes, cap era_end at the real, documented date the
@@ -288,7 +296,7 @@ def generate_routes():
                 "era": f"{d['era_start']}–{corrected_era_end}",
                 "era_start": d["era_start"],
                 "era_end": corrected_era_end,
-                "color": "#7B2D26",
+                "color": MIGRATION_TYPE_COLORS.get(migration_type, MIGRATION_TYPE_COLORS["unclear"]),
                 "points": [list(coords), list(d["coords"])],
                 "summary": f"Route dérivée de la fiche diaspora « {d['name']} » (déjà sourcée sur le site) : {d['summary'][:200]}",
                 "sources": d.get("sources", []),

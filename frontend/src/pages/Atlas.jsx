@@ -20,6 +20,7 @@ import { getHistoricalDataSource, isPilotV3Enabled } from "../lib/featureFlags";
 import DevDataSourceIndicator from "../components/DevDataSourceIndicator";
 import { adaptHistoricalEntitiesToLegacyShape } from "../lib/historicalEntityAdapter";
 import { buildPilotV3Markers, buildFangProcessDisplay } from "../lib/pilotV3Adapter";
+import { getMigrationVisualStyle, selectNonOverlappingLabels } from "../lib/atlasDisplay";
 import PilotV3InfoPanel from "../components/PilotV3InfoPanel";
 
 // Milestone markers shown along the non-linear slider track, so users stay
@@ -30,16 +31,6 @@ import PilotV3InfoPanel from "../components/PilotV3InfoPanel";
 // conquest (long dashes — military/political expansion, not a personal
 // migration decision at all). See PR: "difference between forced and
 // voluntary migration, varying honestly by period per the data found."
-function dashPatternForMigrationType(type) {
-  switch (type) {
-    case "forced": return undefined; // solid
-    case "voluntary": return "2 4";
-    case "mixed": return "8 3 2 3";
-    case "conquest": return "12 4";
-    default: return "5 5"; // unclassified/legacy routes without a migration_type yet
-  }
-}
-
 const MILESTONES = [
   { year: -300000000, label: "Pangée" },
   { year: -66000000, label: "Fin des dinosaures" },
@@ -142,6 +133,48 @@ const Atlas = () => {
     [routes, year]
   );
 
+  const visibleHistoricalLabels = useMemo(() => {
+    if (mode !== "historical" || !project) return [];
+    const candidates = [];
+
+    if (showPolities) {
+      for (const polity of visiblePolities) {
+        const coords = project(polity.coords[0], polity.coords[1]);
+        if (!coords) continue;
+        const importance = Number(polity.radius_km || 0);
+        const minimumImportance = zoomScale < 1.5 ? 900 : zoomScale < 2.5 ? 420 : zoomScale < 4 ? 160 : 0;
+        if (importance < minimumImportance) continue;
+        const markerRadius = Math.max(1.2, Math.max(4, Math.min(14, importance / 90)) / zoomScale);
+        candidates.push({
+          id: `polity-${polity.id}`,
+          text: polity.name,
+          x: coords[0],
+          y: coords[1] - markerRadius - (7 / zoomScale),
+          fontSizePx: zoomScale < 2 ? 11 : 10,
+          priority: 3000 + importance,
+          opacity: 1,
+        });
+      }
+    }
+
+    for (const marker of pilotV3Markers) {
+      const coords = project(marker.coords[0], marker.coords[1]);
+      if (!coords) continue;
+      candidates.push({
+        id: `pilot-${marker.id}`,
+        text: marker.primaryName.value,
+        x: coords[0],
+        y: coords[1] - Math.max(4, 10 / zoomScale) - (7 / zoomScale),
+        fontSizePx: 10,
+        priority: 4500,
+        opacity: marker.style.opacity,
+      });
+    }
+
+    candidates.sort((a, b) => b.priority - a.priority || a.text.localeCompare(b.text));
+    return selectNonOverlappingLabels(candidates, zoomScale, { paddingPx: 7 });
+  }, [mode, project, showPolities, visiblePolities, pilotV3Markers, zoomScale]);
+
   const currentEpoch = useMemo(() => {
     if (mode !== "geological" || plateEpochs.length === 0) return null;
     let best = plateEpochs[0];
@@ -242,6 +275,7 @@ const Atlas = () => {
           {mode !== "geological" && project && visibleRoutes.map((r) => {
             if (activeRoutes[r.id] === false) return null;
             const isSelected = selected?.kind === "route" && selected?.id === r.id;
+            const migrationStyle = getMigrationVisualStyle(r.migration_type);
             return (
               <g key={r.id} onClick={() => setSelected({ kind: "route", ...r })} style={{ cursor: "pointer" }}>
                 <polyline
@@ -263,9 +297,9 @@ const Atlas = () => {
                 <polyline
                   points={toPolyPoints(r.points)}
                   fill="none"
-                  stroke={r.color}
-                  strokeWidth={(isSelected ? 3.2 : 2.2) + (r.migration_type === "forced" ? 0.8 : 0)}
-                  strokeDasharray={dashPatternForMigrationType(r.migration_type)}
+                  stroke={migrationStyle.color}
+                  strokeWidth={(isSelected ? migrationStyle.width + 1 : migrationStyle.width) / Math.max(1, Math.sqrt(zoomScale))}
+                  strokeDasharray={migrationStyle.dasharray}
                   opacity={isSelected ? 1 : 0.88}
                   style={{ pointerEvents: "none" }}
                 />
@@ -358,43 +392,25 @@ const Atlas = () => {
             );
           })}
 
-          {/* LABELS PASS — always rendered last, on top of every shape above. */}
-          {mode === "historical" && showPolities && project && visiblePolities.map((p) => {
-            const c = project(p.coords[0], p.coords[1]);
-            if (!c) return null;
-            const r = Math.max(1.2, Math.max(4, Math.min(14, p.radius_km / 90)) / zoomScale);
-            // Zoom-based label reveal: at zoom=1 only the largest territories
-            // show their name; smaller ones appear progressively as the user
-            // zooms in, so labels don't overlap into unreadable clutter.
-            const showLabel = p.radius_km * zoomScale > 700;
-            if (!showLabel) return null;
-            return (
-              <text key={`label-${p.id}`} x={c[0]} y={c[1] - r - 4} fontSize={9 / Math.max(1, zoomScale * 0.6)} fill={ATLAS_COLORS.textBone} textAnchor="middle" style={{ fontFamily: "serif", pointerEvents: "none" }}>
-                {p.name}
-              </text>
-            );
-          })}
-
-          {mode === "historical" && project && pilotV3Markers.map((marker) => {
-            const c = project(marker.coords[0], marker.coords[1]);
-            if (!c) return null;
-            const size = Math.max(4, 10 / zoomScale);
-            const { style } = marker;
-            return (
-              <text
-                key={`label-${marker.id}`}
-                x={c[0]}
-                y={c[1] - size - 4}
-                fontSize={10 / zoomScale}
-                fill={ATLAS_COLORS.textBone}
-                textAnchor="middle"
-                opacity={style.opacity}
-                style={{ fontFamily: "serif", pointerEvents: "none" }}
-              >
-                {marker.primaryName.value}
-              </text>
-            );
-          })}
+          {/* LABELS PASS — collision-filtered in screen space. */}
+          {mode === "historical" && visibleHistoricalLabels.map((label) => (
+            <text
+              key={`label-${label.id}`}
+              x={label.x}
+              y={label.y}
+              fontSize={label.fontSizePx / zoomScale}
+              fill={ATLAS_COLORS.textBone}
+              textAnchor="middle"
+              opacity={label.opacity}
+              paintOrder="stroke"
+              stroke={ATLAS_COLORS.ocean}
+              strokeWidth={3 / zoomScale}
+              strokeLinejoin="round"
+              style={{ fontFamily: "serif", pointerEvents: "none" }}
+            >
+              {label.text}
+            </text>
+          ))}
 
           {/* SELECTED-MARKER HIGHLIGHT — a pulsing bright ring around
               whichever point is currently open in the detail panel, so it's
@@ -547,7 +563,7 @@ const Atlas = () => {
                       className="accent-gold"
                       data-testid={`route-toggle-${r.id}`}
                     />
-                    <span className="w-6 h-[2px]" style={{ background: r.color }} />
+                    <span className="w-6 h-[2px]" style={{ background: getMigrationVisualStyle(r.migration_type).color }} />
                     <span className="text-bone/80 text-xs">{r.name}</span>
                   </label>
                 ))}
@@ -599,7 +615,7 @@ const Atlas = () => {
                       className="accent-gold"
                       data-testid={`route-toggle-${r.id}`}
                     />
-                    <span className="w-6 h-[2px]" style={{ background: r.color }} />
+                    <span className="w-6 h-[2px]" style={{ background: getMigrationVisualStyle(r.migration_type).color }} />
                     <span className="text-bone/80 text-xs">{r.name}</span>
                   </label>
                 ))}
