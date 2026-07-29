@@ -13,6 +13,7 @@ const links = [
   { to: "/civilizations", key: "nav.civilizations" },
   { to: "/figures", key: "nav.figures" },
   { to: "/timeline", key: "nav.timeline" },
+  { to: "/countries", key: "nav.countries" },
   { to: "/diaspora", key: "nav.diaspora" },
   { to: "/people", key: "nav.peoples" },
   { to: "/stories", key: "nav.stories" },

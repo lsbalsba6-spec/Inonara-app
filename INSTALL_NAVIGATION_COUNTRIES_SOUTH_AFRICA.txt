@@ -1,0 +1,9 @@
+Correctif navigation Pays / Afrique du Sud
+
+Ce paquet ajoute le lien "Pays" au menu principal desktop et mobile.
+Les routes /countries et /country/:id existaient déjà dans App.js ; ce patch les rend accessibles depuis l'interface.
+
+Vérifications après déploiement :
+1. Ouvrir le menu principal et cliquer sur Pays.
+2. Dans Afrique australe, cliquer sur Afrique du Sud.
+3. Vérifier les onglets Débats et À approfondir.
