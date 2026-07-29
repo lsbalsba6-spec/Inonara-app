@@ -1,0 +1,17 @@
+INONARA — Audit des dates de fin 2025
+
+Ce paquet n'altère aucune donnée historique. Il ajoute :
+- backend/scripts/audit_current_end_dates.py
+- backend/reports/current_end_dates_audit.json
+- backend/reports/current_end_dates_audit.md
+
+Après extraction, relancer l'audit avec :
+python backend/scripts/audit_current_end_dates.py
+
+Le rapport classe les entrées en :
+- valid-current
+- data-model-problem
+- event-instant-or-bounded
+- historical-entity-ended
+- uncertain-needs-research
+- process-ended
