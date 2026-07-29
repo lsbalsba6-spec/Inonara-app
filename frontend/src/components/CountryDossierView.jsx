@@ -74,7 +74,10 @@ function SimpleCards({ items, sourceMap, titleField = "name", bodyField = "note"
 
 export default function CountryDossierView({ dossier }) {
   const [active, setActive] = useState("overview");
-  const sources = Array.isArray(dossier?.sources) ? dossier.sources : [];
+  const sources = useMemo(
+    () => (Array.isArray(dossier?.sources) ? dossier.sources : []),
+    [dossier?.sources]
+  );
   const overview = dossier?.overview || {};
   const geography = dossier?.geography || {};
   const institutions = dossier?.institutions || {};
