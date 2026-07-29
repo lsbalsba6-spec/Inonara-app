@@ -1,5 +1,5 @@
 import { useMemo, useState } from "react";
-import { geoEqualEarth, geoMercator, geoPath, geoInterpolate } from "d3-geo";
+import { geoMercator, geoPath } from "d3-geo";
 import { feature } from "topojson-client";
 import worldTopo from "../data/world-countries-50m.json";
 
@@ -10,7 +10,9 @@ const ROUTE_COLORS = {
   voluntary: "#4F8A67",
 };
 
-function CurrentFlag({ className = "" }) {
+const COUNTRY_IDS = new Set(["710", "426", "748", "516", "072", "716", "508"]);
+
+export function CurrentSouthAfricaFlag({ className = "" }) {
   return (
     <svg viewBox="0 0 900 600" role="img" aria-label="Drapeau actuel de l'Afrique du Sud" className={className}>
       <rect width="900" height="600" fill="#DE3831" />
@@ -23,15 +25,15 @@ function CurrentFlag({ className = "" }) {
   );
 }
 
-function UnionJack({ x = 0, y = 0, width = 180, height = 110 }) {
+function UnionJackFlag({ className = "" }) {
   return (
-    <g transform={`translate(${x} ${y}) scale(${width / 180} ${height / 110})`}>
-      <rect width="180" height="110" fill="#012169" />
-      <path d="M0 0 L180 110 M180 0 L0 110" stroke="#FFF" strokeWidth="24" />
-      <path d="M0 0 L180 110 M180 0 L0 110" stroke="#C8102E" strokeWidth="10" />
-      <path d="M90 0 V110 M0 55 H180" stroke="#FFF" strokeWidth="36" />
-      <path d="M90 0 V110 M0 55 H180" stroke="#C8102E" strokeWidth="20" />
-    </g>
+    <svg viewBox="0 0 900 600" role="img" aria-label="Union Jack utilisé dans l'Union sud-africaine" className={className}>
+      <rect width="900" height="600" fill="#012169" />
+      <path d="M0 0 L900 600 M900 0 L0 600" stroke="#FFF" strokeWidth="120" />
+      <path d="M0 0 L900 600 M900 0 L0 600" stroke="#C8102E" strokeWidth="48" />
+      <path d="M450 0 V600 M0 300 H900" stroke="#FFF" strokeWidth="180" />
+      <path d="M450 0 V600 M0 300 H900" stroke="#C8102E" strokeWidth="100" />
+    </svg>
   );
 }
 
@@ -41,33 +43,26 @@ function HistoricalFlag1928({ className = "" }) {
       <rect width="900" height="200" fill="#FF7A00" />
       <rect y="200" width="900" height="200" fill="#FFF" />
       <rect y="400" width="900" height="200" fill="#003DA5" />
-      <UnionJack x={270} y={245} width={120} height={72} />
-      <g transform="translate(410 245)">
-        <rect width="120" height="72" fill="#FFF" stroke="#C96A00" strokeWidth="4" />
-        <path d="M0 12 H120 M0 36 H120 M0 60 H120" stroke="#FF7A00" strokeWidth="8" />
-        <rect x="0" width="34" height="72" fill="#FFF" />
-      </g>
-      <g transform="translate(550 245)">
-        <rect width="120" height="72" fill="#007A4D" />
-        <rect x="36" width="84" height="72" fill="#E03C31" />
-        <rect x="36" y="24" width="84" height="24" fill="#FFF" />
-        <rect x="36" y="31" width="84" height="10" fill="#002395" />
-      </g>
+      <rect x="250" y="245" width="120" height="72" fill="#012169" />
+      <path d="M250 245 L370 317 M370 245 L250 317" stroke="#FFF" strokeWidth="18" />
+      <path d="M310 245 V317 M250 281 H370" stroke="#FFF" strokeWidth="24" />
+      <path d="M310 245 V317 M250 281 H370" stroke="#C8102E" strokeWidth="12" />
+      <rect x="390" y="245" width="120" height="72" fill="#FFF" stroke="#C96A00" strokeWidth="4" />
+      <path d="M390 257 H510 M390 281 H510 M390 305 H510" stroke="#FF7A00" strokeWidth="8" />
+      <rect x="530" y="245" width="120" height="72" fill="#007A4D" />
+      <rect x="566" y="245" width="84" height="72" fill="#E03C31" />
+      <rect x="566" y="269" width="84" height="24" fill="#FFF" />
+      <rect x="566" y="276" width="84" height="10" fill="#002395" />
     </svg>
   );
 }
 
-function UnionEraFlag({ className = "" }) {
-  return <UnionJack width={900} height={600} className={className} />;
-}
-
 export function SouthAfricaFlagHistory({ items = [] }) {
   const renderFlag = (variant) => {
-    if (variant === "current") return <CurrentFlag className="w-full rounded-md shadow-lg" />;
-    if (variant === "1928") return <HistoricalFlag1928 className="w-full rounded-md shadow-lg" />;
-    return <UnionEraFlag className="w-full rounded-md shadow-lg" />;
+    if (variant === "current") return <CurrentSouthAfricaFlag className="h-full w-full" />;
+    if (variant === "1928") return <HistoricalFlag1928 className="h-full w-full" />;
+    return <UnionJackFlag className="h-full w-full" />;
   };
-
   return (
     <div className="grid gap-4 md:grid-cols-3">
       {items.map((item) => (
@@ -83,79 +78,97 @@ export function SouthAfricaFlagHistory({ items = [] }) {
 }
 
 export function SouthAfricaCountryMap({ cities = [] }) {
-  const { path, country } = useMemo(() => {
-    const countries = feature(worldTopo, worldTopo.objects.countries).features;
-    const southAfrica = countries.find((item) => String(item.id) === "710");
-    const projection = geoMercator().fitExtent([[28, 28], [772, 472]], southAfrica);
-    return { path: geoPath(projection), country: southAfrica, projection };
+  const [layer, setLayer] = useState("all");
+  const mapData = useMemo(() => {
+    const all = feature(worldTopo, worldTopo.objects.countries).features;
+    const southAfrica = all.find((item) => String(item.id).padStart(3, "0") === "710");
+    if (!southAfrica) return null;
+    const region = all.filter((item) => COUNTRY_IDS.has(String(item.id).padStart(3, "0")));
+    const projection = geoMercator().fitExtent([[34, 34], [866, 566]], southAfrica);
+    return { southAfrica, region, projection, path: geoPath(projection) };
   }, []);
 
-  const projection = useMemo(() => geoMercator().fitExtent([[28, 28], [772, 472]], country), [country]);
+  if (!mapData) {
+    return <div className="rounded-xl border border-red-400/20 p-4 text-sm text-bone/70">La géométrie de l'Afrique du Sud n'a pas pu être chargée.</div>;
+  }
 
+  const visibleCities = cities.filter((city) => layer === "all" || city.group === layer);
+  const { southAfrica, region, projection, path } = mapData;
   return (
-    <div className="rounded-xl border border-bone/10 bg-[#151210] p-3">
-      <svg viewBox="0 0 800 500" className="w-full" role="img" aria-label="Carte de l'Afrique du Sud avec principales villes">
-        <path d={path(country)} fill="#7F4C38" stroke="#D4AF37" strokeWidth="2" />
-        {cities.map((city) => {
-          const point = projection(city.coordinates);
-          if (!point) return null;
-          return (
-            <g key={city.name} transform={`translate(${point[0]} ${point[1]})`}>
-              <circle r={city.kind.includes("capital") ? 5 : 3.5} fill="#D4AF37" stroke="#151210" strokeWidth="1.5" />
-              <text x="8" y="4" fontSize="11" fill="#F4E8D0" stroke="#151210" strokeWidth="3" paintOrder="stroke">{city.name}</text>
-            </g>
-          );
-        })}
-      </svg>
-      <p className="mt-2 text-xs leading-relaxed text-bone/50">Carte contemporaine : elle situe quelques villes majeures et capitales institutionnelles. Elle ne représente pas les limites des polities anciennes.</p>
+    <div className="space-y-3">
+      <div className="flex flex-wrap gap-2">
+        {[['all','Tout'],['national','Capitales nationales'],['province','Capitales provinciales'],['major','Grandes villes']].map(([id,label]) => (
+          <button key={id} onClick={() => setLayer(id)} className={`rounded-full border px-3 py-1 text-xs ${layer === id ? "border-gold text-gold" : "border-bone/15 text-bone/60"}`}>{label}</button>
+        ))}
+      </div>
+      <div className="overflow-hidden rounded-xl border border-bone/10 bg-[#151210] p-3">
+        <svg viewBox="0 0 900 600" className="w-full" role="img" aria-label="Carte détaillée de l'Afrique du Sud avec capitales et grandes villes">
+          <rect width="900" height="600" fill="#151210" />
+          {region.map((country) => <path key={country.id} d={path(country)} fill={String(country.id).padStart(3,"0") === "710" ? "#744534" : "#2A2421"} stroke={String(country.id).padStart(3,"0") === "710" ? "#D4AF37" : "#554A43"} strokeWidth={String(country.id).padStart(3,"0") === "710" ? 2.2 : 0.8} />)}
+          <path d={path(southAfrica)} fill="none" stroke="#E7C66D" strokeWidth="2.5" />
+          <text x="120" y="500" fill="#7797B8" fontSize="14">Océan Atlantique</text>
+          <text x="690" y="480" fill="#7797B8" fontSize="14">Océan Indien</text>
+          {visibleCities.map((city) => {
+            const point = projection(city.coordinates);
+            if (!point) return null;
+            const isNational = city.group === "national";
+            return <g key={city.name} transform={`translate(${point[0]} ${point[1]})`}>
+              <circle r={isNational ? 6 : city.group === "province" ? 4.5 : 3.5} fill={isNational ? "#FFD166" : city.group === "province" ? "#D4AF37" : "#F4E8D0"} stroke="#151210" strokeWidth="1.5" />
+              <text x="8" y="4" fontSize={isNational ? 12 : 10.5} fill="#F4E8D0" stroke="#151210" strokeWidth="3" paintOrder="stroke">{city.name}</text>
+            </g>;
+          })}
+        </svg>
+      </div>
+      <div className="flex flex-wrap gap-4 text-xs text-bone/55"><span>● Capitales nationales</span><span>● Capitales provinciales</span><span>● Grandes villes</span></div>
+      <p className="text-xs leading-relaxed text-bone/50">Contour national réel issu du fond cartographique du projet. Les marqueurs indiquent les trois capitales nationales, les neuf capitales provinciales et plusieurs grandes villes. Cette carte contemporaine ne doit pas être utilisée pour représenter les territoires anciens.</p>
     </div>
   );
 }
 
-function routeLine(route) {
-  const interpolate = geoInterpolate(route.origin_coordinates, route.destination_coordinates);
-  return {
-    type: "LineString",
-    coordinates: Array.from({ length: 48 }, (_, index) => interpolate(index / 47)),
-  };
+function curvedPath(projection, route) {
+  const a = projection(route.origin_coordinates);
+  const b = projection(route.destination_coordinates);
+  if (!a || !b) return null;
+  const mx = (a[0] + b[0]) / 2;
+  const my = (a[1] + b[1]) / 2 - Math.max(24, Math.abs(a[0] - b[0]) * 0.14);
+  return `M ${a[0]} ${a[1]} Q ${mx} ${my} ${b[0]} ${b[1]}`;
 }
 
 export function SouthAfricaMigrationMap({ routes = [], note }) {
   const periods = useMemo(() => [...new Set(routes.map((route) => `${route.start}-${route.end}`))], [routes]);
-  const [selectedPeriod, setSelectedPeriod] = useState(periods[0] || "all");
+  const [selectedPeriod, setSelectedPeriod] = useState("all");
   const countries = useMemo(() => feature(worldTopo, worldTopo.objects.countries), []);
-  const projection = useMemo(() => geoEqualEarth().fitExtent([[12, 12], [988, 488]], { type: "Sphere" }), []);
+  const projection = useMemo(() => geoMercator().scale(145).translate([500, 300]), []);
   const path = useMemo(() => geoPath(projection), [projection]);
   const visibleRoutes = selectedPeriod === "all" ? routes : routes.filter((route) => `${route.start}-${route.end}` === selectedPeriod);
 
-  return (
-    <div className="space-y-4">
-      <div className="flex flex-wrap gap-2">
-        <button onClick={() => setSelectedPeriod("all")} className={`rounded-full border px-3 py-1 text-xs ${selectedPeriod === "all" ? "border-gold text-gold" : "border-bone/15 text-bone/60"}`}>Toutes les périodes</button>
-        {periods.map((period) => <button key={period} onClick={() => setSelectedPeriod(period)} className={`rounded-full border px-3 py-1 text-xs ${selectedPeriod === period ? "border-gold text-gold" : "border-bone/15 text-bone/60"}`}>{period.replace("-", "–")}</button>)}
-      </div>
-      <div className="rounded-xl border border-bone/10 bg-[#151210] p-3 overflow-hidden">
-        <svg viewBox="0 0 1000 500" className="w-full" role="img" aria-label="Routes migratoires documentées concernant l'Afrique du Sud">
-          <path d={path({ type: "Sphere" })} fill="#111" stroke="#3D3530" />
-          {countries.features.map((country) => <path key={country.id} d={path(country)} fill="#2A2421" stroke="#4C413A" strokeWidth="0.35" />)}
-          {visibleRoutes.map((route) => {
-            const color = ROUTE_COLORS[route.type] || "#D4AF37";
-            const origin = projection(route.origin_coordinates);
-            const destination = projection(route.destination_coordinates);
-            return (
-              <g key={route.id}>
-                <path d={path(routeLine(route))} fill="none" stroke={color} strokeWidth="2.4" strokeDasharray={route.type === "colonial-settlement" ? "7 5" : undefined} opacity="0.9" />
-                {origin && <circle cx={origin[0]} cy={origin[1]} r="3" fill={color} />}
-                {destination && <circle cx={destination[0]} cy={destination[1]} r="4" fill={color} stroke="#F4E8D0" strokeWidth="1" />}
-              </g>
-            );
-          })}
-        </svg>
-      </div>
-      <div className="grid gap-3 md:grid-cols-2">
-        {visibleRoutes.map((route) => <article key={route.id} className="rounded-lg border border-bone/10 p-3"><div className="flex items-center gap-2"><span className="h-2.5 w-2.5 rounded-full" style={{ backgroundColor: ROUTE_COLORS[route.type] || "#D4AF37" }} /><p className="text-xs uppercase tracking-wider text-gold">{route.start}–{route.end}</p></div><h4 className="mt-1 text-bone">{route.label}</h4><p className="mt-1 text-xs text-bone/50">{route.origin} → {route.destination}</p></article>)}
-      </div>
-      <p className="text-xs leading-relaxed text-bone/50">{note}</p>
+  return <div className="space-y-4">
+    <div className="flex flex-wrap gap-2">
+      <button onClick={() => setSelectedPeriod("all")} className={`rounded-full border px-3 py-1 text-xs ${selectedPeriod === "all" ? "border-gold text-gold" : "border-bone/15 text-bone/60"}`}>Toutes les périodes</button>
+      {periods.map((period) => <button key={period} onClick={() => setSelectedPeriod(period)} className={`rounded-full border px-3 py-1 text-xs ${selectedPeriod === period ? "border-gold text-gold" : "border-bone/15 text-bone/60"}`}>{period.replace("-", "–")}</button>)}
     </div>
-  );
+    <div className="overflow-hidden rounded-xl border border-bone/10 bg-[#151210] p-3">
+      <svg viewBox="0 0 1000 600" className="w-full" role="img" aria-label="Routes historiques documentées concernant l'Afrique du Sud">
+        <defs>{Object.entries(ROUTE_COLORS).map(([key,color]) => <marker key={key} id={`arrow-${key}`} viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse"><path d="M 0 0 L 10 5 L 0 10 z" fill={color} /></marker>)}</defs>
+        <rect width="1000" height="600" fill="#151210" />
+        {countries.features.map((country) => <path key={country.id} d={path(country)} fill={String(country.id).padStart(3,"0") === "710" ? "#744534" : "#2A2421"} stroke="#4C413A" strokeWidth="0.45" />)}
+        {visibleRoutes.map((route) => {
+          const color = ROUTE_COLORS[route.type] || "#D4AF37";
+          const d = curvedPath(projection, route);
+          const origin = projection(route.origin_coordinates);
+          const destination = projection(route.destination_coordinates);
+          if (!d || !origin || !destination) return null;
+          return <g key={route.id}>
+            <path d={d} fill="none" stroke="#0E0C0B" strokeWidth="7" opacity="0.75" />
+            <path d={d} fill="none" stroke={color} strokeWidth="3.5" strokeDasharray={route.type === "colonial-settlement" ? "9 6" : undefined} markerEnd={`url(#arrow-${route.type})`} opacity="0.98" />
+            <circle cx={origin[0]} cy={origin[1]} r="4" fill={color} stroke="#151210" strokeWidth="1.5" />
+            <circle cx={destination[0]} cy={destination[1]} r="5" fill={color} stroke="#F4E8D0" strokeWidth="1.3" />
+          </g>;
+        })}
+      </svg>
+    </div>
+    <div className="flex flex-wrap gap-4 text-xs text-bone/60">{Object.entries({forced:'Forcée','coerced-labour':'Travail sous contrainte','colonial-settlement':'Installation coloniale',voluntary:'Volontaire'}).map(([type,label]) => <span key={type} className="inline-flex items-center gap-2"><i className="h-2.5 w-2.5 rounded-full" style={{backgroundColor:ROUTE_COLORS[type]}} />{label}</span>)}</div>
+    <div className="grid gap-3 md:grid-cols-2">{visibleRoutes.map((route) => <article key={route.id} className="rounded-lg border border-bone/10 p-3"><p className="text-xs uppercase tracking-wider text-gold">{route.start}–{route.end}</p><h4 className="mt-1 text-bone">{route.label}</h4><p className="mt-1 text-xs text-bone/50">{route.origin} → {route.destination}</p></article>)}</div>
+    {note && <p className="rounded-lg border border-amber-400/20 bg-amber-400/[0.04] p-4 text-sm leading-relaxed text-bone/70">{note}</p>}
+  </div>;
 }
