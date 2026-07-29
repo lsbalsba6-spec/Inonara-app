@@ -158,7 +158,17 @@ export default function CountryDossierView({ dossier }) {
             </article>)}
           </div>}
         </div>}
-        {active === "peoples" && <SimpleCards items={dossier.peoples} sourceMap={sourceMap} />}
+        {active === "peoples" && <div className="space-y-5">
+          <div className="rounded-lg border border-gold/20 bg-gold/[0.04] p-4 text-sm leading-relaxed text-bone/70">Les catégories ci-dessous servent à organiser la lecture. Elles ne sont ni des races biologiques, ni des blocs homogènes, ni des frontières fixes. Plusieurs identités, langues et appartenances peuvent coexister.</div>
+          <div className="space-y-4">{(dossier.peoples || []).map((item, index) => <article key={item.id || item.name || index} className="rounded-xl border border-bone/10 bg-bone/[0.025] p-5">
+            <div className="flex flex-wrap items-start justify-between gap-2"><div><p className="text-xs uppercase tracking-widest text-gold">{item.category}</p><h3 className="mt-1 font-serif text-2xl text-bone">{item.name}</h3></div><StatusBadge status={item.status} /></div>
+            <p className="mt-3 leading-relaxed text-bone/75">{item.history || item.note}</p>
+            {item.regions?.length > 0 && <p className="mt-3 text-sm text-bone/60"><strong className="text-bone/75">Implantations et liens régionaux :</strong> {item.regions.join(" · ")}</p>}
+            {item.languages && <p className="mt-2 text-sm text-bone/60"><strong className="text-bone/75">Langues :</strong> {item.languages}</p>}
+            {item.caution && <p className="mt-3 rounded-lg border border-amber-400/20 bg-amber-400/[0.04] p-3 text-sm leading-relaxed text-bone/65"><strong className="text-amber-300">Précaution :</strong> {item.caution}</p>}
+            <SourceLinks ids={item.sources || []} sourceMap={sourceMap} />
+          </article>)}</div>
+        </div>}
         {active === "polities" && <SimpleCards items={dossier.polities} sourceMap={sourceMap} bodyField="mapping" />}
         {active === "migrations" && <SimpleCards items={dossier.migrations} sourceMap={sourceMap} titleField="label" bodyField="reason" />}
         {active === "heritage" && <SimpleCards items={dossier.heritage} sourceMap={sourceMap} />}
@@ -167,15 +177,17 @@ export default function CountryDossierView({ dossier }) {
           <SimpleCards items={dossier.culture} sourceMap={sourceMap} titleField="topic" bodyField="text" />
           <div><h2 className="font-serif text-2xl text-gold mb-3">Traditions orales et légendes</h2><SimpleCards items={dossier.oral_traditions_and_legends} sourceMap={sourceMap} titleField="title" /></div>
         </div>}
-        {active === "languages" && <div className="space-y-6">
-          <div><h2 className="font-serif text-2xl text-gold mb-3">12 langues officielles</h2><div className="flex flex-wrap gap-2">{dossier.languages.official.map((l) => <span key={l} className="border border-bone/15 rounded-full px-3 py-1 text-sm text-bone/75">{l}</span>)}</div></div>
-          <div><h2 className="font-serif text-2xl text-gold mb-3">Langue la plus parlée au foyer, 2022</h2><div className="space-y-2">{dossier.languages.household_2022.filter((x) => x.percent != null).map((x) => <div key={x.language} className="flex justify-between border-b border-bone/10 pb-2 text-bone/75"><span>{x.language}</span><strong>{x.percent}%</strong></div>)}</div><p className="text-sm text-bone/50 mt-4">{dossier.languages.note}</p></div>
-          <SourceLinks ids={dossier.languages.sources} sourceMap={sourceMap} />
+        {active === "languages" && <div className="space-y-8">
+          <div className="rounded-lg border border-gold/20 bg-gold/[0.04] p-4"><h2 className="font-serif text-2xl text-gold">12 langues officielles</h2><p className="mt-2 text-sm leading-relaxed text-bone/70">{dossier.languages?.constitutional_note}</p><div className="mt-4 flex flex-wrap gap-2">{(dossier.languages?.official || []).map((l) => <span key={l} className="rounded-full border border-bone/15 px-3 py-1 text-sm text-bone/75">{l}</span>)}</div></div>
+          <div><h2 className="font-serif text-2xl text-gold mb-3">Langue la plus souvent parlée dans le ménage, 2022</h2><div className="space-y-3">{(dossier.languages?.household_2022 || []).filter((x) => x.percent != null).map((x) => <div key={x.language}><div className="mb-1 flex justify-between text-sm text-bone/75"><span>{x.language}</span><strong>{x.percent}%</strong></div><div className="h-2 overflow-hidden rounded-full bg-bone/10"><div className="h-full rounded-full bg-gold/70" style={{ width: `${Math.min(x.percent, 100)}%` }} /></div></div>)}</div><p className="text-sm leading-relaxed text-bone/50 mt-4">{dossier.languages?.note}</p></div>
+          <div><h2 className="font-serif text-2xl text-gold mb-3">Familles, usages et histoires</h2><SimpleCards items={dossier.languages?.families_and_contexts || []} sourceMap={sourceMap} titleField="title" bodyField="text" /></div>
+          <SourceLinks ids={dossier.languages?.sources || []} sourceMap={sourceMap} />
         </div>}
-        {active === "religions" && <div className="space-y-5">
-          <div className="rounded-lg border border-gold/20 bg-gold/[0.04] p-4"><p className="text-sm text-bone/75">{dossier.religions.measure_label}</p>{dossier.religions.christian_share_2022 && <p className="mt-2 font-serif text-2xl text-gold">Christianisme : {dossier.religions.christian_share_2022}% de la population selon l’analyse de Stats SA</p>}</div>
-          <div className="grid gap-3 sm:grid-cols-2">{dossier.religions.census_2022.map((r) => <div key={r.name} className="border border-bone/10 rounded-lg p-4"><p className="text-bone/65">{r.name}</p><p className="font-serif text-xl text-gold">{r.count.toLocaleString("fr-FR")} personnes</p></div>)}</div>
-          <p className="text-bone/65 leading-relaxed">{dossier.religions.note}</p><SourceLinks ids={dossier.religions.sources} sourceMap={sourceMap} />
+        {active === "religions" && <div className="space-y-8">
+          <div className="rounded-lg border border-gold/20 bg-gold/[0.04] p-4"><p className="text-sm text-bone/75">{dossier.religions?.measure_label}</p>{dossier.religions?.christian_share_2022 != null && <p className="mt-2 font-serif text-2xl text-gold">Christianisme : {dossier.religions.christian_share_2022}%</p>}<p className="mt-3 text-sm leading-relaxed text-bone/60">{dossier.religions?.interpretation_note}</p></div>
+          <div className="grid gap-3 sm:grid-cols-2">{(dossier.religions?.census_2022 || []).map((r) => <div key={r.name} className="rounded-lg border border-bone/10 p-4"><p className="text-bone/65">{r.name}</p><p className="font-serif text-xl text-gold">{Number(r.count || 0).toLocaleString("fr-FR")} personnes</p></div>)}</div>
+          <div><h2 className="font-serif text-2xl text-gold mb-3">Histoire et diversité religieuses</h2><SimpleCards items={dossier.religions?.historical_contexts || []} sourceMap={sourceMap} titleField="title" bodyField="text" /></div>
+          <p className="text-bone/65 leading-relaxed">{dossier.religions?.note}</p><SourceLinks ids={dossier.religions?.sources || []} sourceMap={sourceMap} />
         </div>}
         {active === "historiography" && <div className="space-y-4">
           <p className="text-bone/65 leading-relaxed">Ces notes signalent les pièges d'interprétation à éviter. Elles ne remplacent pas les dossiers spécialisés à venir.</p>

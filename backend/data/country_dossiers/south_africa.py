@@ -603,18 +603,109 @@ SOUTH_AFRICA_DOSSIER = {
         {"id": "polity-republic-sa", "name": "République d'Afrique du Sud", "start": 1961, "end": None, "kind": "state", "geometry": None, "mapping": "État moderne; changement constitutionnel majeur en 1994-1997", "status": "ready", "sources": ["src-constitution-1996"]},
     ],
     "peoples": [
-        {"name": "San", "note": "Ensemble de communautés de chasseurs-cueilleurs aux histoires et langues diverses; le terme ne désigne pas un peuple politique unique.", "status": "ready", "sources": ["src-saho-san"]},
-        {"name": "Khoekhoe", "note": "Communautés pastorales du sud de l'Afrique; leurs identités, chefferies et trajectoires doivent être documentées localement.", "status": "provisional", "sources": ["src-saho-khoisan"]},
-        {"name": "Nguni", "note": "Grande catégorie linguistique comprenant notamment des locuteurs isiZulu, isiXhosa, siSwati et isiNdebele; elle ne doit pas effacer les identités politiques et locales.", "status": "ready", "sources": ["src-gov-people"]},
-        {"name": "Sotho-Tswana", "note": "Ensemble linguistique et historique comprenant notamment Sesotho, Sepedi et Setswana; les polities et communautés restent distinctes.", "status": "ready", "sources": ["src-gov-people"]},
-        {"name": "Tsonga", "note": "Communautés de langue xitsonga présentes en Afrique du Sud et dans les pays voisins.", "status": "ready", "sources": ["src-gov-people"]},
-        {"name": "Venda", "note": "Communautés de langue tshivenda, principalement au nord du pays, avec une histoire régionale liée au Limpopo.", "status": "ready", "sources": ["src-gov-people"]},
-        {"name": "Sud-Africains d'ascendance indienne", "note": "Communautés issues à la fois de l'engagisme au Natal et de migrations libres, ainsi que d'autres circulations historiques.", "status": "ready", "sources": ["src-saho-indian-south-africans"]},
-        {"name": "Communautés coloured / métisses", "note": "Catégorie historique et politique hétérogène, façonnée par l'esclavage, les unions, les classifications coloniales et l'apartheid; ne pas la traiter comme une origine unique.", "status": "provisional", "sources": ["src-adhikari-coloured-identity"]},
-        {"name": "Afrikaners et autres communautés européennes", "note": "Communautés issues de plusieurs vagues de colonisation et d'immigration européennes, avec des identités distinctes.", "status": "ready", "sources": ["src-gov-people"]},
+        {
+            "id": "people-san-south-africa",
+            "name": "San",
+            "category": "ensemble de communautés",
+            "regions": ["Northern Cape", "Kalahari transfrontalier", "autres implantations dispersées"],
+            "languages": "Plusieurs langues distinctes, dont certaines gravement menacées ; « san » ne désigne pas une langue unique.",
+            "history": "Des communautés de chasseurs-cueilleurs ont occupé l’Afrique australe pendant des millénaires. Les populations aujourd’hui regroupées sous le terme San possèdent des histoires, des noms et des langues différents.",
+            "caution": "Éviter l’ancien exonyme colonial « Bushmen » et ne pas présenter les San comme un groupe homogène ou figé hors de la modernité.",
+            "status": "ready",
+            "sources": ["src-saho-san", "src-unesco-khomani"]
+        },
+        {
+            "id": "people-khoekhoe-south-africa",
+            "name": "Khoekhoe",
+            "category": "communautés pastorales historiques et contemporaines",
+            "regions": ["Cap-Occidental", "Cap-Nord", "Namaqualand", "espaces transfrontaliers"],
+            "languages": "Les langues khoekhoe appartiennent à plusieurs traditions linguistiques ; certaines communautés ont aussi adopté l’afrikaans ou d’autres langues.",
+            "history": "Des communautés pastorales khoekhoe étaient établies dans l’ouest et le sud de l’Afrique australe avant la colonisation européenne. Elles ont subi guerres, épidémies, dépossession foncière, travail contraint et reclassification administrative.",
+            "caution": "Le terme composite « Khoisan » est utile dans certains contextes politiques ou académiques, mais il ne doit pas effacer la distinction entre Khoekhoe, San et communautés particulières.",
+            "status": "ready",
+            "sources": ["src-saho-khoisan", "src-saho-khoisan-identity", "src-unesco-richtersveld"]
+        },
+        {
+            "id": "people-nguni-south-africa",
+            "name": "Communautés nguni",
+            "category": "ensemble linguistique et historique",
+            "regions": ["KwaZulu-Natal", "Cap-Oriental", "Mpumalanga", "Gauteng", "Eswatini et régions voisines"],
+            "languages": "isiZulu, isiXhosa, siSwati et isiNdebele, entre autres variétés et formes locales.",
+            "history": "La catégorie nguni regroupe des communautés apparentées linguistiquement, mais elle ne constitue ni un peuple politique unique ni une trajectoire historique uniforme. Les histoires zouloue, xhosa, swazi et ndebele doivent être traitées séparément.",
+            "caution": "Ne pas transformer une classification linguistique en identité ethnique unique et immuable.",
+            "status": "ready",
+            "sources": ["src-gov-people", "src-saho-xhosa", "src-saho-precolonial"]
+        },
+        {
+            "id": "people-sotho-tswana-south-africa",
+            "name": "Communautés sotho-tswana",
+            "category": "ensemble linguistique et historique",
+            "regions": ["Free State", "Gauteng", "Nord-Ouest", "Limpopo", "Lesotho et Botswana"],
+            "languages": "Sesotho, Setswana et Sepedi, avec de nombreuses variétés régionales.",
+            "history": "Les sociétés sotho-tswana ont développé des établissements, chefferies et royaumes aux histoires distinctes. Les circulations entre l’actuelle Afrique du Sud, le Lesotho et le Botswana précèdent les frontières nationales.",
+            "caution": "Basotho, Batswana, Bapedi et autres communautés ne sont pas interchangeables.",
+            "status": "ready",
+            "sources": ["src-gov-people", "src-saho-sotho", "src-saho-tswana", "src-saho-precolonial"]
+        },
+        {
+            "id": "people-tsonga-south-africa",
+            "name": "Communautés tsonga",
+            "category": "communautés ethnolinguistiques transfrontalières",
+            "regions": ["Limpopo", "Mpumalanga", "Mozambique et Eswatini"],
+            "languages": "xitsonga et variétés apparentées.",
+            "history": "Les communautés tsonga ont des histoires liées aux réseaux politiques, commerciaux et migratoires de l’est de l’Afrique australe. Leur présence ne se laisse pas enfermer dans les frontières contemporaines.",
+            "caution": "Les termes Tsonga et Shangaan ont des histoires et des usages différents ; ils ne doivent pas être employés automatiquement comme synonymes.",
+            "status": "provisional",
+            "sources": ["src-gov-people"]
+        },
+        {
+            "id": "people-venda-south-africa",
+            "name": "Communautés venda",
+            "category": "communautés ethnolinguistiques et histoires politiques régionales",
+            "regions": ["Limpopo", "régions voisines du Zimbabwe"],
+            "languages": "tshivenda.",
+            "history": "Les histoires venda sont liées au nord du Limpopo, aux paysages de pierre, aux échanges régionaux et à plusieurs formations politiques. Elles ne se réduisent pas au homeland créé sous l’apartheid.",
+            "caution": "Distinguer les histoires précoloniales, les structures de chefferie et les découpages administratifs imposés au XXe siècle.",
+            "status": "provisional",
+            "sources": ["src-gov-people", "src-saho-precolonial"]
+        },
+        {
+            "id": "people-indian-south-africans",
+            "name": "Sud-Africains d’ascendance indienne",
+            "category": "communautés issues de plusieurs circulations",
+            "regions": ["KwaZulu-Natal", "Gauteng", "Cap-Occidental et autres centres urbains"],
+            "languages": "anglais, langues sud-africaines et langues héritées du sous-continent indien selon les familles et les générations.",
+            "history": "Les communautés sont issues notamment de l’engagisme vers le Natal à partir de 1860, de migrations de commerçants et d’artisans, puis de mobilités familiales et professionnelles. Ces trajectoires ne doivent pas être fusionnées en une migration unique.",
+            "caution": "Distinguer engagisme sous contrat, migrations libres et identités contemporaines.",
+            "status": "ready",
+            "sources": ["src-saho-indian-indentured", "src-saho-indian-south-africans", "src-rama-forced-indian"]
+        },
+        {
+            "id": "people-coloured-south-africa",
+            "name": "Communautés classées « Coloured » / métisses",
+            "category": "catégorie historique, juridique et identitaire hétérogène",
+            "regions": ["Cap-Occidental", "Cap-Nord", "autres régions urbaines"],
+            "languages": "afrikaans, anglais et autres langues selon les communautés.",
+            "history": "La catégorie a été façonnée par l’esclavage au Cap, les unions et filiations multiples, les classifications coloniales puis l’apartheid. Certaines personnes la revendiquent comme identité ; d’autres la contestent ou utilisent des identifications plus précises.",
+            "caution": "Ne jamais présenter cette catégorie comme une origine biologique ou culturelle unique.",
+            "status": "provisional",
+            "sources": ["src-adhikari-coloured-identity", "src-saho-slavery-cape"]
+        },
+        {
+            "id": "people-afrikaners-european-south-africa",
+            "name": "Afrikaners et autres communautés d’ascendance européenne",
+            "category": "communautés issues de colonisations et migrations distinctes",
+            "regions": ["ensemble du pays, avec histoires régionales différentes"],
+            "languages": "afrikaans, anglais, portugais, allemand, grec et autres langues selon les trajectoires.",
+            "history": "Les populations d’ascendance européenne ne forment pas un bloc unique. Les colons de la VOC, les Huguenots, les Britanniques et les migrations ultérieures ont produit des communautés, intérêts politiques et identités différents.",
+            "caution": "Distinguer colonisation de peuplement, migrations ultérieures et positions contemporaines.",
+            "status": "ready",
+            "sources": ["src-gov-people", "src-saho-dutch-settlement", "src-saho-british-settlers"]
+        }
     ],
     "languages": {
         "official": ["Afrikaans", "English", "isiNdebele", "isiXhosa", "isiZulu", "Sepedi", "Sesotho", "Setswana", "siSwati", "Tshivenda", "Xitsonga", "South African Sign Language"],
+        "constitutional_note": "La langue des signes sud-africaine (SASL) est devenue la douzième langue officielle en juillet 2023. Le statut officiel ne signifie pas que toutes les langues disposent partout des mêmes ressources, services publics ou possibilités d’enseignement.",
         "household_2022": [
             {"language": "isiZulu", "percent": 24.4},
             {"language": "isiXhosa", "percent": 16.3},
@@ -622,211 +713,40 @@ SOUTH_AFRICA_DOSSIER = {
             {"language": "Sepedi", "percent": 10.0},
             {"language": "English", "percent": 8.7},
             {"language": "Setswana", "percent": 8.3},
-            {"language": "Sesotho", "percent": 7.8},
-            {"language": "Other official and non-official languages", "percent": None},
+            {"language": "Sesotho", "percent": 7.8}
         ],
-        "note": "Les pourcentages indiquent la langue la plus souvent parlée dans le ménage au recensement de 2022; ils ne mesurent ni la compétence multilingue ni l'identité ethnique.",
-        "history_chapters": [
-        {
-            "id": "za-history-deep-time",
-            "title": "Des hominines aux premières sociétés humaines documentées",
-            "period": "Plusieurs millions d’années – premier millénaire de notre ère",
-            "summary": "Le territoire sud-africain conserve des archives majeures de l’évolution humaine. Les sites fossilifères du Gauteng et du Nord-Ouest documentent plusieurs espèces d’hominines, tandis que les sites pléistocènes du littoral et de l’intérieur montrent des innovations techniques et symboliques anciennes. Ces découvertes ne racontent pas une progression simple et linéaire : elles témoignent de populations diverses, de changements climatiques et de réseaux de mobilité dont les détails restent débattus.",
-            "details": [
-                "Les expressions modernes comme « berceau de l’humanité » sont utiles pour la médiation, mais elles ne signifient pas qu’un seul lieu aurait produit toute l’humanité moderne.",
-                "Les sociétés san et khoekhoe possèdent des histoires distinctes. Les catégories actuelles ne doivent pas être projetées sans nuance sur toute la préhistoire.",
-                "L’arrivée progressive de communautés agricoles et métallurgiques de langues bantoues transforme les économies et les paysages à partir des premiers siècles de notre ère, sans remplacer uniformément les populations déjà présentes."
-            ],
-            "status": "ready",
-            "sources": ["src-unesco-fossil-hominid-sites", "src-unesco-pleistocene-sites", "src-saho-precolonial"]
-        },
-        {
-            "id": "za-history-mapungubwe",
-            "title": "Mapungubwe et les réseaux de l’Afrique australe",
-            "period": "environ 900–1300",
-            "summary": "Mapungubwe se développe près de la confluence du Limpopo et du Shashe. Son organisation sociale hiérarchisée, ses objets en or et ses importations témoignent d’un pouvoir régional intégré aux échanges reliant l’intérieur de l’Afrique australe aux ports de l’océan Indien. Le royaume ne doit pas être présenté comme l’ancêtre direct de l’État sud-africain moderne : il appartient à une histoire régionale qui traverse les frontières actuelles de l’Afrique du Sud, du Botswana et du Zimbabwe.",
-            "details": [
-                "Le paysage culturel classé par l’UNESCO documente la montée et le déclin d’un royaume entre environ 900 et 1300.",
-                "Les frontières exactes de son autorité ne sont pas connues ; une aire d’influence approximative est plus honnête qu’un polygone politique précis.",
-                "Son insertion dans les échanges d’or, d’ivoire, de verre et de textiles relie l’histoire intérieure du continent aux circuits de l’océan Indien."
-            ],
-            "status": "ready",
-            "sources": ["src-unesco-mapungubwe", "src-saho-pre1500"]
-        },
-        {
-            "id": "za-history-cape",
-            "title": "Le Cap néerlandais : établissement, esclavage et dépossession",
-            "period": "1652–1795",
-            "summary": "En 1652, la VOC établit une station de ravitaillement au Cap. L’expansion foncière des colons provoque des conflits et des pertes territoriales pour des communautés khoekhoe. La société coloniale repose aussi sur l’importation de personnes réduites en esclavage depuis Madagascar, l’Inde, l’Asie du Sud-Est, le Mozambique et l’Afrique orientale. Ces déplacements ont profondément façonné les langues, les religions, les cuisines et les identités du Cap.",
-            "details": [
-                "La fondation coloniale n’est pas la « naissance » de l’Afrique du Sud : des sociétés complexes existaient bien avant 1652.",
-                "Les personnes esclavisées ne formaient pas un groupe homogène et leurs routes d’arrivée doivent être séparées selon les périodes et les régions d’origine.",
-                "Les catégories raciales ultérieures ont souvent effacé les identités précises des Khoekhoe, des San, des esclaves africains et asiatiques et de leurs descendants."
-            ],
-            "status": "ready",
-            "sources": ["src-saho-slavery-cape", "src-saho-early-cape-slave-trade", "src-rama-forced-indian", "src-saho-dutch-settlement"]
-        },
-        {
-            "id": "za-history-nineteenth",
-            "title": "Le XIXe siècle : royaumes africains, expansion coloniale et nouvelles économies",
-            "period": "1795–1910",
-            "summary": "Le XIXe siècle combine l’expansion britannique, la formation et la transformation de polities africaines, le Grand Trek, la création de républiques boers, des guerres de frontière et l’intégration forcée de territoires. Les découvertes de diamants puis d’or accélèrent l’industrialisation, l’urbanisation et la mise en place d’un système de travail migrant contrôlé.",
-            "details": [
-                "Le royaume zoulou n’est qu’une des nombreuses formations politiques africaines de la période ; les histoires sotho, tswana, xhosa, ndebele, swazi, venda et tsonga doivent être traitées séparément.",
-                "Le terme « Mfecane » fait l’objet de débats historiographiques : il ne doit pas servir d’explication unique à toutes les violences et migrations régionales.",
-                "L’engagisme indien vers le Natal à partir de 1860 est un mouvement sous contrat et sous forte contrainte, distinct de la migration libre des commerçants et artisans indiens."
-            ],
-            "status": "provisional",
-            "sources": ["src-saho-zulu-natal", "src-stapleton-military-history", "src-saho-indian-indentured", "src-saho-indian-south-africans"]
-        },
-        {
-            "id": "za-history-union",
-            "title": "Union, ségrégation et dépossession légale",
-            "period": "1910–1948",
-            "summary": "L’Union sud-africaine réunit quatre colonies en 1910, mais ne crée pas une démocratie inclusive. La majorité noire est exclue du pouvoir national. Les politiques foncières, urbaines et professionnelles institutionnalisent une ségrégation déjà ancienne et structurent un système de travail migrant au bénéfice des mines et de l’agriculture commerciale.",
-            "details": [
-                "L’Union est un compromis entre élites blanches britanniques et afrikaners, et non une union politique consentie par l’ensemble de la population.",
-                "Les résistances prennent des formes syndicales, rurales, intellectuelles, religieuses et politiques ; elles ne commencent pas en 1948.",
-                "Les catégories administratives imposées par l’État deviennent progressivement des instruments de contrôle social et territorial."
-            ],
-            "status": "ready",
-            "sources": ["src-saho-union-democracy"]
-        },
-        {
-            "id": "za-history-apartheid",
-            "title": "Apartheid, résistances et déplacements forcés",
-            "period": "1948–1994",
-            "summary": "Après la victoire électorale du Parti national en 1948, l’apartheid systématise la classification raciale, la séparation résidentielle, l’éducation différenciée et la répression. Les « homelands » et les déplacements forcés cherchent à redessiner la citoyenneté et le territoire. Les résistances intérieures, les mobilisations syndicales, la lutte armée, les mouvements étudiants, les Églises, les sanctions et les solidarités internationales contribuent à l’affaiblissement du régime.",
-            "details": [
-                "L’apartheid ne se résume pas à la séparation des espaces publics : il organise l’accès à la terre, au travail, à la citoyenneté, à l’éducation et à la mobilité.",
-                "Les oppositions sont plurielles : ANC, PAC, Black Consciousness, syndicats, organisations civiques, mouvements féminins et nombreuses structures locales.",
-                "La fin juridique de l’apartheid ne supprime pas automatiquement les inégalités spatiales et économiques produites pendant plusieurs générations."
-            ],
-            "status": "ready",
-            "sources": ["src-saho-apartheid", "src-unesco-robben-island", "src-saho-elections"]
-        },
-        {
-            "id": "za-history-democracy",
-            "title": "Transition négociée et démocratie constitutionnelle",
-            "period": "1990–aujourd’hui",
-            "summary": "La transition s’ouvre avec la légalisation des organisations interdites, la libération de prisonniers politiques et des négociations menées dans un contexte de violences persistantes. Les élections d’avril 1994 installent un gouvernement démocratique. La Constitution de 1996 établit un État fondé sur la dignité, l’égalité, les droits fondamentaux et le contrôle constitutionnel.",
-            "details": [
-                "1994 est une rupture politique majeure, mais pas un point de départ absolu : les institutions démocratiques résultent de décennies de luttes et de négociations.",
-                "La Commission vérité et réconciliation constitue un mécanisme central mais controversé de la transition ; elle ne clôt pas tous les débats sur la justice et les réparations.",
-                "Les enjeux contemporains comprennent les inégalités, le chômage, la terre, la qualité des services publics, les violences, les migrations régionales et la consolidation institutionnelle."
-            ],
-            "status": "ready",
-            "sources": ["src-interim-constitution-1993", "src-constitution-1996", "src-saho-elections", "src-gov-government-system"]
-        }
-    ],
-    "sources": ["src-statssa-census-brief", "src-sasl-2023"],
-        "integrationStatus": "ready",
+        "families_and_contexts": [
+            {"title": "Langues nguni", "text": "isiZulu, isiXhosa, siSwati et isiNdebele sont apparentées, mais chacune possède ses normes, littératures, histoires et communautés de pratique."},
+            {"title": "Langues sotho-tswana", "text": "Sesotho, Setswana et Sepedi appartiennent à un continuum apparenté ; les frontières linguistiques ne coïncident pas exactement avec les frontières politiques."},
+            {"title": "Tshivenda et Xitsonga", "text": "Ces langues ont des histoires transfrontalières liées au nord et à l’est de l’Afrique australe."},
+            {"title": "Afrikaans", "text": "L’afrikaans s’est développé au Cap dans une société coloniale et esclavagiste à partir du néerlandais, au contact de locuteurs khoekhoe, esclavisés d’Afrique et d’Asie et populations européennes. Son histoire ne peut être réduite à l’identité afrikaner blanche."},
+            {"title": "English", "text": "L’anglais est largement utilisé dans l’administration, l’enseignement supérieur, les médias et l’économie, sans être la langue la plus parlée au foyer."},
+            {"title": "Langues khoesan et langues minorisées", "text": "Plusieurs langues historiques ne bénéficient pas du statut officiel national et certaines sont gravement menacées. Leur documentation doit être menée communauté par communauté."}
+        ],
+        "note": "Les pourcentages correspondent à la langue la plus souvent parlée au sein du ménage au recensement de 2022. Ils ne mesurent ni le multilinguisme individuel, ni la langue seconde, ni l’identité ethnique.",
+        "sources": ["src-statssa-census-2022", "src-statssa-cultural-dynamics", "src-sasl-official-2023", "src-constitution-1996"],
+        "integrationStatus": "ready"
     },
     "religions": {
-        "measure_label": "Nombre de personnes ayant déclaré cette affiliation au recensement de 2022",
+        "measure_label": "Nombre de personnes ayant déclaré une affiliation ou croyance principale au recensement de 2022",
         "christian_share_2022": 84.5,
         "census_2022": [
             {"name": "Christianisme", "count": 51831918},
             {"name": "Religion traditionnelle africaine", "count": 4756227},
             {"name": "Islam", "count": 975049},
-            {"name": "Hindouisme", "count": 647346},
+            {"name": "Hindouisme", "count": 647346}
         ],
-        "note": "Les nombres indiquent des personnes recensées, et non un score ni un classement. Statistics South Africa estime par ailleurs que 84,5 % de la population se déclarait chrétienne en 2022. Le paysage religieux comprend aussi judaïsme, bouddhisme, bahaïsme, athéisme, agnosticisme et absence d’affiliation. Une personne peut également combiner des pratiques que les catégories du recensement résument imparfaitement.",
-        "history_chapters": [
-        {
-            "id": "za-history-deep-time",
-            "title": "Des hominines aux premières sociétés humaines documentées",
-            "period": "Plusieurs millions d’années – premier millénaire de notre ère",
-            "summary": "Le territoire sud-africain conserve des archives majeures de l’évolution humaine. Les sites fossilifères du Gauteng et du Nord-Ouest documentent plusieurs espèces d’hominines, tandis que les sites pléistocènes du littoral et de l’intérieur montrent des innovations techniques et symboliques anciennes. Ces découvertes ne racontent pas une progression simple et linéaire : elles témoignent de populations diverses, de changements climatiques et de réseaux de mobilité dont les détails restent débattus.",
-            "details": [
-                "Les expressions modernes comme « berceau de l’humanité » sont utiles pour la médiation, mais elles ne signifient pas qu’un seul lieu aurait produit toute l’humanité moderne.",
-                "Les sociétés san et khoekhoe possèdent des histoires distinctes. Les catégories actuelles ne doivent pas être projetées sans nuance sur toute la préhistoire.",
-                "L’arrivée progressive de communautés agricoles et métallurgiques de langues bantoues transforme les économies et les paysages à partir des premiers siècles de notre ère, sans remplacer uniformément les populations déjà présentes."
-            ],
-            "status": "ready",
-            "sources": ["src-unesco-fossil-hominid-sites", "src-unesco-pleistocene-sites", "src-saho-precolonial"]
-        },
-        {
-            "id": "za-history-mapungubwe",
-            "title": "Mapungubwe et les réseaux de l’Afrique australe",
-            "period": "environ 900–1300",
-            "summary": "Mapungubwe se développe près de la confluence du Limpopo et du Shashe. Son organisation sociale hiérarchisée, ses objets en or et ses importations témoignent d’un pouvoir régional intégré aux échanges reliant l’intérieur de l’Afrique australe aux ports de l’océan Indien. Le royaume ne doit pas être présenté comme l’ancêtre direct de l’État sud-africain moderne : il appartient à une histoire régionale qui traverse les frontières actuelles de l’Afrique du Sud, du Botswana et du Zimbabwe.",
-            "details": [
-                "Le paysage culturel classé par l’UNESCO documente la montée et le déclin d’un royaume entre environ 900 et 1300.",
-                "Les frontières exactes de son autorité ne sont pas connues ; une aire d’influence approximative est plus honnête qu’un polygone politique précis.",
-                "Son insertion dans les échanges d’or, d’ivoire, de verre et de textiles relie l’histoire intérieure du continent aux circuits de l’océan Indien."
-            ],
-            "status": "ready",
-            "sources": ["src-unesco-mapungubwe", "src-saho-pre1500"]
-        },
-        {
-            "id": "za-history-cape",
-            "title": "Le Cap néerlandais : établissement, esclavage et dépossession",
-            "period": "1652–1795",
-            "summary": "En 1652, la VOC établit une station de ravitaillement au Cap. L’expansion foncière des colons provoque des conflits et des pertes territoriales pour des communautés khoekhoe. La société coloniale repose aussi sur l’importation de personnes réduites en esclavage depuis Madagascar, l’Inde, l’Asie du Sud-Est, le Mozambique et l’Afrique orientale. Ces déplacements ont profondément façonné les langues, les religions, les cuisines et les identités du Cap.",
-            "details": [
-                "La fondation coloniale n’est pas la « naissance » de l’Afrique du Sud : des sociétés complexes existaient bien avant 1652.",
-                "Les personnes esclavisées ne formaient pas un groupe homogène et leurs routes d’arrivée doivent être séparées selon les périodes et les régions d’origine.",
-                "Les catégories raciales ultérieures ont souvent effacé les identités précises des Khoekhoe, des San, des esclaves africains et asiatiques et de leurs descendants."
-            ],
-            "status": "ready",
-            "sources": ["src-saho-slavery-cape", "src-saho-early-cape-slave-trade", "src-rama-forced-indian", "src-saho-dutch-settlement"]
-        },
-        {
-            "id": "za-history-nineteenth",
-            "title": "Le XIXe siècle : royaumes africains, expansion coloniale et nouvelles économies",
-            "period": "1795–1910",
-            "summary": "Le XIXe siècle combine l’expansion britannique, la formation et la transformation de polities africaines, le Grand Trek, la création de républiques boers, des guerres de frontière et l’intégration forcée de territoires. Les découvertes de diamants puis d’or accélèrent l’industrialisation, l’urbanisation et la mise en place d’un système de travail migrant contrôlé.",
-            "details": [
-                "Le royaume zoulou n’est qu’une des nombreuses formations politiques africaines de la période ; les histoires sotho, tswana, xhosa, ndebele, swazi, venda et tsonga doivent être traitées séparément.",
-                "Le terme « Mfecane » fait l’objet de débats historiographiques : il ne doit pas servir d’explication unique à toutes les violences et migrations régionales.",
-                "L’engagisme indien vers le Natal à partir de 1860 est un mouvement sous contrat et sous forte contrainte, distinct de la migration libre des commerçants et artisans indiens."
-            ],
-            "status": "provisional",
-            "sources": ["src-saho-zulu-natal", "src-stapleton-military-history", "src-saho-indian-indentured", "src-saho-indian-south-africans"]
-        },
-        {
-            "id": "za-history-union",
-            "title": "Union, ségrégation et dépossession légale",
-            "period": "1910–1948",
-            "summary": "L’Union sud-africaine réunit quatre colonies en 1910, mais ne crée pas une démocratie inclusive. La majorité noire est exclue du pouvoir national. Les politiques foncières, urbaines et professionnelles institutionnalisent une ségrégation déjà ancienne et structurent un système de travail migrant au bénéfice des mines et de l’agriculture commerciale.",
-            "details": [
-                "L’Union est un compromis entre élites blanches britanniques et afrikaners, et non une union politique consentie par l’ensemble de la population.",
-                "Les résistances prennent des formes syndicales, rurales, intellectuelles, religieuses et politiques ; elles ne commencent pas en 1948.",
-                "Les catégories administratives imposées par l’État deviennent progressivement des instruments de contrôle social et territorial."
-            ],
-            "status": "ready",
-            "sources": ["src-saho-union-democracy"]
-        },
-        {
-            "id": "za-history-apartheid",
-            "title": "Apartheid, résistances et déplacements forcés",
-            "period": "1948–1994",
-            "summary": "Après la victoire électorale du Parti national en 1948, l’apartheid systématise la classification raciale, la séparation résidentielle, l’éducation différenciée et la répression. Les « homelands » et les déplacements forcés cherchent à redessiner la citoyenneté et le territoire. Les résistances intérieures, les mobilisations syndicales, la lutte armée, les mouvements étudiants, les Églises, les sanctions et les solidarités internationales contribuent à l’affaiblissement du régime.",
-            "details": [
-                "L’apartheid ne se résume pas à la séparation des espaces publics : il organise l’accès à la terre, au travail, à la citoyenneté, à l’éducation et à la mobilité.",
-                "Les oppositions sont plurielles : ANC, PAC, Black Consciousness, syndicats, organisations civiques, mouvements féminins et nombreuses structures locales.",
-                "La fin juridique de l’apartheid ne supprime pas automatiquement les inégalités spatiales et économiques produites pendant plusieurs générations."
-            ],
-            "status": "ready",
-            "sources": ["src-saho-apartheid", "src-unesco-robben-island", "src-saho-elections"]
-        },
-        {
-            "id": "za-history-democracy",
-            "title": "Transition négociée et démocratie constitutionnelle",
-            "period": "1990–aujourd’hui",
-            "summary": "La transition s’ouvre avec la légalisation des organisations interdites, la libération de prisonniers politiques et des négociations menées dans un contexte de violences persistantes. Les élections d’avril 1994 installent un gouvernement démocratique. La Constitution de 1996 établit un État fondé sur la dignité, l’égalité, les droits fondamentaux et le contrôle constitutionnel.",
-            "details": [
-                "1994 est une rupture politique majeure, mais pas un point de départ absolu : les institutions démocratiques résultent de décennies de luttes et de négociations.",
-                "La Commission vérité et réconciliation constitue un mécanisme central mais controversé de la transition ; elle ne clôt pas tous les débats sur la justice et les réparations.",
-                "Les enjeux contemporains comprennent les inégalités, le chômage, la terre, la qualité des services publics, les violences, les migrations régionales et la consolidation institutionnelle."
-            ],
-            "status": "ready",
-            "sources": ["src-interim-constitution-1993", "src-constitution-1996", "src-saho-elections", "src-gov-government-system"]
-        }
-    ],
-    "sources": ["src-statssa-census-brief", "src-statssa-religion-2025", "src-gov-people"],
-        "integrationStatus": "ready",
+        "historical_contexts": [
+            {"title": "Religions et cosmologies autochtones", "text": "Les traditions san, khoekhoe et de nombreuses sociétés de langues bantoues comprennent des relations aux ancêtres, aux guérisseurs, aux lieux et aux forces spirituelles. Elles ne forment pas une religion africaine unique."},
+            {"title": "Christianismes", "text": "Le christianisme est présent sous de nombreuses formes : Églises historiques issues des missions, Églises africaines indépendantes, catholicisme, anglicanisme, traditions réformées, pentecôtismes et mouvements locaux."},
+            {"title": "Islam au Cap", "text": "L’islam est historiquement lié aux personnes esclavisées et exilées venues d’Asie du Sud-Est, d’Inde et d’Afrique orientale, puis à d’autres migrations et conversions."},
+            {"title": "Hindouismes et religions sud-asiatiques", "text": "L’hindouisme s’est développé notamment avec les travailleurs indiens sous contrat et les migrations libres vers le Natal. Les communautés contemporaines restent diverses."},
+            {"title": "Judaïsme, bahaïsme, bouddhismes et autres affiliations", "text": "Le paysage religieux comprend aussi des communautés juives, baha’ies, bouddhistes et d’autres traditions, ainsi que l’athéisme, l’agnosticisme et l’absence d’affiliation."}
+        ],
+        "interpretation_note": "Ces nombres ne sont ni des scores ni une hiérarchie. Une réponse de recensement résume imparfaitement des identités parfois multiples : une personne peut se dire chrétienne tout en maintenant des pratiques liées aux ancêtres, par exemple.",
+        "note": "Statistics South Africa estime que 84,5 % de la population se déclarait chrétienne en 2022. Les catégories statistiques ne décrivent pas à elles seules les pratiques, intensités de croyance ou combinaisons religieuses.",
+        "sources": ["src-statssa-cultural-dynamics", "src-statssa-census-metadata-religion", "src-saho-slavery-cape", "src-saho-indian-south-africans"],
+        "integrationStatus": "ready"
     },
     "migrations": [
         {"id": "mig-cape-slavery", "label": "Importation forcée d'esclaves vers le Cap", "start": 1653, "end": 1807, "type": "forced", "routes_public": False, "reason": "Les origines couvrent plusieurs régions d'Afrique et d'Asie; les routes doivent être séparées par provenance et période avant affichage.", "status": "ready", "sources": ["src-saho-slavery-cape", "src-rama-forced-indian"]},
@@ -1020,5 +940,15 @@ SOUTH_AFRICA_DOSSIER = {
         {"id": "src-saho-dutch-settlement", "category": "C", "title": "The Dutch Settlement", "publisher": "South African History Online", "year": 2026, "url": "https://sahistory.org.za/article/dutch-settlement"},
         {"id": "src-saho-1820-settlers", "category": "C", "title": "The first 1820 British Settlers arrive in South Africa", "publisher": "South African History Online", "year": 2022, "url": "https://sahistory.org.za/dated-event/first-1820-british-settlers-arrive-south-africa"},
         {"id": "src-statssa-religion-2025", "category": "A", "title": "South Africa’s Evolving Cultural Landscape: Religion in South Africa", "publisher": "Statistics South Africa", "year": 2025, "url": "https://www.statssa.gov.za/?p=18173"},
+        {"id": "src-statssa-cultural-dynamics", "category": "A", "title": "Cultural Dynamics in South Africa", "publisher": "Statistics South Africa", "year": 2025, "url": "https://www.statssa.gov.za/publications/03-01-84/03-01-84.pdf"},
+        {"id": "src-statssa-census-metadata-religion", "category": "A", "title": "Census 2022 Metadata: Religious or spiritual affiliation", "publisher": "Statistics South Africa", "year": 2024, "url": "https://isibaloweb.statssa.gov.za/metadata/CENSUS/2022/02.%20Census%202022%20Sample%20Information.pdf"},
+        {"id": "src-sasl-official-2023", "category": "A", "title": "South African Sign Language recognised as the 12th official language", "publisher": "Government of South Africa", "year": 2023, "url": "https://www.gov.za/speeches/president-cyril-ramaphosa-enact-sign-language-12th-official-langauge"},
+        {"id": "src-saho-khoisan-identity", "category": "C", "title": "Khoisan Identity", "publisher": "South African History Online", "year": 2012, "url": "https://sahistory.org.za/article/khoisan-identity"},
+        {"id": "src-saho-xhosa", "category": "C", "title": "Xhosa", "publisher": "South African History Online", "year": 2011, "url": "https://sahistory.org.za/article/xhosa"},
+        {"id": "src-saho-sotho", "category": "C", "title": "Sotho (South Sotho or Basotho)", "publisher": "South African History Online", "year": 2011, "url": "https://sahistory.org.za/article/sotho-south-sotho-or-basotho"},
+        {"id": "src-saho-tswana", "category": "C", "title": "Tswana", "publisher": "South African History Online", "year": 2011, "url": "https://sahistory.org.za/article/tswana"},
+        {"id": "src-unesco-khomani", "category": "C", "title": "ǂKhomani Cultural Landscape", "publisher": "UNESCO World Heritage Centre", "year": 2017, "url": "https://whc.unesco.org/en/list/1545/"},
+        {"id": "src-unesco-richtersveld", "category": "C", "title": "Richtersveld Cultural and Botanical Landscape", "publisher": "UNESCO World Heritage Centre", "year": 2007, "url": "https://whc.unesco.org/en/list/1265/"},
+        {"id": "src-saho-british-settlers", "category": "C", "title": "The 1820 British Settlers", "publisher": "South African History Online", "year": 2011, "url": "https://sahistory.org.za/article/1820-settlers"},
     ],
 }

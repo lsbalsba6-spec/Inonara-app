@@ -74,3 +74,25 @@ def test_history_chapters_are_substantial_and_sourced():
         assert len(chapter.get("summary", "")) >= 180
         assert chapter.get("sources")
         assert chapter.get("status") in {"ready", "provisional", "disputed"}
+
+
+def test_south_africa_part5_peoples_are_detailed_and_sourced():
+    peoples = SOUTH_AFRICA_DOSSIER["peoples"]
+    assert len(peoples) >= 9
+    assert all(item.get("history") and item.get("sources") for item in peoples)
+    assert all(item.get("caution") for item in peoples)
+
+
+def test_south_africa_part5_languages_are_clean_and_official():
+    languages = SOUTH_AFRICA_DOSSIER["languages"]
+    assert len(languages["official"]) == 12
+    assert "South African Sign Language" in languages["official"]
+    assert "history_chapters" not in languages
+    assert languages.get("families_and_contexts")
+
+
+def test_south_africa_part5_religions_explain_counts():
+    religions = SOUTH_AFRICA_DOSSIER["religions"]
+    assert "history_chapters" not in religions
+    assert religions.get("interpretation_note")
+    assert len(religions.get("historical_contexts", [])) >= 5
