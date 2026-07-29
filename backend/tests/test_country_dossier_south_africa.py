@@ -30,3 +30,15 @@ def test_languages_include_sasl():
 def test_timeline_is_chronological():
     starts = [item["start"] for item in SOUTH_AFRICA_DOSSIER["timeline"]]
     assert starts == sorted(starts)
+
+
+def test_every_published_figure_has_sources():
+    source_ids = {s["id"] for s in SOUTH_AFRICA_DOSSIER["sources"]}
+    for figure in SOUTH_AFRICA_DOSSIER["figures"]:
+        assert figure.get("sources"), figure
+        assert all(source_id in source_ids for source_id in figure["sources"])
+
+
+def test_historiography_and_research_gaps_are_explicit():
+    assert len(SOUTH_AFRICA_DOSSIER["historiography"]) >= 4
+    assert len(SOUTH_AFRICA_DOSSIER["research_gaps"]) >= 5

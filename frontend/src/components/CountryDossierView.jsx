@@ -78,7 +78,8 @@ export default function CountryDossierView({ dossier }) {
     ["overview", "Présentation"], ["timeline", "Histoire"], ["peoples", "Peuples"],
     ["languages", "Langues"], ["religions", "Religions"], ["polities", "Royaumes & États"],
     ["migrations", "Migrations"], ["culture", "Culture"], ["heritage", "Patrimoine"],
-    ["figures", "Personnalités"], ["sources", "Sources"],
+    ["figures", "Personnalités"], ["historiography", "Débats"],
+    ["research", "À approfondir"], ["sources", "Sources"],
   ];
 
   return (
@@ -99,9 +100,9 @@ export default function CountryDossierView({ dossier }) {
         {active === "overview" && <div className="space-y-7">
           <p className="text-lg text-bone/80 leading-relaxed">{dossier.overview.summary}</p>
           <div className="grid gap-3 sm:grid-cols-3">
-            <div className="border border-bone/10 rounded-lg p-4"><p className="overline text-bone/45">Population, recensement 2022</p><p className="font-serif text-2xl text-gold mt-1">≈ 62,1 millions</p></div>
-            <div className="border border-bone/10 rounded-lg p-4"><p className="overline text-bone/45">Langues officielles</p><p className="font-serif text-2xl text-gold mt-1">12</p></div>
-            <div className="border border-bone/10 rounded-lg p-4"><p className="overline text-bone/45">État du dossier</p><p className="font-serif text-xl text-gold mt-1">Version documentaire 1</p></div>
+            <div className="border border-bone/10 rounded-lg p-4"><p className="overline text-bone/45">Population, recensement 2022</p><p className="font-serif text-2xl text-gold mt-1">≈ {(dossier.overview.population_census_2022 / 1000000).toLocaleString("fr-FR", { maximumFractionDigits: 1 })} millions</p></div>
+            <div className="border border-bone/10 rounded-lg p-4"><p className="overline text-bone/45">Langues officielles</p><p className="font-serif text-2xl text-gold mt-1">{dossier.overview.official_languages_count}</p></div>
+            <div className="border border-bone/10 rounded-lg p-4"><p className="overline text-bone/45">Sources documentées</p><p className="font-serif text-2xl text-gold mt-1">{dossier.sources.length}</p></div>
           </div>
           <SourceLinks ids={dossier.overview.sources} sourceMap={sourceMap} />
           <div>
@@ -127,6 +128,14 @@ export default function CountryDossierView({ dossier }) {
         {active === "religions" && <div className="space-y-5">
           <div className="grid gap-3 sm:grid-cols-2">{dossier.religions.census_2022.map((r) => <div key={r.name} className="border border-bone/10 rounded-lg p-4"><p className="text-bone/65">{r.name}</p><p className="font-serif text-xl text-gold">{r.count.toLocaleString("fr-FR")}</p></div>)}</div>
           <p className="text-bone/65 leading-relaxed">{dossier.religions.note}</p><SourceLinks ids={dossier.religions.sources} sourceMap={sourceMap} />
+        </div>}
+        {active === "historiography" && <div className="space-y-4">
+          <p className="text-bone/65 leading-relaxed">Ces notes signalent les pièges d'interprétation à éviter. Elles ne remplacent pas les dossiers spécialisés à venir.</p>
+          {dossier.historiography.map((note, index) => <article key={index} className="rounded-lg border border-amber-400/20 bg-amber-400/[0.04] p-4"><div className="flex items-start gap-3"><span className="text-amber-300 text-sm">⚠</span><p className="text-bone/75 leading-relaxed">{note}</p></div></article>)}
+        </div>}
+        {active === "research" && <div className="space-y-4">
+          <p className="text-bone/65 leading-relaxed">Ces éléments restent volontairement ouverts. Ils ne sont pas présentés comme des faits établis ni transformés en routes ou frontières publiques.</p>
+          {dossier.research_gaps.map((gap, index) => <article key={index} className="rounded-lg border border-bone/10 p-4"><div className="flex items-start justify-between gap-3"><p className="text-bone/75 leading-relaxed">{gap}</p><StatusBadge status="research-gap" /></div></article>)}
         </div>}
         {active === "sources" && <div className="space-y-4">
           {dossier.sources.map((source) => <article key={source.id} className="border-b border-bone/10 pb-4"><div className="flex gap-2 items-center"><span className="text-[10px] border border-gold/30 text-gold rounded px-1.5">Cat. {source.category}</span><h3 className="text-bone">{source.title}</h3></div><p className="text-xs text-bone/50 mt-1">{source.publisher}{source.year ? ` · ${source.year}` : ""}</p><a href={source.url} target="_blank" rel="noreferrer" className="text-xs text-gold/80 underline">Consulter la source</a></article>)}
