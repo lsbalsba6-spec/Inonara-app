@@ -148,6 +148,36 @@ function DetailedHeritageSection({ dossier, sourceMap }) {
   </div>;
 }
 
+
+function DetailedFiguresSection({ items = [], sourceMap }) {
+  return <div className="space-y-5">{items.map((item) => <article key={item.id || item.name} className="rounded-xl border border-bone/10 bg-bone/[0.025] p-5 md:p-6">
+    <div className="flex flex-wrap items-start justify-between gap-3"><div><p className="text-[10px] uppercase tracking-widest text-gold/70">{item.category} · {item.period}</p><h3 className="mt-1 font-serif text-2xl text-bone">{item.name}</h3></div><StatusBadge status={item.status} /></div>
+    <p className="mt-3 leading-relaxed text-bone/75">{item.summary || item.reason}</p>
+    {item.highlights?.length > 0 && <div className="mt-4 flex flex-wrap gap-2">{item.highlights.map((x) => <span key={x} className="rounded-full border border-bone/15 px-3 py-1 text-xs text-bone/60">{x}</span>)}</div>}
+    <SourceLinks ids={item.sources || []} sourceMap={sourceMap} />
+  </article>)}</div>;
+}
+
+function ScienceInnovationSection({ items = [], sourceMap }) {
+  return <div className="space-y-5">{items.map((item) => <article key={item.id} className="rounded-xl border border-bone/10 bg-bone/[0.025] p-5 md:p-6">
+    <div className="flex flex-wrap items-start justify-between gap-3"><div><p className="overline text-gold/70">{item.period}</p><h3 className="mt-1 font-serif text-2xl text-bone">{item.title}</h3></div><StatusBadge status={item.status} /></div>
+    <p className="mt-3 leading-relaxed text-bone/75">{item.summary}</p>
+    {item.examples?.length > 0 && <ul className="mt-4 grid gap-2 sm:grid-cols-2">{item.examples.map((x) => <li key={x} className="rounded-lg border border-bone/10 px-3 py-2 text-sm text-bone/65">{x}</li>)}</ul>}
+    <SourceLinks ids={item.sources || []} sourceMap={sourceMap} />
+  </article>)}</div>;
+}
+
+function EnvironmentSection({ data, sourceMap }) {
+  if (!data) return null;
+  return <div className="space-y-9">
+    <div className="rounded-lg border border-gold/20 bg-gold/[0.04] p-4 text-sm leading-relaxed text-bone/70">{data.editorial_note}</div>
+    <div><h2 className="mb-3 font-serif text-2xl text-gold">Neuf biomes</h2><div className="grid gap-3 md:grid-cols-2">{(data.biomes || []).map((item) => <article key={item.name} className="rounded-lg border border-bone/10 p-4"><h3 className="font-serif text-lg text-bone">{item.name}</h3><p className="mt-2 text-sm leading-relaxed text-bone/65">{item.note}</p></article>)}</div></div>
+    <div><h2 className="mb-3 font-serif text-2xl text-gold">Paysages majeurs</h2><SimpleCards items={data.landscapes || []} sourceMap={sourceMap} /></div>
+    <div><h2 className="mb-3 font-serif text-2xl text-gold">Pressions environnementales</h2><ul className="grid gap-2 sm:grid-cols-2">{(data.pressures || []).map((x) => <li key={x} className="rounded-lg border border-amber-400/15 bg-amber-400/[0.03] px-3 py-2 text-sm text-bone/65">{x}</li>)}</ul></div>
+    <SourceLinks ids={data.sources || []} sourceMap={sourceMap} />
+  </div>;
+}
+
 function SimpleCards({ items, sourceMap, titleField = "name", bodyField = "note" }) {
   return (
     <div className="grid gap-4 md:grid-cols-2">
@@ -180,7 +210,7 @@ export default function CountryDossierView({ dossier }) {
     ["overview", "Présentation"], ["visuals", "Cartes & drapeaux"], ["geography", "Géographie"], ["institutions", "Institutions"], ["deep_history", "Avant 1652"], ["timeline", "Histoire"], ["peoples", "Peuples"],
     ["languages", "Langues"], ["religions", "Religions"], ["polities", "Royaumes & États"],
     ["migrations", "Migrations"], ["diasporas", "Diasporas"], ["culture", "Culture"], ["heritage", "Patrimoine"],
-    ["figures", "Personnalités"], ["historiography", "Débats"],
+    ["figures", "Personnalités"], ["science", "Sciences & innovations"], ["environment", "Environnement"], ["historiography", "Débats"],
     ["research", "À approfondir"], ["sources", "Sources"],
   ];
 
@@ -268,7 +298,9 @@ export default function CountryDossierView({ dossier }) {
         {active === "migrations" && <div className="space-y-8"><div className="rounded-lg border border-bone/10 p-4"><p className="text-bone/70 leading-relaxed">Les routes ci-dessous sont des mouvements historiques distincts. L’existence actuelle d’une communauté ne prolonge jamais automatiquement une route jusqu’à aujourd’hui.</p></div><MigrationChapters items={dossier.migration_chapters || []} sourceMap={sourceMap} /></div>}
         {active === "diasporas" && <DiasporaSection data={dossier.diasporas} sourceMap={sourceMap} />}
         {active === "heritage" && <DetailedHeritageSection dossier={dossier} sourceMap={sourceMap} />}
-        {active === "figures" && <SimpleCards items={dossier.figures} sourceMap={sourceMap} bodyField="reason" />}
+        {active === "figures" && <DetailedFiguresSection items={dossier.figures || []} sourceMap={sourceMap} />}
+        {active === "science" && <ScienceInnovationSection items={dossier.science_innovation || []} sourceMap={sourceMap} />}
+        {active === "environment" && <EnvironmentSection data={dossier.environment} sourceMap={sourceMap} />}
         {active === "culture" && <DetailedCultureSection dossier={dossier} sourceMap={sourceMap} />}
         {active === "languages" && <div className="space-y-8">
           <div className="rounded-lg border border-gold/20 bg-gold/[0.04] p-4"><h2 className="font-serif text-2xl text-gold">12 langues officielles</h2><p className="mt-2 text-sm leading-relaxed text-bone/70">{dossier.languages?.constitutional_note}</p><div className="mt-4 flex flex-wrap gap-2">{(dossier.languages?.official || []).map((l) => <span key={l} className="rounded-full border border-bone/15 px-3 py-1 text-sm text-bone/75">{l}</span>)}</div></div>
