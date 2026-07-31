@@ -1,3 +1,4 @@
+import { SouthAfricaOverview } from "./SouthAfricaOverview";
 import { SouthAfricaLawMemory } from "./SouthAfricaLawMemory";
 import { SouthAfricaSportMedia } from "./SouthAfricaSportMedia";
 import { SouthAfricaEducationHealth, SouthAfricaInternationalRole, SouthAfricaNationalSymbols, SouthAfricaSociety } from "./SouthAfricaSocietyState";
@@ -122,19 +123,7 @@ export default function CountryDossierView({ dossier }) {
       </nav>
 
       <section className="mt-8">
-        {active === "overview" && <div className="space-y-7">
-          <p className="text-lg text-bone/80 leading-relaxed">{dossier.overview.summary}</p>
-          <div className="grid gap-3 sm:grid-cols-3">
-            <div className="border border-bone/10 rounded-lg p-4"><p className="overline text-bone/45">Population, recensement 2022</p><p className="font-serif text-2xl text-gold mt-1">≈ {(dossier.overview.population_census_2022 / 1000000).toLocaleString("fr-FR", { maximumFractionDigits: 1 })} millions</p></div>
-            <div className="border border-bone/10 rounded-lg p-4"><p className="overline text-bone/45">Langues officielles</p><p className="font-serif text-2xl text-gold mt-1">{dossier.overview.official_languages_count}</p></div>
-            <div className="border border-bone/10 rounded-lg p-4"><p className="overline text-bone/45">Sources documentées</p><p className="font-serif text-2xl text-gold mt-1">{dossier.sources.length}</p></div>
-          </div>
-          <SourceLinks ids={dossier.overview.sources} sourceMap={sourceMap} />
-          <div>
-            <h2 className="font-serif text-2xl text-gold mb-3">À suivre</h2>
-            <ul className="space-y-2 text-bone/70 list-disc pl-5">{dossier.research_gaps.map((x) => <li key={x}>{x}</li>)}</ul>
-          </div>
-        </div>}
+        {active === "overview" && <SouthAfricaOverview dossier={dossier} sourceMap={sourceMap} />}
         {active === "media" && <SouthAfricaMediaGallery items={dossier.media_gallery || []} />}
         {active === "timeline" && <Timeline items={dossier.timeline} sourceMap={sourceMap} />}
         {active === "provinces-cities" && <SouthAfricaProvincesCities dossier={dossier} sourceMap={sourceMap} />}

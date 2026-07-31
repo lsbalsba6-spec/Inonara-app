@@ -1,0 +1,6 @@
+INSTALLATION
+
+1. Décompresser l'archive à la racine de ~/inonara-app.
+2. Vérifier les imports relatifs si le script est présent.
+3. Committer les trois fichiers du patch.
+4. Pousser vers GitHub et vérifier le build Vercel.
