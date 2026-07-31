@@ -1,12 +1,16 @@
+import { SouthAfricaLawMemory } from "./SouthAfricaLawMemory";
+import { SouthAfricaSportMedia } from "./SouthAfricaSportMedia";
 import { SouthAfricaEducationHealth, SouthAfricaInternationalRole, SouthAfricaNationalSymbols, SouthAfricaSociety } from "./SouthAfricaSocietyState";
 import { SouthAfricaEconomy, SouthAfricaInteractiveTimeline, SouthAfricaScientificLibrary } from "./SouthAfricaTimelineEconomy";
 import { useMemo, useState } from "react";
+import { SouthAfricaProvincesCities } from "./SouthAfricaProvincesCities";
+import { SouthAfricaMediaGallery } from "./SouthAfricaMediaGallery";
 
 const STATUS_LABELS = {
   ready: "Établi",
-  provisional: "À nuancer",
-  disputed: "Débattu",
-  "research-gap": "Recherche à poursuivre",
+  provisional: "À lire avec contexte",
+  disputed: "Débat historique",
+  "research-gap": "À suivre",
 };
 
 function StatusBadge({ status }) {
@@ -75,14 +79,19 @@ function SimpleCards({ items, sourceMap, titleField = "name", bodyField = "note"
 
 export default function CountryDossierView({ dossier }) {
   const [active, setActive] = useState("overview");
-  const sourceMap = useMemo(() => new Map(dossier.sources.map((s) => [s.id, s])), [dossier.sources]);
-  const tabs = [
-    ["overview", "Présentation"], ["interactive-timeline", "Chronologie"], ["economy", "Économie"], ["society", "Société"], ["education-health", "Éducation & santé"], ["symbols", "Symboles"], ["international", "Monde"], ["timeline", "Histoire"], ["peoples", "Peuples"],
-    ["languages", "Langues"], ["religions", "Religions"], ["polities", "Royaumes & États"],
-    ["migrations", "Migrations"], ["culture", "Culture"], ["heritage", "Patrimoine"],
-    ["figures", "Personnalités"], ["historiography", "Débats"],
-    ["research", "À approfondir"], ["library", "Bibliothèque"], ["sources", "Sources"],
+  const sourceMap = useMemo(() => new Map((dossier.sources || []).map((s) => [s.id, s])), [dossier.sources]);
+  const groups = [
+    { id: "identity", label: "Découvrir", items: [["overview", "Présentation"], ["media", "Galerie"], ["symbols", "Symboles"]] },
+    { id: "maps", label: "Territoire", items: [["provinces-cities", "Provinces & villes"]] },
+    { id: "history", label: "Histoire", items: [["timeline", "Récit historique"], ["interactive-timeline", "Chronologie"], ["polities", "Royaumes & États"], ["law-memory", "Droit & mémoire"]] },
+    { id: "mobility", label: "Migrations", items: [["migrations", "Migrations & diasporas"], ["international", "Afrique du Sud dans le monde"]] },
+    { id: "society", label: "Société & culture", items: [["peoples", "Peuples"], ["languages", "Langues"], ["religions", "Religions"], ["culture", "Culture"], ["sport-media", "Sports & médias"]] },
+    { id: "heritage", label: "Patrimoine & nature", items: [["heritage", "Patrimoine"]] },
+    { id: "state", label: "État & économie", items: [["society", "Société"], ["education-health", "Éducation & santé"], ["economy", "Économie"]] },
+    { id: "people", label: "Personnalités", items: [["figures", "Personnalités"]] },
+    { id: "sources", label: "Sources", items: [["historiography", "Débats"], ["research", "À suivre"], ["library", "Bibliothèque"], ["sources", "Toutes les sources"]] },
   ];
+  const activeGroup = groups.find((group) => group.items.some(([id]) => id === active)) || groups[0];
 
   return (
     <div className="pt-[100px] pb-20 px-5 max-w-5xl mx-auto">
@@ -90,12 +99,26 @@ export default function CountryDossierView({ dossier }) {
       <h1 className="font-serif text-4xl md:text-5xl text-bone">{dossier.name.fr}</h1>
       <p className="text-bone/55 mt-3 max-w-3xl leading-relaxed">{dossier.editorial_note}</p>
 
-      <nav className="mt-8 flex gap-2 overflow-x-auto pb-3" aria-label="Sections du dossier pays">
-        {tabs.map(([id, label]) => (
-          <button key={id} onClick={() => setActive(id)} className={`whitespace-nowrap rounded-full border px-3 py-1.5 text-xs ${active === id ? "border-gold bg-gold/10 text-gold" : "border-bone/15 text-bone/60 hover:text-bone"}`}>
-            {label}
-          </button>
-        ))}
+      <nav className="mt-8" aria-label="Grandes sections du dossier pays">
+        <div className="flex gap-2 overflow-x-auto pb-3">
+          {groups.map((group) => {
+            const selected = group.id === activeGroup.id;
+            return (
+              <button key={group.id} onClick={() => setActive(group.items[0][0])} className={`whitespace-nowrap rounded-full border px-4 py-2 text-xs font-medium ${selected ? "border-gold bg-gold/10 text-gold" : "border-bone/15 text-bone/60 hover:text-bone"}`}>
+                {group.label}
+              </button>
+            );
+          })}
+        </div>
+        {activeGroup.items.length > 1 && (
+          <div className="mt-2 flex gap-2 overflow-x-auto rounded-xl border border-bone/10 bg-bone/[0.025] p-2">
+            {activeGroup.items.map(([id, label]) => (
+              <button key={id} onClick={() => setActive(id)} className={`whitespace-nowrap rounded-lg px-3 py-1.5 text-xs ${active === id ? "bg-gold/15 text-gold" : "text-bone/55 hover:bg-bone/5 hover:text-bone"}`}>
+                {label}
+              </button>
+            ))}
+          </div>
+        )}
       </nav>
 
       <section className="mt-8">
@@ -108,17 +131,21 @@ export default function CountryDossierView({ dossier }) {
           </div>
           <SourceLinks ids={dossier.overview.sources} sourceMap={sourceMap} />
           <div>
-            <h2 className="font-serif text-2xl text-gold mb-3">Limites assumées</h2>
+            <h2 className="font-serif text-2xl text-gold mb-3">À suivre</h2>
             <ul className="space-y-2 text-bone/70 list-disc pl-5">{dossier.research_gaps.map((x) => <li key={x}>{x}</li>)}</ul>
           </div>
         </div>}
+        {active === "media" && <SouthAfricaMediaGallery items={dossier.media_gallery || []} />}
         {active === "timeline" && <Timeline items={dossier.timeline} sourceMap={sourceMap} />}
+        {active === "provinces-cities" && <SouthAfricaProvincesCities dossier={dossier} sourceMap={sourceMap} />}
         {active === "interactive-timeline" && <SouthAfricaInteractiveTimeline dossier={dossier} sourceMap={sourceMap} />}
         {active === "economy" && <SouthAfricaEconomy dossier={dossier} sourceMap={sourceMap} />}
         {active === "society" && <SouthAfricaSociety dossier={dossier} sourceMap={sourceMap} />}
         {active === "education-health" && <SouthAfricaEducationHealth dossier={dossier} sourceMap={sourceMap} />}
         {active === "symbols" && <SouthAfricaNationalSymbols dossier={dossier} sourceMap={sourceMap} />}
         {active === "international" && <SouthAfricaInternationalRole dossier={dossier} sourceMap={sourceMap} />}
+        {active === "sport-media" && <SouthAfricaSportMedia dossier={dossier} sourceMap={sourceMap} />}
+        {active === "law-memory" && <SouthAfricaLawMemory dossier={dossier} sourceMap={sourceMap} />}
         {active === "peoples" && <SimpleCards items={dossier.peoples} sourceMap={sourceMap} />}
         {active === "polities" && <SimpleCards items={dossier.polities} sourceMap={sourceMap} bodyField="mapping" />}
         {active === "migrations" && <SimpleCards items={dossier.migrations} sourceMap={sourceMap} titleField="label" bodyField="reason" />}
@@ -138,11 +165,11 @@ export default function CountryDossierView({ dossier }) {
           <p className="text-bone/65 leading-relaxed">{dossier.religions.note}</p><SourceLinks ids={dossier.religions.sources} sourceMap={sourceMap} />
         </div>}
         {active === "historiography" && <div className="space-y-4">
-          <p className="text-bone/65 leading-relaxed">Ces notes signalent les pièges d'interprétation à éviter. Elles ne remplacent pas les dossiers spécialisés à venir.</p>
+          <p className="text-bone/65 leading-relaxed">Certains sujets historiques font l’objet de débats. Cette section présente les principales précautions de lecture sans masquer les désaccords.</p>
           {dossier.historiography.map((note, index) => <article key={index} className="rounded-lg border border-amber-400/20 bg-amber-400/[0.04] p-4"><div className="flex items-start gap-3"><span className="text-amber-300 text-sm">⚠</span><p className="text-bone/75 leading-relaxed">{note}</p></div></article>)}
         </div>}
         {active === "research" && <div className="space-y-4">
-          <p className="text-bone/65 leading-relaxed">Ces éléments restent volontairement ouverts. Ils ne sont pas présentés comme des faits établis ni transformés en routes ou frontières publiques.</p>
+          <p className="text-bone/65 leading-relaxed">Ces thèmes seront enrichis progressivement à mesure que des sources solides et suffisamment précises seront intégrées.</p>
           {dossier.research_gaps.map((gap, index) => <article key={index} className="rounded-lg border border-bone/10 p-4"><div className="flex items-start justify-between gap-3"><p className="text-bone/75 leading-relaxed">{gap}</p><StatusBadge status="research-gap" /></div></article>)}
         </div>}
         {active === "library" && <SouthAfricaScientificLibrary dossier={dossier} sourceMap={sourceMap} />}

@@ -1168,3 +1168,51 @@ SOUTH_AFRICA_DOSSIER["sources"].extend([
         "url": "https://www.statssa.gov.za/?p=17111",
     },
 ])
+
+# Galerie publique : seules des images dont la licence et l'attribution ont été vérifiées sont listées ici.
+SOUTH_AFRICA_DOSSIER["media_gallery"] = [
+    {
+        "id": "za-media-flag-current",
+        "title": "Drapeau national actuel",
+        "caption": "Le drapeau adopté pour les premières élections démocratiques de 1994.",
+        "alt": "Drapeau national multicolore de l'Afrique du Sud",
+        "image_url": "https://commons.wikimedia.org/wiki/Special:FilePath/Flag%20of%20South%20Africa.svg",
+        "source_page": "https://commons.wikimedia.org/wiki/File:Flag_of_South_Africa.svg",
+        "author": "Government of South Africa / Wikimedia Commons",
+        "license": "Domaine public ; symbole officiel soumis à des règles d'usage propres",
+        "section": "symbols",
+    },
+    {
+        "id": "za-media-table-mountain",
+        "title": "Table Mountain et Le Cap",
+        "caption": "Un paysage emblématique du Cap-Occidental, lié à la géographie urbaine, naturelle et maritime du pays.",
+        "alt": "Table Mountain dominant la ville du Cap",
+        "image_url": "https://commons.wikimedia.org/wiki/Special:FilePath/Table%20mountain%20cape%20town.jpg",
+        "source_page": "https://commons.wikimedia.org/wiki/File:Table_mountain_cape_town.jpg",
+        "author": "Wikimedia Commons contributor",
+        "license": "CC BY-SA 3.0",
+        "section": "geography",
+    },
+    {
+        "id": "za-media-mapungubwe",
+        "title": "Paysage de Mapungubwe",
+        "caption": "Le paysage culturel de Mapungubwe documente un centre politique et commercial majeur de l'Afrique australe précoloniale.",
+        "alt": "Paysage rocheux du parc national de Mapungubwe",
+        "image_url": "https://commons.wikimedia.org/wiki/Special:FilePath/Mapungubwe%2C%20Limpopo%2C%20South%20Africa%20%2820550834421%29.jpg",
+        "source_page": "https://commons.wikimedia.org/wiki/File:Mapungubwe,_Limpopo,_South_Africa_(20550834421).jpg",
+        "author": "South African Tourism",
+        "license": "CC BY 2.0",
+        "section": "history",
+    },
+    {
+        "id": "za-media-mandela",
+        "title": "Nelson Mandela en 1993",
+        "caption": "Nelson Mandela à Philadelphie, l'année précédant les premières élections nationales démocratiques.",
+        "alt": "Portrait de Nelson Mandela en 1993",
+        "image_url": "https://commons.wikimedia.org/wiki/Special:FilePath/Nelson%20Mandela.jpg",
+        "source_page": "https://commons.wikimedia.org/wiki/File:Nelson_Mandela.jpg",
+        "author": "U.S. National Archives",
+        "license": "Domaine public (œuvre du gouvernement fédéral des États-Unis)",
+        "section": "figures",
+    },
+]
