@@ -1,0 +1,7 @@
+Correctif V6 — build Afrique du Sud
+
+Cause confirmée : CountryDossierView.jsx importait deux composants absents du dépôt :
+- SouthAfricaSportMedia.jsx
+- SouthAfricaProvincesCities.jsx
+
+Le correctif restaure ces deux fichiers et ajoute un contrôle automatique des imports relatifs.
