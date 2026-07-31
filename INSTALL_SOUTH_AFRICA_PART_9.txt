@@ -1,0 +1,5 @@
+1. Extract the archive at the repository root.
+2. Run: python scripts/apply_south_africa_part_9.py
+3. Run backend tests.
+4. Run the frontend production build.
+5. Commit only after both succeed.
