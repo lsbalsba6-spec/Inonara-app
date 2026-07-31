@@ -1,0 +1,1 @@
+Installer l'archive à la racine du dépôt, lancer les tests ciblés, puis construire le frontend avant le commit.
