@@ -1,17 +1,25 @@
-INONARA — Audit des dates de fin 2025
+CORRECTIF INONARA — LABELS + COULEURS DES MIGRATIONS
 
-Ce paquet n'altère aucune donnée historique. Il ajoute :
-- backend/scripts/audit_current_end_dates.py
-- backend/reports/current_end_dates_audit.json
-- backend/reports/current_end_dates_audit.md
+Ce paquet :
+- masque automatiquement les labels qui se chevauchent ;
+- révèle davantage de labels quand on zoome ;
+- centralise couleur, pointillés, épaisseur et libellé des migrations ;
+- garantit que la carte, la légende des routes et la fiche utilisent le même type visuel ;
+- conserve le filtrage temporel existant des routes.
 
-Après extraction, relancer l'audit avec :
-python backend/scripts/audit_current_end_dates.py
+Installation depuis Termux :
 
-Le rapport classe les entrées en :
-- valid-current
-- data-model-problem
-- event-instant-or-bounded
-- historical-entity-ended
-- uncertain-needs-research
-- process-ended
+cd ~/inonara-app
+tar -xzf /sdcard/Download/inonara-fix-labels-migrations.tar.gz
+
+cd frontend
+npm test -- --watchAll=false atlasDisplay.test.js
+npm run build
+cd ..
+
+git status
+git diff -- frontend/src/pages/Atlas.jsx frontend/src/lib/atlasDisplay.js frontend/src/lib/__tests__/atlasDisplay.test.js
+
+git add frontend/src/pages/Atlas.jsx frontend/src/lib/atlasDisplay.js frontend/src/lib/__tests__/atlasDisplay.test.js
+git commit -m "fix: labels lisibles et styles migrations synchronises"
+git push
