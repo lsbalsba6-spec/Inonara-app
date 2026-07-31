@@ -1,5 +1,6 @@
 import { useMemo, useState } from "react";
 import { CurrentSouthAfricaFlag, SouthAfricaCountryMap, SouthAfricaFlagHistory, SouthAfricaMigrationMap } from "./SouthAfricaVisuals";
+import SouthAfricaDeepHistory from "./SouthAfricaDeepHistory";
 
 const STATUS_LABELS = {
   ready: "Établi",
@@ -117,6 +118,36 @@ function DiasporaSection({ data, sourceMap }) {
   );
 }
 
+
+function DetailedCultureSection({ dossier, sourceMap }) {
+  const items = Array.isArray(dossier?.culture) ? dossier.culture : [];
+  const traditions = Array.isArray(dossier?.oral_traditions_and_legends) ? dossier.oral_traditions_and_legends : [];
+  return (
+    <div className="space-y-8">
+      {dossier?.culture_editorial_note && <div className="rounded-lg border border-gold/20 bg-gold/[0.04] p-4 text-sm leading-relaxed text-bone/70">{dossier.culture_editorial_note}</div>}
+      <div className="space-y-5">{items.map((item) => <article key={item.id || item.topic} className="rounded-xl border border-bone/10 bg-bone/[0.025] p-5 md:p-6">
+        <div className="flex flex-wrap items-start justify-between gap-3"><h3 className="font-serif text-2xl text-bone">{item.topic}</h3><StatusBadge status={item.status} /></div>
+        <p className="mt-3 leading-relaxed text-bone/75">{item.summary || item.text}</p>
+        {item.examples?.length > 0 && <div className="mt-4"><p className="overline text-gold/70">Repères</p><ul className="mt-2 grid gap-2 sm:grid-cols-2">{item.examples.map((example) => <li key={example} className="rounded-lg border border-bone/10 px-3 py-2 text-sm text-bone/65">{example}</li>)}</ul></div>}
+        {item.caution && <p className="mt-4 rounded-lg border border-amber-400/20 bg-amber-400/[0.04] p-3 text-sm leading-relaxed text-bone/65"><strong className="text-amber-300">Précaution :</strong> {item.caution}</p>}
+        <SourceLinks ids={item.sources || []} sourceMap={sourceMap} />
+      </article>)}</div>
+      <div><h2 className="mb-3 font-serif text-2xl text-gold">Traditions orales et mémoires</h2><div className="space-y-4">{traditions.map((item) => <article key={item.id || item.title} className="rounded-lg border border-bone/10 p-4"><div className="flex items-start justify-between gap-3"><h3 className="font-serif text-lg text-bone">{item.title}</h3><StatusBadge status={item.status} /></div><p className="mt-2 text-sm leading-relaxed text-bone/70">{item.summary || item.note}</p><SourceLinks ids={item.sources || []} sourceMap={sourceMap} /></article>)}</div></div>
+    </div>
+  );
+}
+
+function DetailedHeritageSection({ dossier, sourceMap }) {
+  const unesco = Array.isArray(dossier?.heritage) ? dossier.heritage : [];
+  const national = Array.isArray(dossier?.national_heritage_highlights) ? dossier.national_heritage_highlights : [];
+  const renderCards = (items) => <div className="grid gap-4 md:grid-cols-2">{items.map((item) => <article key={item.id || item.name} className="rounded-xl border border-bone/10 bg-bone/[0.025] p-5"><div className="flex items-start justify-between gap-3"><div><p className="text-[10px] uppercase tracking-widest text-gold/70">{item.kind}</p><h3 className="mt-1 font-serif text-xl text-bone">{item.name}</h3></div><StatusBadge status={item.status} /></div><p className="mt-3 text-sm leading-relaxed text-bone/70">{item.description || item.note}</p><SourceLinks ids={item.sources || []} sourceMap={sourceMap} /></article>)}</div>;
+  return <div className="space-y-9">
+    {dossier?.heritage_editorial_note && <div className="rounded-lg border border-gold/20 bg-gold/[0.04] p-4 text-sm leading-relaxed text-bone/70">{dossier.heritage_editorial_note}</div>}
+    <div><div className="mb-4 flex flex-wrap items-end justify-between gap-2"><div><p className="overline text-bone/45">Patrimoine mondial</p><h2 className="font-serif text-3xl text-gold">12 biens inscrits par l’UNESCO</h2></div><span className="rounded-full border border-bone/15 px-3 py-1 text-xs text-bone/55">7 culturels · 4 naturels · 1 mixte</span></div>{renderCards(unesco)}</div>
+    <div><p className="overline text-bone/45">Sélection nationale</p><h2 className="mb-4 font-serif text-3xl text-gold">Lieux de mémoire et patrimoines vivants</h2>{renderCards(national)}</div>
+  </div>;
+}
+
 function SimpleCards({ items, sourceMap, titleField = "name", bodyField = "note" }) {
   return (
     <div className="grid gap-4 md:grid-cols-2">
@@ -146,7 +177,7 @@ export default function CountryDossierView({ dossier }) {
   const institutions = dossier?.institutions || {};
   const sourceMap = useMemo(() => new Map(sources.map((s) => [s.id, s])), [sources]);
   const tabs = [
-    ["overview", "Présentation"], ["visuals", "Cartes & drapeaux"], ["geography", "Géographie"], ["institutions", "Institutions"], ["timeline", "Histoire"], ["peoples", "Peuples"],
+    ["overview", "Présentation"], ["visuals", "Cartes & drapeaux"], ["geography", "Géographie"], ["institutions", "Institutions"], ["deep_history", "Avant 1652"], ["timeline", "Histoire"], ["peoples", "Peuples"],
     ["languages", "Langues"], ["religions", "Religions"], ["polities", "Royaumes & États"],
     ["migrations", "Migrations"], ["diasporas", "Diasporas"], ["culture", "Culture"], ["heritage", "Patrimoine"],
     ["figures", "Personnalités"], ["historiography", "Débats"],
@@ -204,6 +235,7 @@ export default function CountryDossierView({ dossier }) {
           <div><h2 className="font-serif text-2xl text-gold mb-3">Neuf provinces</h2><SimpleCards items={institutions.provinces || []} sourceMap={sourceMap} bodyField="capital" /></div>
           <SourceLinks ids={institutions.sources || []} sourceMap={sourceMap} />
         </div>}
+        {active === "deep_history" && <SouthAfricaDeepHistory data={dossier.deep_history} sourceMap={sourceMap} />}
         {active === "timeline" && <div className="space-y-10">
           <Timeline items={dossier.timeline || []} sourceMap={sourceMap} />
           {(dossier.history_chapters || []).length > 0 && <div className="space-y-6">
@@ -235,12 +267,9 @@ export default function CountryDossierView({ dossier }) {
         {active === "polities" && <SimpleCards items={dossier.polities} sourceMap={sourceMap} bodyField="mapping" />}
         {active === "migrations" && <div className="space-y-8"><div className="rounded-lg border border-bone/10 p-4"><p className="text-bone/70 leading-relaxed">Les routes ci-dessous sont des mouvements historiques distincts. L’existence actuelle d’une communauté ne prolonge jamais automatiquement une route jusqu’à aujourd’hui.</p></div><MigrationChapters items={dossier.migration_chapters || []} sourceMap={sourceMap} /></div>}
         {active === "diasporas" && <DiasporaSection data={dossier.diasporas} sourceMap={sourceMap} />}
-        {active === "heritage" && <SimpleCards items={dossier.heritage} sourceMap={sourceMap} />}
+        {active === "heritage" && <DetailedHeritageSection dossier={dossier} sourceMap={sourceMap} />}
         {active === "figures" && <SimpleCards items={dossier.figures} sourceMap={sourceMap} bodyField="reason" />}
-        {active === "culture" && <div className="space-y-7">
-          <SimpleCards items={dossier.culture} sourceMap={sourceMap} titleField="topic" bodyField="text" />
-          <div><h2 className="font-serif text-2xl text-gold mb-3">Traditions orales et légendes</h2><SimpleCards items={dossier.oral_traditions_and_legends} sourceMap={sourceMap} titleField="title" /></div>
-        </div>}
+        {active === "culture" && <DetailedCultureSection dossier={dossier} sourceMap={sourceMap} />}
         {active === "languages" && <div className="space-y-8">
           <div className="rounded-lg border border-gold/20 bg-gold/[0.04] p-4"><h2 className="font-serif text-2xl text-gold">12 langues officielles</h2><p className="mt-2 text-sm leading-relaxed text-bone/70">{dossier.languages?.constitutional_note}</p><div className="mt-4 flex flex-wrap gap-2">{(dossier.languages?.official || []).map((l) => <span key={l} className="rounded-full border border-bone/15 px-3 py-1 text-sm text-bone/75">{l}</span>)}</div></div>
           <div><h2 className="font-serif text-2xl text-gold mb-3">Langue la plus souvent parlée dans le ménage, 2022</h2><div className="space-y-3">{(dossier.languages?.household_2022 || []).filter((x) => x.percent != null).map((x) => <div key={x.language}><div className="mb-1 flex justify-between text-sm text-bone/75"><span>{x.language}</span><strong>{x.percent}%</strong></div><div className="h-2 overflow-hidden rounded-full bg-bone/10"><div className="h-full rounded-full bg-gold/70" style={{ width: `${Math.min(x.percent, 100)}%` }} /></div></div>)}</div><p className="text-sm leading-relaxed text-bone/50 mt-4">{dossier.languages?.note}</p></div>

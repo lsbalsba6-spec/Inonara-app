@@ -1,4 +1,10 @@
-from .south_africa import SOUTH_AFRICA_DOSSIER
+from .south_africa import SOUTH_AFRICA_DOSSIER as SOUTH_AFRICA_BASE_DOSSIER
+from .south_africa_deep_history import enrich_south_africa_dossier
+from .south_africa_culture_heritage import enrich_south_africa_culture_heritage
+
+SOUTH_AFRICA_DOSSIER = enrich_south_africa_culture_heritage(
+    enrich_south_africa_dossier(SOUTH_AFRICA_BASE_DOSSIER)
+)
 
 COUNTRY_DOSSIERS = {
     SOUTH_AFRICA_DOSSIER["iso2"]: SOUTH_AFRICA_DOSSIER,
