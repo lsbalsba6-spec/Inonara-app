@@ -10,10 +10,17 @@ function normalize(value) {
 export function SouthAfricaProvincesCities({ dossier }) {
   const [query, setQuery] = useState("");
   const institutions = dossier?.institutions || {};
-  const provinces = Array.isArray(institutions.provinces) ? institutions.provinces : [];
-  const capitalFunctions = Array.isArray(institutions.capital_functions)
-    ? institutions.capital_functions
-    : [];
+  const provinces = useMemo(
+    () => (Array.isArray(institutions.provinces) ? institutions.provinces : []),
+    [institutions.provinces]
+  );
+  const capitalFunctions = useMemo(
+    () =>
+      Array.isArray(institutions.capital_functions)
+        ? institutions.capital_functions
+        : [],
+    [institutions.capital_functions]
+  );
 
   const filteredProvinces = useMemo(() => {
     const needle = normalize(query.trim());
