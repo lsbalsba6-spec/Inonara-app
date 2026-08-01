@@ -1,4 +1,18 @@
 import { SouthAfricaOverview } from "./SouthAfricaOverview";
+import { SouthAfricaInternationalQuality } from "./SouthAfricaInternationalQuality";
+import { SouthAfricaSymbolsQuality } from "./SouthAfricaSymbolsQuality";
+import { SouthAfricaEconomyQuality } from "./SouthAfricaEconomyQuality";
+import { SouthAfricaEducationHealthQuality } from "./SouthAfricaEducationHealthQuality";
+import { SouthAfricaSocietyQuality } from "./SouthAfricaSocietyQuality";
+import { SouthAfricaHistoriography, SouthAfricaResearchGaps, SouthAfricaSources } from "./SouthAfricaSourcesQuality";
+import { SouthAfricaPolities } from "./SouthAfricaPolities";
+import { SouthAfricaLanguages, SouthAfricaReligions } from "./SouthAfricaLanguagesReligions";
+import { SouthAfricaPeoples } from "./SouthAfricaPeoples";
+import { SouthAfricaFigures } from "./SouthAfricaFigures";
+import { SouthAfricaHeritage } from "./SouthAfricaHeritage";
+import { SouthAfricaCulture } from "./SouthAfricaCulture";
+import { SouthAfricaMigrations } from "./SouthAfricaMigrations";
+import { SouthAfricaHistory } from "./SouthAfricaHistory";
 import { SouthAfricaLawMemory } from "./SouthAfricaLawMemory";
 import { SouthAfricaSportMedia } from "./SouthAfricaSportMedia";
 import { SouthAfricaEducationHealth, SouthAfricaInternationalRole, SouthAfricaNationalSymbols, SouthAfricaSociety } from "./SouthAfricaSocietyState";
@@ -125,46 +139,28 @@ export default function CountryDossierView({ dossier }) {
       <section className="mt-8">
         {active === "overview" && <SouthAfricaOverview dossier={dossier} sourceMap={sourceMap} />}
         {active === "media" && <SouthAfricaMediaGallery items={dossier.media_gallery || []} />}
-        {active === "timeline" && <Timeline items={dossier.timeline} sourceMap={sourceMap} />}
+        {active === "timeline" && <SouthAfricaHistory dossier={dossier} sourceMap={sourceMap} />}
         {active === "provinces-cities" && <SouthAfricaProvincesCities dossier={dossier} sourceMap={sourceMap} />}
         {active === "interactive-timeline" && <SouthAfricaInteractiveTimeline dossier={dossier} sourceMap={sourceMap} />}
-        {active === "economy" && <SouthAfricaEconomy dossier={dossier} sourceMap={sourceMap} />}
-        {active === "society" && <SouthAfricaSociety dossier={dossier} sourceMap={sourceMap} />}
-        {active === "education-health" && <SouthAfricaEducationHealth dossier={dossier} sourceMap={sourceMap} />}
-        {active === "symbols" && <SouthAfricaNationalSymbols dossier={dossier} sourceMap={sourceMap} />}
-        {active === "international" && <SouthAfricaInternationalRole dossier={dossier} sourceMap={sourceMap} />}
+        {active === "economy" && <SouthAfricaEconomyQuality dossier={dossier} sourceMap={sourceMap} />}
+        {active === "society" && <SouthAfricaSocietyQuality dossier={dossier} sourceMap={sourceMap} />}
+        {active === "education-health" && <SouthAfricaEducationHealthQuality dossier={dossier} sourceMap={sourceMap} />}
+        {active === "symbols" && <SouthAfricaSymbolsQuality dossier={dossier} sourceMap={sourceMap} />}
+        {active === "international" && <SouthAfricaInternationalQuality dossier={dossier} sourceMap={sourceMap} />}
         {active === "sport-media" && <SouthAfricaSportMedia dossier={dossier} sourceMap={sourceMap} />}
         {active === "law-memory" && <SouthAfricaLawMemory dossier={dossier} sourceMap={sourceMap} />}
-        {active === "peoples" && <SimpleCards items={dossier.peoples} sourceMap={sourceMap} />}
-        {active === "polities" && <SimpleCards items={dossier.polities} sourceMap={sourceMap} bodyField="mapping" />}
-        {active === "migrations" && <SimpleCards items={dossier.migrations} sourceMap={sourceMap} titleField="label" bodyField="reason" />}
-        {active === "heritage" && <SimpleCards items={dossier.heritage} sourceMap={sourceMap} />}
-        {active === "figures" && <SimpleCards items={dossier.figures} sourceMap={sourceMap} bodyField="reason" />}
-        {active === "culture" && <div className="space-y-7">
-          <SimpleCards items={dossier.culture} sourceMap={sourceMap} titleField="topic" bodyField="text" />
-          <div><h2 className="font-serif text-2xl text-gold mb-3">Traditions orales et légendes</h2><SimpleCards items={dossier.oral_traditions_and_legends} sourceMap={sourceMap} titleField="title" /></div>
-        </div>}
-        {active === "languages" && <div className="space-y-6">
-          <div><h2 className="font-serif text-2xl text-gold mb-3">12 langues officielles</h2><div className="flex flex-wrap gap-2">{dossier.languages.official.map((l) => <span key={l} className="border border-bone/15 rounded-full px-3 py-1 text-sm text-bone/75">{l}</span>)}</div></div>
-          <div><h2 className="font-serif text-2xl text-gold mb-3">Langue la plus parlée au foyer, 2022</h2><div className="space-y-2">{dossier.languages.household_2022.filter((x) => x.percent != null).map((x) => <div key={x.language} className="flex justify-between border-b border-bone/10 pb-2 text-bone/75"><span>{x.language}</span><strong>{x.percent}%</strong></div>)}</div><p className="text-sm text-bone/50 mt-4">{dossier.languages.note}</p></div>
-          <SourceLinks ids={dossier.languages.sources} sourceMap={sourceMap} />
-        </div>}
-        {active === "religions" && <div className="space-y-5">
-          <div className="grid gap-3 sm:grid-cols-2">{dossier.religions.census_2022.map((r) => <div key={r.name} className="border border-bone/10 rounded-lg p-4"><p className="text-bone/65">{r.name}</p><p className="font-serif text-xl text-gold">{r.count.toLocaleString("fr-FR")}</p></div>)}</div>
-          <p className="text-bone/65 leading-relaxed">{dossier.religions.note}</p><SourceLinks ids={dossier.religions.sources} sourceMap={sourceMap} />
-        </div>}
-        {active === "historiography" && <div className="space-y-4">
-          <p className="text-bone/65 leading-relaxed">Certains sujets historiques font l’objet de débats. Cette section présente les principales précautions de lecture sans masquer les désaccords.</p>
-          {dossier.historiography.map((note, index) => <article key={index} className="rounded-lg border border-amber-400/20 bg-amber-400/[0.04] p-4"><div className="flex items-start gap-3"><span className="text-amber-300 text-sm">⚠</span><p className="text-bone/75 leading-relaxed">{note}</p></div></article>)}
-        </div>}
-        {active === "research" && <div className="space-y-4">
-          <p className="text-bone/65 leading-relaxed">Ces thèmes seront enrichis progressivement à mesure que des sources solides et suffisamment précises seront intégrées.</p>
-          {dossier.research_gaps.map((gap, index) => <article key={index} className="rounded-lg border border-bone/10 p-4"><div className="flex items-start justify-between gap-3"><p className="text-bone/75 leading-relaxed">{gap}</p><StatusBadge status="research-gap" /></div></article>)}
-        </div>}
+        {active === "peoples" && <SouthAfricaPeoples dossier={dossier} sourceMap={sourceMap} />}
+        {active === "polities" && <SouthAfricaPolities dossier={dossier} sourceMap={sourceMap} />}
+        {active === "migrations" && <SouthAfricaMigrations dossier={dossier} sourceMap={sourceMap} />}
+        {active === "heritage" && <SouthAfricaHeritage dossier={dossier} sourceMap={sourceMap} />}
+        {active === "figures" && <SouthAfricaFigures dossier={dossier} sourceMap={sourceMap} />}
+        {active === "culture" && <SouthAfricaCulture dossier={dossier} sourceMap={sourceMap} />}
+        {active === "languages" && <SouthAfricaLanguages dossier={dossier} sourceMap={sourceMap} />}
+        {active === "religions" && <SouthAfricaReligions dossier={dossier} sourceMap={sourceMap} />}
+        {active === "historiography" && <SouthAfricaHistoriography dossier={dossier} />}
+        {active === "research" && <SouthAfricaResearchGaps dossier={dossier} />}
         {active === "library" && <SouthAfricaScientificLibrary dossier={dossier} sourceMap={sourceMap} />}
-        {active === "sources" && <div className="space-y-4">
-          {dossier.sources.map((source) => <article key={source.id} className="border-b border-bone/10 pb-4"><div className="flex gap-2 items-center"><span className="text-[10px] border border-gold/30 text-gold rounded px-1.5">Cat. {source.category}</span><h3 className="text-bone">{source.title}</h3></div><p className="text-xs text-bone/50 mt-1">{source.publisher}{source.year ? ` · ${source.year}` : ""}</p><a href={source.url} target="_blank" rel="noreferrer" className="text-xs text-gold/80 underline">Consulter la source</a></article>)}
-        </div>}
+        {active === "sources" && <SouthAfricaSources dossier={dossier} />}
       </section>
     </div>
   );
