@@ -53,7 +53,10 @@ const FILTERS = [
 ];
 
 export function SouthAfricaHistory({ dossier, sourceMap }) {
-  const chapters = dossier.overview?.history_chapters || [];
+  const chapters = useMemo(
+    () => dossier.overview?.history_chapters || [],
+    [dossier],
+  );
   const [filter, setFilter] = useState("all");
   const [openId, setOpenId] = useState(chapters[0]?.id || null);
 

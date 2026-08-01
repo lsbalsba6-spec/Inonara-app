@@ -36,7 +36,10 @@ function getField(item) {
 }
 
 export function SouthAfricaFigures({ dossier, sourceMap }) {
-  const figures = dossier.figures || [];
+  const figures = useMemo(
+    () => dossier.figures || [],
+    [dossier],
+  );
   const fields = useMemo(
     () => [...new Set(figures.map(getField))],
     [figures],

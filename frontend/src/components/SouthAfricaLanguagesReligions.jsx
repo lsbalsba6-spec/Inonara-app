@@ -26,7 +26,10 @@ function SourceLinks({ ids = [], sourceMap }) {
 export function SouthAfricaLanguages({ dossier, sourceMap }) {
   const languages = dossier.languages || {};
   const official = languages.official || [];
-  const household = languages.household_2022 || [];
+  const household = useMemo(
+    () => languages.household_2022 || [],
+    [languages],
+  );
   const [query, setQuery] = useState("");
 
   const visible = useMemo(() => {
@@ -134,7 +137,10 @@ export function SouthAfricaLanguages({ dossier, sourceMap }) {
 
 export function SouthAfricaReligions({ dossier, sourceMap }) {
   const religions = dossier.religions || {};
-  const census = religions.census_2022 || [];
+  const census = useMemo(
+    () => religions.census_2022 || [],
+    [religions],
+  );
   const [query, setQuery] = useState("");
 
   const visible = useMemo(() => {

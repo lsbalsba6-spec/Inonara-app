@@ -28,8 +28,14 @@ const getBody = (item) => item.text || item.note || item.summary || item.descrip
 const getCategory = (item) => item.category || item.type || item.domain || "Société";
 
 export function SouthAfricaSocietyQuality({ dossier, sourceMap }) {
-  const items = dossier.society?.topics || dossier.society_topics || dossier.society || [];
-  const normalizedItems = Array.isArray(items) ? items : [];
+  const items = useMemo(
+    () => dossier.society?.topics || dossier.society_topics || dossier.society || [],
+    [dossier],
+  );
+  const normalizedItems = useMemo(
+    () => Array.isArray(items) ? items : [],
+    [items],
+  );
   const categories = useMemo(
     () => [...new Set(normalizedItems.map(getCategory))],
     [normalizedItems],

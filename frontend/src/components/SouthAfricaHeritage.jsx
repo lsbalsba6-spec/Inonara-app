@@ -36,7 +36,10 @@ function heritageType(item) {
 }
 
 export function SouthAfricaHeritage({ dossier, sourceMap }) {
-  const items = dossier.heritage || [];
+  const items = useMemo(
+    () => dossier.heritage || [],
+    [dossier],
+  );
   const categories = useMemo(
     () => [...new Set(items.map(heritageType))],
     [items],

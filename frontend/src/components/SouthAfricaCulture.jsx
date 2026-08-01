@@ -28,7 +28,10 @@ function normalizeTopic(item) {
 }
 
 export function SouthAfricaCulture({ dossier, sourceMap }) {
-  const culture = dossier.culture || [];
+  const culture = useMemo(
+    () => dossier.culture || [],
+    [dossier],
+  );
   const oral = dossier.oral_traditions_and_legends || [];
   const [query, setQuery] = useState("");
   const [openId, setOpenId] = useState(culture[0]?.id || null);

@@ -23,7 +23,10 @@ const getSummary = (item) => item.note || item.text || item.summary || item.desc
 const getRegion = (item) => item.region || item.location || item.area || "Répartition à préciser";
 
 export function SouthAfricaPeoples({ dossier, sourceMap }) {
-  const peoples = dossier.peoples || [];
+  const peoples = useMemo(
+    () => dossier.peoples || [],
+    [dossier],
+  );
   const regions = useMemo(() => [...new Set(peoples.map(getRegion))], [peoples]);
   const [region, setRegion] = useState("all");
   const [query, setQuery] = useState("");

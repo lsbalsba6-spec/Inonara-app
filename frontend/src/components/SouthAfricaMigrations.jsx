@@ -55,7 +55,10 @@ function routeType(route) {
 }
 
 export function SouthAfricaMigrations({ dossier, sourceMap }) {
-  const routes = dossier.migrations || [];
+  const routes = useMemo(
+    () => dossier.migrations || [],
+    [dossier],
+  );
   const types = useMemo(() => [...new Set(routes.map(routeType))], [routes]);
   const [selectedType, setSelectedType] = useState("all");
   const [openId, setOpenId] = useState(routes[0]?.id || null);

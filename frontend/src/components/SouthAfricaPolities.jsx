@@ -33,7 +33,10 @@ const getPeriod = (item) => item.period || (
 const getType = (item) => item.type || item.category || "Formation politique";
 
 export function SouthAfricaPolities({ dossier, sourceMap }) {
-  const polities = dossier.polities || [];
+  const polities = useMemo(
+    () => dossier.polities || [],
+    [dossier],
+  );
   const types = useMemo(() => [...new Set(polities.map(getType))], [polities]);
   const [type, setType] = useState("all");
   const [query, setQuery] = useState("");
