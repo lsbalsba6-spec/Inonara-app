@@ -58,13 +58,10 @@ function displayPeriod(item) {
 
 export default function SouthAfricaPre1652Routes({ data, sourceMap }) {
   const [type, setType] = useState("all");
-  const corridors = useMemo(
-    () => data?.corridors || [],
-    [data?.corridors],
-  );
-  const zones = data?.mobility_zones || [];
-  const politicalZones = data?.political_zones || [];
-  const sites = data?.sites || [];
+  const corridors = useMemo(() => data?.corridors || [], [data?.corridors]);
+  const zones = useMemo(() => data?.mobility_zones || [], [data?.mobility_zones]);
+  const politicalZones = useMemo(() => data?.political_zones || [], [data?.political_zones]);
+  const sites = useMemo(() => data?.sites || [], [data?.sites]);
   const visibleCorridors = useMemo(
     () => (type === "all" ? corridors : corridors.filter((item) => item.type === type)),
     [corridors, type],

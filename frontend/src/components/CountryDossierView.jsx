@@ -97,7 +97,7 @@ function SimpleCards({ items, sourceMap, titleField = "name", bodyField = "note"
 
 export default function CountryDossierView({ dossier }) {
   const [active, setActive] = useState("overview");
-  const sourceMap = useMemo(() => new Map((dossier.sources || []).map((s) => [s.id, s])), [dossier.sources]);
+  const sourceMap = useMemo(() => new Map((dossier?.sources || []).map((s) => [s.id, s])), [dossier?.sources]);
   const groups = [
     { id: "identity", label: "Découvrir", items: [["overview", "Présentation"], ["media", "Galerie"], ["symbols", "Symboles"]] },
     { id: "maps", label: "Territoire", items: [["provinces-cities", "Provinces & villes"]] },
@@ -113,8 +113,8 @@ export default function CountryDossierView({ dossier }) {
 
   return (
     <div className="pt-[100px] pb-20 px-5 max-w-5xl mx-auto">
-      <p className="overline text-gold mb-2">Pays · {dossier.region.fr}</p>
-      <h1 className="font-serif text-4xl md:text-5xl text-bone">{dossier.name.fr}</h1>
+      <p className="overline text-gold mb-2">Pays · {dossier.region?.fr || "Afrique australe"}</p>
+      <h1 className="font-serif text-4xl md:text-5xl text-bone">{dossier.name?.fr || "Afrique du Sud"}</h1>
       <p className="text-bone/55 mt-3 max-w-3xl leading-relaxed">{dossier.editorial_note}</p>
 
       <nav className="mt-8" aria-label="Grandes sections du dossier pays">

@@ -56,7 +56,10 @@ function normalizeInternational(dossier) {
 }
 
 export function SouthAfricaInternationalQuality({ dossier, sourceMap }) {
-  const items = normalizeInternational(dossier);
+  const items = useMemo(
+    () => normalizeInternational(dossier),
+    [dossier.international_role, dossier.international, dossier.global_role, dossier.international_topics],
+  );
 
   const categories = useMemo(
     () => [...new Set(items.map(getCategory))],
@@ -90,9 +93,7 @@ export function SouthAfricaInternationalQuality({ dossier, sourceMap }) {
           Organisations, diplomatie et relations régionales
         </h2>
         <p className="mt-3 max-w-3xl leading-7 text-bone/65">
-          Cette section distingue les appartenances institutionnelles, les partenariats,
-          les responsabilités régionales et les positions diplomatiques. Une adhésion à
-          une organisation ne signifie pas un alignement automatique sur toutes ses positions.
+          {dossier.international_role?.intro || "Cette section distingue les appartenances institutionnelles, les partenariats, les responsabilités régionales et les positions diplomatiques."}
         </p>
       </header>
 
@@ -218,7 +219,7 @@ export function SouthAfricaInternationalQuality({ dossier, sourceMap }) {
                     )}
                   </div>
 
-                  <SourceLinks ids={item.sources} sourceMap={sourceMap} />
+                  <SourceLinks ids={item.sources || item.sourceIds} sourceMap={sourceMap} />
                 </div>
               )}
             </article>

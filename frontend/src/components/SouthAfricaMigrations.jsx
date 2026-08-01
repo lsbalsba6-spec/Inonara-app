@@ -57,7 +57,7 @@ function routeType(route) {
 export function SouthAfricaMigrations({ dossier, sourceMap }) {
   const routes = useMemo(
     () => dossier.migrations || [],
-    [dossier],
+    [dossier.migrations],
   );
   const types = useMemo(() => [...new Set(routes.map(routeType))], [routes]);
   const [selectedType, setSelectedType] = useState("all");
@@ -146,7 +146,7 @@ export function SouthAfricaMigrations({ dossier, sourceMap }) {
                       </div>
                     )}
                   </div>
-                  <SourceLinks ids={route.sources} sourceMap={sourceMap} />
+                  <SourceLinks ids={route.sources || route.sourceIds} sourceMap={sourceMap} />
                 </div>
               )}
             </article>

@@ -30,7 +30,7 @@ const getCategory = (item) => item.category || item.type || item.domain || "Soci
 export function SouthAfricaSocietyQuality({ dossier, sourceMap }) {
   const items = useMemo(
     () => dossier.society?.themes || dossier.society?.topics || dossier.society_topics || [],
-    [dossier],
+    [dossier.society, dossier.society_topics],
   );
   const normalizedItems = useMemo(
     () => Array.isArray(items) ? items : [],
@@ -64,9 +64,7 @@ export function SouthAfricaSocietyQuality({ dossier, sourceMap }) {
           Citoyenneté, territoires et inégalités
         </h2>
         <p className="mt-3 max-w-3xl leading-7 text-bone/65">
-          Cette section relie les réalités contemporaines aux héritages historiques :
-          urbanisation, accès aux services, transformations familiales, citoyenneté,
-          inégalités spatiales et recompositions sociales.
+          {dossier.society?.intro || "Cette section relie les réalités contemporaines aux héritages historiques : urbanisation, accès aux services, citoyenneté, inégalités spatiales et recompositions sociales."}
         </p>
       </header>
 
@@ -187,7 +185,7 @@ export function SouthAfricaSocietyQuality({ dossier, sourceMap }) {
                     )}
                   </div>
 
-                  <SourceLinks ids={item.sources} sourceMap={sourceMap} />
+                  <SourceLinks ids={item.sources || item.sourceIds} sourceMap={sourceMap} />
                 </div>
               )}
             </article>

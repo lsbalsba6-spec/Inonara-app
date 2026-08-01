@@ -151,7 +151,7 @@ function SectionBlock({ title, intro, items, sourceMap }) {
                       </div>
                     )}
                   </div>
-                  <SourceLinks ids={item.sources} sourceMap={sourceMap} />
+                  <SourceLinks ids={item.sources || item.sourceIds} sourceMap={sourceMap} />
                 </div>
               )}
             </article>
@@ -171,8 +171,14 @@ function SectionBlock({ title, intro, items, sourceMap }) {
 export function SouthAfricaEducationHealthQuality({ dossier, sourceMap }) {
   const education = dossier.education_health?.education || dossier.education || {};
   const health = dossier.education_health?.health || dossier.health || {};
-  const educationItems = Array.isArray(education) ? education : (education.items || []);
-  const healthItems = Array.isArray(health) ? health : (health.items || []);
+  const educationItems = useMemo(
+    () => Array.isArray(education) ? education : (education.items || []),
+    [education],
+  );
+  const healthItems = useMemo(
+    () => Array.isArray(health) ? health : (health.items || []),
+    [health],
+  );
 
   return (
     <div className="space-y-10">

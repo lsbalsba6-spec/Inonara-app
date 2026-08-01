@@ -49,7 +49,10 @@ function normalizeSymbols(dossier) {
 }
 
 export function SouthAfricaSymbolsQuality({ dossier, sourceMap }) {
-  const items = normalizeSymbols(dossier);
+  const items = useMemo(
+    () => normalizeSymbols(dossier),
+    [dossier.national_symbols, dossier.symbols, dossier.symbol_items],
+  );
   const categories = useMemo(
     () => [...new Set(items.map(getCategory))],
     [items],
@@ -82,9 +85,7 @@ export function SouthAfricaSymbolsQuality({ dossier, sourceMap }) {
           Drapeau, armoiries, hymne et emblèmes
         </h2>
         <p className="mt-3 max-w-3xl leading-7 text-bone/65">
-          Les symboles nationaux sont replacés dans leur contexte historique et politique.
-          Leur signification officielle est distinguée des interprétations populaires ou
-          rétrospectives.
+          {dossier.national_symbols?.intro || "Les symboles nationaux sont replacés dans leur contexte historique et politique."}
         </p>
       </header>
 
@@ -210,7 +211,7 @@ export function SouthAfricaSymbolsQuality({ dossier, sourceMap }) {
                     )}
                   </div>
 
-                  <SourceLinks ids={item.sources} sourceMap={sourceMap} />
+                  <SourceLinks ids={item.sources || item.sourceIds} sourceMap={sourceMap} />
                 </div>
               )}
             </article>

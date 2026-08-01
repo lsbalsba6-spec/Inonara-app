@@ -50,7 +50,10 @@ function normalizeEconomy(dossier) {
 }
 
 export function SouthAfricaEconomyQuality({ dossier, sourceMap }) {
-  const items = normalizeEconomy(dossier);
+  const items = useMemo(
+    () => normalizeEconomy(dossier),
+    [dossier.economy, dossier.economy_topics],
+  );
   const categories = useMemo(
     () => [...new Set(items.map(getCategory))],
     [items],
@@ -73,11 +76,10 @@ export function SouthAfricaEconomyQuality({ dossier, sourceMap }) {
     });
   }, [items, query, category]);
 
-  const indicators =
-    dossier.economy?.currentIndicators ||
-    dossier.economy?.indicators ||
-    dossier.economic_indicators ||
-    [];
+  const indicators = useMemo(
+    () => dossier.economy?.currentIndicators || dossier.economy?.indicators || dossier.economic_indicators || [],
+    [dossier.economy, dossier.economic_indicators],
+  );
 
   return (
     <div className="space-y-8">
@@ -103,7 +105,7 @@ export function SouthAfricaEconomyQuality({ dossier, sourceMap }) {
                 className="rounded-2xl border border-bone/10 bg-bone/[0.025] p-5"
               >
                 <p className="text-[10px] uppercase tracking-[0.18em] text-bone/40">
-                  {indicator.year || indicator.period || "Date à préciser"}
+                  {indicator.year || indicator.period || indicator.asOf || "Date à préciser"}
                 </p>
                 <h3 className="mt-2 text-sm text-bone/65">
                   {indicator.label || indicator.name}
@@ -245,7 +247,7 @@ export function SouthAfricaEconomyQuality({ dossier, sourceMap }) {
                     )}
                   </div>
 
-                  <SourceLinks ids={item.sources} sourceMap={sourceMap} />
+                  <SourceLinks ids={item.sources || item.sourceIds} sourceMap={sourceMap} />
                 </div>
               )}
             </article>

@@ -35,7 +35,7 @@ const getType = (item) => item.type || item.category || "Formation politique";
 export function SouthAfricaPolities({ dossier, sourceMap }) {
   const polities = useMemo(
     () => dossier.polities || [],
-    [dossier],
+    [dossier.polities],
   );
   const types = useMemo(() => [...new Set(polities.map(getType))], [polities]);
   const [type, setType] = useState("all");
@@ -186,7 +186,7 @@ export function SouthAfricaPolities({ dossier, sourceMap }) {
                     )}
                   </div>
 
-                  <SourceLinks ids={item.sources} sourceMap={sourceMap} />
+                  <SourceLinks ids={item.sources || item.sourceIds} sourceMap={sourceMap} />
                 </div>
               )}
             </article>

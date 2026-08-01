@@ -38,7 +38,7 @@ function getField(item) {
 export function SouthAfricaFigures({ dossier, sourceMap }) {
   const figures = useMemo(
     () => dossier.figures || [],
-    [dossier],
+    [dossier.figures],
   );
   const fields = useMemo(
     () => [...new Set(figures.map(getField))],
@@ -184,7 +184,7 @@ export function SouthAfricaFigures({ dossier, sourceMap }) {
                     )}
                   </div>
 
-                  <SourceLinks ids={item.sources} sourceMap={sourceMap} />
+                  <SourceLinks ids={item.sources || item.sourceIds} sourceMap={sourceMap} />
                 </div>
               )}
             </article>

@@ -38,7 +38,7 @@ function heritageType(item) {
 export function SouthAfricaHeritage({ dossier, sourceMap }) {
   const items = useMemo(
     () => dossier.heritage || [],
-    [dossier],
+    [dossier.heritage],
   );
   const categories = useMemo(
     () => [...new Set(items.map(heritageType))],
@@ -188,13 +188,13 @@ export function SouthAfricaHeritage({ dossier, sourceMap }) {
                           Statut éditorial
                         </p>
                         <p className="mt-2 text-sm leading-6 text-bone/72">
-                          {item.status}
+                          {{ ready: "Établi", provisional: "À lire avec contexte", disputed: "Débat historique" }[item.status] || item.status}
                         </p>
                       </div>
                     )}
                   </div>
 
-                  <SourceLinks ids={item.sources} sourceMap={sourceMap} />
+                  <SourceLinks ids={item.sources || item.sourceIds} sourceMap={sourceMap} />
                 </div>
               )}
             </article>

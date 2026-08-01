@@ -30,7 +30,7 @@ function normalizeTopic(item) {
 export function SouthAfricaCulture({ dossier, sourceMap }) {
   const culture = useMemo(
     () => dossier.culture || [],
-    [dossier],
+    [dossier.culture],
   );
   const oral = dossier.oral_traditions_and_legends || [];
   const [query, setQuery] = useState("");
@@ -105,7 +105,7 @@ export function SouthAfricaCulture({ dossier, sourceMap }) {
                       {item.context}
                     </p>
                   )}
-                  <SourceLinks ids={item.sources} sourceMap={sourceMap} />
+                  <SourceLinks ids={item.sources || item.sourceIds} sourceMap={sourceMap} />
                 </div>
               )}
             </article>
@@ -140,7 +140,7 @@ export function SouthAfricaCulture({ dossier, sourceMap }) {
                     {item.note || item.text}
                   </p>
                 )}
-                <SourceLinks ids={item.sources} sourceMap={sourceMap} />
+                <SourceLinks ids={item.sources || item.sourceIds} sourceMap={sourceMap} />
               </article>
             ))}
           </div>

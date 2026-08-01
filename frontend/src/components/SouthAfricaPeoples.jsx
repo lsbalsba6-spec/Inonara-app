@@ -27,7 +27,7 @@ const languageList = (value) => Array.isArray(value) ? value : value ? [value] :
 export function SouthAfricaPeoples({ dossier, sourceMap }) {
   const peoples = useMemo(
     () => dossier.peoples || [],
-    [dossier],
+    [dossier.peoples],
   );
   const regions = useMemo(() => [...new Set(peoples.map(getRegion))], [peoples]);
   const [region, setRegion] = useState("all");
@@ -116,7 +116,7 @@ export function SouthAfricaPeoples({ dossier, sourceMap }) {
                       </div>
                     )}
                   </div>
-                  <SourceLinks ids={item.sources} sourceMap={sourceMap} />
+                  <SourceLinks ids={item.sources || item.sourceIds} sourceMap={sourceMap} />
                 </div>
               )}
             </article>
