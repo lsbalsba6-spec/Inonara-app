@@ -1,0 +1,15 @@
+CORRECTION PRE-1652 CORRIDORS V1
+
+cd ~/inonara-app
+unzip -o /sdcard/Download/inonara-fix-pre1652-corridors-v1.zip -d .
+python scripts/fix_south_africa_pre1652_corridors.py
+
+cd frontend
+CI=true npm run build
+
+Si le build réussit:
+
+cd ..
+git add frontend/src/components/SouthAfricaPre1652Routes.jsx scripts/fix_south_africa_pre1652_corridors.py INSTALL_FIX_PRE1652_CORRIDORS_V1.txt
+git commit -m "fix: stabiliser corridors pré-1652 Afrique du Sud"
+git push
