@@ -1,0 +1,7 @@
+CORRECTION FINALE LANGUES & RELIGIONS
+
+cd ~/inonara-app
+unzip -o /sdcard/Download/inonara-fix-langues-religions-final-v1.zip -d .
+python scripts/fix_south_africa_languages_religions_final.py
+cd frontend
+CI=true npm run build
