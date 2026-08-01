@@ -1,4 +1,7 @@
 import { SouthAfricaOverview } from "./SouthAfricaOverview";
+import SouthAfricaDeepHistory from "./SouthAfricaDeepHistory";
+import SouthAfricaPre1652Routes from "./SouthAfricaPre1652Routes";
+import { SouthAfricaCountryMap, SouthAfricaMigrationMap } from "./SouthAfricaVisuals";
 import { SouthAfricaInternationalQuality } from "./SouthAfricaInternationalQuality";
 import { SouthAfricaSymbolsQuality } from "./SouthAfricaSymbolsQuality";
 import { SouthAfricaEconomyQuality } from "./SouthAfricaEconomyQuality";
@@ -139,8 +142,8 @@ export default function CountryDossierView({ dossier }) {
       <section className="mt-8">
         {active === "overview" && <SouthAfricaOverview dossier={dossier} sourceMap={sourceMap} />}
         {active === "media" && <SouthAfricaMediaGallery items={dossier.media_gallery || []} />}
-        {active === "timeline" && <SouthAfricaHistory dossier={dossier} sourceMap={sourceMap} />}
-        {active === "provinces-cities" && <SouthAfricaProvincesCities dossier={dossier} sourceMap={sourceMap} />}
+        {active === "timeline" && (<div className="space-y-10"><SouthAfricaDeepHistory data={dossier.deep_history} sourceMap={sourceMap} /><SouthAfricaHistory dossier={dossier} sourceMap={sourceMap} /></div>)}
+        {active === "provinces-cities" && (<div className="space-y-10"><SouthAfricaCountryMap cities={dossier.map_visuals?.cities || []} /><SouthAfricaProvincesCities dossier={dossier} sourceMap={sourceMap} /></div>)}
         {active === "interactive-timeline" && <SouthAfricaInteractiveTimeline dossier={dossier} sourceMap={sourceMap} />}
         {active === "economy" && <SouthAfricaEconomyQuality dossier={dossier} sourceMap={sourceMap} />}
         {active === "society" && <SouthAfricaSocietyQuality dossier={dossier} sourceMap={sourceMap} />}
@@ -151,7 +154,7 @@ export default function CountryDossierView({ dossier }) {
         {active === "law-memory" && <SouthAfricaLawMemory dossier={dossier} sourceMap={sourceMap} />}
         {active === "peoples" && <SouthAfricaPeoples dossier={dossier} sourceMap={sourceMap} />}
         {active === "polities" && <SouthAfricaPolities dossier={dossier} sourceMap={sourceMap} />}
-        {active === "migrations" && <SouthAfricaMigrations dossier={dossier} sourceMap={sourceMap} />}
+        {active === "migrations" && (<div className="space-y-10"><SouthAfricaPre1652Routes data={dossier.pre1652_map} sourceMap={sourceMap} /><SouthAfricaMigrationMap routes={dossier.map_visuals?.migration_routes || []} note={dossier.map_visuals?.note} /><SouthAfricaMigrations dossier={dossier} sourceMap={sourceMap} /></div>)}
         {active === "heritage" && <SouthAfricaHeritage dossier={dossier} sourceMap={sourceMap} />}
         {active === "figures" && <SouthAfricaFigures dossier={dossier} sourceMap={sourceMap} />}
         {active === "culture" && <SouthAfricaCulture dossier={dossier} sourceMap={sourceMap} />}

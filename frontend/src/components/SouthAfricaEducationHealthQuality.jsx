@@ -169,10 +169,10 @@ function SectionBlock({ title, intro, items, sourceMap }) {
 }
 
 export function SouthAfricaEducationHealthQuality({ dossier, sourceMap }) {
-  const education = dossier.education_health?.education || dossier.education || [];
-  const health = dossier.education_health?.health || dossier.health || [];
-  const educationItems = Array.isArray(education) ? education : [];
-  const healthItems = Array.isArray(health) ? health : [];
+  const education = dossier.education_health?.education || dossier.education || {};
+  const health = dossier.education_health?.health || dossier.health || {};
+  const educationItems = Array.isArray(education) ? education : (education.items || []);
+  const healthItems = Array.isArray(health) ? health : (health.items || []);
 
   return (
     <div className="space-y-10">

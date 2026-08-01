@@ -41,10 +41,12 @@ function normalizeEconomy(dossier) {
     economy.topics,
     economy.sectors,
     economy.items,
+    economy.historicalTransformations,
+    economy.challenges,
     dossier.economy_topics,
   ];
 
-  return candidates.find(Array.isArray) || [];
+  return candidates.filter(Array.isArray).flat();
 }
 
 export function SouthAfricaEconomyQuality({ dossier, sourceMap }) {
@@ -72,6 +74,7 @@ export function SouthAfricaEconomyQuality({ dossier, sourceMap }) {
   }, [items, query, category]);
 
   const indicators =
+    dossier.economy?.currentIndicators ||
     dossier.economy?.indicators ||
     dossier.economic_indicators ||
     [];

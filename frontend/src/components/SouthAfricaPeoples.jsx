@@ -21,6 +21,8 @@ function SourceLinks({ ids = [], sourceMap }) {
 const getName = (item) => item.name || item.title || "Communauté";
 const getSummary = (item) => item.note || item.text || item.summary || item.description || "";
 const getRegion = (item) => item.region || item.location || item.area || "Répartition à préciser";
+const languageText = (value) => Array.isArray(value) ? value.join(" ") : String(value || "");
+const languageList = (value) => Array.isArray(value) ? value : value ? [value] : [];
 
 export function SouthAfricaPeoples({ dossier, sourceMap }) {
   const peoples = useMemo(
@@ -36,7 +38,7 @@ export function SouthAfricaPeoples({ dossier, sourceMap }) {
     const needle = query.trim().toLowerCase();
     return peoples.filter((item) => {
       const matchesRegion = region === "all" || getRegion(item) === region;
-      const haystack = `${getName(item)} ${getSummary(item)} ${getRegion(item)} ${(item.languages || []).join(" ")}`.toLowerCase();
+      const haystack = `${getName(item)} ${getSummary(item)} ${getRegion(item)} ${languageText(item.languages)}`.toLowerCase();
       return matchesRegion && (!needle || haystack.includes(needle));
     });
   }, [peoples, region, query]);
@@ -95,7 +97,7 @@ export function SouthAfricaPeoples({ dossier, sourceMap }) {
                       <div className="rounded-xl border border-bone/10 bg-black/10 p-4">
                         <p className="text-[10px] uppercase tracking-[0.18em] text-bone/40">Langues associées</p>
                         <div className="mt-3 flex flex-wrap gap-2">
-                          {item.languages.map((language) => (
+                          {languageList(item.languages).map((language) => (
                             <span key={language} className="rounded-full border border-bone/15 px-3 py-1 text-xs text-bone/70">{language}</span>
                           ))}
                         </div>

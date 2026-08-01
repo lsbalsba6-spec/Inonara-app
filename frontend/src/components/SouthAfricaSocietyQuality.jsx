@@ -29,7 +29,7 @@ const getCategory = (item) => item.category || item.type || item.domain || "Soci
 
 export function SouthAfricaSocietyQuality({ dossier, sourceMap }) {
   const items = useMemo(
-    () => dossier.society?.topics || dossier.society_topics || dossier.society || [],
+    () => dossier.society?.themes || dossier.society?.topics || dossier.society_topics || [],
     [dossier],
   );
   const normalizedItems = useMemo(

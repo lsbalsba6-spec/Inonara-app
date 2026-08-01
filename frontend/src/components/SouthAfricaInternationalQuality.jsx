@@ -45,6 +45,7 @@ function normalizeInternational(dossier) {
 
   const candidates = [
     international.items,
+    international.memberships,
     international.organizations,
     international.sections,
     international.topics,
