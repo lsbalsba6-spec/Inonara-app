@@ -126,7 +126,10 @@ export function SouthAfricaResearchGaps({ dossier }) {
 }
 
 export function SouthAfricaSources({ dossier }) {
-  const sources = dossier.sources || [];
+  const sources = useMemo(
+    () => dossier.sources ?? [],
+    [dossier.sources]
+  );
   const categories = useMemo(
     () => [...new Set(sources.map((source) => source.category).filter(Boolean))],
     [sources],
