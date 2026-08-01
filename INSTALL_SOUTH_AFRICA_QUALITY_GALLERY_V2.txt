@@ -1,0 +1,9 @@
+AFRIQUE DU SUD — QUALITÉ GALERIE V2
+
+1. Décompresser à la racine du dépôt.
+2. Vérifier:
+   python scripts/check_frontend_relative_imports.py
+3. Commit et push.
+
+Ce patch remplace uniquement le composant de galerie existant.
+Aucune donnée ni URL d'image n'est modifiée.
