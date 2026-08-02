@@ -1,7 +1,9 @@
 import { useEffect, useState, useMemo } from "react";
 import { fetchCulture } from "../lib/api";
 import { useI18n } from "../i18n";
+import { sortAlphabetically } from "../lib/contentSort";
 import { SmartImage } from "../components/SmartImage";
+import { sortAlphabetically } from "../lib/contentSort";
 
 const categories = ["all", "food", "music", "clothing", "language", "ritual", "proverbs", "spiritual"];
 
@@ -11,7 +13,7 @@ const Culture = () => {
   const [cat, setCat] = useState("all");
   useEffect(() => { fetchCulture().then(setItems).catch(() => {}); }, []);
 
-  const filtered = useMemo(() => (cat === "all" ? items : items.filter((i) => i.category === cat)).slice().sort((a, b) => a.title.localeCompare(b.title, "fr")), [items, cat]);
+  const filtered = useMemo(() => sortAlphabetically(cat === "all" ? items : items.filter((i) => i.category === cat), "title"), [items, cat]);
 
   return (
     <div className="pt-32 pb-24 max-w-[1600px] mx-auto px-6 md:px-10" data-testid="culture-page">

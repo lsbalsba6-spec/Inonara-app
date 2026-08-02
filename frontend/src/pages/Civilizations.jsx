@@ -2,7 +2,9 @@ import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { fetchCivilizations } from "../lib/api";
 import { useI18n } from "../i18n";
+import { sortChronologically } from "../lib/contentSort";
 import { SmartImage } from "../components/SmartImage";
+import { sortChronologically } from "../lib/contentSort";
 
 const fmt = (y) => (y < 0 ? `${Math.abs(y)} BCE` : `${y} CE`);
 
@@ -20,7 +22,7 @@ const Civilizations = () => {
       </p>
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mt-14">
-        {civs.slice().sort((a, b) => a.era_start - b.era_start || a.name.localeCompare(b.name, "fr")).map((c) => (
+        {sortChronologically(civs, "era_start", "name").map((c) => (
           <Link
             key={c.id}
             to={`/civilization/${c.id}`}

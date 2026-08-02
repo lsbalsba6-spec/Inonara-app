@@ -5,6 +5,7 @@ import { ArrowLeft } from "lucide-react";
 import axios from "axios";
 import { useTranslated } from "../lib/useTranslated";
 import { useI18n } from "../i18n";
+import { SmartImage } from "../components/SmartImage";
 
 const API = `${process.env.REACT_APP_BACKEND_URL}/api`;
 
@@ -38,6 +39,9 @@ const PlaceDetail = () => {
       </div>
 
       <div className="max-w-3xl mx-auto px-6 py-16 space-y-10">
+        {(p.image_url || p.wikipedia_title) && (
+          <SmartImage src={p.image_url} wikipediaTitle={p.wikipedia_title} alt={p.name} wrapperClassName="aspect-[16/9] rounded-2xl" className="h-full w-full object-cover" credit={p.image_credit} sourceUrl={p.image_source_url} />
+        )}
         <p className="text-bone/85 text-xl font-light leading-relaxed">{tBlurb || p.blurb}</p>
         {p.story && (
           <section className="border-t border-[#2A2421] pt-8">

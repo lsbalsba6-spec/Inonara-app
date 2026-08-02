@@ -40,6 +40,8 @@ from .country_dossiers import COUNTRY_DOSSIERS, country_dossier_index
 
 from .south_africa_visuals_v8 import SOUTH_AFRICA_VISUALS_V8
 
+from .country_dossiers.south_africa_editorial_expansion_v9 import SOUTH_AFRICA_EDITORIAL_EXPANSION_V9
+
 from .south_africa_ecosystem_complete import (
     SA_CIVILIZATIONS, SA_FIGURES, SA_FIGURE_CIVS, SA_FIGURE_WIKIPEDIA,
     SA_PEOPLE, SA_CULTURE, SA_STORIES, SA_PLACES, SA_JOURNEY_STOPS,
@@ -142,6 +144,47 @@ _apply_visual_metadata(PLACES, SOUTH_AFRICA_VISUALS_V8["places"])
 _apply_visual_metadata(STORIES, SOUTH_AFRICA_VISUALS_V8["stories"])
 _apply_visual_metadata(CULTURE_ITEMS, SOUTH_AFRICA_VISUALS_V8["culture"])
 _apply_visual_metadata(LINEAGE_JOURNEY.get("stops", []), SOUTH_AFRICA_VISUALS_V8["journey"])
+
+
+# South Africa global additions V9
+_existing_place_ids_v9 = {item.get("id") for item in PLACES}
+PLACES.extend(item for item in SOUTH_AFRICA_EDITORIAL_EXPANSION_V9["cities"] if item.get("id") not in _existing_place_ids_v9)
+
+_existing_figure_ids_v9 = {item.get("id") for item in FIGURES}
+FIGURES.extend(
+    {
+        "id": item["id"],
+        "name": item["name"],
+        "category": "scientists" if "Chimie" in item["field"] else "athletes" if "Sport" in item["field"] else "artists",
+        "era": "Afrique du Sud contemporaine",
+        "region": "South Africa",
+        "summary": item["reason"],
+        "story": " ".join(item.get("paragraphs", [])),
+        "legacy": item.get("legacy", ""),
+        "sources": item.get("sources", []),
+        "wikipedia_title": item.get("wikipedia_title"),
+        "image_source_url": item.get("image_source_url"),
+        "image_credit": item.get("image_credit"),
+    }
+    for item in SOUTH_AFRICA_EDITORIAL_EXPANSION_V9["figures"]
+    if item.get("id") not in _existing_figure_ids_v9
+)
+
+_existing_culture_ids_v9 = {item.get("id") for item in CULTURE_ITEMS}
+CULTURE_ITEMS.extend(
+    {
+        "id": item["id"],
+        "category": "food" if "Cuisine" in item["topic"] else "music" if "Danse" in item["topic"] else "clothing" if "Mode" in item["topic"] else "ritual",
+        "region": "Southern Africa",
+        "title": item["topic"],
+        "blurb": item["text"],
+        "wikipedia_title": item.get("wikipedia_title"),
+        "image_source_url": item.get("image_source_url"),
+        "image_credit": item.get("image_credit"),
+    }
+    for item in SOUTH_AFRICA_EDITORIAL_EXPANSION_V9["culture"]
+    if item.get("id") not in _existing_culture_ids_v9
+)
 
 # Backfill missing sources arrays on older PLACES entries
 for _p in PLACES:

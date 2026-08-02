@@ -3,6 +3,7 @@ from ..south_africa_visuals_v8 import SOUTH_AFRICA_VISUALS_V8
 from .south_africa_timeline_economy import SOUTH_AFRICA_TIMELINE_ECONOMY
 from .south_africa_society_state import SOUTH_AFRICA_SOCIETY_STATE
 from .south_africa_deep_history import DEEP_HISTORY, DEEP_HISTORY_SOURCES
+from .south_africa_editorial_expansion_v9 import SOUTH_AFRICA_EDITORIAL_EXPANSION_V9
 from .south_africa_editorial_expansion_v7 import SOUTH_AFRICA_EDITORIAL_EXPANSION_V7
 from .south_africa_editorial_expansion_v5 import SOUTH_AFRICA_EDITORIAL_EXPANSION_V5
 from .south_africa_editorial_expansion_v4 import SOUTH_AFRICA_EDITORIAL_EXPANSION_V4
@@ -107,6 +108,22 @@ SOUTH_AFRICA_DOSSIER["media_gallery"].extend(
     item for item in SOUTH_AFRICA_VISUALS_V8["gallery"]
     if item.get("id") not in _existing_gallery_ids
 )
+
+
+# Editorial and visual expansion V9
+_v9 = SOUTH_AFRICA_EDITORIAL_EXPANSION_V9
+
+def _merge_v9(target, incoming):
+    existing = {item.get("id") or item.get("title") or item.get("name") or item.get("topic") for item in target}
+    target.extend(
+        item for item in incoming
+        if (item.get("id") or item.get("title") or item.get("name") or item.get("topic")) not in existing
+    )
+
+_merge_v9(SOUTH_AFRICA_DOSSIER.setdefault("figures", []), _v9["figures"])
+_merge_v9(SOUTH_AFRICA_DOSSIER.setdefault("culture", []), _v9["culture"])
+_merge_v9(SOUTH_AFRICA_DOSSIER.setdefault("media_gallery", []), _v9["gallery"])
+_merge_v9(SOUTH_AFRICA_DOSSIER.setdefault("sources", []), _v9["additionalSources"])
 
 COUNTRY_DOSSIERS = {
     SOUTH_AFRICA_DOSSIER["iso2"]: SOUTH_AFRICA_DOSSIER,

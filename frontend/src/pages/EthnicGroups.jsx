@@ -3,6 +3,7 @@ import { Link, useParams } from "react-router-dom";
 import { ArrowLeft } from "lucide-react";
 import { fetchEthnicGroups, fetchEthnicGroup } from "../lib/api";
 import { useI18n } from "../i18n";
+import { sortAlphabetically } from "../lib/contentSort";
 import { SmartImage } from "../components/SmartImage";
 
 export const EthnicGroupsList = () => {
@@ -17,7 +18,7 @@ export const EthnicGroupsList = () => {
         {t("page.ethnic.lead")}
       </p>
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mt-14">
-        {[...groups].sort((a, b) => a.name.localeCompare(b.name)).map((g) => (
+        {sortAlphabetically(groups, "name").map((g) => (
           <Link key={g.id} to={`/people/${g.id}`} className="museum-card relative group overflow-hidden aspect-[4/5]" data-testid={`ethnic-card-${g.id}`}>
             <SmartImage src={g.image_url} wikipediaTitle={g.wikipedia_title} alt={g.name} wrapperClassName="absolute inset-0" className="h-full w-full object-cover opacity-55 transition-all duration-1000 group-hover:scale-105 group-hover:opacity-75" credit={g.image_credit} sourceUrl={g.image_source_url} />
             <div className="absolute inset-0 bg-gradient-to-t from-ebony via-ebony/70 to-ebony/10" />

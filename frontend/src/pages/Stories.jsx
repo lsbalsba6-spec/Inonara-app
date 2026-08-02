@@ -3,7 +3,9 @@ import { Link, useParams } from "react-router-dom";
 import { fetchStories, fetchStory } from "../lib/api";
 import { ArrowLeft, BookOpen, Volume2 } from "lucide-react";
 import { useI18n } from "../i18n";
+import { sortChronologically } from "../lib/contentSort";
 import { SmartImage } from "../components/SmartImage";
+import { sortChronologically } from "../lib/contentSort";
 
 export const StoriesList = () => {
   const { t } = useI18n();
@@ -20,7 +22,7 @@ export const StoriesList = () => {
       </div>
 
       <div className="grid md:grid-cols-2 gap-6 mt-14">
-        {stories.slice().sort((a, b) => { const year = (v) => Number((v.era || "").match(/-?\d+/)?.[0] || 999999); return year(a) - year(b) || a.title.localeCompare(b.title, "fr"); }).map((s) => (
+        {sortChronologically(stories, "era", "title").map((s) => (
           <Link
             key={s.id}
             to={`/story/${s.id}`}

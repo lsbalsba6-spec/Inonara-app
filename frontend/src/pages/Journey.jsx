@@ -4,7 +4,9 @@ import { motion } from "framer-motion";
 import { ArrowRight } from "lucide-react";
 import { fetchJourney } from "../lib/api";
 import { useI18n } from "../i18n";
+import { sortChronologically } from "../lib/contentSort";
 import { SmartImage } from "../components/SmartImage";
+import { sortChronologically } from "../lib/contentSort";
 
 const Journey = () => {
   const { t } = useI18n();
@@ -22,7 +24,7 @@ const Journey = () => {
       </section>
 
       <div className="max-w-[1400px] mx-auto px-6 md:px-10 pb-24">
-        {j.stops.slice().sort((a, b) => (a.year ?? 999999) - (b.year ?? 999999)).map((s, i) => (
+        {sortChronologically(j.stops, "year", "heading").map((s, i) => (
           <motion.section
             key={s.id}
             initial={{ opacity: 0, y: 40 }}

@@ -5,6 +5,7 @@ import { fetchCivilization, fetchCivilizationFigures } from "../lib/api";
 import { useTranslated } from "../lib/useTranslated";
 import { useI18n } from "../i18n";
 import { ArrowLeft } from "lucide-react";
+import { SmartImage } from "../components/SmartImage";
 
 const fmt = (y) => (y < 0 ? `${Math.abs(y)} BCE` : `${y} CE`);
 
@@ -32,7 +33,7 @@ const CivilizationDetail = () => {
   return (
     <div data-testid="civilization-detail">
       <div className="relative h-[70vh] min-h-[480px] overflow-hidden">
-        <img src={c.image_url} alt={c.name} className="absolute inset-0 w-full h-full object-cover animate-slow-zoom" />
+        <SmartImage src={c.image_url} wikipediaTitle={c.wikipedia_title} alt={c.name} wrapperClassName="absolute inset-0" className="h-full w-full object-cover animate-slow-zoom" credit={c.image_credit} sourceUrl={c.image_source_url} />
         <div className="absolute inset-0 bg-gradient-to-t from-ebony via-ebony/60 to-ebony/30" />
         <div className="relative max-w-[1600px] mx-auto px-6 md:px-10 h-full flex flex-col justify-end pb-16">
           <Link to="/civilizations" className="text-bone/60 hover:text-gold text-xs uppercase tracking-[0.2em] flex items-center gap-2 mb-6" data-testid="back-to-civilizations">
