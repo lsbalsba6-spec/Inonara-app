@@ -3,6 +3,7 @@ from ..south_africa_visuals_v8 import SOUTH_AFRICA_VISUALS_V8
 from .south_africa_timeline_economy import SOUTH_AFRICA_TIMELINE_ECONOMY
 from .south_africa_society_state import SOUTH_AFRICA_SOCIETY_STATE
 from .south_africa_deep_history import DEEP_HISTORY, DEEP_HISTORY_SOURCES
+from .south_africa_expansion_v13 import SOUTH_AFRICA_EXPANSION_V13
 from .south_africa_expansion_v10 import SOUTH_AFRICA_EXPANSION_V10
 from .south_africa_editorial_expansion_v9 import SOUTH_AFRICA_EDITORIAL_EXPANSION_V9
 from .south_africa_editorial_expansion_v7 import SOUTH_AFRICA_EDITORIAL_EXPANSION_V7
@@ -138,6 +139,23 @@ _merge_v10(SOUTH_AFRICA_DOSSIER.setdefault("figures", []), _v10["figures"])
 _merge_v10(SOUTH_AFRICA_DOSSIER.setdefault("heritage", []), _v10["heritage"])
 _merge_v10(SOUTH_AFRICA_DOSSIER.setdefault("media_gallery", []), _v10["gallery"])
 _merge_v10(SOUTH_AFRICA_DOSSIER.setdefault("sources", []), _v10["additionalSources"])
+
+
+# South Africa expansion V13
+_v13 = SOUTH_AFRICA_EXPANSION_V13
+
+def _merge_v13(target, incoming):
+    existing = {item.get("id") or item.get("title") or item.get("name") for item in target}
+    target.extend(
+        item for item in incoming
+        if (item.get("id") or item.get("title") or item.get("name")) not in existing
+    )
+
+_merge_v13(SOUTH_AFRICA_DOSSIER.setdefault("figures", []), _v13["figures"])
+_merge_v13(SOUTH_AFRICA_DOSSIER.setdefault("heritage", []), _v13["heritage"])
+_merge_v13(SOUTH_AFRICA_DOSSIER.setdefault("society", {}).setdefault("themes", []), _v13["society"])
+_merge_v13(SOUTH_AFRICA_DOSSIER.setdefault("media_gallery", []), _v13["gallery"])
+_merge_v13(SOUTH_AFRICA_DOSSIER.setdefault("sources", []), _v13["additionalSources"])
 
 COUNTRY_DOSSIERS = {
     SOUTH_AFRICA_DOSSIER["iso2"]: SOUTH_AFRICA_DOSSIER,

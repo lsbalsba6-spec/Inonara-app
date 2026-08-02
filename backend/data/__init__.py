@@ -44,6 +44,8 @@ from .country_dossiers.south_africa_editorial_expansion_v9 import SOUTH_AFRICA_E
 
 from .country_dossiers.south_africa_expansion_v10 import SOUTH_AFRICA_EXPANSION_V10
 
+from .country_dossiers.south_africa_expansion_v13 import SOUTH_AFRICA_EXPANSION_V13
+
 from .south_africa_ecosystem_complete import (
     SA_CIVILIZATIONS, SA_FIGURES, SA_FIGURE_CIVS, SA_FIGURE_WIKIPEDIA,
     SA_PEOPLE, SA_CULTURE, SA_STORIES, SA_PLACES, SA_JOURNEY_STOPS,
@@ -217,6 +219,40 @@ _existing_timeline_v10 = {item.get("id") for item in SA_TIMELINE_EVENTS}
 SA_TIMELINE_EVENTS.extend(
     item for item in SOUTH_AFRICA_EXPANSION_V10["timeline"]
     if item.get("id") not in _existing_timeline_v10
+)
+
+
+# South Africa global additions V13
+_existing_places_v13 = {item.get("id") for item in PLACES}
+PLACES.extend(
+    item for item in SOUTH_AFRICA_EXPANSION_V13["places"]
+    if item.get("id") not in _existing_places_v13
+)
+
+_existing_figures_v13 = {item.get("id") for item in FIGURES}
+FIGURES.extend(
+    {
+        "id": item["id"],
+        "name": item["name"],
+        "category": "artists" if "Poésie" in item["field"] else "intellectuals" if "Médecine" in item["field"] else "leaders",
+        "era": "XXe–XXIe siècles",
+        "region": "South Africa",
+        "summary": item["reason"],
+        "story": " ".join(item.get("paragraphs", [])),
+        "legacy": item.get("legacy", ""),
+        "sources": item.get("sources", []),
+        "wikipedia_title": item.get("wikipedia_title"),
+        "image_source_url": item.get("image_source_url"),
+        "image_credit": item.get("image_credit"),
+    }
+    for item in SOUTH_AFRICA_EXPANSION_V13["figures"]
+    if item.get("id") not in _existing_figures_v13
+)
+
+_existing_timeline_v13 = {item.get("id") for item in SA_TIMELINE_EVENTS}
+SA_TIMELINE_EVENTS.extend(
+    item for item in SOUTH_AFRICA_EXPANSION_V13["timeline"]
+    if item.get("id") not in _existing_timeline_v13
 )
 
 # Backfill missing sources arrays on older PLACES entries

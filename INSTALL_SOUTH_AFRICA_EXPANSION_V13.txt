@@ -1,0 +1,33 @@
+AFRIQUE DU SUD — ÉDITORIAL, UNESCO ET ÉCOSYSTÈME V13
+
+Ce pack ne touche à aucun import React. Il s’appuie sur la base maintenant verte.
+
+AJOUTS
+- 4 biographies longues;
+- 3 fiches UNESCO développées;
+- 2 articles Société;
+- 4 événements Timeline;
+- 4 lieux Atlas;
+- 4 images de galerie;
+- propagation dans Figures, Timeline et Atlas.
+
+TERMUX
+
+cd ~/inonara-app
+
+unzip -o /sdcard/Download/inonara-afrique-du-sud-editorial-unesco-ecosysteme-v13.zip -d .
+
+python scripts/apply_south_africa_expansion_v13.py
+
+python -m py_compile   backend/data/country_dossiers/south_africa_expansion_v13.py   backend/data/country_dossiers/__init__.py   backend/data/__init__.py
+
+cd frontend
+CI=true npm run build
+
+cd ..
+
+git add   backend/data   scripts/apply_south_africa_expansion_v13.py   INSTALL_SOUTH_AFRICA_EXPANSION_V13.txt
+
+git commit -m "feat: enrichir éditorial UNESCO et écosystème Afrique du Sud V13"
+
+git push
