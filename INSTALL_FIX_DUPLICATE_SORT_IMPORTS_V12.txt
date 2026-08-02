@@ -1,0 +1,23 @@
+INONARA — FIX DUPLICATE SORT IMPORTS V12
+
+Corrige les erreurs:
+- sortChronologically has already been declared
+- sortAlphabetically has already been declared
+
+TERMUX
+
+cd ~/inonara-app
+unzip -o /sdcard/Download/inonara-fix-duplicate-sort-imports-v12.zip -d .
+
+cd frontend
+CI=true npm run build
+
+Si `craco: not found`, installe d'abord les dépendances:
+npm install
+CI=true npm run build
+
+Si le build est vert:
+cd ~/inonara-app
+git add frontend/src/pages/Civilizations.jsx frontend/src/pages/Culture.jsx frontend/src/pages/Journey.jsx frontend/src/pages/Stories.jsx
+git commit -m "fix: supprimer les imports de tri dupliqués"
+git push
