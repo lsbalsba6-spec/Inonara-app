@@ -6,7 +6,6 @@ import { fetchJourney } from "../lib/api";
 import { useI18n } from "../i18n";
 import { sortChronologically } from "../lib/contentSort";
 import { SmartImage } from "../components/SmartImage";
-import { sortChronologically } from "../lib/contentSort";
 
 const Journey = () => {
   const { t } = useI18n();

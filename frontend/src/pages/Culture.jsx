@@ -3,7 +3,6 @@ import { fetchCulture } from "../lib/api";
 import { useI18n } from "../i18n";
 import { sortAlphabetically } from "../lib/contentSort";
 import { SmartImage } from "../components/SmartImage";
-import { sortAlphabetically } from "../lib/contentSort";
 
 const categories = ["all", "food", "music", "clothing", "language", "ritual", "proverbs", "spiritual"];
 

@@ -4,7 +4,6 @@ import { fetchCivilizations } from "../lib/api";
 import { useI18n } from "../i18n";
 import { sortChronologically } from "../lib/contentSort";
 import { SmartImage } from "../components/SmartImage";
-import { sortChronologically } from "../lib/contentSort";
 
 const fmt = (y) => (y < 0 ? `${Math.abs(y)} BCE` : `${y} CE`);
 

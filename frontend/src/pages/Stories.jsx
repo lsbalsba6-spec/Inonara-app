@@ -5,7 +5,6 @@ import { ArrowLeft, BookOpen, Volume2 } from "lucide-react";
 import { useI18n } from "../i18n";
 import { sortChronologically } from "../lib/contentSort";
 import { SmartImage } from "../components/SmartImage";
-import { sortChronologically } from "../lib/contentSort";
 
 export const StoriesList = () => {
   const { t } = useI18n();
