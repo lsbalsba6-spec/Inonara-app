@@ -201,14 +201,14 @@ export function SouthAfricaEducationHealthQuality({ dossier, sourceMap }) {
 
       <SectionBlock
         title="Éducation"
-        intro="Organisation scolaire, enseignement supérieur, accès, langues d’enseignement et inégalités."
+        intro={education.intro || "Organisation scolaire, enseignement supérieur, accès, langues d’enseignement et inégalités."}
         items={educationItems}
         sourceMap={sourceMap}
       />
 
       <SectionBlock
         title="Santé"
-        intro="Organisation du système sanitaire, accès aux soins, politiques publiques et principaux défis."
+        intro={health.intro || "Organisation du système sanitaire, accès aux soins, politiques publiques et principaux défis."}
         items={healthItems}
         sourceMap={sourceMap}
       />

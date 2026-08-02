@@ -24,10 +24,17 @@ function SourceLinks({ ids = [], sourceMap }) {
 }
 
 const getTitle = (item) =>
-  item.title || item.name || item.sector || item.topic || "Thème économique";
+  typeof item === "string"
+    ? item
+    : item.title || item.name || item.label || item.sector || item.topic || "Thème économique";
 
-const getBody = (item) =>
-  item.text || item.note || item.summary || item.description || "";
+const getBody = (item) => {
+  if (typeof item === "string") return item;
+  const indicator = item.value
+    ? `${item.value}${item.asOf ? ` · donnée ${item.asOf}` : ""}`
+    : "";
+  return item.text || item.note || item.summary || item.description || indicator;
+};
 
 const getCategory = (item) =>
   item.category || item.type || item.domain || "Économie";
@@ -46,7 +53,14 @@ function normalizeEconomy(dossier) {
     dossier.economy_topics,
   ];
 
-  return candidates.filter(Array.isArray).flat();
+  return candidates
+    .filter(Array.isArray)
+    .flat()
+    .map((item, index) =>
+      typeof item === "string"
+        ? { id: `economy-challenge-${index}`, title: "Défi économique", text: item, category: "Défis" }
+        : item,
+    );
 }
 
 export function SouthAfricaEconomyQuality({ dossier, sourceMap }) {
