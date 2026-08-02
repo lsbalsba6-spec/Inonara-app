@@ -34,6 +34,7 @@ from data import (
     PLATE_TECTONICS_EPOCHS,
     COUNTRY_DOSSIERS,
     country_dossier_index,
+    SA_TIMELINE_EVENTS,
 )
 from db_seed import mirror_content_to_mongo
 
@@ -393,6 +394,7 @@ async def figures_timeline():
             "era": f["era"], "region": f["region"], "year": y,
             "summary": f["summary"], "image_url": f["image_url"],
         })
+    out.extend(SA_TIMELINE_EVENTS)
     out.sort(key=lambda x: x["year"])
     return out
 

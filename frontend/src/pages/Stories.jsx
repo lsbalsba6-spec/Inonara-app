@@ -19,15 +19,7 @@ export const StoriesList = () => {
       </div>
 
       <div className="grid md:grid-cols-2 gap-6 mt-14">
-        {[...stories].sort((a, b) => {
-          const year = (value) => {
-            const match = String(value || "").match(/-?\d[\d,]*/);
-            if (!match) return Number.MAX_SAFE_INTEGER;
-            const number = Number(match[0].replace(/,/g, ""));
-            return /BCE/i.test(value) ? -Math.abs(number) : number;
-          };
-          return year(a.era) - year(b.era) || a.title.localeCompare(b.title);
-        }).map((s) => (
+        {stories.slice().sort((a, b) => { const year = (v) => Number((v.era || "").match(/-?\d+/)?.[0] || 999999); return year(a) - year(b) || a.title.localeCompare(b.title, "fr"); }).map((s) => (
           <Link
             key={s.id}
             to={`/story/${s.id}`}

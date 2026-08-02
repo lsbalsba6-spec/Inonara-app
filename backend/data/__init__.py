@@ -38,10 +38,12 @@ from .africa_origins import AFRICA_ORIGIN_COUNTRIES
 from .world_diaspora import WORLD_DIASPORA_COMMUNITIES
 from .country_dossiers import COUNTRY_DOSSIERS, country_dossier_index
 
-from .south_africa_ecosystem import (
-    SA_CIVILIZATIONS, SA_FIGURES, SA_ETHNIC_GROUPS, SA_CULTURE,
-    SA_STORIES, SA_JOURNEY_STOPS,
+from .south_africa_ecosystem_complete import (
+    SA_CIVILIZATIONS, SA_FIGURES, SA_FIGURE_CIVS, SA_FIGURE_WIKIPEDIA,
+    SA_PEOPLE, SA_CULTURE, SA_STORIES, SA_PLACES, SA_JOURNEY_STOPS,
+    SA_TIMELINE_EVENTS,
 )
+
 from .diaspora_schema import (
     PERIOD_TAGS,
     STATUS_VALUES,
@@ -109,34 +111,19 @@ except ImportError:  # pragma: no cover — v7 is optional
 
 
 # ---- Build the consolidated, immutable-ish content arrays ----
-CIVILIZATIONS = _CIVS_BASE + EXTRA_CIVILIZATIONS + EXTRA_CIVILIZATIONS_V3 + EXTRA_CIVILIZATIONS_V7 + [
-    item for item in SA_CIVILIZATIONS
-    if item["id"] not in {entry["id"] for entry in (_CIVS_BASE + EXTRA_CIVILIZATIONS + EXTRA_CIVILIZATIONS_V3 + EXTRA_CIVILIZATIONS_V7)}
-]
+CIVILIZATIONS = _CIVS_BASE + EXTRA_CIVILIZATIONS + EXTRA_CIVILIZATIONS_V3 + EXTRA_CIVILIZATIONS_V7 + SA_CIVILIZATIONS
 DIASPORA_COMMUNITIES = _DIASPORA_BASE + EXTRA_DIASPORA + EXTRA_DIASPORA_V3 + EXTRA_DIASPORA_V7 + WORLD_DIASPORA_COMMUNITIES
-PLACES = _PLACES_BASE + EXTRA_PLACES + EXTRA_PLACES_V4 + EXTRA_PLACES_V7
-CULTURE_ITEMS = _CULTURE_BASE + EXTRA_CULTURE_ITEMS + EXTRA_CULTURE_V7 + [
-    item for item in SA_CULTURE
-    if item["id"] not in {entry["id"] for entry in (_CULTURE_BASE + EXTRA_CULTURE_ITEMS + EXTRA_CULTURE_V7)}
-]
-FIGURES = _FIGURES_BASE + EXTRA_FIGURES_V4 + EXTRA_FIGURES_V5 + EXTRA_FIGURES_V7 + [
-    item for item in SA_FIGURES
-    if item["id"] not in {entry["id"] for entry in (_FIGURES_BASE + EXTRA_FIGURES_V4 + EXTRA_FIGURES_V5 + EXTRA_FIGURES_V7)}
-]
-STORIES = STORIES + EXTRA_STORIES_V4 + EXTRA_STORIES_V6 + EXTRA_STORIES_V7 + [
-    item for item in SA_STORIES
-    if item["id"] not in {entry["id"] for entry in (STORIES + EXTRA_STORIES_V4 + EXTRA_STORIES_V6 + EXTRA_STORIES_V7)}
-]  # noqa: F811
-ETHNIC_GROUPS = ETHNIC_GROUPS + EXTRA_ETHNIC_GROUPS_V7 + [
-    item for item in SA_ETHNIC_GROUPS
-    if item["id"] not in {entry["id"] for entry in (ETHNIC_GROUPS + EXTRA_ETHNIC_GROUPS_V7)}
-]  # noqa: F811
+PLACES = _PLACES_BASE + EXTRA_PLACES + EXTRA_PLACES_V4 + EXTRA_PLACES_V7 + SA_PLACES
+CULTURE_ITEMS = _CULTURE_BASE + EXTRA_CULTURE_ITEMS + EXTRA_CULTURE_V7 + SA_CULTURE
+FIGURES = _FIGURES_BASE + EXTRA_FIGURES_V4 + EXTRA_FIGURES_V5 + EXTRA_FIGURES_V7 + SA_FIGURES
+STORIES = STORIES + EXTRA_STORIES_V4 + EXTRA_STORIES_V6 + EXTRA_STORIES_V7 + SA_STORIES  # noqa: F811
+ETHNIC_GROUPS = ETHNIC_GROUPS + EXTRA_ETHNIC_GROUPS_V7 + SA_PEOPLE  # noqa: F811
 
-# Enrich the global Journey with South African trajectories.
-_existing_journey_ids = {item["id"] for item in LINEAGE_JOURNEY.get("stops", [])}
-LINEAGE_JOURNEY.setdefault("stops", []).extend(
-    item for item in SA_JOURNEY_STOPS if item["id"] not in _existing_journey_ids
-)
+# Publish South African trajectory stops in chronological order.
+LINEAGE_JOURNEY = {**LINEAGE_JOURNEY, "stops": sorted(
+    LINEAGE_JOURNEY.get("stops", []) + SA_JOURNEY_STOPS,
+    key=lambda stop: stop.get("year", -10**12),
+)}
 
 # Backfill missing sources arrays on older PLACES entries
 for _p in PLACES:
@@ -144,8 +131,8 @@ for _p in PLACES:
         _p["sources"] = PLACE_SOURCES_BACKFILL[_p["id"]]
 
 # Merge figure → civilization + wikipedia maps
-FIGURE_CIVS = {**FIGURE_CIVS, **EXTRA_FIGURE_CIVS_V4, **EXTRA_FIGURE_CIVS_V5, **EXTRA_FIGURE_CIVS_V7}
-FIGURE_WIKIPEDIA = {**FIGURE_WIKIPEDIA, **EXTRA_FIGURE_WIKI_V4, **EXTRA_FIGURE_WIKI_V5, **EXTRA_FIGURE_WIKI_V7}
+FIGURE_CIVS = {**FIGURE_CIVS, **EXTRA_FIGURE_CIVS_V4, **EXTRA_FIGURE_CIVS_V5, **EXTRA_FIGURE_CIVS_V7, **SA_FIGURE_CIVS}
+FIGURE_WIKIPEDIA = {**FIGURE_WIKIPEDIA, **EXTRA_FIGURE_WIKI_V4, **EXTRA_FIGURE_WIKI_V5, **EXTRA_FIGURE_WIKI_V7, **SA_FIGURE_WIKIPEDIA}
 
 
 __all__ = [
@@ -173,4 +160,5 @@ __all__ = [
     "validate_diaspora_entry",
     "LEGACY_COUNTRY_ALIASES",
     "COUNTRY_DOSSIERS",
+    "SA_TIMELINE_EVENTS",
 ]

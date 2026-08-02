@@ -1,0 +1,19 @@
+AFRIQUE DU SUD — CLÔTURE ÉCOSYSTÈME V2
+
+Ce paquet enrichit réellement Atlas, Journey, Civilizations, Figures, Timeline, People, Culture et Stories.
+Il ne crée pas de diaspora artificielle.
+
+TERMUX
+
+cd ~/inonara-app
+unzip -o /sdcard/Download/inonara-afrique-du-sud-cloture-ecosysteme-v2.zip -d .
+
+cd frontend
+CI=true npm run build
+
+cd ..
+python -m pytest backend/tests/test_south_africa_ecosystem_complete.py -q
+
+git add backend/data backend/server.py backend/tests frontend/src/pages INSTALL_SOUTH_AFRICA_ECOSYSTEM_CLOSURE_V2.txt SOUTH_AFRICA_ECOSYSTEM_CLOSURE_V2.md
+git commit -m "feat: clôturer l'écosystème Afrique du Sud"
+git push

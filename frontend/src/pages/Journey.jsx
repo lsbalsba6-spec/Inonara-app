@@ -21,15 +21,7 @@ const Journey = () => {
       </section>
 
       <div className="max-w-[1400px] mx-auto px-6 md:px-10 pb-24">
-        {[...j.stops].sort((a, b) => {
-          const year = (value) => {
-            const match = String(value || "").match(/-?\d[\d,]*/);
-            if (!match) return Number.MAX_SAFE_INTEGER;
-            const number = Number(match[0].replace(/,/g, ""));
-            return /BCE/i.test(value) ? -Math.abs(number) : number;
-          };
-          return year(a.era) - year(b.era);
-        }).map((s, i) => (
+        {j.stops.slice().sort((a, b) => (a.year ?? 999999) - (b.year ?? 999999)).map((s, i) => (
           <motion.section
             key={s.id}
             initial={{ opacity: 0, y: 40 }}

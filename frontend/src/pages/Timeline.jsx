@@ -15,6 +15,7 @@ const CATEGORY_COLOR = {
   intellectuals: "#B58FB5",
   artists: "#E0935A",
   athletes: "#9B5DE5",
+  events: "#D4AF37",
 };
 
 const fmtYear = (y) => (y < 0 ? `${Math.abs(y)} BCE` : `${y} CE`);
@@ -45,7 +46,7 @@ const Timeline = () => {
   const totalWidth = totalSpan * PX_PER_YEAR + 200;
 
   // Vertical lanes per category for readability
-  const LANES = ["queens", "kings", "military", "scientists", "inventors", "civil_rights", "intellectuals", "artists", "athletes"];
+  const LANES = ["events", "queens", "kings", "military", "scientists", "inventors", "civil_rights", "intellectuals", "artists", "athletes"];
   const LANE_HEIGHT = 60;
   const TOP_PAD = 80;
 
@@ -113,7 +114,7 @@ const Timeline = () => {
             return (
               <Link
                 key={f.id}
-                to={`/figure/${f.id}`}
+                to={f.link || `/figure/${f.id}`}
                 onMouseEnter={() => setHovered(f)}
                 onMouseLeave={() => setHovered((h) => (h?.id === f.id ? null : h))}
                 className="absolute group"
@@ -148,7 +149,7 @@ const Timeline = () => {
         </div>
       </div>
 
-      <p className="text-bone/40 text-xs mt-4">Hover a dot for a preview · Click to open the figure</p>
+      <p className="text-bone/40 text-xs mt-4">Survolez un point pour un aperçu · Cliquez pour ouvrir la fiche ou le récit</p>
     </div>
   );
 };
