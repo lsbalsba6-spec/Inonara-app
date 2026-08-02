@@ -2,6 +2,7 @@ from .south_africa import SOUTH_AFRICA_DOSSIER
 from .south_africa_timeline_economy import SOUTH_AFRICA_TIMELINE_ECONOMY
 from .south_africa_society_state import SOUTH_AFRICA_SOCIETY_STATE
 from .south_africa_deep_history import DEEP_HISTORY, DEEP_HISTORY_SOURCES
+from .south_africa_editorial_expansion import apply_editorial_expansion
 
 SOUTH_AFRICA_DOSSIER["interactive_timeline"] = SOUTH_AFRICA_TIMELINE_ECONOMY["interactive_timeline"]
 SOUTH_AFRICA_DOSSIER["economy"] = SOUTH_AFRICA_TIMELINE_ECONOMY["economy"]
@@ -27,6 +28,8 @@ _existing_source_ids = {item["id"] for item in SOUTH_AFRICA_DOSSIER.get("sources
 SOUTH_AFRICA_DOSSIER.setdefault("sources", []).extend(
     item for item in DEEP_HISTORY_SOURCES if item["id"] not in _existing_source_ids
 )
+
+apply_editorial_expansion(SOUTH_AFRICA_DOSSIER)
 
 COUNTRY_DOSSIERS = {
     SOUTH_AFRICA_DOSSIER["iso2"]: SOUTH_AFRICA_DOSSIER,

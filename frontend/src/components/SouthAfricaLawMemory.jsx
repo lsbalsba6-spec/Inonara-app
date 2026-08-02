@@ -34,6 +34,9 @@ function TopicCards({ items = [], sourceMap }) {
             <StatusBadge status={item.status} />
           </div>
           <p className="mt-2 text-sm leading-relaxed text-bone/70">{item.text}</p>
+          {item.paragraphs?.map((paragraph, paragraphIndex) => (
+            <p key={paragraphIndex} className="mt-3 text-sm leading-7 text-bone/72">{paragraph}</p>
+          ))}
           <SourceLinks ids={item.sourceIds} sourceMap={sourceMap} />
         </article>
       ))}

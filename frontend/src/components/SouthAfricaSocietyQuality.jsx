@@ -142,6 +142,13 @@ export function SouthAfricaSocietyQuality({ dossier, sourceMap }) {
 
               {expanded && (
                 <div className="border-t border-bone/10 px-5 pb-6 pt-5">
+                  {item.paragraphs?.length > 0 && (
+                    <div className="mb-5 space-y-4 rounded-xl border border-bone/10 bg-black/10 p-5">
+                      {item.paragraphs.map((paragraph, paragraphIndex) => (
+                        <p key={paragraphIndex} className="text-sm leading-7 text-bone/75">{paragraph}</p>
+                      ))}
+                    </div>
+                  )}
                   <div className="grid gap-3 md:grid-cols-2">
                     {item.data && (
                       <div className="rounded-xl border border-bone/10 bg-black/10 p-4">

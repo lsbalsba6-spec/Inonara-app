@@ -151,6 +151,21 @@ export function SouthAfricaFigures({ dossier, sourceMap }) {
 
               {expanded && (
                 <div className="border-t border-bone/10 px-5 pb-6 pt-5">
+                  {item.biography?.length > 0 && (
+                    <div className="mb-5 space-y-4 rounded-xl border border-bone/10 bg-black/10 p-5">
+                      <p className="text-[10px] uppercase tracking-[0.18em] text-gold/80">Biographie développée</p>
+                      {item.biography.map((paragraph, paragraphIndex) => (
+                        <p key={paragraphIndex} className="text-sm leading-7 text-bone/75">{paragraph}</p>
+                      ))}
+                    </div>
+                  )}
+                  {item.highlights?.length > 0 && (
+                    <div className="mb-5 flex flex-wrap gap-2">
+                      {item.highlights.map((highlight) => (
+                        <span key={highlight} className="rounded-full border border-gold/20 bg-gold/[0.05] px-3 py-1 text-xs text-gold/85">{highlight}</span>
+                      ))}
+                    </div>
+                  )}
                   <div className="grid gap-3 md:grid-cols-2">
                     {item.birth && (
                       <div className="rounded-xl border border-bone/10 bg-black/10 p-4">

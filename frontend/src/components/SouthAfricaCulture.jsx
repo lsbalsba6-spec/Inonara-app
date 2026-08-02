@@ -100,11 +100,15 @@ export function SouthAfricaCulture({ dossier, sourceMap }) {
 
               {expanded && (
                 <div className="border-t border-bone/10 px-5 pb-6 pt-5">
-                  {item.context && (
-                    <p className="rounded-xl border border-bone/10 bg-black/10 p-4 text-sm leading-6 text-bone/68">
-                      {item.context}
-                    </p>
-                  )}
+                  {item.paragraphs?.length > 0 ? (
+                    <div className="space-y-4 rounded-xl border border-bone/10 bg-black/10 p-5">
+                      {item.paragraphs.map((paragraph, paragraphIndex) => (
+                        <p key={paragraphIndex} className="text-sm leading-7 text-bone/75">{paragraph}</p>
+                      ))}
+                    </div>
+                  ) : item.context ? (
+                    <p className="rounded-xl border border-bone/10 bg-black/10 p-4 text-sm leading-6 text-bone/68">{item.context}</p>
+                  ) : null}
                   <SourceLinks ids={item.sources || item.sourceIds} sourceMap={sourceMap} />
                 </div>
               )}
