@@ -46,6 +46,8 @@ from .country_dossiers.south_africa_expansion_v10 import SOUTH_AFRICA_EXPANSION_
 
 from .country_dossiers.south_africa_expansion_v13 import SOUTH_AFRICA_EXPANSION_V13
 
+from .country_dossiers.south_africa_expansion_v15 import SOUTH_AFRICA_EXPANSION_V15
+
 from .south_africa_ecosystem_complete import (
     SA_CIVILIZATIONS, SA_FIGURES, SA_FIGURE_CIVS, SA_FIGURE_WIKIPEDIA,
     SA_PEOPLE, SA_CULTURE, SA_STORIES, SA_PLACES, SA_JOURNEY_STOPS,
@@ -253,6 +255,76 @@ _existing_timeline_v13 = {item.get("id") for item in SA_TIMELINE_EVENTS}
 SA_TIMELINE_EVENTS.extend(
     item for item in SOUTH_AFRICA_EXPANSION_V13["timeline"]
     if item.get("id") not in _existing_timeline_v13
+)
+
+
+# South Africa global additions V15
+_existing_places_v15 = {item.get("id") for item in PLACES}
+PLACES.extend(item for item in SOUTH_AFRICA_EXPANSION_V15["places"] if item.get("id") not in _existing_places_v15)
+
+_existing_figures_v15 = {item.get("id") for item in FIGURES}
+FIGURES.extend(
+    {
+        "id": item["id"],
+        "name": item["name"],
+        "category": "artists" if item["field"] in {"Littérature", "Musique et exil", "Photographie et activisme visuel"} else "leaders",
+        "era": "XXe–XXIe siècles",
+        "region": "South Africa",
+        "summary": item["reason"],
+        "story": " ".join(item.get("paragraphs", [])),
+        "legacy": item.get("legacy", ""),
+        "sources": item.get("sources", []),
+        "wikipedia_title": item.get("wikipedia_title"),
+        "image_source_url": item.get("image_source_url"),
+        "image_credit": item.get("image_credit"),
+    }
+    for item in SOUTH_AFRICA_EXPANSION_V15["figures"]
+    if item.get("id") not in _existing_figures_v15
+)
+
+_existing_people_v15 = {item.get("id") for item in ETHNIC_GROUPS}
+ETHNIC_GROUPS.extend(
+    {
+        "id": item["id"],
+        "name": item["name"],
+        "homeland": item.get("region", ""),
+        "coords": [-30.0, 25.0],
+        "population": "Communautés contemporaines diverses",
+        "language_family": "Niger-Congo ou familles khoesan selon le groupe",
+        "summary": item.get("history", ""),
+        "language": ", ".join(item.get("languages", [])),
+        "religion": "Traditions ancestrales, christianismes et autres pratiques selon les communautés",
+        "culture": "Voir la fiche détaillée",
+        "diaspora": "Mobilités internes et régionales",
+        "sources": item.get("sources", []),
+        "wikipedia_title": item.get("wikipedia_title"),
+        "image_source_url": item.get("image_source_url"),
+        "image_credit": item.get("image_credit"),
+    }
+    for item in SOUTH_AFRICA_EXPANSION_V15["peoples"]
+    if item.get("id") not in _existing_people_v15
+)
+
+_existing_culture_v15 = {item.get("id") for item in CULTURE_ITEMS}
+CULTURE_ITEMS.extend(
+    {
+        "id": item["id"],
+        "category": "music" if item["topic"] in {"Kwaito", "Amapiano", "Poésie de louange et izibongo"} else "food" if "Cuisine" in item["topic"] else "ritual",
+        "region": "Southern Africa",
+        "title": item["topic"],
+        "blurb": item["text"],
+        "wikipedia_title": item.get("wikipedia_title"),
+        "image_source_url": item.get("image_source_url"),
+        "image_credit": item.get("image_credit"),
+    }
+    for item in SOUTH_AFRICA_EXPANSION_V15["culture"]
+    if item.get("id") not in _existing_culture_v15
+)
+
+_existing_timeline_v15 = {item.get("id") for item in SA_TIMELINE_EVENTS}
+SA_TIMELINE_EVENTS.extend(
+    item for item in SOUTH_AFRICA_EXPANSION_V15["timeline"]
+    if item.get("id") not in _existing_timeline_v15
 )
 
 # Backfill missing sources arrays on older PLACES entries
