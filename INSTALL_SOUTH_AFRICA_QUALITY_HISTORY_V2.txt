@@ -1,0 +1,11 @@
+AFRIQUE DU SUD — QUALITÉ HISTOIRE V2
+
+1. Décompresser l'archive à la racine du dépôt.
+2. Exécuter:
+   python scripts/apply_south_africa_quality_history_v2.py
+3. Vérifier les imports:
+   python scripts/check_frontend_relative_imports.py
+4. Commit puis push.
+
+Ce patch ne change aucune donnée historique. Il rend les chapitres déjà présents plus lisibles,
+filtrables et développés, avec leurs nuances et leurs sources.

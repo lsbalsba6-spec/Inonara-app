@@ -1,0 +1,6 @@
+Afrique du Sud — Partie 13 : droit, démocratie, justice et mémoire
+
+1. Extraire l'archive à la racine de ~/inonara-app.
+2. Exécuter : python scripts/apply_south_africa_part_13.py
+3. Lancer les tests indiqués dans la réponse ChatGPT.
+4. Vérifier le build frontend avant git push.
