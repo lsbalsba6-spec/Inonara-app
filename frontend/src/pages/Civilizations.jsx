@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { fetchCivilizations } from "../lib/api";
 import { useI18n } from "../i18n";
+import { SmartImage } from "../components/SmartImage";
 
 const fmt = (y) => (y < 0 ? `${Math.abs(y)} BCE` : `${y} CE`);
 
@@ -26,7 +27,7 @@ const Civilizations = () => {
             data-testid={`civ-card-${c.id}`}
             className="museum-card relative group overflow-hidden aspect-[4/5]"
           >
-            <img src={c.image_url} alt={c.name} className="absolute inset-0 w-full h-full object-cover opacity-55 group-hover:opacity-75 group-hover:scale-105 transition-all duration-1000" />
+            <SmartImage src={c.image_url} wikipediaTitle={c.wikipedia_title} alt={c.name} wrapperClassName="absolute inset-0" className="h-full w-full object-cover opacity-55 transition-all duration-1000 group-hover:scale-105 group-hover:opacity-75" credit={c.image_credit} sourceUrl={c.image_source_url} />
             <div className="absolute inset-0 bg-gradient-to-t from-ebony via-ebony/70 to-ebony/10" />
             <div className="relative h-full p-7 flex flex-col justify-end">
               <p className="overline text-[0.65rem]">{t(`region.${c.region}`)}</p>

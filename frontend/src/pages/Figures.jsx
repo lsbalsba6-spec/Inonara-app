@@ -4,18 +4,16 @@ import { ArrowLeft } from "lucide-react";
 import axios from "axios";
 import { useI18n } from "../i18n";
 import { useTranslated } from "../lib/useTranslated";
-import { useWikiPortrait } from "../lib/useWikiPortrait";
+import { SmartImage } from "../components/SmartImage";
 
 const API = `${process.env.REACT_APP_BACKEND_URL}/api`;
 
 const CATEGORIES = ["all", "queens", "kings", "military", "scientists", "inventors", "civil_rights", "intellectuals", "artists", "athletes"];
 
 const FigureCard = ({ f, t }) => {
-  const portrait = useWikiPortrait(f.wikipedia_title);
-  const src = portrait || f.image_url;
   return (
     <Link to={`/figure/${f.id}`} data-testid={`figure-card-${f.id}`} className="museum-card relative overflow-hidden group aspect-[3/4]">
-      <img src={src} alt={f.name} className="absolute inset-0 w-full h-full object-cover opacity-55 group-hover:opacity-80 group-hover:scale-105 transition-all duration-1000" />
+      <SmartImage src={f.image_url} wikipediaTitle={f.wikipedia_title} alt={f.name} wrapperClassName="absolute inset-0" className="h-full w-full object-cover opacity-55 transition-all duration-1000 group-hover:scale-105 group-hover:opacity-80" credit={f.image_credit} sourceUrl={f.image_source_url} />
       <div className="absolute inset-0 bg-gradient-to-t from-ebony via-ebony/75 to-ebony/10" />
       <div className="relative h-full p-6 flex flex-col justify-end">
         <p className="overline text-[0.6rem]">{t(`figures.${f.category}`)}</p>
@@ -74,7 +72,7 @@ export const FigureDetail = () => {
   return (
     <div data-testid="figure-detail">
       <div className="relative h-[60vh] min-h-[440px] overflow-hidden">
-        <img src={f.image_url} alt={f.name} className="absolute inset-0 w-full h-full object-cover animate-slow-zoom" />
+        <SmartImage src={f.image_url} wikipediaTitle={f.wikipedia_title} alt={f.name} wrapperClassName="absolute inset-0" className="h-full w-full object-cover animate-slow-zoom" credit={f.image_credit} sourceUrl={f.image_source_url} />
         <div className="absolute inset-0 bg-gradient-to-t from-ebony via-ebony/60 to-ebony/30" />
         <div className="relative max-w-[1400px] mx-auto px-6 md:px-10 h-full flex flex-col justify-end pb-14">
           <Link to="/figures" className="text-bone/60 hover:text-gold text-xs uppercase tracking-[0.2em] flex items-center gap-2 mb-6" data-testid="back-to-figures">

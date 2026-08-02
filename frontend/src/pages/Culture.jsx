@@ -1,6 +1,7 @@
 import { useEffect, useState, useMemo } from "react";
 import { fetchCulture } from "../lib/api";
 import { useI18n } from "../i18n";
+import { SmartImage } from "../components/SmartImage";
 
 const categories = ["all", "food", "music", "clothing", "language", "ritual", "proverbs", "spiritual"];
 
@@ -35,10 +36,11 @@ const Culture = () => {
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mt-10">
         {filtered.map((i) => (
-          <div key={i.id} className="museum-card p-7" data-testid={`culture-item-${i.id}`}>
+          <div key={i.id} className="museum-card overflow-hidden" data-testid={`culture-item-${i.id}`}><SmartImage src={i.image_url} wikipediaTitle={i.wikipedia_title} alt={i.title} wrapperClassName="aspect-[16/10]" className="h-full w-full object-cover transition duration-700 hover:scale-105" credit={i.image_credit} sourceUrl={i.image_source_url} /><div className="p-7">
             <p className="overline text-[0.65rem]">{i.category} · {i.region}</p>
             <h3 className="font-serif text-2xl text-bone mt-3">{i.title}</h3>
             <p className="text-bone/75 mt-3 font-light leading-relaxed text-sm">{i.blurb}</p>
+            </div>
           </div>
         ))}
         {filtered.length === 0 && <p className="text-bone/50">No items in this category yet.</p>}

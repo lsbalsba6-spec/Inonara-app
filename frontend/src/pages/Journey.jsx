@@ -4,6 +4,7 @@ import { motion } from "framer-motion";
 import { ArrowRight } from "lucide-react";
 import { fetchJourney } from "../lib/api";
 import { useI18n } from "../i18n";
+import { SmartImage } from "../components/SmartImage";
 
 const Journey = () => {
   const { t } = useI18n();
@@ -45,7 +46,7 @@ const Journey = () => {
               </Link>
             </div>
             <div className={`relative aspect-[4/3] overflow-hidden ${i % 2 === 0 ? "" : "lg:order-1"}`}>
-              <img src={s.image_url} alt={s.heading} className="absolute inset-0 w-full h-full object-cover" />
+              <SmartImage src={s.image_url} wikipediaTitle={s.wikipedia_title} alt={s.heading} wrapperClassName="absolute inset-0" className="h-full w-full object-cover" credit={s.image_credit} sourceUrl={s.image_source_url} />
               <div className="absolute inset-0 bg-gradient-to-tr from-ebony/70 to-transparent" />
             </div>
           </motion.section>

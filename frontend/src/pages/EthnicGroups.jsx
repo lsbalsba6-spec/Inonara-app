@@ -3,6 +3,7 @@ import { Link, useParams } from "react-router-dom";
 import { ArrowLeft } from "lucide-react";
 import { fetchEthnicGroups, fetchEthnicGroup } from "../lib/api";
 import { useI18n } from "../i18n";
+import { SmartImage } from "../components/SmartImage";
 
 export const EthnicGroupsList = () => {
   const { t } = useI18n();
@@ -18,7 +19,7 @@ export const EthnicGroupsList = () => {
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mt-14">
         {[...groups].sort((a, b) => a.name.localeCompare(b.name)).map((g) => (
           <Link key={g.id} to={`/people/${g.id}`} className="museum-card relative group overflow-hidden aspect-[4/5]" data-testid={`ethnic-card-${g.id}`}>
-            <img src={g.image_url} alt={g.name} className="absolute inset-0 w-full h-full object-cover opacity-55 group-hover:opacity-75 group-hover:scale-105 transition-all duration-1000" />
+            <SmartImage src={g.image_url} wikipediaTitle={g.wikipedia_title} alt={g.name} wrapperClassName="absolute inset-0" className="h-full w-full object-cover opacity-55 transition-all duration-1000 group-hover:scale-105 group-hover:opacity-75" credit={g.image_credit} sourceUrl={g.image_source_url} />
             <div className="absolute inset-0 bg-gradient-to-t from-ebony via-ebony/70 to-ebony/10" />
             <div className="relative h-full p-7 flex flex-col justify-end">
               <p className="overline text-[0.65rem]">{g.language_family}</p>
@@ -49,7 +50,7 @@ export const EthnicGroupDetail = () => {
   return (
     <div data-testid="ethnic-detail">
       <div className="relative h-[60vh] min-h-[400px] overflow-hidden">
-        <img src={g.image_url} alt={g.name} className="absolute inset-0 w-full h-full object-cover animate-slow-zoom" />
+        <SmartImage src={g.image_url} wikipediaTitle={g.wikipedia_title} alt={g.name} wrapperClassName="absolute inset-0" className="h-full w-full object-cover animate-slow-zoom" credit={g.image_credit} sourceUrl={g.image_source_url} />
         <div className="absolute inset-0 bg-gradient-to-t from-ebony via-ebony/60 to-ebony/30" />
         <div className="relative max-w-[1600px] mx-auto px-6 md:px-10 h-full flex flex-col justify-end pb-16">
           <Link to="/people" className="text-bone/60 hover:text-gold text-xs uppercase tracking-[0.2em] flex items-center gap-2 mb-6" data-testid="back-to-people">

@@ -38,6 +38,8 @@ from .africa_origins import AFRICA_ORIGIN_COUNTRIES
 from .world_diaspora import WORLD_DIASPORA_COMMUNITIES
 from .country_dossiers import COUNTRY_DOSSIERS, country_dossier_index
 
+from .south_africa_visuals_v8 import SOUTH_AFRICA_VISUALS_V8
+
 from .south_africa_ecosystem_complete import (
     SA_CIVILIZATIONS, SA_FIGURES, SA_FIGURE_CIVS, SA_FIGURE_WIKIPEDIA,
     SA_PEOPLE, SA_CULTURE, SA_STORIES, SA_PLACES, SA_JOURNEY_STOPS,
@@ -124,6 +126,22 @@ LINEAGE_JOURNEY = {**LINEAGE_JOURNEY, "stops": sorted(
     LINEAGE_JOURNEY.get("stops", []) + SA_JOURNEY_STOPS,
     key=lambda stop: stop.get("year", -10**12),
 )}
+
+
+# South Africa visual enrichment V8
+def _apply_visual_metadata(items, metadata):
+    for item in items:
+        item_id = item.get("id")
+        if item_id in metadata:
+            item.update(metadata[item_id])
+
+_apply_visual_metadata(FIGURES, SOUTH_AFRICA_VISUALS_V8["figures"])
+_apply_visual_metadata(CIVILIZATIONS, SOUTH_AFRICA_VISUALS_V8["civilizations"])
+_apply_visual_metadata(ETHNIC_GROUPS, SOUTH_AFRICA_VISUALS_V8["people"])
+_apply_visual_metadata(PLACES, SOUTH_AFRICA_VISUALS_V8["places"])
+_apply_visual_metadata(STORIES, SOUTH_AFRICA_VISUALS_V8["stories"])
+_apply_visual_metadata(CULTURE_ITEMS, SOUTH_AFRICA_VISUALS_V8["culture"])
+_apply_visual_metadata(LINEAGE_JOURNEY.get("stops", []), SOUTH_AFRICA_VISUALS_V8["journey"])
 
 # Backfill missing sources arrays on older PLACES entries
 for _p in PLACES:

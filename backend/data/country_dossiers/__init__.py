@@ -1,4 +1,5 @@
 from .south_africa import SOUTH_AFRICA_DOSSIER
+from ..south_africa_visuals_v8 import SOUTH_AFRICA_VISUALS_V8
 from .south_africa_timeline_economy import SOUTH_AFRICA_TIMELINE_ECONOMY
 from .south_africa_society_state import SOUTH_AFRICA_SOCIETY_STATE
 from .south_africa_deep_history import DEEP_HISTORY, DEEP_HISTORY_SOURCES
@@ -98,6 +99,14 @@ _merge_v7(SOUTH_AFRICA_DOSSIER.setdefault("culture", []), _v7["culture"])
 _merge_v7(SOUTH_AFRICA_DOSSIER.setdefault("environment", {}).setdefault("items", []), _v7["environment"])
 _merge_v7(SOUTH_AFRICA_DOSSIER.setdefault("media", {}).setdefault("items", []), _v7["media"])
 _merge_v7(SOUTH_AFRICA_DOSSIER.setdefault("sources", []), _v7["additionalSources"])
+
+
+# Visual gallery V8
+_existing_gallery_ids = {item.get("id") for item in SOUTH_AFRICA_DOSSIER.setdefault("media_gallery", [])}
+SOUTH_AFRICA_DOSSIER["media_gallery"].extend(
+    item for item in SOUTH_AFRICA_VISUALS_V8["gallery"]
+    if item.get("id") not in _existing_gallery_ids
+)
 
 COUNTRY_DOSSIERS = {
     SOUTH_AFRICA_DOSSIER["iso2"]: SOUTH_AFRICA_DOSSIER,

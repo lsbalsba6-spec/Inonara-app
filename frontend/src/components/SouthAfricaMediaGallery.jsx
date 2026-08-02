@@ -1,4 +1,5 @@
 import { useMemo, useState } from "react";
+import { SmartImage } from "./SmartImage";
 
 const getCategory = (item) => item.category || item.type || "Galerie";
 const getTitle = (item) => item.title || item.alt || "Média";
@@ -87,12 +88,7 @@ export function SouthAfricaMediaGallery({ items = [] }) {
               onClick={() => setSelected(item)}
               className="block w-full overflow-hidden bg-black/20 text-left"
             >
-              <img
-                src={item.image_url}
-                alt={item.alt || getTitle(item)}
-                loading="lazy"
-                className="h-64 w-full object-cover transition duration-500 hover:scale-[1.03]"
-              />
+              <SmartImage src={item.image_url} wikipediaTitle={item.wikipedia_title} alt={item.alt || getTitle(item)} wrapperClassName="h-64" className="h-full w-full object-cover transition duration-500 hover:scale-[1.03]" />
             </button>
 
             <figcaption className="p-5">
@@ -160,11 +156,7 @@ export function SouthAfricaMediaGallery({ items = [] }) {
               </button>
             </div>
 
-            <img
-              src={selected.image_url}
-              alt={selected.alt || getTitle(selected)}
-              className="max-h-[70vh] w-full object-contain bg-black"
-            />
+            <SmartImage src={selected.image_url} wikipediaTitle={selected.wikipedia_title} alt={selected.alt || getTitle(selected)} wrapperClassName="max-h-[70vh] bg-black" className="max-h-[70vh] w-full object-contain" />
 
             <div className="p-5">
               {getCaption(selected) && (

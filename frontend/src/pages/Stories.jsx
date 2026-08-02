@@ -3,6 +3,7 @@ import { Link, useParams } from "react-router-dom";
 import { fetchStories, fetchStory } from "../lib/api";
 import { ArrowLeft, BookOpen, Volume2 } from "lucide-react";
 import { useI18n } from "../i18n";
+import { SmartImage } from "../components/SmartImage";
 
 export const StoriesList = () => {
   const { t } = useI18n();
@@ -24,14 +25,17 @@ export const StoriesList = () => {
             key={s.id}
             to={`/story/${s.id}`}
             data-testid={`story-card-${s.id}`}
-            className="museum-card p-8 group block"
+            className="museum-card overflow-hidden group block"
           >
+            <SmartImage src={s.image_url} wikipediaTitle={s.wikipedia_title} alt={s.title} wrapperClassName="aspect-[16/9]" className="h-full w-full object-cover opacity-70 transition duration-700 group-hover:scale-105 group-hover:opacity-90" credit={s.image_credit} sourceUrl={s.image_source_url} />
+            <div className="p-8">
             <div className="flex items-center gap-2 text-gold">
               <BookOpen size={14} />
               <span className="overline text-[0.65rem]">{s.era}</span>
             </div>
             <h3 className="font-serif text-3xl text-bone mt-4 group-hover:text-gold transition-colors">{s.title}</h3>
             <p className="text-bone/70 mt-3 font-light leading-relaxed">{s.summary}</p>
+            </div>
           </Link>
         ))}
       </div>
@@ -69,6 +73,7 @@ export const StoryDetail = () => {
       <Link to="/stories" className="text-bone/60 hover:text-gold text-xs uppercase tracking-[0.2em] flex items-center gap-2" data-testid="back-to-stories">
         <ArrowLeft size={14} /> {t("common.back.stories")}
       </Link>
+      <SmartImage src={s.image_url} wikipediaTitle={s.wikipedia_title} alt={s.title} wrapperClassName="mt-8 aspect-[16/9] rounded-2xl" className="h-full w-full object-cover" credit={s.image_credit} sourceUrl={s.image_source_url} />
       <p className="overline mt-8">{s.era}</p>
       <h1 className="font-serif text-5xl text-bone mt-3 leading-tight">{s.title}</h1>
       <p className="text-bone/70 mt-6 text-lg font-light leading-relaxed">{s.summary}</p>
