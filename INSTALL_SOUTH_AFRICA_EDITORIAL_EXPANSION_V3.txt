@@ -1,0 +1,22 @@
+AFRIQUE DU SUD — EXPANSION ÉDITORIALE V3
+
+Ajouts:
+- 6 biographies longues supplémentaires;
+- 4 chapitres People supplémentaires;
+- 4 articles Culture;
+- 4 fiches Patrimoine;
+- développements longs en Éducation, Santé et Économie;
+- sources ajoutées au dossier.
+
+TERMUX
+
+cd ~/inonara-app
+unzip -o /sdcard/Download/inonara-afrique-du-sud-editorial-expansion-v3.zip -d .
+python scripts/apply_south_africa_editorial_expansion_v3.py
+python -m py_compile backend/data/country_dossiers/south_africa_editorial_expansion_v3.py backend/data/country_dossiers/__init__.py
+cd frontend
+CI=true npm run build
+cd ..
+git add backend/data/country_dossiers scripts/apply_south_africa_editorial_expansion_v3.py INSTALL_SOUTH_AFRICA_EDITORIAL_EXPANSION_V3.txt
+git commit -m "feat: enrichir figures peuples culture patrimoine et systèmes Afrique du Sud"
+git push

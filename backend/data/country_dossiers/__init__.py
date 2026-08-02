@@ -2,6 +2,7 @@ from .south_africa import SOUTH_AFRICA_DOSSIER
 from .south_africa_timeline_economy import SOUTH_AFRICA_TIMELINE_ECONOMY
 from .south_africa_society_state import SOUTH_AFRICA_SOCIETY_STATE
 from .south_africa_deep_history import DEEP_HISTORY, DEEP_HISTORY_SOURCES
+from .south_africa_editorial_expansion_v3 import SOUTH_AFRICA_EDITORIAL_EXPANSION_V3
 from .south_africa_editorial_expansion import apply_editorial_expansion
 
 SOUTH_AFRICA_DOSSIER["interactive_timeline"] = SOUTH_AFRICA_TIMELINE_ECONOMY["interactive_timeline"]
@@ -30,6 +31,26 @@ SOUTH_AFRICA_DOSSIER.setdefault("sources", []).extend(
 )
 
 apply_editorial_expansion(SOUTH_AFRICA_DOSSIER)
+
+
+# Editorial expansion V3
+_v3 = SOUTH_AFRICA_EDITORIAL_EXPANSION_V3
+
+def _merge_unique(target, incoming):
+    existing = {item.get("id") or item.get("name") or item.get("title") or item.get("topic") for item in target}
+    target.extend(
+        item for item in incoming
+        if (item.get("id") or item.get("name") or item.get("title") or item.get("topic")) not in existing
+    )
+
+_merge_unique(SOUTH_AFRICA_DOSSIER.setdefault("figures", []), _v3["figures"])
+_merge_unique(SOUTH_AFRICA_DOSSIER.setdefault("peoples", []), _v3["peoples"])
+_merge_unique(SOUTH_AFRICA_DOSSIER.setdefault("culture", []), _v3["culture"])
+_merge_unique(SOUTH_AFRICA_DOSSIER.setdefault("heritage", []), _v3["heritage"])
+_merge_unique(SOUTH_AFRICA_DOSSIER.setdefault("education_health", {}).setdefault("education", {}).setdefault("items", []), _v3["systems"]["education"])
+_merge_unique(SOUTH_AFRICA_DOSSIER.setdefault("education_health", {}).setdefault("health", {}).setdefault("items", []), _v3["systems"]["health"])
+_merge_unique(SOUTH_AFRICA_DOSSIER.setdefault("economy", {}).setdefault("sections", []), _v3["systems"]["economy"])
+_merge_unique(SOUTH_AFRICA_DOSSIER.setdefault("sources", []), _v3["additionalSources"])
 
 COUNTRY_DOSSIERS = {
     SOUTH_AFRICA_DOSSIER["iso2"]: SOUTH_AFRICA_DOSSIER,
