@@ -16,6 +16,15 @@ center), radius_km, color, summary, sources}.
 
 HISTORICAL_POLITIES = [
     {
+        "id": "mapungubwe-map",
+        "name": "Kingdom of Mapungubwe",
+        "era_start": 900, "era_end": 1300,
+        "coords": [-22.193, 29.245], "radius_km": 220,
+        "color": "#C18C42",
+        "summary": "Approximate sphere of influence around the Limpopo–Shashe confluence; shown as a circle, not a precise historical border.",
+        "sources": ["UNESCO World Heritage, Mapungubwe Cultural Landscape"],
+    },
+    {
         "id": "old-kingdom-egypt",
         "name": "Old Kingdom Egypt",
         "era_start": -2686, "era_end": -2181,

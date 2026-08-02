@@ -10,7 +10,10 @@ const Culture = () => {
   const [cat, setCat] = useState("all");
   useEffect(() => { fetchCulture().then(setItems).catch(() => {}); }, []);
 
-  const filtered = useMemo(() => (cat === "all" ? items : items.filter((i) => i.category === cat)), [items, cat]);
+  const filtered = useMemo(() => {
+    const selected = cat === "all" ? items : items.filter((i) => i.category === cat);
+    return [...selected].sort((a, b) => a.title.localeCompare(b.title));
+  }, [items, cat]);
 
   return (
     <div className="pt-32 pb-24 max-w-[1600px] mx-auto px-6 md:px-10" data-testid="culture-page">

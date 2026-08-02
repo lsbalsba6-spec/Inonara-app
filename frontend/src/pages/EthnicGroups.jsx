@@ -16,7 +16,7 @@ export const EthnicGroupsList = () => {
         {t("page.ethnic.lead")}
       </p>
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mt-14">
-        {groups.map((g) => (
+        {[...groups].sort((a, b) => a.name.localeCompare(b.name)).map((g) => (
           <Link key={g.id} to={`/people/${g.id}`} className="museum-card relative group overflow-hidden aspect-[4/5]" data-testid={`ethnic-card-${g.id}`}>
             <img src={g.image_url} alt={g.name} className="absolute inset-0 w-full h-full object-cover opacity-55 group-hover:opacity-75 group-hover:scale-105 transition-all duration-1000" />
             <div className="absolute inset-0 bg-gradient-to-t from-ebony via-ebony/70 to-ebony/10" />
