@@ -1,0 +1,9 @@
+cd ~/inonara-app
+unzip -o /sdcard/Download/inonara-fix-vercel-4-hooks-v1.zip -d .
+python scripts/fix_vercel_four_hooks.py
+cd frontend
+CI=true npm run build
+cd ..
+git add frontend/src/components scripts/fix_vercel_four_hooks.py INSTALL_FIX_VERCEL_4_HOOKS_V1.txt
+git commit -m "fix: corriger les derniers hooks Vercel Afrique du Sud"
+git push

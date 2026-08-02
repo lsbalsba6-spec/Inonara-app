@@ -58,7 +58,7 @@ function normalizeInternational(dossier) {
 export function SouthAfricaInternationalQuality({ dossier, sourceMap }) {
   const items = useMemo(
     () => normalizeInternational(dossier),
-    [dossier.international_role, dossier.international, dossier.global_role, dossier.international_topics],
+    [dossier],
   );
 
   const categories = useMemo(

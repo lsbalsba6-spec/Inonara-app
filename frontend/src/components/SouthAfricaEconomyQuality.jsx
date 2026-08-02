@@ -52,7 +52,7 @@ function normalizeEconomy(dossier) {
 export function SouthAfricaEconomyQuality({ dossier, sourceMap }) {
   const items = useMemo(
     () => normalizeEconomy(dossier),
-    [dossier.economy, dossier.economy_topics],
+    [dossier],
   );
   const categories = useMemo(
     () => [...new Set(items.map(getCategory))],

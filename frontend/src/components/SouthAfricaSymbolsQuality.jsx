@@ -51,7 +51,7 @@ function normalizeSymbols(dossier) {
 export function SouthAfricaSymbolsQuality({ dossier, sourceMap }) {
   const items = useMemo(
     () => normalizeSymbols(dossier),
-    [dossier.national_symbols, dossier.symbols, dossier.symbol_items],
+    [dossier],
   );
   const categories = useMemo(
     () => [...new Set(items.map(getCategory))],

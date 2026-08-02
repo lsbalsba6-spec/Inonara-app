@@ -169,8 +169,14 @@ function SectionBlock({ title, intro, items, sourceMap }) {
 }
 
 export function SouthAfricaEducationHealthQuality({ dossier, sourceMap }) {
-  const education = dossier.education_health?.education || dossier.education || {};
-  const health = dossier.education_health?.health || dossier.health || {};
+  const education = useMemo(
+    () => dossier.education_health?.education || dossier.education || {},
+    [dossier.education_health?.education, dossier.education],
+  );
+  const health = useMemo(
+    () => dossier.education_health?.health || dossier.health || {},
+    [dossier.education_health?.health, dossier.health],
+  );
   const educationItems = useMemo(
     () => Array.isArray(education) ? education : (education.items || []),
     [education],
