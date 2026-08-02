@@ -219,6 +219,13 @@ export function SouthAfricaInternationalQuality({ dossier, sourceMap }) {
                     )}
                   </div>
 
+                  {item.paragraphs?.length > 0 && (
+                    <div className="mt-4 space-y-3">
+                      {item.paragraphs.map((paragraph, paragraphIndex) => (
+                        <p key={paragraphIndex} className="text-sm leading-7 text-bone/72">{paragraph}</p>
+                      ))}
+                    </div>
+                  )}
                   <SourceLinks ids={item.sources || item.sourceIds} sourceMap={sourceMap} />
                 </div>
               )}
