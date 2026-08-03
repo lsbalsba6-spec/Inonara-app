@@ -3,6 +3,7 @@ from ..south_africa_visuals_v8 import SOUTH_AFRICA_VISUALS_V8
 from .south_africa_timeline_economy import SOUTH_AFRICA_TIMELINE_ECONOMY
 from .south_africa_society_state import SOUTH_AFRICA_SOCIETY_STATE
 from .south_africa_deep_history import DEEP_HISTORY, DEEP_HISTORY_SOURCES
+from .south_africa_expansion_v16 import SOUTH_AFRICA_EXPANSION_V16
 from .south_africa_expansion_v15 import SOUTH_AFRICA_EXPANSION_V15
 from .south_africa_expansion_v13 import SOUTH_AFRICA_EXPANSION_V13
 from .south_africa_expansion_v10 import SOUTH_AFRICA_EXPANSION_V10
@@ -174,6 +175,20 @@ _merge_v15(SOUTH_AFRICA_DOSSIER.setdefault("peoples", []), _v15["peoples"])
 _merge_v15(SOUTH_AFRICA_DOSSIER.setdefault("culture", []), _v15["culture"])
 _merge_v15(SOUTH_AFRICA_DOSSIER.setdefault("media_gallery", []), _v15["gallery"])
 _merge_v15(SOUTH_AFRICA_DOSSIER.setdefault("sources", []), _v15["additionalSources"])
+
+
+# South Africa expansion V16
+_v16 = SOUTH_AFRICA_EXPANSION_V16
+
+def _merge_v16(target, incoming):
+    existing = {item.get("id") or item.get("title") or item.get("name") for item in target}
+    target.extend(item for item in incoming if (item.get("id") or item.get("title") or item.get("name")) not in existing)
+
+_merge_v16(SOUTH_AFRICA_DOSSIER.setdefault("law_memory", {}).setdefault("constitutional_democracy", {}).setdefault("items", []), _v16["institutions"])
+_merge_v16(SOUTH_AFRICA_DOSSIER.setdefault("society", {}).setdefault("themes", []), _v16["society"])
+_merge_v16(SOUTH_AFRICA_DOSSIER.setdefault("heritage", []), _v16["heritage"])
+_merge_v16(SOUTH_AFRICA_DOSSIER.setdefault("media_gallery", []), _v16["gallery"])
+_merge_v16(SOUTH_AFRICA_DOSSIER.setdefault("sources", []), _v16["additionalSources"])
 
 COUNTRY_DOSSIERS = {
     SOUTH_AFRICA_DOSSIER["iso2"]: SOUTH_AFRICA_DOSSIER,

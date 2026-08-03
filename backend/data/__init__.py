@@ -48,6 +48,8 @@ from .country_dossiers.south_africa_expansion_v13 import SOUTH_AFRICA_EXPANSION_
 
 from .country_dossiers.south_africa_expansion_v15 import SOUTH_AFRICA_EXPANSION_V15
 
+from .country_dossiers.south_africa_expansion_v16 import SOUTH_AFRICA_EXPANSION_V16
+
 from .south_africa_ecosystem_complete import (
     SA_CIVILIZATIONS, SA_FIGURES, SA_FIGURE_CIVS, SA_FIGURE_WIKIPEDIA,
     SA_PEOPLE, SA_CULTURE, SA_STORIES, SA_PLACES, SA_JOURNEY_STOPS,
@@ -325,6 +327,17 @@ _existing_timeline_v15 = {item.get("id") for item in SA_TIMELINE_EVENTS}
 SA_TIMELINE_EVENTS.extend(
     item for item in SOUTH_AFRICA_EXPANSION_V15["timeline"]
     if item.get("id") not in _existing_timeline_v15
+)
+
+
+# South Africa global additions V16
+_existing_places_v16 = {item.get("id") for item in PLACES}
+PLACES.extend(item for item in SOUTH_AFRICA_EXPANSION_V16["places"] if item.get("id") not in _existing_places_v16)
+
+_existing_timeline_v16 = {item.get("id") for item in SA_TIMELINE_EVENTS}
+SA_TIMELINE_EVENTS.extend(
+    item for item in SOUTH_AFRICA_EXPANSION_V16["timeline"]
+    if item.get("id") not in _existing_timeline_v16
 )
 
 # Backfill missing sources arrays on older PLACES entries
