@@ -50,6 +50,8 @@ from .country_dossiers.south_africa_expansion_v15 import SOUTH_AFRICA_EXPANSION_
 
 from .country_dossiers.south_africa_expansion_v16 import SOUTH_AFRICA_EXPANSION_V16
 
+from .country_dossiers.south_africa_grand_pack_v17 import SOUTH_AFRICA_GRAND_PACK_V17
+
 from .south_africa_ecosystem_complete import (
     SA_CIVILIZATIONS, SA_FIGURES, SA_FIGURE_CIVS, SA_FIGURE_WIKIPEDIA,
     SA_PEOPLE, SA_CULTURE, SA_STORIES, SA_PLACES, SA_JOURNEY_STOPS,
@@ -339,6 +341,39 @@ SA_TIMELINE_EVENTS.extend(
     item for item in SOUTH_AFRICA_EXPANSION_V16["timeline"]
     if item.get("id") not in _existing_timeline_v16
 )
+
+
+# South Africa global ecosystem V17
+_gp17 = SOUTH_AFRICA_GRAND_PACK_V17
+
+def _append_unique_v17(target, incoming):
+    existing={item.get("id") for item in target}
+    target.extend(item for item in incoming if item.get("id") not in existing)
+
+_append_unique_v17(PLACES, _gp17["places"])
+_append_unique_v17(STORIES, _gp17["stories"])
+_append_unique_v17(SA_TIMELINE_EVENTS, _gp17["timeline"])
+_append_unique_v17(LINEAGE_JOURNEY.setdefault("stops", []), _gp17["journey"])
+LINEAGE_JOURNEY["stops"] = sorted(LINEAGE_JOURNEY["stops"], key=lambda x: x.get("year", 10**12))
+
+_existing_figures_v17={x.get("id") for x in FIGURES}
+FIGURES.extend({
+    "id":x["id"], "name":x["name"],
+    "category":"scientists" if any(k in x.get("field","") for k in ["Épidémiologie","Génétique","Paléoanthropologie","Technologie"]) else "athletes" if x.get("field") in ["Rugby","Natation"] else "artists" if any(k in x.get("field","") for k in ["Littérature","Musique","Arts"] ) else "leaders",
+    "era":x.get("lifespan","XXe–XXIe siècles"), "region":"South Africa", "lifespan":x.get("lifespan"),
+    "summary":x.get("reason"), "story":" ".join(x.get("paragraphs",[])), "legacy":x.get("legacy"),
+    "sources":x.get("sources",[]), "wikipedia_title":x.get("wikipedia_title"), "image_source_url":x.get("image_source_url"), "image_credit":x.get("image_credit"), "visual_kind":x.get("visual_kind","photograph")
+} for x in _gp17["figures"] if x.get("id") not in _existing_figures_v17)
+
+_existing_people_v17={x.get("id") for x in ETHNIC_GROUPS}
+ETHNIC_GROUPS.extend({
+    "id":x["id"], "name":x["name"], "homeland":x.get("region",""), "coords":[-29.0,25.0],
+    "population":"Communautés contemporaines diverses", "language_family":"Voir la fiche détaillée",
+    "summary":x.get("history",""), "language":", ".join(x.get("languages",[])),
+    "religion":"Pratiques diverses selon les communautés", "culture":"Voir la fiche pays détaillée",
+    "diaspora":"Mobilités internes, régionales et internationales selon les communautés", "sources":x.get("sources",[]),
+    "wikipedia_title":x.get("wikipedia_title"), "image_source_url":x.get("image_source_url"), "image_credit":x.get("image_credit"), "visual_kind":"photograph"
+} for x in _gp17["peoples"] if x.get("id") not in _existing_people_v17)
 
 # Backfill missing sources arrays on older PLACES entries
 for _p in PLACES:

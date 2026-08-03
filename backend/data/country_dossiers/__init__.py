@@ -3,6 +3,7 @@ from ..south_africa_visuals_v8 import SOUTH_AFRICA_VISUALS_V8
 from .south_africa_timeline_economy import SOUTH_AFRICA_TIMELINE_ECONOMY
 from .south_africa_society_state import SOUTH_AFRICA_SOCIETY_STATE
 from .south_africa_deep_history import DEEP_HISTORY, DEEP_HISTORY_SOURCES
+from .south_africa_grand_pack_v17 import SOUTH_AFRICA_GRAND_PACK_V17
 from .south_africa_expansion_v16 import SOUTH_AFRICA_EXPANSION_V16
 from .south_africa_expansion_v15 import SOUTH_AFRICA_EXPANSION_V15
 from .south_africa_expansion_v13 import SOUTH_AFRICA_EXPANSION_V13
@@ -189,6 +190,27 @@ _merge_v16(SOUTH_AFRICA_DOSSIER.setdefault("society", {}).setdefault("themes", [
 _merge_v16(SOUTH_AFRICA_DOSSIER.setdefault("heritage", []), _v16["heritage"])
 _merge_v16(SOUTH_AFRICA_DOSSIER.setdefault("media_gallery", []), _v16["gallery"])
 _merge_v16(SOUTH_AFRICA_DOSSIER.setdefault("sources", []), _v16["additionalSources"])
+
+
+# South Africa massive grand pack V17
+_gp17 = SOUTH_AFRICA_GRAND_PACK_V17
+_merge_gp17 = lambda target, incoming: target.extend(
+    item for item in incoming
+    if (item.get("id") or item.get("title") or item.get("name") or item.get("topic"))
+    not in {x.get("id") or x.get("title") or x.get("name") or x.get("topic") for x in target}
+)
+_merge_gp17(SOUTH_AFRICA_DOSSIER.setdefault("figures", []), _gp17["figures"])
+_merge_gp17(SOUTH_AFRICA_DOSSIER.setdefault("peoples", []), _gp17["peoples"])
+_merge_gp17(SOUTH_AFRICA_DOSSIER.setdefault("society", {}).setdefault("themes", []), _gp17["society"])
+_merge_gp17(SOUTH_AFRICA_DOSSIER.setdefault("education_health", {}).setdefault("education", {}).setdefault("items", []), _gp17["education"])
+_merge_gp17(SOUTH_AFRICA_DOSSIER.setdefault("education_health", {}).setdefault("health", {}).setdefault("items", []), _gp17["health"])
+_merge_gp17(SOUTH_AFRICA_DOSSIER.setdefault("economy", {}).setdefault("sections", []), _gp17["economy"])
+_merge_gp17(SOUTH_AFRICA_DOSSIER.setdefault("heritage", []), _gp17["heritage"])
+_merge_gp17(SOUTH_AFRICA_DOSSIER.setdefault("media_gallery", []), _gp17["gallery"])
+_merge_gp17(SOUTH_AFRICA_DOSSIER.setdefault("sources", []), _gp17["additionalSources"])
+# Remove xenophobia-specific cards while preserving broader migration history.
+for section in [SOUTH_AFRICA_DOSSIER.get("society", {}).get("themes", []), SOUTH_AFRICA_DOSSIER.get("culture", [])]:
+    section[:] = [item for item in section if "xenoph" not in str(item).lower()]
 
 COUNTRY_DOSSIERS = {
     SOUTH_AFRICA_DOSSIER["iso2"]: SOUTH_AFRICA_DOSSIER,
