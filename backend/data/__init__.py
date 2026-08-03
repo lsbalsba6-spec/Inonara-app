@@ -58,6 +58,8 @@ from .country_dossiers.south_africa_expansion_v20 import SOUTH_AFRICA_EXPANSION_
 
 from .country_dossiers.south_africa_expansion_v21 import SOUTH_AFRICA_EXPANSION_V21
 
+from .country_dossiers.south_africa_expansion_v22 import SOUTH_AFRICA_EXPANSION_V22
+
 from .south_africa_ecosystem_complete import (
     SA_CIVILIZATIONS, SA_FIGURES, SA_FIGURE_CIVS, SA_FIGURE_WIKIPEDIA,
     SA_PEOPLE, SA_CULTURE, SA_STORIES, SA_PLACES, SA_JOURNEY_STOPS,
@@ -494,6 +496,35 @@ LINEAGE_JOURNEY["stops"] = sorted(
     LINEAGE_JOURNEY.get("stops", []) + [
         item for item in SOUTH_AFRICA_EXPANSION_V21["journey"]
         if item.get("id") not in _existing_journey_v21
+    ],
+    key=lambda stop: stop.get("year", -10**12),
+)
+
+
+# South Africa global additions V22
+_existing_places_v22 = {item.get("id") for item in PLACES}
+PLACES.extend(
+    item for item in SOUTH_AFRICA_EXPANSION_V22["atlas_places"]
+    if item.get("id") not in _existing_places_v22
+)
+
+_existing_stories_v22 = {item.get("id") for item in STORIES}
+STORIES.extend(
+    item for item in SOUTH_AFRICA_EXPANSION_V22["stories"]
+    if item.get("id") not in _existing_stories_v22
+)
+
+_existing_timeline_v22 = {item.get("id") for item in SA_TIMELINE_EVENTS}
+SA_TIMELINE_EVENTS.extend(
+    item for item in SOUTH_AFRICA_EXPANSION_V22["timeline"]
+    if item.get("id") not in _existing_timeline_v22
+)
+
+_existing_journey_v22 = {item.get("id") for item in LINEAGE_JOURNEY.get("stops", [])}
+LINEAGE_JOURNEY["stops"] = sorted(
+    LINEAGE_JOURNEY.get("stops", []) + [
+        item for item in SOUTH_AFRICA_EXPANSION_V22["journey"]
+        if item.get("id") not in _existing_journey_v22
     ],
     key=lambda stop: stop.get("year", -10**12),
 )
