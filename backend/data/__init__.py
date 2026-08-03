@@ -54,6 +54,8 @@ from .country_dossiers.south_africa_grand_pack_v17 import SOUTH_AFRICA_GRAND_PAC
 
 from .country_dossiers.south_africa_expansion_v18 import SOUTH_AFRICA_EXPANSION_V18
 
+from .country_dossiers.south_africa_expansion_v20 import SOUTH_AFRICA_EXPANSION_V20
+
 from .south_africa_ecosystem_complete import (
     SA_CIVILIZATIONS, SA_FIGURES, SA_FIGURE_CIVS, SA_FIGURE_WIKIPEDIA,
     SA_PEOPLE, SA_CULTURE, SA_STORIES, SA_PLACES, SA_JOURNEY_STOPS,
@@ -390,6 +392,26 @@ STORIES.extend(item for item in SOUTH_AFRICA_EXPANSION_V18["stories"] if item.ge
 
 _existing_timeline_v18 = {item.get("id") for item in SA_TIMELINE_EVENTS}
 SA_TIMELINE_EVENTS.extend(item for item in SOUTH_AFRICA_EXPANSION_V18["timeline"] if item.get("id") not in _existing_timeline_v18)
+
+
+# South Africa global additions V20
+_existing_places_v20 = {item.get("id") for item in PLACES}
+PLACES.extend(item for item in SOUTH_AFRICA_EXPANSION_V20["places"] if item.get("id") not in _existing_places_v20)
+
+_existing_stories_v20 = {item.get("id") for item in STORIES}
+STORIES.extend(item for item in SOUTH_AFRICA_EXPANSION_V20["stories"] if item.get("id") not in _existing_stories_v20)
+
+_existing_timeline_v20 = {item.get("id") for item in SA_TIMELINE_EVENTS}
+SA_TIMELINE_EVENTS.extend(item for item in SOUTH_AFRICA_EXPANSION_V20["timeline"] if item.get("id") not in _existing_timeline_v20)
+
+_existing_journey_v20 = {item.get("id") for item in LINEAGE_JOURNEY.get("stops", [])}
+LINEAGE_JOURNEY["stops"] = sorted(
+    LINEAGE_JOURNEY.get("stops", []) + [
+        item for item in SOUTH_AFRICA_EXPANSION_V20["journey"]
+        if item.get("id") not in _existing_journey_v20
+    ],
+    key=lambda stop: stop.get("year", -10**12),
+)
 
 # Backfill missing sources arrays on older PLACES entries
 for _p in PLACES:

@@ -3,6 +3,7 @@ from ..south_africa_visuals_v8 import SOUTH_AFRICA_VISUALS_V8
 from .south_africa_timeline_economy import SOUTH_AFRICA_TIMELINE_ECONOMY
 from .south_africa_society_state import SOUTH_AFRICA_SOCIETY_STATE
 from .south_africa_deep_history import DEEP_HISTORY, DEEP_HISTORY_SOURCES
+from .south_africa_expansion_v20 import SOUTH_AFRICA_EXPANSION_V20
 from .south_africa_expansion_v18 import SOUTH_AFRICA_EXPANSION_V18
 from .south_africa_grand_pack_v17 import SOUTH_AFRICA_GRAND_PACK_V17
 from .south_africa_expansion_v16 import SOUTH_AFRICA_EXPANSION_V16
@@ -235,6 +236,36 @@ for section_key in ("society", "law_memory", "international_role"):
         for key, value in list(section.items()):
             if isinstance(value, list):
                 section[key] = [item for item in value if "xenophob" not in str(item).lower()]
+
+
+# South Africa expansion V20
+_v20 = SOUTH_AFRICA_EXPANSION_V20
+
+def _merge_v20(target, incoming):
+    existing = {item.get("id") or item.get("title") or item.get("name") or item.get("topic") for item in target}
+    target.extend(
+        item for item in incoming
+        if (item.get("id") or item.get("title") or item.get("name") or item.get("topic")) not in existing
+    )
+
+_merge_v20(SOUTH_AFRICA_DOSSIER.setdefault("economy", {}).setdefault("sections", []), _v20["economy"])
+_merge_v20(SOUTH_AFRICA_DOSSIER.setdefault("education_health", {}).setdefault("education", {}).setdefault("items", []), _v20["education"])
+_merge_v20(SOUTH_AFRICA_DOSSIER.setdefault("education_health", {}).setdefault("health", {}).setdefault("items", []), _v20["health"])
+_merge_v20(SOUTH_AFRICA_DOSSIER.setdefault("environment", {}).setdefault("items", []), _v20["environment"])
+_merge_v20(SOUTH_AFRICA_DOSSIER.setdefault("stories", []), _v20["stories"])
+_merge_v20(SOUTH_AFRICA_DOSSIER.setdefault("media_gallery", []), _v20["gallery"])
+_merge_v20(SOUTH_AFRICA_DOSSIER.setdefault("sources", []), _v20["additionalSources"])
+
+def _strip_xenophobia(value):
+    if isinstance(value, list):
+        return [_strip_xenophobia(item) for item in value if "xenophob" not in str(item).lower()]
+    if isinstance(value, dict):
+        return {key: _strip_xenophobia(item) for key, item in value.items()}
+    return value
+
+for _section in ("society", "law_memory", "international_role"):
+    if _section in SOUTH_AFRICA_DOSSIER:
+        SOUTH_AFRICA_DOSSIER[_section] = _strip_xenophobia(SOUTH_AFRICA_DOSSIER[_section])
 
 COUNTRY_DOSSIERS = {
     SOUTH_AFRICA_DOSSIER["iso2"]: SOUTH_AFRICA_DOSSIER,
