@@ -60,6 +60,8 @@ from .country_dossiers.south_africa_expansion_v21 import SOUTH_AFRICA_EXPANSION_
 
 from .country_dossiers.south_africa_expansion_v22 import SOUTH_AFRICA_EXPANSION_V22
 
+from .country_dossiers.south_africa_expansion_v23 import SOUTH_AFRICA_EXPANSION_V23
+
 from .south_africa_ecosystem_complete import (
     SA_CIVILIZATIONS, SA_FIGURES, SA_FIGURE_CIVS, SA_FIGURE_WIKIPEDIA,
     SA_PEOPLE, SA_CULTURE, SA_STORIES, SA_PLACES, SA_JOURNEY_STOPS,
@@ -529,6 +531,13 @@ LINEAGE_JOURNEY["stops"] = sorted(
     key=lambda stop: stop.get("year", -10**12),
 )
 
+
+# South Africa global additions V23
+_existing_figures_v23={i.get('id') for i in FIGURES}
+FIGURES.extend({'id':i['id'],'name':i['name'],'category':'artists' if i['field'] in {'Littérature et exil','Jazz et composition'} else 'scientists' if i['field']=='Paléoanthropologie' else 'intellectuals','era':'XVIIIe–XXIe siècles','region':'South Africa','summary':i['reason'],'story':' '.join(i.get('paragraphs',[])),'legacy':i.get('legacy',''),'sources':i.get('sources',[]),'wikipedia_title':i.get('wikipedia_title'),'image_source_url':i.get('image_source_url'),'image_credit':i.get('image_credit'),'visual_type':i.get('visual_type')} for i in SOUTH_AFRICA_EXPANSION_V23['figures'] if i.get('id') not in _existing_figures_v23)
+_existing_places_v23={i.get('id') for i in PLACES}; PLACES.extend(i for i in SOUTH_AFRICA_EXPANSION_V23['places'] if i.get('id') not in _existing_places_v23)
+_existing_stories_v23={i.get('id') for i in STORIES}; STORIES.extend(i for i in SOUTH_AFRICA_EXPANSION_V23['stories'] if i.get('id') not in _existing_stories_v23)
+_existing_timeline_v23={i.get('id') for i in SA_TIMELINE_EVENTS}; SA_TIMELINE_EVENTS.extend(i for i in SOUTH_AFRICA_EXPANSION_V23['timeline'] if i.get('id') not in _existing_timeline_v23)
 # Backfill missing sources arrays on older PLACES entries
 for _p in PLACES:
     if "sources" not in _p and _p["id"] in PLACE_SOURCES_BACKFILL:
