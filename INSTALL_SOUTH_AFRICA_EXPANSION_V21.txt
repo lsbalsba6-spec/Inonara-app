@@ -1,0 +1,35 @@
+AFRIQUE DU SUD — FIGURES, PEUPLES, CULTURE ET PATRIMOINE V21
+
+AJOUTS RÉELS
+- 12 biographies développées;
+- 10 chapitres People avec histoire, territoire, langues, organisation, culture et précautions éditoriales;
+- 8 articles Culture;
+- 6 fiches Patrimoine;
+- 4 Stories;
+- 6 étapes Journey;
+- 6 événements Timeline;
+- 6 lieux Atlas;
+- 8 visuels de galerie;
+- 7 illustrations SVG originales;
+- liens croisés vers Figures, People, Stories, Journey, Timeline et Atlas;
+- aucune modification des composants ou imports React.
+
+TERMUX
+
+cd ~/inonara-app
+
+unzip -o /sdcard/Download/inonara-afrique-du-sud-figures-peuples-culture-v21.zip -d .
+
+python scripts/apply_south_africa_expansion_v21.py
+
+python -m py_compile   backend/data/country_dossiers/south_africa_expansion_v21.py   backend/data/country_dossiers/__init__.py   backend/data/__init__.py
+
+cd frontend
+CI=true npm run build
+
+cd ..
+git add   backend/data   frontend/public/illustrations/south-africa-v21   scripts/apply_south_africa_expansion_v21.py   INSTALL_SOUTH_AFRICA_EXPANSION_V21.txt
+
+git commit -m "feat: enrichir figures peuples culture et patrimoine Afrique du Sud V21"
+
+git push

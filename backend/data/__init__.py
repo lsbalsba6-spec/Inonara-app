@@ -56,6 +56,8 @@ from .country_dossiers.south_africa_expansion_v18 import SOUTH_AFRICA_EXPANSION_
 
 from .country_dossiers.south_africa_expansion_v20 import SOUTH_AFRICA_EXPANSION_V20
 
+from .country_dossiers.south_africa_expansion_v21 import SOUTH_AFRICA_EXPANSION_V21
+
 from .south_africa_ecosystem_complete import (
     SA_CIVILIZATIONS, SA_FIGURES, SA_FIGURE_CIVS, SA_FIGURE_WIKIPEDIA,
     SA_PEOPLE, SA_CULTURE, SA_STORIES, SA_PLACES, SA_JOURNEY_STOPS,
@@ -409,6 +411,89 @@ LINEAGE_JOURNEY["stops"] = sorted(
     LINEAGE_JOURNEY.get("stops", []) + [
         item for item in SOUTH_AFRICA_EXPANSION_V20["journey"]
         if item.get("id") not in _existing_journey_v20
+    ],
+    key=lambda stop: stop.get("year", -10**12),
+)
+
+
+# South Africa global additions V21
+_existing_figures_v21 = {item.get("id") for item in FIGURES}
+FIGURES.extend(
+    {
+        "id": item["id"],
+        "name": item["name"],
+        "category": "artists" if item["field"] in {"Musique, exil et diplomatie culturelle", "Musique, danse et circulation culturelle", "Écriture et journalisme", "Littérature, éducation et humanisme africain"} else "scientists" if item["field"] in {"Biologie moléculaire", "Virologie"} else "athletes" if item["field"] in {"Athlétisme", "Natation"} else "leaders",
+        "era": "XIXe–XXIe siècles",
+        "region": "South Africa",
+        "summary": item["reason"],
+        "story": " ".join(item.get("paragraphs", [])),
+        "legacy": item.get("legacy", ""),
+        "sources": item.get("sources", []),
+        "wikipedia_title": item.get("wikipedia_title"),
+        "image_source_url": item.get("image_source_url"),
+        "image_credit": item.get("image_credit"),
+        "visual_type": item.get("visual_type"),
+    }
+    for item in SOUTH_AFRICA_EXPANSION_V21["figures"]
+    if item.get("id") not in _existing_figures_v21
+)
+
+_existing_people_v21 = {item.get("id") for item in ETHNIC_GROUPS}
+ETHNIC_GROUPS.extend(
+    {
+        "id": item["id"],
+        "name": item["name"],
+        "homeland": item.get("region", ""),
+        "coords": [-29.0, 25.0],
+        "population": "Communautés contemporaines diverses",
+        "language_family": "Variable selon la communauté",
+        "summary": item.get("history", ""),
+        "language": ", ".join(item.get("languages", [])),
+        "religion": "Pratiques diverses selon familles, régions et périodes",
+        "culture": item.get("culture", ""),
+        "diaspora": item.get("contemporary", ""),
+        "sources": item.get("sources", []),
+        "wikipedia_title": item.get("wikipedia_title"),
+        "image_source_url": item.get("image_source_url"),
+        "image_credit": item.get("image_credit"),
+        "visual_type": item.get("visual_type"),
+    }
+    for item in SOUTH_AFRICA_EXPANSION_V21["peoples"]
+    if item.get("id") not in _existing_people_v21
+)
+
+_existing_culture_v21 = {item.get("id") for item in CULTURE_ITEMS}
+CULTURE_ITEMS.extend(
+    {
+        "id": item["id"],
+        "category": "music" if any(word in item["topic"] for word in ("Marabi", "Maskandi", "jazz")) else "art" if any(word in item["topic"] for word in ("Art", "Céramique", "Architectures")) else "sport" if "Sports" in item["topic"] else "media",
+        "region": "Southern Africa",
+        "title": item["topic"],
+        "blurb": item["text"],
+        "image_url": item.get("image_url"),
+        "wikipedia_title": item.get("wikipedia_title"),
+        "image_source_url": item.get("image_source_url"),
+        "image_credit": item.get("image_credit"),
+        "visual_type": item.get("visual_type"),
+    }
+    for item in SOUTH_AFRICA_EXPANSION_V21["culture"]
+    if item.get("id") not in _existing_culture_v21
+)
+
+_existing_places_v21 = {item.get("id") for item in PLACES}
+PLACES.extend(item for item in SOUTH_AFRICA_EXPANSION_V21["places"] if item.get("id") not in _existing_places_v21)
+
+_existing_stories_v21 = {item.get("id") for item in STORIES}
+STORIES.extend(item for item in SOUTH_AFRICA_EXPANSION_V21["stories"] if item.get("id") not in _existing_stories_v21)
+
+_existing_timeline_v21 = {item.get("id") for item in SA_TIMELINE_EVENTS}
+SA_TIMELINE_EVENTS.extend(item for item in SOUTH_AFRICA_EXPANSION_V21["timeline"] if item.get("id") not in _existing_timeline_v21)
+
+_existing_journey_v21 = {item.get("id") for item in LINEAGE_JOURNEY.get("stops", [])}
+LINEAGE_JOURNEY["stops"] = sorted(
+    LINEAGE_JOURNEY.get("stops", []) + [
+        item for item in SOUTH_AFRICA_EXPANSION_V21["journey"]
+        if item.get("id") not in _existing_journey_v21
     ],
     key=lambda stop: stop.get("year", -10**12),
 )

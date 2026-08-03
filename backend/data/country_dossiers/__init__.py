@@ -3,6 +3,7 @@ from ..south_africa_visuals_v8 import SOUTH_AFRICA_VISUALS_V8
 from .south_africa_timeline_economy import SOUTH_AFRICA_TIMELINE_ECONOMY
 from .south_africa_society_state import SOUTH_AFRICA_SOCIETY_STATE
 from .south_africa_deep_history import DEEP_HISTORY, DEEP_HISTORY_SOURCES
+from .south_africa_expansion_v21 import SOUTH_AFRICA_EXPANSION_V21
 from .south_africa_expansion_v20 import SOUTH_AFRICA_EXPANSION_V20
 from .south_africa_expansion_v18 import SOUTH_AFRICA_EXPANSION_V18
 from .south_africa_grand_pack_v17 import SOUTH_AFRICA_GRAND_PACK_V17
@@ -266,6 +267,29 @@ def _strip_xenophobia(value):
 for _section in ("society", "law_memory", "international_role"):
     if _section in SOUTH_AFRICA_DOSSIER:
         SOUTH_AFRICA_DOSSIER[_section] = _strip_xenophobia(SOUTH_AFRICA_DOSSIER[_section])
+
+
+# South Africa expansion V21
+_v21 = SOUTH_AFRICA_EXPANSION_V21
+
+def _merge_v21(target, incoming):
+    existing = {
+        item.get("id") or item.get("title") or item.get("name") or item.get("topic")
+        for item in target
+    }
+    target.extend(
+        item for item in incoming
+        if (item.get("id") or item.get("title") or item.get("name") or item.get("topic"))
+        not in existing
+    )
+
+_merge_v21(SOUTH_AFRICA_DOSSIER.setdefault("figures", []), _v21["figures"])
+_merge_v21(SOUTH_AFRICA_DOSSIER.setdefault("peoples", []), _v21["peoples"])
+_merge_v21(SOUTH_AFRICA_DOSSIER.setdefault("culture", []), _v21["culture"])
+_merge_v21(SOUTH_AFRICA_DOSSIER.setdefault("heritage", []), _v21["heritage"])
+_merge_v21(SOUTH_AFRICA_DOSSIER.setdefault("stories", []), _v21["stories"])
+_merge_v21(SOUTH_AFRICA_DOSSIER.setdefault("media_gallery", []), _v21["gallery"])
+_merge_v21(SOUTH_AFRICA_DOSSIER.setdefault("sources", []), _v21["additionalSources"])
 
 COUNTRY_DOSSIERS = {
     SOUTH_AFRICA_DOSSIER["iso2"]: SOUTH_AFRICA_DOSSIER,
