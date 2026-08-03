@@ -1,3 +1,4 @@
+from .botswana_expansion_v2 import BOTSWANA_EXPANSION_V2
 from .botswana import BOTSWANA_DOSSIER
 from .south_africa import SOUTH_AFRICA_DOSSIER
 from ..south_africa_visuals_v8 import SOUTH_AFRICA_VISUALS_V8
@@ -330,6 +331,26 @@ COUNTRY_DOSSIERS = {
     "botswana": BOTSWANA_DOSSIER,
     SOUTH_AFRICA_DOSSIER["iso2"]: SOUTH_AFRICA_DOSSIER,
 }
+
+# Botswana expansion V2
+_bw2 = BOTSWANA_EXPANSION_V2
+
+def _merge_bw2(target, incoming):
+    existing = {item.get("id") or item.get("name") or item.get("title") or item.get("topic") for item in target}
+    target.extend(item for item in incoming if (item.get("id") or item.get("name") or item.get("title") or item.get("topic")) not in existing)
+
+if "botswana" not in COUNTRY_DOSSIERS:
+    raise RuntimeError("Botswana V1 doit être installé avant V2")
+
+_bw_dossier = COUNTRY_DOSSIERS["botswana"]
+_merge_bw2(_bw_dossier.setdefault("figures", []), _bw2["figures"])
+_merge_bw2(_bw_dossier.setdefault("peoples", []), _bw2["peoples"])
+_merge_bw2(_bw_dossier.setdefault("culture", []), _bw2["culture"])
+_merge_bw2(_bw_dossier.setdefault("heritage", []), _bw2["heritage"])
+_merge_bw2(_bw_dossier.setdefault("stories", []), _bw2["stories"])
+_merge_bw2(_bw_dossier.setdefault("institutions", {}).setdefault("items", []), _bw2["institutions"])
+_merge_bw2(_bw_dossier.setdefault("sources", []), _bw2["sources"])
+
 
 
 def country_dossier_index():

@@ -1,3 +1,4 @@
+from .country_dossiers.botswana_expansion_v2 import BOTSWANA_EXPANSION_V2
 """AfroAtlas content data package — single source of truth.
 
 Consolidates the fragmented seed_*.py modules behind one clean import surface.
@@ -619,6 +620,17 @@ LINEAGE_JOURNEY["stops"] = sorted(
     + [item for item in _bw_v1["journey"] if item.get("id") not in _existing_bw_journey],
     key=lambda stop: stop.get("year", -10**12),
 )
+
+# Botswana global ecosystem V2
+_bw2_global = BOTSWANA_EXPANSION_V2
+
+def _merge_global_bw2(target, incoming):
+    existing = {item.get("id") for item in target}
+    target.extend(item for item in incoming if item.get("id") not in existing)
+
+_merge_global_bw2(PLACES, _bw2_global["places"])
+_merge_global_bw2(STORIES, _bw2_global["stories"])
+_merge_global_bw2(SA_TIMELINE_EVENTS, _bw2_global["timeline"])
 
 # Backfill missing sources arrays on older PLACES entries
 for _p in PLACES:
