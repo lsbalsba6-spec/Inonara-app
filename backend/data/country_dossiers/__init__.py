@@ -1,3 +1,4 @@
+from .botswana_consolidation_v4 import BOTSWANA_CONSOLIDATION_V4
 from .botswana_expansion_v3 import BOTSWANA_EXPANSION_V3
 from .botswana_expansion_v2 import BOTSWANA_EXPANSION_V2
 from .botswana import BOTSWANA_DOSSIER
@@ -371,6 +372,19 @@ _merge_bw2(_bw_dossier.setdefault("stories", []), _bw2["stories"])
 _merge_bw2(_bw_dossier.setdefault("institutions", {}).setdefault("items", []), _bw2["institutions"])
 _merge_bw2(_bw_dossier.setdefault("sources", []), _bw2["sources"])
 
+
+
+
+# Botswana consolidation V4
+_bw4 = BOTSWANA_CONSOLIDATION_V4
+if "botswana" not in COUNTRY_DOSSIERS:
+    raise RuntimeError("Botswana V1 doit être installé avant V4")
+_bw = COUNTRY_DOSSIERS["botswana"]
+_bw.update(_bw4["identity"])
+_bw["presentation"] = _bw4["presentation"]
+_bw.setdefault("overview", {}).update(_bw4["overview"])
+for key in ("institutions", "languages", "religions", "polities", "migrations", "law_memory", "sport_media", "national_symbols", "international_role", "interactive_timeline", "scientific_library", "historiography", "research_gaps", "map_visuals"):
+    _bw[key] = _bw4[key]
 
 
 def country_dossier_index():
