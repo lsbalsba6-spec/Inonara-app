@@ -1,3 +1,4 @@
+from .botswana import BOTSWANA_DOSSIER
 from .south_africa import SOUTH_AFRICA_DOSSIER
 from ..south_africa_visuals_v8 import SOUTH_AFRICA_VISUALS_V8
 from .south_africa_timeline_economy import SOUTH_AFRICA_TIMELINE_ECONOMY
@@ -326,6 +327,7 @@ _merge_v23(SOUTH_AFRICA_DOSSIER.setdefault('stories',[]),_v23['stories'])
 _merge_v23(SOUTH_AFRICA_DOSSIER.setdefault('media_gallery',[]),_v23['gallery'])
 _merge_v23(SOUTH_AFRICA_DOSSIER.setdefault('sources',[]),_v23['additionalSources'])
 COUNTRY_DOSSIERS = {
+    "botswana": BOTSWANA_DOSSIER,
     SOUTH_AFRICA_DOSSIER["iso2"]: SOUTH_AFRICA_DOSSIER,
 }
 
