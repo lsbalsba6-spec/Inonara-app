@@ -1,0 +1,25 @@
+AFRIQUE DU SUD — SOCIÉTÉ, CULTURE ET VISUELS V18
+
+AJOUTS RÉELS
+- 4 articles Société
+- 6 grands articles Culture
+- 4 fiches Patrimoine
+- 3 Stories
+- 5 événements Timeline
+- 4 lieux Atlas
+- 4 visuels de galerie
+- 9 illustrations SVG originales clairement identifiées
+- retrait temporaire des cartes explicitement consacrées à la xénophobie
+- aucune modification des imports React
+
+TERMUX
+cd ~/inonara-app
+unzip -o /sdcard/Download/inonara-afrique-du-sud-societe-culture-visuels-v18.zip -d .
+python scripts/apply_south_africa_expansion_v18.py
+python -m py_compile backend/data/country_dossiers/south_africa_expansion_v18.py backend/data/country_dossiers/__init__.py backend/data/__init__.py
+cd frontend
+CI=true npm run build
+cd ..
+git add backend/data frontend/public/illustrations/south-africa-v18 scripts/apply_south_africa_expansion_v18.py INSTALL_SOUTH_AFRICA_EXPANSION_V18.txt
+git commit -m "feat: enrichir société culture visuels et écosystème Afrique du Sud V18"
+git push

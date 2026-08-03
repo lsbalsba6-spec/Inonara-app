@@ -52,6 +52,8 @@ from .country_dossiers.south_africa_expansion_v16 import SOUTH_AFRICA_EXPANSION_
 
 from .country_dossiers.south_africa_grand_pack_v17 import SOUTH_AFRICA_GRAND_PACK_V17
 
+from .country_dossiers.south_africa_expansion_v18 import SOUTH_AFRICA_EXPANSION_V18
+
 from .south_africa_ecosystem_complete import (
     SA_CIVILIZATIONS, SA_FIGURES, SA_FIGURE_CIVS, SA_FIGURE_WIKIPEDIA,
     SA_PEOPLE, SA_CULTURE, SA_STORIES, SA_PLACES, SA_JOURNEY_STOPS,
@@ -374,6 +376,20 @@ ETHNIC_GROUPS.extend({
     "diaspora":"Mobilités internes, régionales et internationales selon les communautés", "sources":x.get("sources",[]),
     "wikipedia_title":x.get("wikipedia_title"), "image_source_url":x.get("image_source_url"), "image_credit":x.get("image_credit"), "visual_kind":"photograph"
 } for x in _gp17["peoples"] if x.get("id") not in _existing_people_v17)
+
+
+# South Africa global additions V18
+_existing_places_v18 = {item.get("id") for item in PLACES}
+PLACES.extend(item for item in SOUTH_AFRICA_EXPANSION_V18["places"] if item.get("id") not in _existing_places_v18)
+
+_existing_culture_v18 = {item.get("id") for item in CULTURE_ITEMS}
+CULTURE_ITEMS.extend({"id": item["id"], "category": "music" if any(word in item["topic"] for word in ("Jazz", "Mbaqanga")) else "ritual", "region": "Southern Africa", "title": item["topic"], "blurb": item["text"], "image_url": item.get("image_url"), "wikipedia_title": item.get("wikipedia_title"), "image_source_url": item.get("image_source_url"), "image_credit": item.get("image_credit"), "visual_type": item.get("visual_type")} for item in SOUTH_AFRICA_EXPANSION_V18["culture"] if item.get("id") not in _existing_culture_v18)
+
+_existing_stories_v18 = {item.get("id") for item in STORIES}
+STORIES.extend(item for item in SOUTH_AFRICA_EXPANSION_V18["stories"] if item.get("id") not in _existing_stories_v18)
+
+_existing_timeline_v18 = {item.get("id") for item in SA_TIMELINE_EVENTS}
+SA_TIMELINE_EVENTS.extend(item for item in SOUTH_AFRICA_EXPANSION_V18["timeline"] if item.get("id") not in _existing_timeline_v18)
 
 # Backfill missing sources arrays on older PLACES entries
 for _p in PLACES:
