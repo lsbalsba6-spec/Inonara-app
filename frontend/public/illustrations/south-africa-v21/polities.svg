@@ -1,7 +1,0 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" role="img" aria-labelledby="title desc">
-<title id="title">Réseaux politiques</title>
-<desc id="desc">Illustration originale Inonara, représentation symbolique et non photographie historique.</desc>
-<rect width="48" height="48" rx="7" fill="#171513"/>
-<path d="M8 10h10v8H8v-8Zm22 0h10v8H30v-8ZM19 30h10v8H19v-8ZM18 14h12M13 18l9 12M35 18l-9 12" fill="none" stroke="#d2ab67" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-<circle cx="41" cy="7" r="2" fill="#9b7440"/>
-</svg>

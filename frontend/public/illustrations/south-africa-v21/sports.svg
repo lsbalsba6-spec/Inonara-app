@@ -1,7 +1,0 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" role="img" aria-labelledby="title desc">
-<title id="title">Sports</title>
-<desc id="desc">Illustration originale Inonara, représentation symbolique et non photographie historique.</desc>
-<rect width="48" height="48" rx="7" fill="#171513"/>
-<path d="M24 5a19 19 0 1 0 0 38 19 19 0 0 0 0-38Zm-9 5c5 4 7 9 7 14s-2 10-7 14M33 10c-5 4-7 9-7 14s2 10 7 14M6 24h36" fill="none" stroke="#d2ab67" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-<circle cx="41" cy="7" r="2" fill="#9b7440"/>
-</svg>

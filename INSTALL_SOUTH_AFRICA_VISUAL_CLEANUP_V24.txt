@@ -1,0 +1,44 @@
+AFRIQUE DU SUD — NETTOYAGE VISUEL V24
+
+OBJECTIF
+Supprimer tous les SVG géométriques temporaires ajoutés dans les packs V17 à V23,
+ainsi que leurs références dans les données, sans supprimer les vraies photographies.
+
+LE SCRIPT
+- recherche les références /illustrations/south-africa-v17 à v23/*.svg ;
+- retire image_url, image_credit et visual_type uniquement pour ces illustrations ;
+- supprime les fichiers .svg concernés ;
+- conserve les photographies, archives, liens Wikimedia et autres visuels réels ;
+- crée une sauvegarde .v24.bak de chaque fichier modifié ;
+- vérifie qu'aucune référence temporaire ne subsiste.
+
+TERMUX
+
+cd ~/inonara-app
+
+unzip -o /sdcard/Download/inonara-afrique-du-sud-nettoyage-visuel-v24.zip -d .
+
+python scripts/apply_south_africa_visual_cleanup_v24.py
+
+python scripts/verify_south_africa_visual_cleanup_v24.py
+
+python -m py_compile   backend/data/country_dossiers/*.py   backend/data/__init__.py
+
+cd frontend
+CI=true npm run build
+
+SI LE BUILD EST VERT
+
+cd ~/inonara-app
+
+git add   backend/data   frontend/public/illustrations   scripts/apply_south_africa_visual_cleanup_v24.py   scripts/verify_south_africa_visual_cleanup_v24.py   INSTALL_SOUTH_AFRICA_VISUAL_CLEANUP_V24.txt
+
+git commit -m "fix: supprimer les illustrations SVG temporaires Afrique du Sud V24"
+
+git push
+
+REMARQUE
+Les fichiers *.v24.bak restent volontairement hors de la commande git add.
+Après vérification du site, tu peux les supprimer avec :
+
+find backend frontend/src -type f -name '*.v24.bak' -delete

@@ -290,6 +290,8 @@ SOUTH_AFRICA_EXPANSION_V22 = {'atlas_places': [{'id': 'place-table-mountain-v22'
                             'body': 'Le multilinguisme, le numérique et la participation communautaire transforment '
                                     'les pratiques muséales.'}],
               'sources': ['src-iziko-v22', 'src-apartheid-museum-v22'],
+              'image_url': '/illustrations/south-africa-v22/musees.svg',
+              'image_credit': 'Illustration originale Inonara — musées et mémoire',
               'visual_type': 'illustration'},
              {'id': 'story-constitution-hill-v22',
               'title': 'De la prison à la Cour constitutionnelle',
