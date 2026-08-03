@@ -1,3 +1,4 @@
+from .country_dossiers.botswana_expansion_v3 import BOTSWANA_EXPANSION_V3
 from .country_dossiers.botswana_expansion_v2 import BOTSWANA_EXPANSION_V2
 """AfroAtlas content data package — single source of truth.
 
@@ -631,6 +632,17 @@ def _merge_global_bw2(target, incoming):
 _merge_global_bw2(PLACES, _bw2_global["places"])
 _merge_global_bw2(STORIES, _bw2_global["stories"])
 _merge_global_bw2(SA_TIMELINE_EVENTS, _bw2_global["timeline"])
+
+# Botswana global ecosystem V3
+_bw3_global = BOTSWANA_EXPANSION_V3
+
+def _merge_global_bw3(target, incoming):
+    existing = {item.get("id") for item in target}
+    target.extend(item for item in incoming if item.get("id") not in existing)
+
+_merge_global_bw3(PLACES, _bw3_global["places"])
+_merge_global_bw3(STORIES, _bw3_global["stories"])
+_merge_global_bw3(SA_TIMELINE_EVENTS, _bw3_global["timeline"])
 
 # Backfill missing sources arrays on older PLACES entries
 for _p in PLACES:
