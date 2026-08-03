@@ -1,0 +1,28 @@
+AFRIQUE DU SUD — PATRIMOINE, TIMELINE ET VISUELS V10
+
+Ajouts:
+- 4 biographies longues supplémentaires;
+- 4 fiches Patrimoine détaillées;
+- 6 événements Timeline;
+- 4 nouveaux lieux Atlas;
+- 4 nouvelles images dans la galerie;
+- contenus et images propagés dans l’écosystème global.
+
+TERMUX
+
+cd ~/inonara-app
+unzip -o /sdcard/Download/inonara-afrique-du-sud-patrimoine-timeline-visuels-v10.zip -d .
+
+python scripts/apply_south_africa_expansion_v10.py
+
+python -m py_compile   backend/data/country_dossiers/south_africa_expansion_v10.py   backend/data/country_dossiers/__init__.py   backend/data/__init__.py
+
+cd frontend
+CI=true npm run build
+
+cd ..
+git add   backend/data   scripts/apply_south_africa_expansion_v10.py   INSTALL_SOUTH_AFRICA_EXPANSION_V10.txt
+
+git commit -m "feat: enrichir patrimoine timeline et visuels Afrique du Sud V10"
+
+git push

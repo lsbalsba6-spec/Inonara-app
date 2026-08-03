@@ -1,0 +1,20 @@
+#!/data/data/com.termux/files/usr/bin/bash
+set -e
+
+python scripts/apply_south_africa_quality_history_v2.py
+python scripts/apply_south_africa_quality_migrations_v1.py
+python scripts/apply_south_africa_quality_culture_v1.py
+python scripts/apply_south_africa_quality_heritage_v1.py
+python scripts/apply_south_africa_quality_figures_v1.py
+python scripts/apply_south_africa_quality_peoples_v1.py
+python scripts/apply_south_africa_quality_languages_religions_v1.py
+python scripts/apply_south_africa_quality_polities_v1.py
+python scripts/apply_south_africa_quality_sources_v1.py
+python scripts/apply_south_africa_quality_society_v1.py
+python scripts/apply_south_africa_quality_education_health_v1.py
+python scripts/apply_south_africa_quality_economy_v1.py
+python scripts/apply_south_africa_quality_symbols_v1.py
+python scripts/apply_south_africa_quality_international_v1.py
+
+echo
+echo "OK: consolidation finale Afrique du Sud appliquée."

@@ -1,0 +1,73 @@
+INONARA — DOSSIER PAYS AFRIQUE DU SUD V1
+
+Ce paquet ajoute :
+- un dossier maître sourcé pour l'Afrique du Sud ;
+- un endpoint API /api/country-dossiers/ZA ;
+- une page pays à onglets (histoire, peuples, langues, religions, royaumes/États,
+  migrations, culture, patrimoine, personnalités et sources) ;
+- le menu Pays classé par régions africaines puis alphabétiquement ;
+- des tests empêchant la publication de migrations non validées comme routes publiques.
+
+Le paquet ne supprime aucun fichier et ne remplace pas les routes de l'Atlas.
+
+COMMANDES TERMUX
+
+cd ~/inonara-app || exit 1
+
+# Sauvegarde de sécurité facultative mais recommandée
+git branch sauvegarde-avant-afrique-du-sud-v1 2>/dev/null || true
+
+# Décompresser le paquet dans le dépôt
+unzip -o /sdcard/Download/inonara-afrique-du-sud-v1.zip -d ~/inonara-app
+
+# Tests backend ciblés
+PYTHONPATH=backend python -m pytest -q backend/tests/test_country_dossier_south_africa.py
+
+# Vérification de syntaxe Python
+python -m py_compile \
+  backend/data/country_dossiers/south_africa.py \
+  backend/server.py \
+  backend/tests/test_country_dossier_south_africa.py
+
+# Tests et build frontend
+cd frontend || exit 1
+npm test -- --watchAll=false
+npm run build
+cd ..
+
+# Vérifier les modifications
+git status
+git diff -- \
+  backend/data/__init__.py \
+  backend/server.py \
+  frontend/src/lib/api.js \
+  frontend/src/pages/CountryDetail.jsx \
+  frontend/src/pages/CountriesList.jsx
+
+# Enregistrer uniquement si les tests et le build sont acceptables
+git add \
+  backend/data/__init__.py \
+  backend/data/country_dossiers/__init__.py \
+  backend/data/country_dossiers/south_africa.py \
+  backend/server.py \
+  backend/tests/test_country_dossier_south_africa.py \
+  frontend/src/components/CountryDossierView.jsx \
+  frontend/src/data/africa-regions.js \
+  frontend/src/lib/api.js \
+  frontend/src/pages/CountryDetail.jsx \
+  frontend/src/pages/CountriesList.jsx \
+  INSTALL_SOUTH_AFRICA_V1.txt
+
+git commit -m "feat: ajouter le dossier pays Afrique du Sud v1"
+git push
+
+URL A TESTER APRES DEPLOIEMENT
+/country/south-africa
+
+POINTS A CONTROLER
+- Menu Pays > Afrique australe > Afrique du Sud.
+- Onglets de la page pays.
+- Liens de sources.
+- Affichage mobile.
+- Aucune nouvelle route migratoire visible : les migrations du dossier restent
+  documentées mais non publiées sur la carte tant que chaque route n'est pas validée.

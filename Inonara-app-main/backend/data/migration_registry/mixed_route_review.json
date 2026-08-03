@@ -1,0 +1,371 @@
+{
+  "schemaVersion": "1.0",
+  "purpose": "Editorial review of the 12 legacy mixed routes. This file does not alter public map data.",
+  "editorialRule": "A diaspora can have several migration histories. Historical forced movement and modern voluntary/refugee movement must be separate records.",
+  "records": [
+    {
+      "legacyRouteId": "diaspora-afro-bahamian-from-liberated-africans-from-intercepted-slav",
+      "legacyName": "Afro-Bahamian ← Liberated Africans from intercepted slave ships after 1807",
+      "diasporaId": "afro-bahamian",
+      "legacyStartYear": 1783,
+      "legacyEndYear": 2025,
+      "legacyType": "mixed",
+      "decision": "reclassify",
+      "proposedMovements": [
+        {
+          "id": "movement-liberated-africans-bahamas",
+          "migrationType": "forced",
+          "subtype": "intercepted-slave-ships-resettlement",
+          "startYear": 1807,
+          "endYear": null,
+          "integrationStatus": "provisional",
+          "note": "These people were captives on illegal slave ships and were resettled after interception. The movement is not an ongoing mixed route; its terminal date requires direct review of the cited source.",
+          "additionalSources": []
+        }
+      ],
+      "legacySources": [
+        "Michael Craton, 'Islanders in the Stream: A History of the Bahamian People' (1992)"
+      ],
+      "mapAction": "do-not-publish-as-mixed"
+    },
+    {
+      "legacyRouteId": "diaspora-afro-bahamian-from-west-and-central-africa-via-american-loy",
+      "legacyName": "Afro-Bahamian ← West and Central Africa (via American Loyalist migration)",
+      "diasporaId": "afro-bahamian",
+      "legacyStartYear": 1783,
+      "legacyEndYear": 2025,
+      "legacyType": "mixed",
+      "decision": "reclassify",
+      "proposedMovements": [
+        {
+          "id": "movement-enslaved-loyalists-bahamas",
+          "migrationType": "forced",
+          "subtype": "enslavement-relocation",
+          "startYear": 1783,
+          "endYear": null,
+          "integrationStatus": "provisional",
+          "note": "The movement concerns enslaved Africans carried by British Loyalists. The end year must be established from the cited historical work rather than inherited from the present-day community.",
+          "additionalSources": []
+        }
+      ],
+      "legacySources": [
+        "Michael Craton, 'Islanders in the Stream: A History of the Bahamian People' (1992)"
+      ],
+      "mapAction": "do-not-publish-as-mixed"
+    },
+    {
+      "legacyRouteId": "diaspora-afro-emirati-from-east-africa-historical-via-indian-ocean-",
+      "legacyName": "East African-descended Emiratis and African migrant workers ← East Africa (historical, via Indian Ocean/Gulf trade)",
+      "diasporaId": "afro-emirati",
+      "legacyStartYear": 1800,
+      "legacyEndYear": 2025,
+      "legacyType": "mixed",
+      "decision": "reclassify",
+      "proposedMovements": [
+        {
+          "id": "movement-east-africa-trucial-states-forced",
+          "migrationType": "forced",
+          "subtype": "indian-ocean-slavery",
+          "startYear": null,
+          "endYear": 1963,
+          "integrationStatus": "provisional",
+          "note": "Historical enslavement must be a bounded route. The start date and exact jurisdictions require stronger historical sourcing; 1963 is retained only as the abolition date stated in the existing fiche.",
+          "additionalSources": []
+        }
+      ],
+      "legacySources": [
+        "Human Rights Watch, reporting on the kafala system in Gulf states",
+        "Historical record of the 1963 Trucial States abolition of slavery"
+      ],
+      "mapAction": "do-not-publish-as-mixed"
+    },
+    {
+      "legacyRouteId": "diaspora-afro-emirati-from-kenya-uganda-nigeria-ethiopia-contempora",
+      "legacyName": "East African-descended Emiratis and African migrant workers ← Kenya, Uganda, Nigeria, Ethiopia (contemporary labor migrati",
+      "diasporaId": "afro-emirati",
+      "legacyStartYear": 1800,
+      "legacyEndYear": 2025,
+      "legacyType": "mixed",
+      "decision": "reclassify",
+      "proposedMovements": [
+        {
+          "id": "movement-african-labour-uae",
+          "migrationType": "voluntary",
+          "subtype": "labour-migration",
+          "startYear": null,
+          "endYear": 2025,
+          "integrationStatus": "provisional",
+          "note": "Contemporary labour migration is distinct from historical enslavement. Exploitative employment conditions do not automatically turn the migration route itself into historical slavery.",
+          "additionalSources": [
+            {
+              "title": "United Arab Emirates",
+              "publisher": "International Labour Organization",
+              "url": "https://www.ilo.org/regions-and-countries/arab-states/united-arab-emirates",
+              "category": "C"
+            }
+          ]
+        }
+      ],
+      "legacySources": [
+        "Human Rights Watch, reporting on the kafala system in Gulf states",
+        "Historical record of the 1963 Trucial States abolition of slavery"
+      ],
+      "mapAction": "do-not-publish-as-mixed"
+    },
+    {
+      "legacyRouteId": "diaspora-afro-french-from-maghreb-migration-with-sub-saharan-herit",
+      "legacyName": "Afro-French (Hexagone) ← Maghreb migration with sub-Saharan heritage",
+      "diasporaId": "afro-french",
+      "legacyStartYear": 1500,
+      "legacyEndYear": 2025,
+      "legacyType": "mixed",
+      "decision": "reclassify",
+      "proposedMovements": [
+        {
+          "id": "movement-maghreb-france-migration",
+          "migrationType": "voluntary",
+          "subtype": "work-family-study-refuge",
+          "startYear": null,
+          "endYear": 2025,
+          "integrationStatus": "provisional",
+          "note": "The existing route description concerns modern migration, not a single forced-and-voluntary movement. Exact start date and the phrase 'sub-Saharan heritage' require source-by-source review.",
+          "additionalSources": [
+            {
+              "title": "En 2023, 3,5 millions d'immigrés nés en Afrique vivent en France",
+              "publisher": "INSEE",
+              "url": "https://www.insee.fr/fr/statistiques/8237722",
+              "category": "A"
+            }
+          ]
+        }
+      ],
+      "legacySources": [
+        "Pap Ndiaye, 'La condition noire' (2008)",
+        "Sue Peabody, 'There Are No Slaves in France' (1996)",
+        "Jean-Luc Einaudi, 'La Bataille de Paris: 17 octobre 1961' (1991)",
+        "French Presidency, official statement on the 1961 Paris massacre (2012)"
+      ],
+      "mapAction": "do-not-publish-as-mixed"
+    },
+    {
+      "legacyRouteId": "diaspora-afro-french-from-west-african-migration-senegal-mali-c-te",
+      "legacyName": "Afro-French (Hexagone) ← West African migration (Senegal, Mali, Côte d'Ivoire, Camero",
+      "diasporaId": "afro-french",
+      "legacyStartYear": 1500,
+      "legacyEndYear": 2025,
+      "legacyType": "mixed",
+      "decision": "reclassify",
+      "proposedMovements": [
+        {
+          "id": "movement-africa-france-postwar-migration",
+          "migrationType": "voluntary",
+          "subtype": "work-family-study",
+          "startYear": null,
+          "endYear": 2025,
+          "integrationStatus": "provisional",
+          "note": "Contemporary immigration to France must be represented separately from colonial slavery and overseas-department history. Exact start date remains to be researched.",
+          "additionalSources": [
+            {
+              "title": "En 2023, 3,5 millions d'immigrés nés en Afrique vivent en France",
+              "publisher": "INSEE",
+              "url": "https://www.insee.fr/fr/statistiques/8237722",
+              "category": "A"
+            }
+          ]
+        }
+      ],
+      "legacySources": [
+        "Pap Ndiaye, 'La condition noire' (2008)",
+        "Sue Peabody, 'There Are No Slaves in France' (1996)",
+        "Jean-Luc Einaudi, 'La Bataille de Paris: 17 octobre 1961' (1991)",
+        "French Presidency, official statement on the 1961 Paris massacre (2012)"
+      ],
+      "mapAction": "do-not-publish-as-mixed"
+    },
+    {
+      "legacyRouteId": "diaspora-afro-norwegian-from-eritrea",
+      "legacyName": "Somali and Eritrean Norwegian ← Eritrea",
+      "diasporaId": "afro-norwegian",
+      "legacyStartYear": 1990,
+      "legacyEndYear": 2025,
+      "legacyType": "mixed",
+      "decision": "reclassify",
+      "proposedMovements": [
+        {
+          "id": "movement-eritrea-norway-refugees",
+          "migrationType": "refugee",
+          "subtype": "protection-and-family-reunification",
+          "startYear": null,
+          "endYear": 2025,
+          "integrationStatus": "provisional",
+          "note": "The existing fiche describes refugee migration. The start date must be established from Statistics Norway or asylum records rather than inherited from the diaspora family's generic 1990 start.",
+          "additionalSources": [
+            {
+              "title": "Immigrants by reason for immigration",
+              "publisher": "Statistics Norway",
+              "url": "https://www.ssb.no/en/befolkning/innvandrere/statistikk/innvandrere-etter-innvandringsgrunn",
+              "category": "A"
+            }
+          ]
+        }
+      ],
+      "legacySources": [
+        "Statistics Norway (SSB), population by country background"
+      ],
+      "mapAction": "do-not-publish-as-mixed"
+    },
+    {
+      "legacyRouteId": "diaspora-afro-norwegian-from-somalia-post-1991-civil-war",
+      "legacyName": "Somali and Eritrean Norwegian ← Somalia (post-1991 civil war)",
+      "diasporaId": "afro-norwegian",
+      "legacyStartYear": 1990,
+      "legacyEndYear": 2025,
+      "legacyType": "mixed",
+      "decision": "reclassify",
+      "proposedMovements": [
+        {
+          "id": "movement-somalia-norway-refugees",
+          "migrationType": "refugee",
+          "subtype": "protection-and-family-reunification",
+          "startYear": 1991,
+          "endYear": 2025,
+          "integrationStatus": "provisional",
+          "note": "This route is primarily refugee migration and related family reunification, not a simultaneous forced/voluntary route.",
+          "additionalSources": [
+            {
+              "title": "Immigrants by reason for immigration",
+              "publisher": "Statistics Norway",
+              "url": "https://www.ssb.no/en/befolkning/innvandrere/statistikk/innvandrere-etter-innvandringsgrunn",
+              "category": "A"
+            }
+          ]
+        }
+      ],
+      "legacySources": [
+        "Statistics Norway (SSB), population by country background"
+      ],
+      "mapAction": "do-not-publish-as-mixed"
+    },
+    {
+      "legacyRouteId": "diaspora-afro-omani-from-zanzibar-and-the-east-african-coast-via-",
+      "legacyName": "Afro-Omani (Zanzibar-linked) ← Zanzibar and the East African coast (via centuries of Omani ",
+      "diasporaId": "afro-omani",
+      "legacyStartYear": 1698,
+      "legacyEndYear": 2025,
+      "legacyType": "mixed",
+      "decision": "split",
+      "proposedMovements": [
+        {
+          "id": "movement-east-africa-oman-historical-coercion-trade",
+          "migrationType": "unclassified",
+          "subtype": "trade-rule-enslavement",
+          "startYear": 1698,
+          "endYear": 1970,
+          "integrationStatus": "research-gap",
+          "note": "The legacy text combines Omani political rule, trade, intermarriage and slavery. These cannot be represented as one route until each movement is sourced separately.",
+          "additionalSources": []
+        },
+        {
+          "id": "movement-zanzibar-oman-1964-refugees",
+          "migrationType": "refugee",
+          "subtype": "political-refuge",
+          "startYear": 1964,
+          "endYear": null,
+          "integrationStatus": "provisional",
+          "note": "The post-revolution movement to Oman is a distinct refugee/return movement, not a continuation of centuries of trade or enslavement. Its end year requires research.",
+          "additionalSources": []
+        }
+      ],
+      "legacySources": [
+        "Historical records of the Sultanate of Zanzibar (1698–1964)",
+        "1970 Omani royal decree abolishing slavery"
+      ],
+      "mapAction": "do-not-publish-as-mixed"
+    },
+    {
+      "legacyRouteId": "diaspora-afro-qatari-from-east-african-coast-historical-via-pearli",
+      "legacyName": "Afro-Qatari and African migrant workers ← East African coast (historical, via pearling economy)",
+      "diasporaId": "afro-qatari",
+      "legacyStartYear": 1900,
+      "legacyEndYear": 2025,
+      "legacyType": "mixed",
+      "decision": "reclassify",
+      "proposedMovements": [
+        {
+          "id": "movement-east-africa-qatar-forced-pearling",
+          "migrationType": "forced",
+          "subtype": "enslaved-labour",
+          "startYear": null,
+          "endYear": 1952,
+          "integrationStatus": "provisional",
+          "note": "Historical enslaved labour in the pearling economy is a bounded forced movement. The start date requires stronger historical sourcing; 1952 is retained only as the abolition date stated in the existing fiche.",
+          "additionalSources": []
+        }
+      ],
+      "legacySources": [
+        "Amnesty International and Human Rights Watch reporting on Qatar's kafala system and 2022 World Cup labor conditions",
+        "Historical record of Qatar's 1952 abolition of slavery"
+      ],
+      "mapAction": "do-not-publish-as-mixed"
+    },
+    {
+      "legacyRouteId": "diaspora-afro-qatari-from-kenya-uganda-nigeria-ghana-contemporary-",
+      "legacyName": "Afro-Qatari and African migrant workers ← Kenya, Uganda, Nigeria, Ghana (contemporary labor migration)",
+      "diasporaId": "afro-qatari",
+      "legacyStartYear": 1900,
+      "legacyEndYear": 2025,
+      "legacyType": "mixed",
+      "decision": "reclassify",
+      "proposedMovements": [
+        {
+          "id": "movement-african-labour-qatar",
+          "migrationType": "voluntary",
+          "subtype": "labour-migration",
+          "startYear": null,
+          "endYear": 2025,
+          "integrationStatus": "provisional",
+          "note": "Modern labour migration is a separate route from historical enslavement. Coercive labour conditions must be documented in the route narrative but do not justify merging both histories into one mixed route.",
+          "additionalSources": [
+            {
+              "title": "Labour migration in the Arab States",
+              "publisher": "International Labour Organization",
+              "url": "https://www.ilo.org/regions-and-countries/arab-states/ilo-arab-states/countries-covered/ilo-qatar/labour-migration-arab-states",
+              "category": "C"
+            }
+          ]
+        }
+      ],
+      "legacySources": [
+        "Amnesty International and Human Rights Watch reporting on Qatar's kafala system and 2022 World Cup labor conditions",
+        "Historical record of Qatar's 1952 abolition of slavery"
+      ],
+      "mapAction": "do-not-publish-as-mixed"
+    },
+    {
+      "legacyRouteId": "diaspora-afro-trinidadian-from-west-and-west-central-africa-including-a",
+      "legacyName": "Afro-Trinidadian ← West and West-Central Africa, including a notable later wave",
+      "diasporaId": "afro-trinidadian",
+      "legacyStartYear": 1783,
+      "legacyEndYear": 2025,
+      "legacyType": "mixed",
+      "decision": "reclassify",
+      "proposedMovements": [
+        {
+          "id": "movement-enslaved-africans-trinidad",
+          "migrationType": "forced",
+          "subtype": "transatlantic-slavery-and-recaptives",
+          "startYear": 1783,
+          "endYear": null,
+          "integrationStatus": "provisional",
+          "note": "The described Yoruba 'recaptives' and earlier enslaved populations are historical forced movements. Indian indenture mentioned in the fiche is a separate population history and must not make this African route mixed.",
+          "additionalSources": []
+        }
+      ],
+      "legacySources": [
+        "Bridget Brereton, 'A History of Modern Trinidad, 1783–1962' (1981)",
+        "UNESCO documentation on the steelpan"
+      ],
+      "mapAction": "do-not-publish-as-mixed"
+    }
+  ]
+}

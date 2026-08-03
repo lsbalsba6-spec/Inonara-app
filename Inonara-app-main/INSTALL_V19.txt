@@ -1,0 +1,5 @@
+cd ~/inonara-app
+
+unzip -o /sdcard/Download/inonara-v19-economy-education-health.zip -d .
+
+# Apply when integration script is added.

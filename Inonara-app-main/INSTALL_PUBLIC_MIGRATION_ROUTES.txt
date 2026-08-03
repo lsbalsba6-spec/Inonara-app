@@ -1,0 +1,15 @@
+INONARA — Publication gate for migration routes
+
+This package removes the 12 legacy routes classified as "mixed" from the public
+atlas. It does not delete them from the working dataset. They remain in the
+migration registry and review files until each distinct historical or modern
+movement has been independently documented.
+
+Run:
+  python backend/scripts/generate_public_migration_routes.py
+  PYTHONPATH=backend python -m pytest -q \
+    backend/tests/test_public_migration_routes.py \
+    backend/tests/test_mixed_route_review.py \
+    backend/tests/test_migration_registry.py
+
+The API now loads backend/data/diaspora_public_routes.json.

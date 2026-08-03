@@ -1,0 +1,26 @@
+RÉPARATION FINALE FONCTIONNELLE — AFRIQUE DU SUD V2
+
+Ce paquet est construit à partir du dernier ZIP complet envoyé.
+
+Il:
+- conserve et branche la carte interactive générale;
+- conserve et branche les cartes migratoires et pré-1652;
+- empêche le plantage des fiches Peuples/Société & culture;
+- corrige les formes de données Société, Éducation, Santé, Économie, Symboles et International;
+- affiche les sources qu'elles utilisent `sources` ou `sourceIds`;
+- remplace le statut brut `ready` par `Établi`;
+- stabilise les tableaux utilisés par les hooks React pour le build CI/Vercel.
+
+TERMUX
+
+cd ~/inonara-app
+
+unzip -o /sdcard/Download/inonara-afrique-du-sud-reparation-finale-v2.zip -d .
+
+cd frontend
+CI=true npm run build
+
+cd ..
+git add frontend/src/components
+git commit -m "fix: finaliser interface et contenu Afrique du Sud"
+git push

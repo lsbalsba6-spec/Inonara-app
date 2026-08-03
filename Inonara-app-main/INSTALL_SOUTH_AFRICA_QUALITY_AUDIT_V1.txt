@@ -1,0 +1,11 @@
+AFRIQUE DU SUD — AUDIT QUALITÉ V1
+
+1. Décompresser à la racine du dépôt.
+2. Exécuter:
+   python scripts/audit_south_africa_quality.py
+
+Le script contrôle:
+- les composants attendus;
+- les imports relatifs cassés;
+- les textes internes comme TODO ou À compléter;
+- les composants potentiellement non branchés.

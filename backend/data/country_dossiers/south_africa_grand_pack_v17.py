@@ -8,15 +8,16 @@ SOUTH_AFRICA_GRAND_PACK_V17 = {'figures': [{'id': 'figure-pixley-seme-v17',
               'field': 'Droit, presse et politique',
               'lifespan': '1881–1951',
               'reason': 'Avocat et intellectuel associé à la fondation du South African Native National Congress.',
-              'paragraphs': ['Formé en Afrique du Sud, aux États-Unis et au Royaume-Uni, Pixley ka Isaka Seme appartient à '
-                             'une génération d’intellectuels africains qui mobilise le droit, la presse et les réseaux '
-                             'internationaux contre l’exclusion politique.',
-                             'Il joue un rôle décisif dans la réunion de 1912 qui fonde le South African Native National '
-                             'Congress, futur ANC, avec l’objectif de coordonner des revendications jusque-là dispersées.',
-                             'Son parcours révèle aussi les tensions internes des premières élites politiques africaines '
-                             'entre unité nationale, notabilité, propriété et mobilisation populaire.'],
-              'legacy': 'Son parcours révèle aussi les tensions internes des premières élites politiques africaines entre '
-                        'unité nationale, notabilité, propriété et mobilisation populaire.',
+              'paragraphs': ['Formé en Afrique du Sud, aux États-Unis et au Royaume-Uni, Pixley ka Isaka Seme '
+                             'appartient à une génération d’intellectuels africains qui mobilise le droit, la presse '
+                             'et les réseaux internationaux contre l’exclusion politique.',
+                             'Il joue un rôle décisif dans la réunion de 1912 qui fonde le South African Native '
+                             'National Congress, futur ANC, avec l’objectif de coordonner des revendications jusque-là '
+                             'dispersées.',
+                             'Son parcours révèle aussi les tensions internes des premières élites politiques '
+                             'africaines entre unité nationale, notabilité, propriété et mobilisation populaire.'],
+              'legacy': 'Son parcours révèle aussi les tensions internes des premières élites politiques africaines '
+                        'entre unité nationale, notabilité, propriété et mobilisation populaire.',
               'sources': ['src-saho-seme-v17'],
               'wikipedia_title': 'Pixley_ka_Isaka_Seme',
               'image_source_url': 'https://en.wikipedia.org/wiki/Pixley_ka_Isaka_Seme',
@@ -26,16 +27,16 @@ SOUTH_AFRICA_GRAND_PACK_V17 = {'figures': [{'id': 'figure-pixley-seme-v17',
               'name': 'Josiah Tshangana Gumede',
               'field': 'Politique panafricaine',
               'lifespan': '1867–1946',
-              'reason': 'Dirigeant de l’ANC ayant défendu une orientation plus populaire et internationale à la fin des '
-                        'années 1920.',
-              'paragraphs': ['Josiah Gumede exerce comme enseignant, interprète et responsable politique avant de rejoindre '
-                             'les structures nationales africaines.',
+              'reason': 'Dirigeant de l’ANC ayant défendu une orientation plus populaire et internationale à la fin '
+                        'des années 1920.',
+              'paragraphs': ['Josiah Gumede exerce comme enseignant, interprète et responsable politique avant de '
+                             'rejoindre les structures nationales africaines.',
                              'À la présidence de l’ANC, il cherche à rapprocher l’organisation des travailleurs, des '
                              'mouvements anticoloniaux et de réseaux internationaux.',
-                             'Son éviction montre les désaccords anciens sur la stratégie, la classe sociale et la place '
-                             'des mobilisations populaires dans le nationalisme sud-africain.'],
-              'legacy': 'Son éviction montre les désaccords anciens sur la stratégie, la classe sociale et la place des '
-                        'mobilisations populaires dans le nationalisme sud-africain.',
+                             'Son éviction montre les désaccords anciens sur la stratégie, la classe sociale et la '
+                             'place des mobilisations populaires dans le nationalisme sud-africain.'],
+              'legacy': 'Son éviction montre les désaccords anciens sur la stratégie, la classe sociale et la place '
+                        'des mobilisations populaires dans le nationalisme sud-africain.',
               'sources': ['src-saho-gumede-v17'],
               'wikipedia_title': 'Josiah_Tshangana_Gumede',
               'image_source_url': 'https://en.wikipedia.org/wiki/Josiah_Tshangana_Gumede',
@@ -48,8 +49,8 @@ SOUTH_AFRICA_GRAND_PACK_V17 = {'figures': [{'id': 'figure-pixley-seme-v17',
               'reason': 'Avocat des droits humains et premier ministre de la Justice de l’Afrique du Sud démocratique.',
               'paragraphs': ['Dullah Omar défend pendant des décennies des militants, des syndicats et des communautés '
                              'touchées par les lois de l’apartheid.',
-                             'Après 1994, il devient ministre de la Justice et participe à la transformation d’institutions '
-                             'longtemps structurées par la ségrégation.',
+                             'Après 1994, il devient ministre de la Justice et participe à la transformation '
+                             'd’institutions longtemps structurées par la ségrégation.',
                              'Son mandat est associé à la création de la Commission vérité et réconciliation et à la '
                              'construction du nouvel ordre constitutionnel.'],
               'legacy': 'Son mandat est associé à la création de la Commission vérité et réconciliation et à la '
@@ -66,10 +67,10 @@ SOUTH_AFRICA_GRAND_PACK_V17 = {'figures': [{'id': 'figure-pixley-seme-v17',
               'reason': 'Journaliste, militante en exil et première présidente de l’Assemblée nationale démocratique.',
               'paragraphs': ['Frene Ginwala utilise le journalisme et les réseaux internationaux pour documenter '
                              'l’apartheid et soutenir l’organisation en exil.',
-                             'Elle participe aux structures extérieures de l’ANC et aux débats sur les droits des femmes, '
-                             'la diplomatie et la reconstruction institutionnelle.',
-                             'Élue présidente de l’Assemblée nationale en 1994, elle contribue à installer les pratiques du '
-                             'nouveau Parlement.'],
+                             'Elle participe aux structures extérieures de l’ANC et aux débats sur les droits des '
+                             'femmes, la diplomatie et la reconstruction institutionnelle.',
+                             'Élue présidente de l’Assemblée nationale en 1994, elle contribue à installer les '
+                             'pratiques du nouveau Parlement.'],
               'legacy': 'Élue présidente de l’Assemblée nationale en 1994, elle contribue à installer les pratiques du '
                         'nouveau Parlement.',
               'sources': ['src-parliament-ginwala-v17'],
@@ -84,12 +85,12 @@ SOUTH_AFRICA_GRAND_PACK_V17 = {'figures': [{'id': 'figure-pixley-seme-v17',
               'reason': 'Avocat anti-apartheid, survivant d’un attentat et juge de la Cour constitutionnelle.',
               'paragraphs': ['Albie Sachs défend des militants et travaille sur les fondements juridiques d’une future '
                              'démocratie non raciale.',
-                             'Gravement blessé par une bombe placée par les services de sécurité en 1988, il poursuit son '
-                             'engagement depuis l’exil puis après son retour.',
+                             'Gravement blessé par une bombe placée par les services de sécurité en 1988, il poursuit '
+                             'son engagement depuis l’exil puis après son retour.',
                              'Comme juge constitutionnel, il participe à une jurisprudence majeure sur l’égalité, la '
                              'dignité et les libertés.'],
-              'legacy': 'Comme juge constitutionnel, il participe à une jurisprudence majeure sur l’égalité, la dignité et '
-                        'les libertés.',
+              'legacy': 'Comme juge constitutionnel, il participe à une jurisprudence majeure sur l’égalité, la '
+                        'dignité et les libertés.',
               'sources': ['src-cc-sachs-v17'],
               'wikipedia_title': 'Albie_Sachs',
               'image_source_url': 'https://en.wikipedia.org/wiki/Albie_Sachs',
@@ -100,12 +101,13 @@ SOUTH_AFRICA_GRAND_PACK_V17 = {'figures': [{'id': 'figure-pixley-seme-v17',
               'field': 'Droit constitutionnel et handicap',
               'lifespan': '1948–',
               'reason': 'Avocat, militant et ancien juge de la Cour constitutionnelle.',
-              'paragraphs': ['Aveugle depuis l’enfance, Zak Yacoob étudie le droit et représente de nombreuses personnes '
-                             'poursuivies pour leur opposition à l’apartheid.',
-                             'Il participe à la rédaction constitutionnelle puis siège à la Cour constitutionnelle, où il '
-                             'intervient dans des affaires relatives aux droits sociaux et à la responsabilité publique.',
-                             'Son parcours relie lutte contre le racisme, accessibilité, indépendance judiciaire et défense '
-                             'concrète de la Constitution.'],
+              'paragraphs': ['Aveugle depuis l’enfance, Zak Yacoob étudie le droit et représente de nombreuses '
+                             'personnes poursuivies pour leur opposition à l’apartheid.',
+                             'Il participe à la rédaction constitutionnelle puis siège à la Cour constitutionnelle, où '
+                             'il intervient dans des affaires relatives aux droits sociaux et à la responsabilité '
+                             'publique.',
+                             'Son parcours relie lutte contre le racisme, accessibilité, indépendance judiciaire et '
+                             'défense concrète de la Constitution.'],
               'legacy': 'Son parcours relie lutte contre le racisme, accessibilité, indépendance judiciaire et défense '
                         'concrète de la Constitution.',
               'sources': ['src-cc-yacoob-v17'],
@@ -117,16 +119,16 @@ SOUTH_AFRICA_GRAND_PACK_V17 = {'figures': [{'id': 'figure-pixley-seme-v17',
               'name': 'Patricia de Lille',
               'field': 'Politique et dénonciation publique',
               'lifespan': '1951–',
-              'reason': 'Syndicaliste et responsable politique ayant contribué à exposer des programmes militaires secrets '
-                        'de l’apartheid.',
-              'paragraphs': ['Patricia de Lille se forme dans le travail de laboratoire et le syndicalisme avant d’entrer '
-                             'dans la politique nationale.',
-                             'Au Parlement, elle rend publiques des informations relatives à des programmes chimiques et '
-                             'biologiques secrets du régime précédent.',
-                             'Sa longue carrière illustre à la fois les possibilités et les recompositions fréquentes du '
-                             'paysage partisan post-apartheid.'],
-              'legacy': 'Sa longue carrière illustre à la fois les possibilités et les recompositions fréquentes du paysage '
-                        'partisan post-apartheid.',
+              'reason': 'Syndicaliste et responsable politique ayant contribué à exposer des programmes militaires '
+                        'secrets de l’apartheid.',
+              'paragraphs': ['Patricia de Lille se forme dans le travail de laboratoire et le syndicalisme avant '
+                             'd’entrer dans la politique nationale.',
+                             'Au Parlement, elle rend publiques des informations relatives à des programmes chimiques '
+                             'et biologiques secrets du régime précédent.',
+                             'Sa longue carrière illustre à la fois les possibilités et les recompositions fréquentes '
+                             'du paysage partisan post-apartheid.'],
+              'legacy': 'Sa longue carrière illustre à la fois les possibilités et les recompositions fréquentes du '
+                        'paysage partisan post-apartheid.',
               'sources': ['src-parliament-delille-v17'],
               'wikipedia_title': 'Patricia_de_Lille',
               'image_source_url': 'https://en.wikipedia.org/wiki/Patricia_de_Lille',
@@ -137,14 +139,14 @@ SOUTH_AFRICA_GRAND_PACK_V17 = {'figures': [{'id': 'figure-pixley-seme-v17',
               'field': 'Paléoanthropologie',
               'lifespan': '1925–2012',
               'reason': 'Anatomiste et paléoanthropologue lié aux recherches sur les hominines d’Afrique australe.',
-              'paragraphs': ['Phillip Tobias mène des recherches sur l’anatomie humaine, les fossiles et l’évolution au '
-                             'sein de l’Université du Witwatersrand.',
+              'paragraphs': ['Phillip Tobias mène des recherches sur l’anatomie humaine, les fossiles et l’évolution '
+                             'au sein de l’Université du Witwatersrand.',
                              'Il contribue à l’étude de fossiles issus de Sterkfontein et d’autres sites, tout en '
                              'participant aux débats internationaux sur l’évolution humaine.',
-                             'Son héritage scientifique doit être lu avec une attention aux transformations méthodologiques '
-                             'et aux critiques contemporaines des anciennes classifications raciales.'],
-              'legacy': 'Son héritage scientifique doit être lu avec une attention aux transformations méthodologiques et '
-                        'aux critiques contemporaines des anciennes classifications raciales.',
+                             'Son héritage scientifique doit être lu avec une attention aux transformations '
+                             'méthodologiques et aux critiques contemporaines des anciennes classifications raciales.'],
+              'legacy': 'Son héritage scientifique doit être lu avec une attention aux transformations méthodologiques '
+                        'et aux critiques contemporaines des anciennes classifications raciales.',
               'sources': ['src-wits-tobias-v17'],
               'wikipedia_title': 'Phillip_V._Tobias',
               'image_source_url': 'https://en.wikipedia.org/wiki/Phillip_V._Tobias',
@@ -154,11 +156,12 @@ SOUTH_AFRICA_GRAND_PACK_V17 = {'figures': [{'id': 'figure-pixley-seme-v17',
               'name': 'Himla Soodyall',
               'field': 'Génétique humaine',
               'lifespan': '1963–',
-              'reason': 'Généticienne connue pour ses recherches sur la diversité humaine et les migrations en Afrique.',
-              'paragraphs': ['Himla Soodyall étudie la diversité génétique de populations africaines et les trajectoires '
-                             'anciennes de migration.',
-                             'Ses travaux montrent que l’histoire biologique humaine est faite de branchements, de mélanges '
-                             'et de mobilités, et ne correspond pas à des catégories raciales fixes.',
+              'reason': 'Généticienne connue pour ses recherches sur la diversité humaine et les migrations en '
+                        'Afrique.',
+              'paragraphs': ['Himla Soodyall étudie la diversité génétique de populations africaines et les '
+                             'trajectoires anciennes de migration.',
+                             'Ses travaux montrent que l’histoire biologique humaine est faite de branchements, de '
+                             'mélanges et de mobilités, et ne correspond pas à des catégories raciales fixes.',
                              'Elle joue également un rôle important dans la médiation scientifique et la formation de '
                              'chercheurs.'],
               'legacy': 'Elle joue également un rôle important dans la médiation scientifique et la formation de '
@@ -173,14 +176,14 @@ SOUTH_AFRICA_GRAND_PACK_V17 = {'figures': [{'id': 'figure-pixley-seme-v17',
               'field': 'Épidémiologie',
               'lifespan': '1960–',
               'reason': 'Épidémiologiste spécialisé dans le VIH, la tuberculose et les réponses aux épidémies.',
-              'paragraphs': ['Salim Abdool Karim conduit des recherches cliniques et de santé publique sur le VIH et la '
-                             'tuberculose en Afrique australe.',
+              'paragraphs': ['Salim Abdool Karim conduit des recherches cliniques et de santé publique sur le VIH et '
+                             'la tuberculose en Afrique australe.',
                              'Il dirige ou participe à des essais qui cherchent à améliorer prévention, traitement et '
                              'organisation des politiques sanitaires.',
                              'Son rôle public pendant la pandémie de COVID-19 illustre l’importance mais aussi la '
                              'difficulté de communiquer l’incertitude scientifique.'],
-              'legacy': 'Son rôle public pendant la pandémie de COVID-19 illustre l’importance mais aussi la difficulté de '
-                        'communiquer l’incertitude scientifique.',
+              'legacy': 'Son rôle public pendant la pandémie de COVID-19 illustre l’importance mais aussi la '
+                        'difficulté de communiquer l’incertitude scientifique.',
               'sources': ['src-caprisa-karim-v17'],
               'wikipedia_title': 'Salim_Abdool_Karim',
               'image_source_url': 'https://en.wikipedia.org/wiki/Salim_Abdool_Karim',
@@ -191,12 +194,12 @@ SOUTH_AFRICA_GRAND_PACK_V17 = {'figures': [{'id': 'figure-pixley-seme-v17',
               'field': 'Épidémiologie et santé des femmes',
               'lifespan': '1960–',
               'reason': 'Chercheuse majeure sur la prévention du VIH, notamment chez les femmes en Afrique australe.',
-              'paragraphs': ['Quarraisha Abdool Karim étudie les facteurs sociaux et biologiques qui rendent les jeunes '
-                             'femmes particulièrement exposées au VIH.',
-                             'Ses recherches relient essais cliniques, santé communautaire, rapports de genre et accès aux '
-                             'outils de prévention.',
-                             'Elle a contribué à faire de la prévention contrôlée par les femmes un enjeu central de la '
-                             'recherche internationale.'],
+              'paragraphs': ['Quarraisha Abdool Karim étudie les facteurs sociaux et biologiques qui rendent les '
+                             'jeunes femmes particulièrement exposées au VIH.',
+                             'Ses recherches relient essais cliniques, santé communautaire, rapports de genre et accès '
+                             'aux outils de prévention.',
+                             'Elle a contribué à faire de la prévention contrôlée par les femmes un enjeu central de '
+                             'la recherche internationale.'],
               'legacy': 'Elle a contribué à faire de la prévention contrôlée par les femmes un enjeu central de la '
                         'recherche internationale.',
               'sources': ['src-caprisa-qkarim-v17'],
@@ -210,14 +213,14 @@ SOUTH_AFRICA_GRAND_PACK_V17 = {'figures': [{'id': 'figure-pixley-seme-v17',
               'lifespan': '1973–',
               'reason': 'Entrepreneur du logiciel libre, fondateur de Canonical et premier Africain ayant voyagé dans '
                         'l’espace comme touriste.',
-              'paragraphs': ['Mark Shuttleworth crée une entreprise de sécurité numérique avant de financer des projets '
-                             'technologiques et éducatifs.',
+              'paragraphs': ['Mark Shuttleworth crée une entreprise de sécurité numérique avant de financer des '
+                             'projets technologiques et éducatifs.',
                              'Avec Canonical et Ubuntu, il contribue à la diffusion d’un système d’exploitation libre '
                              'utilisé mondialement.',
-                             'Son parcours montre les possibilités de l’écosystème technologique sud-africain, mais aussi '
-                             'sa forte insertion dans des réseaux financiers et scientifiques internationaux.'],
-              'legacy': 'Son parcours montre les possibilités de l’écosystème technologique sud-africain, mais aussi sa '
-                        'forte insertion dans des réseaux financiers et scientifiques internationaux.',
+                             'Son parcours montre les possibilités de l’écosystème technologique sud-africain, mais '
+                             'aussi sa forte insertion dans des réseaux financiers et scientifiques internationaux.'],
+              'legacy': 'Son parcours montre les possibilités de l’écosystème technologique sud-africain, mais aussi '
+                        'sa forte insertion dans des réseaux financiers et scientifiques internationaux.',
               'sources': ['src-canonical-shuttleworth-v17'],
               'wikipedia_title': 'Mark_Shuttleworth',
               'image_source_url': 'https://en.wikipedia.org/wiki/Mark_Shuttleworth',
@@ -230,12 +233,12 @@ SOUTH_AFRICA_GRAND_PACK_V17 = {'figures': [{'id': 'figure-pixley-seme-v17',
               'reason': 'Écrivaine, autobiographe et ancienne fonctionnaire internationale.',
               'paragraphs': ['Sindiwe Magona grandit dans le Cap oriental et travaille comme enseignante avant de '
                              'poursuivre des études en Afrique du Sud et à l’étranger.',
-                             'Ses romans, nouvelles et autobiographies explorent le travail domestique, les familles, la '
-                             'pauvreté, la violence politique et les voix des femmes.',
-                             'Son écriture transforme l’expérience quotidienne en archive littéraire de l’apartheid et de '
-                             'ses héritages.'],
-              'legacy': 'Son écriture transforme l’expérience quotidienne en archive littéraire de l’apartheid et de ses '
-                        'héritages.',
+                             'Ses romans, nouvelles et autobiographies explorent le travail domestique, les familles, '
+                             'la pauvreté, la violence politique et les voix des femmes.',
+                             'Son écriture transforme l’expérience quotidienne en archive littéraire de l’apartheid et '
+                             'de ses héritages.'],
+              'legacy': 'Son écriture transforme l’expérience quotidienne en archive littéraire de l’apartheid et de '
+                        'ses héritages.',
               'sources': ['src-saho-magona-v17'],
               'wikipedia_title': 'Sindiwe_Magona',
               'image_source_url': 'https://en.wikipedia.org/wiki/Sindiwe_Magona',
@@ -246,12 +249,12 @@ SOUTH_AFRICA_GRAND_PACK_V17 = {'figures': [{'id': 'figure-pixley-seme-v17',
               'field': 'Poésie et traditions épiques',
               'lifespan': '1930–2006',
               'reason': 'Poète en isiZulu, militant culturel et poète lauréat national.',
-              'paragraphs': ['Mazisi Kunene écrit et traduit de longues œuvres poétiques nourries par les traditions orales '
-                             'et historiques zouloues.',
+              'paragraphs': ['Mazisi Kunene écrit et traduit de longues œuvres poétiques nourries par les traditions '
+                             'orales et historiques zouloues.',
                              'Exilé pendant l’apartheid, il participe aux activités internationales de l’ANC tout en '
                              'enseignant la littérature africaine.',
-                             'Son œuvre défend la capacité des langues africaines à porter philosophie, épopée, mémoire et '
-                             'création moderne.'],
+                             'Son œuvre défend la capacité des langues africaines à porter philosophie, épopée, '
+                             'mémoire et création moderne.'],
               'legacy': 'Son œuvre défend la capacité des langues africaines à porter philosophie, épopée, mémoire et '
                         'création moderne.',
               'sources': ['src-dsac-kunene-v17'],
@@ -270,7 +273,8 @@ SOUTH_AFRICA_GRAND_PACK_V17 = {'figures': [{'id': 'figure-pixley-seme-v17',
                              'rythmes, hymnes et souvenirs sud-africains.',
                              'Mannenberg devient notamment un morceau emblématique des cultures urbaines et de la '
                              'résistance.'],
-              'legacy': 'Mannenberg devient notamment un morceau emblématique des cultures urbaines et de la résistance.',
+              'legacy': 'Mannenberg devient notamment un morceau emblématique des cultures urbaines et de la '
+                        'résistance.',
               'sources': ['src-saho-ibrahim-v17'],
               'wikipedia_title': 'Abdullah_Ibrahim',
               'image_source_url': 'https://en.wikipedia.org/wiki/Abdullah_Ibrahim',
@@ -281,13 +285,14 @@ SOUTH_AFRICA_GRAND_PACK_V17 = {'figures': [{'id': 'figure-pixley-seme-v17',
               'field': 'Musique vocale',
               'lifespan': '1957–2021',
               'reason': 'Chanteuse ayant circulé entre opéra, jazz, traditions chorales et musique populaire.',
-              'paragraphs': ['Sibongile Khumalo reçoit une formation musicale familiale et universitaire avant de devenir '
-                             'une interprète majeure de la scène sud-africaine.',
+              'paragraphs': ['Sibongile Khumalo reçoit une formation musicale familiale et universitaire avant de '
+                             'devenir une interprète majeure de la scène sud-africaine.',
                              'Elle chante dans plusieurs langues et répertoires, refusant la séparation rigide entre '
                              'musique savante, jazz et traditions africaines.',
                              'Sa carrière représente une conception ouverte et plurielle de l’excellence musicale '
                              'nationale.'],
-              'legacy': 'Sa carrière représente une conception ouverte et plurielle de l’excellence musicale nationale.',
+              'legacy': 'Sa carrière représente une conception ouverte et plurielle de l’excellence musicale '
+                        'nationale.',
               'sources': ['src-saho-khumalo-v17'],
               'wikipedia_title': 'Sibongile_Khumalo',
               'image_source_url': 'https://en.wikipedia.org/wiki/Sibongile_Khumalo',
@@ -297,16 +302,16 @@ SOUTH_AFRICA_GRAND_PACK_V17 = {'figures': [{'id': 'figure-pixley-seme-v17',
               'name': 'Mary Sibande',
               'field': 'Arts visuels',
               'lifespan': '1982–',
-              'reason': 'Artiste connue pour des sculptures et installations sur le travail domestique, la race, le genre '
-                        'et l’imagination.',
-              'paragraphs': ['Mary Sibande crée le personnage de Sophie, inspiré par l’histoire de femmes de sa famille '
-                             'ayant travaillé comme domestiques.',
+              'reason': 'Artiste connue pour des sculptures et installations sur le travail domestique, la race, le '
+                        'genre et l’imagination.',
+              'paragraphs': ['Mary Sibande crée le personnage de Sophie, inspiré par l’histoire de femmes de sa '
+                             'famille ayant travaillé comme domestiques.',
                              'À travers costumes, sculpture et photographie, elle transforme l’uniforme domestique en '
                              'espace de rêve, de pouvoir et de métamorphose.',
-                             'Son œuvre interroge la continuité des hiérarchies sociales tout en refusant de réduire les '
-                             'femmes noires à la souffrance.'],
-              'legacy': 'Son œuvre interroge la continuité des hiérarchies sociales tout en refusant de réduire les femmes '
-                        'noires à la souffrance.',
+                             'Son œuvre interroge la continuité des hiérarchies sociales tout en refusant de réduire '
+                             'les femmes noires à la souffrance.'],
+              'legacy': 'Son œuvre interroge la continuité des hiérarchies sociales tout en refusant de réduire les '
+                        'femmes noires à la souffrance.',
               'sources': ['src-smac-sibande-v17'],
               'wikipedia_title': 'Mary_Sibande',
               'image_source_url': 'https://en.wikipedia.org/wiki/Mary_Sibande',
@@ -321,10 +326,10 @@ SOUTH_AFRICA_GRAND_PACK_V17 = {'figures': [{'id': 'figure-pixley-seme-v17',
                              'l’enfance et la vie urbaine.',
                              'Ses œuvres utilisent fusain, encre et couleur pour produire des portraits expressifs qui '
                              'circulent largement dans le marché international de l’art.',
-                             'Son travail participe à un déplacement des représentations de l’enfance africaine, souvent '
-                             'limitée dans les médias à la vulnérabilité.'],
-              'legacy': 'Son travail participe à un déplacement des représentations de l’enfance africaine, souvent limitée '
-                        'dans les médias à la vulnérabilité.',
+                             'Son travail participe à un déplacement des représentations de l’enfance africaine, '
+                             'souvent limitée dans les médias à la vulnérabilité.'],
+              'legacy': 'Son travail participe à un déplacement des représentations de l’enfance africaine, souvent '
+                        'limitée dans les médias à la vulnérabilité.',
               'sources': ['src-everard-makamo-v17'],
               'wikipedia_title': 'Nelson_Makamo',
               'image_source_url': 'https://en.wikipedia.org/wiki/Nelson_Makamo',
@@ -334,16 +339,16 @@ SOUTH_AFRICA_GRAND_PACK_V17 = {'figures': [{'id': 'figure-pixley-seme-v17',
               'name': 'Makazole Mapimpi',
               'field': 'Rugby',
               'lifespan': '1990–',
-              'reason': 'Ailier international et premier joueur sud-africain à marquer un essai en finale de Coupe du monde '
-                        'masculine.',
-              'paragraphs': ['Makazole Mapimpi grandit dans le Cap oriental et accède tardivement au rugby professionnel de '
-                             'haut niveau.',
-                             'Son essai lors de la finale mondiale de 2019 devient un moment symbolique dans l’histoire des '
-                             'Springboks.',
+              'reason': 'Ailier international et premier joueur sud-africain à marquer un essai en finale de Coupe du '
+                        'monde masculine.',
+              'paragraphs': ['Makazole Mapimpi grandit dans le Cap oriental et accède tardivement au rugby '
+                             'professionnel de haut niveau.',
+                             'Son essai lors de la finale mondiale de 2019 devient un moment symbolique dans '
+                             'l’histoire des Springboks.',
                              'Son parcours souligne à la fois la puissance intégratrice du sport et les inégalités '
                              'persistantes d’accès aux infrastructures et aux filières d’élite.'],
-              'legacy': 'Son parcours souligne à la fois la puissance intégratrice du sport et les inégalités persistantes '
-                        'd’accès aux infrastructures et aux filières d’élite.',
+              'legacy': 'Son parcours souligne à la fois la puissance intégratrice du sport et les inégalités '
+                        'persistantes d’accès aux infrastructures et aux filières d’élite.',
               'sources': ['src-sarugby-mapimpi-v17'],
               'wikipedia_title': 'Makazole_Mapimpi',
               'image_source_url': 'https://en.wikipedia.org/wiki/Makazole_Mapimpi',
@@ -358,10 +363,10 @@ SOUTH_AFRICA_GRAND_PACK_V17 = {'figures': [{'id': 'figure-pixley-seme-v17',
                              'olympiques et mondiaux.',
                              'Ses performances contribuent à la visibilité de la natation sud-africaine au plus haut '
                              'niveau.',
-                             'Son parcours permet aussi d’aborder les conditions d’accès aux équipements, aux entraîneurs '
-                             'et au sport de compétition.'],
-              'legacy': 'Son parcours permet aussi d’aborder les conditions d’accès aux équipements, aux entraîneurs et au '
-                        'sport de compétition.',
+                             'Son parcours permet aussi d’aborder les conditions d’accès aux équipements, aux '
+                             'entraîneurs et au sport de compétition.'],
+              'legacy': 'Son parcours permet aussi d’aborder les conditions d’accès aux équipements, aux entraîneurs '
+                        'et au sport de compétition.',
               'sources': ['src-olympics-smith-v17'],
               'wikipedia_title': 'Tatjana_Smith',
               'image_source_url': 'https://en.wikipedia.org/wiki/Tatjana_Smith',
@@ -375,8 +380,10 @@ SOUTH_AFRICA_GRAND_PACK_V17 = {'figures': [{'id': 'figure-pixley-seme-v17',
                          'basotho et à de longues circulations transfrontalières.',
               'paragraphs': ['Les transformations du XIXe siècle, les conflits fonciers, la colonisation et le travail '
                              'migrant redessinent les territoires et les familles.',
-                             'La langue sesotho porte une importante tradition écrite, orale, religieuse et médiatique.'],
-              'caution': 'Ne pas confondre identité linguistique, citoyenneté sud-africaine et appartenance au Lesotho.',
+                             'La langue sesotho porte une importante tradition écrite, orale, religieuse et '
+                             'médiatique.'],
+              'caution': 'Ne pas confondre identité linguistique, citoyenneté sud-africaine et appartenance au '
+                         'Lesotho.',
               'sources': ['src-saho-sotho-v17'],
               'wikipedia_title': 'Sotho people',
               'image_source_url': 'https://en.wikipedia.org/wiki/Sotho_people',
@@ -388,8 +395,8 @@ SOUTH_AFRICA_GRAND_PACK_V17 = {'figures': [{'id': 'figure-pixley-seme-v17',
               'history': 'Les communautés tswana sont organisées historiquement en plusieurs merafe et formations '
                          'politiques liées à des centres urbains, à l’élevage et aux échanges régionaux.',
               'paragraphs': ['Les frontières coloniales divisent des espaces politiques et familiaux plus anciens.',
-                             'Setswana occupe aujourd’hui une place importante dans l’éducation, la littérature, les médias '
-                             'et la vie publique.'],
+                             'Setswana occupe aujourd’hui une place importante dans l’éducation, la littérature, les '
+                             'médias et la vie publique.'],
               'caution': 'La proximité avec le Botswana ne signifie pas une identité politique unique.',
               'sources': ['src-saho-tswana-v17'],
               'wikipedia_title': 'Tswana people',
@@ -403,8 +410,8 @@ SOUTH_AFRICA_GRAND_PACK_V17 = {'figures': [{'id': 'figure-pixley-seme-v17',
                          'sud-africain, notamment dans les résistances aux expansions boer et britannique.',
               'paragraphs': ['La conquête, les missions, le travail migrant et le homeland du Lebowa transforment les '
                              'institutions.',
-                             'Les pratiques contemporaines associent traditions locales, christianismes, urbanisation et '
-                             'mobilité.'],
+                             'Les pratiques contemporaines associent traditions locales, christianismes, urbanisation '
+                             'et mobilité.'],
               'caution': 'Le terme Pedi ne recouvre pas toutes les communautés parlant des variétés sotho du Nord.',
               'sources': ['src-saho-pedi-v17'],
               'wikipedia_title': 'Pedi people',
@@ -416,8 +423,8 @@ SOUTH_AFRICA_GRAND_PACK_V17 = {'figures': [{'id': 'figure-pixley-seme-v17',
               'languages': ['siSwati'],
               'history': 'Les communautés swazi sont liées à une histoire politique régionale qui dépasse la frontière '
                          'actuelle entre l’Afrique du Sud et l’Eswatini.',
-              'paragraphs': ['Le travail migrant, les mariages, le commerce et les institutions coutumières maintiennent '
-                             'des liens transfrontaliers.',
+              'paragraphs': ['Le travail migrant, les mariages, le commerce et les institutions coutumières '
+                             'maintiennent des liens transfrontaliers.',
                              'SiSwati est une langue officielle d’Afrique du Sud et d’Eswatini.'],
               'caution': 'Distinguer citoyenneté, langue, identité culturelle et loyauté politique.',
               'sources': ['src-saho-swazi-v17'],
@@ -428,12 +435,13 @@ SOUTH_AFRICA_GRAND_PACK_V17 = {'figures': [{'id': 'figure-pixley-seme-v17',
               'name': 'Ndebele du Sud',
               'region': 'Mpumalanga et Gauteng',
               'languages': ['isiNdebele'],
-              'history': 'Les Ndebele du Sud connaissent des recompositions politiques, des conflits et des déplacements au '
-                         'XIXe siècle, puis les effets du travail migrant et du homeland du KwaNdebele.',
-              'paragraphs': ['Les peintures murales et le perlage sont portés par des savoirs transmis et des innovations '
-                             'individuelles.',
-                             'La langue isiNdebele est officielle mais reste moins dotée en ressources institutionnelles '
-                             'que certaines autres langues.'],
+              'history': 'Les Ndebele du Sud connaissent des recompositions politiques, des conflits et des '
+                         'déplacements au XIXe siècle, puis les effets du travail migrant et du homeland du '
+                         'KwaNdebele.',
+              'paragraphs': ['Les peintures murales et le perlage sont portés par des savoirs transmis et des '
+                             'innovations individuelles.',
+                             'La langue isiNdebele est officielle mais reste moins dotée en ressources '
+                             'institutionnelles que certaines autres langues.'],
               'caution': 'Ne pas confondre les Ndebele du Sud avec les Ndebele du Zimbabwe.',
               'sources': ['src-saho-ndebele-v17'],
               'wikipedia_title': 'Southern Ndebele people',
@@ -443,12 +451,12 @@ SOUTH_AFRICA_GRAND_PACK_V17 = {'figures': [{'id': 'figure-pixley-seme-v17',
               'name': 'Communautés sud-africaines d’origine indienne',
               'region': 'KwaZulu-Natal, Gauteng et grandes villes',
               'languages': ['anglais', 'langues indiennes dans certains usages familiaux et religieux'],
-              'history': 'Ces communautés résultent de trajectoires distinctes : travail sous contrat à partir de 1860, '
-                         'commerce, migrations familiales et mobilités ultérieures.',
+              'history': 'Ces communautés résultent de trajectoires distinctes : travail sous contrat à partir de '
+                         '1860, commerce, migrations familiales et mobilités ultérieures.',
               'paragraphs': ['Les lois ségrégationnistes puis l’apartheid imposent des restrictions résidentielles et '
                              'professionnelles.',
-                             'Les identités contemporaines sont sud-africaines et diverses, et ne peuvent être décrites '
-                             'comme une simple extension de l’Inde.'],
+                             'Les identités contemporaines sont sud-africaines et diverses, et ne peuvent être '
+                             'décrites comme une simple extension de l’Inde.'],
               'caution': 'Toujours distinguer engagisme, migration libre et générations nées en Afrique du Sud.',
               'sources': ['src-saho-indian-v17'],
               'wikipedia_title': 'Indian South Africans',
@@ -458,8 +466,8 @@ SOUTH_AFRICA_GRAND_PACK_V17 = {'figures': [{'id': 'figure-pixley-seme-v17',
               'name': 'Communautés musulmanes du Cap',
               'region': 'Le Cap et autres centres urbains',
               'languages': ['afrikaans', 'anglais', 'arabe liturgique'],
-              'history': 'Les communautés musulmanes du Cap sont liées aux personnes esclavisées, prisonniers politiques et '
-                         'migrants venus de différentes parties de l’océan Indien.',
+              'history': 'Les communautés musulmanes du Cap sont liées aux personnes esclavisées, prisonniers '
+                         'politiques et migrants venus de différentes parties de l’océan Indien.',
               'paragraphs': ['Les mosquées, écoles, confréries et traditions culinaires deviennent des institutions '
                              'centrales de la vie communautaire.',
                              'L’appellation Cape Malay est historiquement importante mais ne décrit pas toutes les '
@@ -473,14 +481,16 @@ SOUTH_AFRICA_GRAND_PACK_V17 = {'figures': [{'id': 'figure-pixley-seme-v17',
               'name': 'Afrikaners',
               'region': 'Ensemble du pays et diaspora internationale',
               'languages': ['afrikaans'],
-              'history': 'Les Afrikaners se constituent progressivement à partir de populations européennes établies au '
-                         'Cap, d’esclavage, de frontières coloniales, de religion réformée et de nationalismes politiques.',
+              'history': 'Les Afrikaners se constituent progressivement à partir de populations européennes établies '
+                         'au Cap, d’esclavage, de frontières coloniales, de religion réformée et de nationalismes '
+                         'politiques.',
               'paragraphs': ['Le nationalisme afrikaner joue un rôle central dans la création et la justification de '
-                             'l’apartheid, mais les positions politiques et sociales n’ont jamais été totalement uniformes.',
-                             'Depuis 1994, les identités afrikaners se recomposent autour de la langue, de la mémoire, de '
-                             'la classe et de la place dans la démocratie.'],
-              'caution': 'Ne pas confondre langue afrikaans, identité afrikaner et population blanche sud-africaine dans '
-                         'son ensemble.',
+                             'l’apartheid, mais les positions politiques et sociales n’ont jamais été totalement '
+                             'uniformes.',
+                             'Depuis 1994, les identités afrikaners se recomposent autour de la langue, de la mémoire, '
+                             'de la classe et de la place dans la démocratie.'],
+              'caution': 'Ne pas confondre langue afrikaans, identité afrikaner et population blanche sud-africaine '
+                         'dans son ensemble.',
               'sources': ['src-saho-afrikaner-v17'],
               'wikipedia_title': 'Afrikaners',
               'image_source_url': 'https://en.wikipedia.org/wiki/Afrikaners',
@@ -492,8 +502,8 @@ SOUTH_AFRICA_GRAND_PACK_V17 = {'figures': [{'id': 'figure-pixley-seme-v17',
               'history': 'Les identités griqua se forment dans les zones frontalières du Cap à travers des communautés '
                          'd’ascendances multiples, des réseaux pastoraux et des formations politiques autonomes.',
               'paragraphs': ['Des capitaineries et territoires griqua jouent un rôle important au XIXe siècle.',
-                             'Les descendants revendiquent aujourd’hui mémoire, patrimoine et reconnaissance dans plusieurs '
-                             'régions.'],
+                             'Les descendants revendiquent aujourd’hui mémoire, patrimoine et reconnaissance dans '
+                             'plusieurs régions.'],
               'caution': 'Éviter de traiter Griqua comme une catégorie raciale naturelle ou homogène.',
               'sources': ['src-saho-griqua-v17'],
               'wikipedia_title': 'Griqua_people',
@@ -504,12 +514,12 @@ SOUTH_AFRICA_GRAND_PACK_V17 = {'figures': [{'id': 'figure-pixley-seme-v17',
               'region': 'Johannesburg, Le Cap, Durban et autres villes',
               'languages': ['anglais', 'afrikaans', 'hébreu et yiddish dans certains contextes'],
               'history': 'Les communautés juives sud-africaines se développent principalement par des migrations '
-                         'européennes aux XIXe et XXe siècles, tout en connaissant des trajectoires politiques et sociales '
-                         'diverses.',
-              'paragraphs': ['Certaines personnes participent aux institutions dominantes, tandis que d’autres jouent un '
-                             'rôle important dans les mouvements anti-apartheid.',
-                             'Les communautés contemporaines sont marquées par l’émigration, les institutions religieuses '
-                             'et éducatives, et des débats internes sur la mémoire politique.'],
+                         'européennes aux XIXe et XXe siècles, tout en connaissant des trajectoires politiques et '
+                         'sociales diverses.',
+              'paragraphs': ['Certaines personnes participent aux institutions dominantes, tandis que d’autres jouent '
+                             'un rôle important dans les mouvements anti-apartheid.',
+                             'Les communautés contemporaines sont marquées par l’émigration, les institutions '
+                             'religieuses et éducatives, et des débats internes sur la mémoire politique.'],
               'caution': 'Ne pas attribuer une position politique unique à une communauté diverse.',
               'sources': ['src-jewish-museum-v17'],
               'wikipedia_title': 'History_of_the_Jews_in_South_Africa',
@@ -519,12 +529,12 @@ SOUTH_AFRICA_GRAND_PACK_V17 = {'figures': [{'id': 'figure-pixley-seme-v17',
               'title': 'Logement, quartiers et transformation urbaine',
               'status': 'provisional',
               'text': 'Le logement relie histoire foncière, ségrégation, urbanisation et politiques publiques.',
-              'paragraphs': ['La construction de logements subventionnés a élargi l’accès à la propriété et aux services, '
-                             'mais une partie des nouveaux quartiers reste éloignée des emplois.',
+              'paragraphs': ['La construction de logements subventionnés a élargi l’accès à la propriété et aux '
+                             'services, mais une partie des nouveaux quartiers reste éloignée des emplois.',
                              'Les habitats informels répondent à des besoins réels de proximité et de coût, tout en '
                              'exposant les habitants à des risques d’incendie, d’inondation et d’expulsion.',
-                             'Une politique durable doit associer logement, transport, sécurité foncière, équipements et '
-                             'participation des habitants.'],
+                             'Une politique durable doit associer logement, transport, sécurité foncière, équipements '
+                             'et participation des habitants.'],
               'sourceIds': ['src-statssa-census-v17']},
              {'id': 'society-disability-v17',
               'title': 'Handicap, accessibilité et participation',
@@ -533,48 +543,48 @@ SOUTH_AFRICA_GRAND_PACK_V17 = {'figures': [{'id': 'figure-pixley-seme-v17',
                       'inégale.',
               'paragraphs': ['Les personnes handicapées rencontrent des obstacles dans l’éducation, l’emploi, les '
                              'transports, la santé et l’accès à l’information.',
-                             'La langue des signes sud-africaine est reconnue comme langue officielle, ce qui renforce sa '
-                             'visibilité sans garantir automatiquement les services d’interprétation.',
-                             'L’inclusion exige de concevoir les systèmes dès le départ pour des usages divers, plutôt que '
-                             'd’ajouter des adaptations tardives.'],
+                             'La langue des signes sud-africaine est reconnue comme langue officielle, ce qui renforce '
+                             'sa visibilité sans garantir automatiquement les services d’interprétation.',
+                             'L’inclusion exige de concevoir les systèmes dès le départ pour des usages divers, plutôt '
+                             'que d’ajouter des adaptations tardives.'],
               'sourceIds': ['src-gov-disability-v17']},
              {'id': 'society-digital-v17',
               'title': 'Numérique, connectivité et nouvelles inégalités',
               'status': 'provisional',
               'text': 'Téléphones mobiles, plateformes et services numériques transforment information, commerce, '
                       'apprentissage et création.',
-              'paragraphs': ['L’accès reste cependant dépendant du coût des données, de la qualité du réseau, des appareils '
-                             'et des compétences numériques.',
-                             'Les plateformes donnent une visibilité nouvelle aux langues, musiques et entreprises, mais '
-                             'concentrent aussi pouvoir économique et données personnelles.',
+              'paragraphs': ['L’accès reste cependant dépendant du coût des données, de la qualité du réseau, des '
+                             'appareils et des compétences numériques.',
+                             'Les plateformes donnent une visibilité nouvelle aux langues, musiques et entreprises, '
+                             'mais concentrent aussi pouvoir économique et données personnelles.',
                              'La politique numérique doit donc combiner infrastructure, concurrence, protection des '
                              'utilisateurs et production locale.'],
               'sourceIds': ['src-icasa-v17']},
              {'id': 'society-care-v17',
               'title': 'Économie du soin et solidarités familiales',
               'status': 'provisional',
-              'text': 'Les soins aux enfants, aux personnes âgées, malades ou handicapées sont indispensables mais souvent '
-                      'sous-payés ou invisibles.',
+              'text': 'Les soins aux enfants, aux personnes âgées, malades ou handicapées sont indispensables mais '
+                      'souvent sous-payés ou invisibles.',
               'paragraphs': ['Les femmes assurent une part disproportionnée du travail domestique et communautaire.',
                              'Les migrations de travail, le chômage et les maladies chroniques redistribuent les '
                              'responsabilités entre générations et lieux de résidence.',
-                             'Reconnaître le soin comme infrastructure sociale implique protection du travail, services '
-                             'publics et soutien aux aidants.'],
+                             'Reconnaître le soin comme infrastructure sociale implique protection du travail, '
+                             'services publics et soutien aux aidants.'],
               'sourceIds': ['src-statssa-timeuse-v17']}],
  'education': [{'id': 'education-early-childhood-v17',
                 'title': 'Petite enfance et fondations de l’apprentissage',
                 'status': 'provisional',
                 'paragraphs': ['Les premières années influencent langage, santé, socialisation et réussite scolaire.',
-                               'L’accès aux structures de qualité varie selon les revenus, les territoires et les capacités '
-                               'municipales.',
-                               'La politique de petite enfance relie nutrition, protection, formation des éducateurs et '
-                               'soutien aux familles.'],
+                               'L’accès aux structures de qualité varie selon les revenus, les territoires et les '
+                               'capacités municipales.',
+                               'La politique de petite enfance relie nutrition, protection, formation des éducateurs '
+                               'et soutien aux familles.'],
                 'sourceIds': ['src-dbe-ecd-v17']},
                {'id': 'education-teachers-v17',
                 'title': 'Enseignants, conditions de travail et qualité scolaire',
                 'status': 'provisional',
-                'paragraphs': ['Les enseignants travaillent dans des contextes très différents en matière d’effectifs, de '
-                               'ressources et de sécurité.',
+                'paragraphs': ['Les enseignants travaillent dans des contextes très différents en matière d’effectifs, '
+                               'de ressources et de sécurité.',
                                'La formation initiale, l’accompagnement professionnel et la stabilité des équipes '
                                'influencent directement les apprentissages.',
                                'Les réformes ne peuvent réussir si elles reposent uniquement sur des évaluations sans '
@@ -593,52 +603,56 @@ SOUTH_AFRICA_GRAND_PACK_V17 = {'figures': [{'id': 'figure-pixley-seme-v17',
  'health': [{'id': 'health-primary-care-v17',
              'title': 'Soins primaires et cliniques communautaires',
              'status': 'ready',
-             'paragraphs': ['Les cliniques publiques constituent le premier point de contact pour une grande partie de la '
-                            'population.',
-                            'Leur efficacité dépend des médicaments, des personnels, des systèmes de référence et de la '
-                            'continuité des dossiers.',
-                            'Les agents de santé communautaires relient prévention, suivi à domicile et établissements.'],
+             'paragraphs': ['Les cliniques publiques constituent le premier point de contact pour une grande partie de '
+                            'la population.',
+                            'Leur efficacité dépend des médicaments, des personnels, des systèmes de référence et de '
+                            'la continuité des dossiers.',
+                            'Les agents de santé communautaires relient prévention, suivi à domicile et '
+                            'établissements.'],
              'sourceIds': ['src-health-v17']},
             {'id': 'health-nutrition-v17',
              'title': 'Nutrition, alimentation et double fardeau',
              'status': 'provisional',
              'paragraphs': ['Le pays combine encore sous-nutrition infantile, insécurité alimentaire et progression de '
                             'l’obésité et des maladies métaboliques.',
-                            'Les prix, la qualité des commerces, le temps disponible et le marketing influencent les choix '
-                            'alimentaires.',
-                            'Une réponse efficace associe revenus, agriculture, restauration scolaire, réglementation et '
-                            'éducation nutritionnelle.'],
+                            'Les prix, la qualité des commerces, le temps disponible et le marketing influencent les '
+                            'choix alimentaires.',
+                            'Une réponse efficace associe revenus, agriculture, restauration scolaire, réglementation '
+                            'et éducation nutritionnelle.'],
              'sourceIds': ['src-health-v17']},
             {'id': 'health-traditional-healers-v17',
              'title': 'Praticiens traditionnels et pluralité des soins',
              'status': 'provisional',
-             'paragraphs': ['De nombreuses personnes consultent à la fois services biomédicaux, guérisseurs, herboristes et '
-                            'responsables religieux.',
-                            'Ces pratiques sont liées à des conceptions de la personne, des ancêtres, de la maladie et des '
-                            'relations sociales.',
-                            'La coopération exige respect, sécurité des patients, recherche et clarté sur les limites de '
-                            'chaque pratique.'],
+             'paragraphs': ['De nombreuses personnes consultent à la fois services biomédicaux, guérisseurs, '
+                            'herboristes et responsables religieux.',
+                            'Ces pratiques sont liées à des conceptions de la personne, des ancêtres, de la maladie et '
+                            'des relations sociales.',
+                            'La coopération exige respect, sécurité des patients, recherche et clarté sur les limites '
+                            'de chaque pratique.'],
              'sourceIds': ['src-health-traditional-v17']}],
  'economy': [{'id': 'economy-metallurgy-v17',
               'title': 'Métallurgie, minerais et chaînes de valeur',
               'status': 'ready',
               'paragraphs': ['L’Afrique du Sud dispose d’importantes ressources minières et d’une longue histoire '
                              'métallurgique antérieure à la colonisation.',
-                             'L’économie moderne exporte encore une part importante de minerais bruts ou semi-transformés, '
-                             'alors que la valeur la plus élevée se situe souvent dans la transformation industrielle.',
-                             'Développer des chaînes de valeur exige énergie fiable, compétences, infrastructure, recherche '
-                             'et règles environnementales.'],
+                             'L’économie moderne exporte encore une part importante de minerais bruts ou '
+                             'semi-transformés, alors que la valeur la plus élevée se situe souvent dans la '
+                             'transformation industrielle.',
+                             'Développer des chaînes de valeur exige énergie fiable, compétences, infrastructure, '
+                             'recherche et règles environnementales.'],
               'sourceIds': ['src-dmre-v17'],
-              'image_url': '/illustrations/south-africa/metallurgie.svg',
-              'image_credit': 'Inonara — illustration originale',
-              'visual_kind': 'illustration'},
+              'visual_kind': 'illustration',
+              'wikipedia_title': 'Mining industry of South Africa',
+              'image_source_url': 'https://en.wikipedia.org/wiki/Mining_industry_of_South_Africa',
+              'image_credit': 'Photographie Wikimedia — industrie minière sud-africaine',
+              'visual_type': 'photograph'},
              {'id': 'economy-logistics-v17',
               'title': 'Ports, rail et logistique',
               'status': 'provisional',
-              'paragraphs': ['Les ports de Durban, Richards Bay, Ngqura, Gqeberha et Le Cap relient l’économie aux marchés '
-                             'mondiaux.',
-                             'Les défaillances ferroviaires, portuaires et routières augmentent les coûts et limitent les '
-                             'exportations.',
+              'paragraphs': ['Les ports de Durban, Richards Bay, Ngqura, Gqeberha et Le Cap relient l’économie aux '
+                             'marchés mondiaux.',
+                             'Les défaillances ferroviaires, portuaires et routières augmentent les coûts et limitent '
+                             'les exportations.',
                              'La modernisation doit améliorer capacité, maintenance, concurrence et coordination sans '
                              'négliger les travailleurs et l’environnement.'],
               'sourceIds': ['src-transnet-v17']},
@@ -648,31 +662,34 @@ SOUTH_AFRICA_GRAND_PACK_V17 = {'figures': [{'id': 'figure-pixley-seme-v17',
               'paragraphs': ['Musique, cinéma, design, édition, mode, jeux et arts visuels créent emplois, propriété '
                              'intellectuelle et rayonnement international.',
                              'Une grande partie du travail reste indépendant, irrégulier et peu protégé.',
-                             'Les politiques doivent soutenir formation, financement, droits d’auteur, diffusion locale et '
-                             'accès aux marchés mondiaux.'],
+                             'Les politiques doivent soutenir formation, financement, droits d’auteur, diffusion '
+                             'locale et accès aux marchés mondiaux.'],
               'sourceIds': ['src-dsac-v17']},
              {'id': 'economy-agriculture-v17',
               'title': 'Agriculture, eau et transformation alimentaire',
               'status': 'provisional',
               'paragraphs': ['Le secteur associe grandes exploitations exportatrices, petites entreprises, production '
                              'familiale et élevage.',
-                             'La sécheresse, la concentration foncière, les coûts logistiques et l’accès au financement '
-                             'structurent les écarts de productivité.',
+                             'La sécheresse, la concentration foncière, les coûts logistiques et l’accès au '
+                             'financement structurent les écarts de productivité.',
                              'La transformation alimentaire locale peut créer davantage de valeur si elle s’appuie sur '
                              'énergie, normes, stockage et marchés.'],
               'sourceIds': ['src-dalrrd-v17'],
-              'image_url': '/illustrations/south-africa/agriculture.svg',
-              'image_credit': 'Inonara — illustration originale',
-              'visual_kind': 'illustration'}],
+              'visual_kind': 'illustration',
+              'wikipedia_title': 'Agriculture in South Africa',
+              'image_source_url': 'https://en.wikipedia.org/wiki/Agriculture_in_South_Africa',
+              'image_credit': 'Photographie Wikimedia — agriculture en Afrique du Sud',
+              'visual_type': 'photograph'}],
  'heritage': [{'id': 'heritage-freedom-park-v17',
                'name': 'Freedom Park',
                'note': 'Complexe mémoriel à Pretoria consacré aux luttes, conflits et trajectoires qui ont façonné '
                        'l’Afrique du Sud.',
                'paragraphs': ['Le site associe architecture, paysage, noms de personnes, expositions et espaces '
                               'cérémoniels.',
-                              'Il cherche à construire un récit national large, mais toute synthèse mémorielle implique des '
-                              'choix sur les personnes et événements représentés.',
-                              'La visite gagne à être reliée aux archives, aux sites locaux et aux récits communautaires.'],
+                              'Il cherche à construire un récit national large, mais toute synthèse mémorielle '
+                              'implique des choix sur les personnes et événements représentés.',
+                              'La visite gagne à être reliée aux archives, aux sites locaux et aux récits '
+                              'communautaires.'],
                'status': 'ready',
                'sources': ['src-freedom-park-v17'],
                'wikipedia_title': 'Freedom Park (South Africa)',
@@ -697,8 +714,8 @@ SOUTH_AFRICA_GRAND_PACK_V17 = {'figures': [{'id': 'figure-pixley-seme-v17',
                'note': 'Musée communautaire du Cap consacré à un quartier détruit par les expulsions forcées.',
                'paragraphs': ['Le musée naît du travail de personnes déplacées, d’activistes et de chercheurs qui '
                               'rassemblent cartes, photographies et souvenirs.',
-                              'Il montre que la destruction d’un quartier touche non seulement les bâtiments, mais aussi '
-                              'les réseaux sociaux, les métiers, les langues et la musique.',
+                              'Il montre que la destruction d’un quartier touche non seulement les bâtiments, mais '
+                              'aussi les réseaux sociaux, les métiers, les langues et la musique.',
                               'Son approche participative est devenue une référence pour les musées de mémoire.'],
                'status': 'ready',
                'sources': ['src-district-six-v17'],
@@ -708,9 +725,10 @@ SOUTH_AFRICA_GRAND_PACK_V17 = {'figures': [{'id': 'figure-pixley-seme-v17',
               {'id': 'heritage-castle-good-hope-v17',
                'name': 'Castle of Good Hope',
                'note': 'Fortification coloniale du Cap liée à la Compagnie néerlandaise des Indes orientales.',
-               'paragraphs': ['Le bâtiment témoigne de l’installation coloniale, du contrôle militaire, de l’administration '
-                              'et des réseaux de l’océan Indien.',
-                              'Il est aussi lié à l’esclavage, aux punitions et aux rapports de pouvoir du Cap colonial.',
+               'paragraphs': ['Le bâtiment témoigne de l’installation coloniale, du contrôle militaire, de '
+                              'l’administration et des réseaux de l’océan Indien.',
+                              'Il est aussi lié à l’esclavage, aux punitions et aux rapports de pouvoir du Cap '
+                              'colonial.',
                               'La médiation doit dépasser l’histoire architecturale pour rendre visibles les personnes '
                               'dominées par l’institution.'],
                'status': 'provisional',
@@ -722,8 +740,8 @@ SOUTH_AFRICA_GRAND_PACK_V17 = {'figures': [{'id': 'figure-pixley-seme-v17',
                'name': 'Camdeboo et Valley of Desolation',
                'note': 'Paysage du Cap oriental associant géologie, biodiversité et histoire pastorale.',
                'paragraphs': ['Les formations rocheuses témoignent de processus géologiques sur une très longue durée.',
-                              'La région est également liée aux communautés khoekhoe, à la colonisation, à l’élevage et aux '
-                              'transformations rurales.',
+                              'La région est également liée aux communautés khoekhoe, à la colonisation, à l’élevage '
+                              'et aux transformations rurales.',
                               'L’interprétation d’un paysage naturel doit inclure les histoires humaines qui l’ont '
                               'traversé.'],
                'status': 'provisional',
@@ -748,20 +766,23 @@ SOUTH_AFRICA_GRAND_PACK_V17 = {'figures': [{'id': 'figure-pixley-seme-v17',
               'title': 'Terre, mines et travail migrant',
               'civilization_id': None,
               'era': '1867–présent',
-              'summary': 'Comment les découvertes minières ont transformé territoires, familles, villes et institutions.',
+              'summary': 'Comment les découvertes minières ont transformé territoires, familles, villes et '
+                         'institutions.',
               'chapters': [{'heading': 'Diamants et or',
                             'body': 'Les découvertes de diamants puis d’or attirent capitaux, travailleurs et '
                                     'infrastructures à une échelle nouvelle.'},
                            {'heading': 'Contrôle du travail',
-                            'body': 'Taxes, logements collectifs, pass laws et recrutement régional construisent un système '
-                                    'de travail migrant.'},
+                            'body': 'Taxes, logements collectifs, pass laws et recrutement régional construisent un '
+                                    'système de travail migrant.'},
                            {'heading': 'Héritages',
                             'body': 'Les villes minières, maladies professionnelles, inégalités spatiales et économies '
                                     'régionales portent encore cette histoire.'}],
               'sources': ['South African History Online — Mining', 'Minerals Council South Africa'],
-              'image_url': '/illustrations/south-africa/mines.svg',
-              'image_credit': 'Inonara — illustration originale',
-              'visual_kind': 'illustration'},
+              'visual_kind': 'illustration',
+              'wikipedia_title': 'Mining industry of South Africa',
+              'image_source_url': 'https://en.wikipedia.org/wiki/Mining_industry_of_South_Africa',
+              'image_credit': 'Photographie Wikimedia — industrie minière sud-africaine',
+              'visual_type': 'photograph'},
              {'id': 'story-women-organise-v17',
               'title': 'Femmes, soin et organisation politique',
               'civilization_id': None,
@@ -770,11 +791,11 @@ SOUTH_AFRICA_GRAND_PACK_V17 = {'figures': [{'id': 'figure-pixley-seme-v17',
               'chapters': [{'heading': 'Pass laws et vie quotidienne',
                             'body': 'Les lois de contrôle touchent travail, logement, famille et mobilité.'},
                            {'heading': 'Syndicats et fédérations',
-                            'body': 'Les femmes construisent des organisations nationales et locales autour du travail, des '
-                                    'droits et de la vie communautaire.'},
+                            'body': 'Les femmes construisent des organisations nationales et locales autour du '
+                                    'travail, des droits et de la vie communautaire.'},
                            {'heading': 'Continuités',
-                            'body': 'Bannissements et détentions n’empêchent pas les réseaux de soin et de solidarité de '
-                                    'soutenir la résistance.'}],
+                            'body': 'Bannissements et détentions n’empêchent pas les réseaux de soin et de solidarité '
+                                    'de soutenir la résistance.'}],
               'sources': ['South African History Online — Women’s struggles'],
               'wikipedia_title': "1956 Women's March, Pretoria"},
              {'id': 'story-language-power-v17',
@@ -790,12 +811,14 @@ SOUTH_AFRICA_GRAND_PACK_V17 = {'figures': [{'id': 'figure-pixley-seme-v17',
                             'body': 'La politique linguistique devient un instrument de hiérarchie et contribue aux '
                                     'mobilisations de 1976.'},
                            {'heading': 'Pluralité constitutionnelle',
-                            'body': 'La reconnaissance officielle de plusieurs langues reste confrontée à des inégalités de '
-                                    'ressources et de prestige.'}],
+                            'body': 'La reconnaissance officielle de plusieurs langues reste confrontée à des '
+                                    'inégalités de ressources et de prestige.'}],
               'sources': ['Constitution of South Africa', 'PanSALB'],
-              'image_url': '/illustrations/south-africa/education.svg',
-              'image_credit': 'Inonara — illustration originale',
-              'visual_kind': 'illustration'},
+              'visual_kind': 'illustration',
+              'wikipedia_title': 'University of Cape Town',
+              'image_source_url': 'https://en.wikipedia.org/wiki/University_of_Cape_Town',
+              'image_credit': 'Photographie Wikimedia — University of Cape Town',
+              'visual_type': 'photograph'},
              {'id': 'story-constitution-making-v17',
               'title': 'Fabriquer une Constitution après l’apartheid',
               'civilization_id': None,
@@ -805,32 +828,37 @@ SOUTH_AFRICA_GRAND_PACK_V17 = {'figures': [{'id': 'figure-pixley-seme-v17',
                             'body': 'Juristes, mouvements et organisations discutent longtemps avant 1990 des droits, '
                                     'institutions et garanties nécessaires.'},
                            {'heading': 'Négociations conflictuelles',
-                            'body': 'La transition est accompagnée de violences, de compromis et de désaccords majeurs sur '
-                                    'le pouvoir et le territoire.'},
+                            'body': 'La transition est accompagnée de violences, de compromis et de désaccords majeurs '
+                                    'sur le pouvoir et le territoire.'},
                            {'heading': 'Certification',
                             'body': 'La Cour constitutionnelle vérifie que le texte final respecte les principes '
                                     'négociés.'}],
               'sources': ['Constitutional Court of South Africa'],
-              'image_url': '/illustrations/south-africa/constitution.svg',
-              'image_credit': 'Inonara — illustration originale',
-              'visual_kind': 'illustration'},
+              'visual_kind': 'illustration',
+              'wikipedia_title': 'Constitutional Court of South Africa',
+              'image_source_url': 'https://en.wikipedia.org/wiki/Constitutional_Court_of_South_Africa',
+              'image_credit': 'Photographie Wikimedia — Cour constitutionnelle',
+              'visual_type': 'photograph'},
              {'id': 'story-public-health-v17',
               'title': 'VIH, mobilisation et politique de santé',
               'civilization_id': None,
               'era': '1980s–présent',
               'summary': 'Une histoire où recherche, activisme, traitement et politique publique se confrontent.',
               'chapters': [{'heading': 'Épidémie et stigmatisation',
-                            'body': 'Le VIH se développe dans un contexte d’inégalités, de travail migrant et de systèmes '
-                                    'de santé fragmentés.'},
+                            'body': 'Le VIH se développe dans un contexte d’inégalités, de travail migrant et de '
+                                    'systèmes de santé fragmentés.'},
                            {'heading': 'Conflit sur les traitements',
-                            'body': 'Des organisations civiles contestent les retards et le déni politique concernant les '
-                                    'antirétroviraux.'},
+                            'body': 'Des organisations civiles contestent les retards et le déni politique concernant '
+                                    'les antirétroviraux.'},
                            {'heading': 'Programme massif',
-                            'body': 'Le pays construit ensuite l’un des plus grands programmes de traitement au monde.'}],
+                            'body': 'Le pays construit ensuite l’un des plus grands programmes de traitement au '
+                                    'monde.'}],
               'sources': ['Department of Health', 'Treatment Action Campaign'],
-              'image_url': '/illustrations/south-africa/sante.svg',
-              'image_credit': 'Inonara — illustration originale',
-              'visual_kind': 'illustration'},
+              'visual_kind': 'illustration',
+              'wikipedia_title': 'Groote Schuur Hospital',
+              'image_source_url': 'https://en.wikipedia.org/wiki/Groote_Schuur_Hospital',
+              'image_credit': 'Photographie Wikimedia — Groote Schuur Hospital',
+              'visual_type': 'photograph'},
              {'id': 'story-metal-deep-time-v17',
               'title': 'Métaux, savoir-faire et industrie',
               'civilization_id': None,
@@ -842,23 +870,27 @@ SOUTH_AFRICA_GRAND_PACK_V17 = {'figures': [{'id': 'figure-pixley-seme-v17',
                            {'heading': 'Industrialisation minière',
                             'body': 'L’or, les diamants et le charbon transforment l’économie et le travail.'},
                            {'heading': 'Valeur ajoutée',
-                            'body': 'Le défi contemporain consiste à transformer davantage de ressources localement tout en '
-                                    'réduisant les coûts sociaux et environnementaux.'}],
+                            'body': 'Le défi contemporain consiste à transformer davantage de ressources localement '
+                                    'tout en réduisant les coûts sociaux et environnementaux.'}],
               'sources': ['Ditsong Museums', 'Department of Mineral Resources and Energy'],
-              'image_url': '/illustrations/south-africa/metallurgie.svg',
-              'image_credit': 'Inonara — illustration originale',
-              'visual_kind': 'illustration'}],
+              'visual_kind': 'illustration',
+              'wikipedia_title': 'Mining industry of South Africa',
+              'image_source_url': 'https://en.wikipedia.org/wiki/Mining_industry_of_South_Africa',
+              'image_credit': 'Photographie Wikimedia — industrie minière sud-africaine',
+              'visual_type': 'photograph'}],
  'journey': [{'id': 'journey-metallurgy-v17',
               'heading': 'Métallurgie et réseaux régionaux',
               'era': 'Premier millénaire',
               'year': 500,
               'place': 'Afrique australe',
-              'story': 'La production du fer et du cuivre participe à la spécialisation, aux échanges et aux formations '
-                       'politiques régionales.',
+              'story': 'La production du fer et du cuivre participe à la spécialisation, aux échanges et aux '
+                       'formations politiques régionales.',
               'link': {'label': 'Lire le récit', 'to': '/story/story-metal-deep-time-v17'},
-              'image_url': '/illustrations/south-africa/metallurgie.svg',
-              'image_credit': 'Inonara — illustration originale',
-              'visual_kind': 'illustration'},
+              'visual_kind': 'illustration',
+              'wikipedia_title': 'Mining industry of South Africa',
+              'image_source_url': 'https://en.wikipedia.org/wiki/Mining_industry_of_South_Africa',
+              'image_credit': 'Photographie Wikimedia — industrie minière sud-africaine',
+              'visual_type': 'photograph'},
              {'id': 'journey-diamonds-v17',
               'heading': 'Diamants, capital et travail migrant',
               'era': '1867',
@@ -889,8 +921,8 @@ SOUTH_AFRICA_GRAND_PACK_V17 = {'figures': [{'id': 'figure-pixley-seme-v17',
               'era': '1956',
               'year': 1956,
               'place': 'Pretoria',
-              'story': 'Une mobilisation nationale conteste les laissez-passer et affirme une direction politique féminine '
-                       'autonome.',
+              'story': 'Une mobilisation nationale conteste les laissez-passer et affirme une direction politique '
+                       'féminine autonome.',
               'link': {'label': 'Lire le récit', 'to': '/story/story-women-organise-v17'},
               'wikipedia_title': "1956 Women's March, Pretoria"},
              {'id': 'journey-soweto-v17',
@@ -906,12 +938,14 @@ SOUTH_AFRICA_GRAND_PACK_V17 = {'figures': [{'id': 'figure-pixley-seme-v17',
               'era': '1990–1996',
               'year': 1990,
               'place': 'Afrique du Sud',
-              'story': 'Les négociations et consultations transforment la lutte pour la majorité politique en institutions '
-                       'démocratiques.',
+              'story': 'Les négociations et consultations transforment la lutte pour la majorité politique en '
+                       'institutions démocratiques.',
               'link': {'label': 'Lire le récit', 'to': '/story/story-constitution-making-v17'},
-              'image_url': '/illustrations/south-africa/constitution.svg',
-              'image_credit': 'Inonara — illustration originale',
-              'visual_kind': 'illustration'},
+              'visual_kind': 'illustration',
+              'wikipedia_title': 'Constitutional Court of South Africa',
+              'image_source_url': 'https://en.wikipedia.org/wiki/Constitutional_Court_of_South_Africa',
+              'image_credit': 'Photographie Wikimedia — Cour constitutionnelle',
+              'visual_type': 'photograph'},
              {'id': 'journey-health-v17',
               'heading': 'Science, activisme et traitements',
               'era': '1998–présent',
@@ -920,16 +954,19 @@ SOUTH_AFRICA_GRAND_PACK_V17 = {'figures': [{'id': 'figure-pixley-seme-v17',
               'story': 'La mobilisation pour l’accès aux traitements transforme la politique de santé et le droit '
                        'constitutionnel.',
               'link': {'label': 'Lire le récit', 'to': '/story/story-public-health-v17'},
-              'image_url': '/illustrations/south-africa/sante.svg',
-              'image_credit': 'Inonara — illustration originale',
-              'visual_kind': 'illustration'}],
+              'visual_kind': 'illustration',
+              'wikipedia_title': 'Groote Schuur Hospital',
+              'image_source_url': 'https://en.wikipedia.org/wiki/Groote_Schuur_Hospital',
+              'image_credit': 'Photographie Wikimedia — Groote Schuur Hospital',
+              'visual_type': 'photograph'}],
  'timeline': [{'id': 'event-australopith-v17',
                'name': 'Premiers hominines documentés',
                'category': 'events',
                'era': '-2200000',
                'region': 'South Africa',
                'year': -2200000,
-               'summary': 'Les sites fossilifères d’Afrique du Sud conservent des traces majeures de l’évolution humaine.',
+               'summary': 'Les sites fossilifères d’Afrique du Sud conservent des traces majeures de l’évolution '
+                          'humaine.',
                'link': '/country/south-africa'},
               {'id': 'event-iron-v17',
                'name': 'Développement de la métallurgie du fer',
@@ -937,8 +974,8 @@ SOUTH_AFRICA_GRAND_PACK_V17 = {'figures': [{'id': 'figure-pixley-seme-v17',
                'era': '500',
                'region': 'South Africa',
                'year': 500,
-               'summary': 'La production du fer accompagne agriculture, échanges et transformations sociales dans plusieurs '
-                          'régions.',
+               'summary': 'La production du fer accompagne agriculture, échanges et transformations sociales dans '
+                          'plusieurs régions.',
                'link': '/country/south-africa'},
               {'id': 'event-mapungubwe-v17',
                'name': 'Essor de Mapungubwe',
@@ -954,7 +991,8 @@ SOUTH_AFRICA_GRAND_PACK_V17 = {'figures': [{'id': 'figure-pixley-seme-v17',
                'era': '1652',
                'region': 'South Africa',
                'year': 1652,
-               'summary': 'La station de ravitaillement devient un foyer de colonisation, d’esclavage et de dépossession.',
+               'summary': 'La station de ravitaillement devient un foyer de colonisation, d’esclavage et de '
+                          'dépossession.',
                'link': '/country/south-africa'},
               {'id': 'event-british-cape-v17',
                'name': 'Le Cap passe sous domination britannique',
@@ -970,7 +1008,8 @@ SOUTH_AFRICA_GRAND_PACK_V17 = {'figures': [{'id': 'figure-pixley-seme-v17',
                'era': '1834',
                'region': 'South Africa',
                'year': 1834,
-               'summary': 'La fin juridique de l’esclavage ne supprime ni dépendance économique ni hiérarchies raciales.',
+               'summary': 'La fin juridique de l’esclavage ne supprime ni dépendance économique ni hiérarchies '
+                          'raciales.',
                'link': '/country/south-africa'},
               {'id': 'event-sand-river-v17',
                'name': 'Convention de Sand River',
@@ -1002,8 +1041,8 @@ SOUTH_AFRICA_GRAND_PACK_V17 = {'figures': [{'id': 'figure-pixley-seme-v17',
                'era': '1899',
                'region': 'South Africa',
                'year': 1899,
-               'summary': 'L’Empire britannique et les républiques boers s’affrontent dans une guerre qui touche largement '
-                          'les populations civiles.',
+               'summary': 'L’Empire britannique et les républiques boers s’affrontent dans une guerre qui touche '
+                          'largement les populations civiles.',
                'link': '/country/south-africa'},
               {'id': 'event-anc-founded-v17',
                'name': 'Fondation du SANNC',
@@ -1028,7 +1067,8 @@ SOUTH_AFRICA_GRAND_PACK_V17 = {'figures': [{'id': 'figure-pixley-seme-v17',
                'era': '1927',
                'region': 'South Africa',
                'year': 1927,
-               'summary': 'L’État renforce son pouvoir sur les populations africaines et les autorités traditionnelles.',
+               'summary': 'L’État renforce son pouvoir sur les populations africaines et les autorités '
+                          'traditionnelles.',
                'link': '/country/south-africa'},
               {'id': 'event-ancyl-v17',
                'name': 'Création de l’ANC Youth League',
@@ -1446,75 +1486,107 @@ SOUTH_AFRICA_GRAND_PACK_V17 = {'figures': [{'id': 'figure-pixley-seme-v17',
              {'id': 'visual-illustration-metallurgie-v17',
               'title': 'Métallurgie',
               'category': 'Illustration',
-              'caption': 'Illustration conceptuelle originale utilisée lorsque la photographie n’est pas le support le plus '
-                         'pertinent.',
-              'image_url': '/illustrations/south-africa/metallurgie.svg',
-              'author': 'Inonara',
-              'license': 'Illustration originale Inonara',
-              'visual_kind': 'illustration'},
+              'caption': 'Illustration conceptuelle originale utilisée lorsque la photographie n’est pas le support le '
+                         'plus pertinent.',
+              'visual_kind': 'illustration',
+              'wikipedia_title': 'Mining industry of South Africa',
+              'image_source_url': 'https://en.wikipedia.org/wiki/Mining_industry_of_South_Africa',
+              'image_credit': 'Photographie Wikimedia — industrie minière sud-africaine',
+              'visual_type': 'photograph',
+              'source_page': 'https://en.wikipedia.org/wiki/Mining_industry_of_South_Africa',
+              'author': 'Photographie Wikimedia — industrie minière sud-africaine',
+              'license': 'Voir la licence de la photographie sur la page source Wikimedia.'},
              {'id': 'visual-illustration-agriculture-v17',
               'title': 'Agriculture',
               'category': 'Illustration',
-              'caption': 'Illustration conceptuelle originale utilisée lorsque la photographie n’est pas le support le plus '
-                         'pertinent.',
-              'image_url': '/illustrations/south-africa/agriculture.svg',
-              'author': 'Inonara',
-              'license': 'Illustration originale Inonara',
-              'visual_kind': 'illustration'},
+              'caption': 'Illustration conceptuelle originale utilisée lorsque la photographie n’est pas le support le '
+                         'plus pertinent.',
+              'visual_kind': 'illustration',
+              'wikipedia_title': 'Agriculture in South Africa',
+              'image_source_url': 'https://en.wikipedia.org/wiki/Agriculture_in_South_Africa',
+              'image_credit': 'Photographie Wikimedia — agriculture en Afrique du Sud',
+              'visual_type': 'photograph',
+              'source_page': 'https://en.wikipedia.org/wiki/Agriculture_in_South_Africa',
+              'author': 'Photographie Wikimedia — agriculture en Afrique du Sud',
+              'license': 'Voir la licence de la photographie sur la page source Wikimedia.'},
              {'id': 'visual-illustration-oralite-v17',
               'title': 'Oralité',
               'category': 'Illustration',
-              'caption': 'Illustration conceptuelle originale utilisée lorsque la photographie n’est pas le support le plus '
-                         'pertinent.',
-              'image_url': '/illustrations/south-africa/oralite.svg',
-              'author': 'Inonara',
-              'license': 'Illustration originale Inonara',
-              'visual_kind': 'illustration'},
+              'caption': 'Illustration conceptuelle originale utilisée lorsque la photographie n’est pas le support le '
+                         'plus pertinent.',
+              'visual_kind': 'illustration',
+              'wikipedia_title': 'University of Cape Town',
+              'image_source_url': 'https://en.wikipedia.org/wiki/University_of_Cape_Town',
+              'image_credit': 'Photographie Wikimedia — University of Cape Town',
+              'visual_type': 'photograph',
+              'source_page': 'https://en.wikipedia.org/wiki/University_of_Cape_Town',
+              'author': 'Photographie Wikimedia — University of Cape Town',
+              'license': 'Voir la licence de la photographie sur la page source Wikimedia.'},
              {'id': 'visual-illustration-education-v17',
               'title': 'Éducation',
               'category': 'Illustration',
-              'caption': 'Illustration conceptuelle originale utilisée lorsque la photographie n’est pas le support le plus '
-                         'pertinent.',
-              'image_url': '/illustrations/south-africa/education.svg',
-              'author': 'Inonara',
-              'license': 'Illustration originale Inonara',
-              'visual_kind': 'illustration'},
+              'caption': 'Illustration conceptuelle originale utilisée lorsque la photographie n’est pas le support le '
+                         'plus pertinent.',
+              'visual_kind': 'illustration',
+              'wikipedia_title': 'University of Cape Town',
+              'image_source_url': 'https://en.wikipedia.org/wiki/University_of_Cape_Town',
+              'image_credit': 'Photographie Wikimedia — University of Cape Town',
+              'visual_type': 'photograph',
+              'source_page': 'https://en.wikipedia.org/wiki/University_of_Cape_Town',
+              'author': 'Photographie Wikimedia — University of Cape Town',
+              'license': 'Voir la licence de la photographie sur la page source Wikimedia.'},
              {'id': 'visual-illustration-sante-v17',
               'title': 'Santé',
               'category': 'Illustration',
-              'caption': 'Illustration conceptuelle originale utilisée lorsque la photographie n’est pas le support le plus '
-                         'pertinent.',
-              'image_url': '/illustrations/south-africa/sante.svg',
-              'author': 'Inonara',
-              'license': 'Illustration originale Inonara',
-              'visual_kind': 'illustration'},
+              'caption': 'Illustration conceptuelle originale utilisée lorsque la photographie n’est pas le support le '
+                         'plus pertinent.',
+              'visual_kind': 'illustration',
+              'wikipedia_title': 'Groote Schuur Hospital',
+              'image_source_url': 'https://en.wikipedia.org/wiki/Groote_Schuur_Hospital',
+              'image_credit': 'Photographie Wikimedia — Groote Schuur Hospital',
+              'visual_type': 'photograph',
+              'source_page': 'https://en.wikipedia.org/wiki/Groote_Schuur_Hospital',
+              'author': 'Photographie Wikimedia — Groote Schuur Hospital',
+              'license': 'Voir la licence de la photographie sur la page source Wikimedia.'},
              {'id': 'visual-illustration-constitution-v17',
               'title': 'Constitution',
               'category': 'Illustration',
-              'caption': 'Illustration conceptuelle originale utilisée lorsque la photographie n’est pas le support le plus '
-                         'pertinent.',
-              'image_url': '/illustrations/south-africa/constitution.svg',
-              'author': 'Inonara',
-              'license': 'Illustration originale Inonara',
-              'visual_kind': 'illustration'},
+              'caption': 'Illustration conceptuelle originale utilisée lorsque la photographie n’est pas le support le '
+                         'plus pertinent.',
+              'visual_kind': 'illustration',
+              'wikipedia_title': 'Port of Durban',
+              'image_source_url': 'https://en.wikipedia.org/wiki/Port_of_Durban',
+              'image_credit': 'Photographie Wikimedia — port de Durban',
+              'visual_type': 'photograph',
+              'source_page': 'https://en.wikipedia.org/wiki/Port_of_Durban',
+              'author': 'Photographie Wikimedia — port de Durban',
+              'license': 'Voir la licence de la photographie sur la page source Wikimedia.'},
              {'id': 'visual-illustration-mines-v17',
               'title': 'Mines et travail',
               'category': 'Illustration',
-              'caption': 'Illustration conceptuelle originale utilisée lorsque la photographie n’est pas le support le plus '
-                         'pertinent.',
-              'image_url': '/illustrations/south-africa/mines.svg',
-              'author': 'Inonara',
-              'license': 'Illustration originale Inonara',
-              'visual_kind': 'illustration'},
+              'caption': 'Illustration conceptuelle originale utilisée lorsque la photographie n’est pas le support le '
+                         'plus pertinent.',
+              'visual_kind': 'illustration',
+              'wikipedia_title': 'Mining industry of South Africa',
+              'image_source_url': 'https://en.wikipedia.org/wiki/Mining_industry_of_South_Africa',
+              'image_credit': 'Photographie Wikimedia — industrie minière sud-africaine',
+              'visual_type': 'photograph',
+              'source_page': 'https://en.wikipedia.org/wiki/Mining_industry_of_South_Africa',
+              'author': 'Photographie Wikimedia — industrie minière sud-africaine',
+              'license': 'Voir la licence de la photographie sur la page source Wikimedia.'},
              {'id': 'visual-illustration-biodiversite-v17',
               'title': 'Biodiversité',
               'category': 'Illustration',
-              'caption': 'Illustration conceptuelle originale utilisée lorsque la photographie n’est pas le support le plus '
-                         'pertinent.',
-              'image_url': '/illustrations/south-africa/biodiversite.svg',
-              'author': 'Inonara',
-              'license': 'Illustration originale Inonara',
-              'visual_kind': 'illustration'}],
+              'caption': 'Illustration conceptuelle originale utilisée lorsque la photographie n’est pas le support le '
+                         'plus pertinent.',
+              'visual_kind': 'illustration',
+              'wikipedia_title': 'Port of Durban',
+              'image_source_url': 'https://en.wikipedia.org/wiki/Port_of_Durban',
+              'image_credit': 'Photographie Wikimedia — port de Durban',
+              'visual_type': 'photograph',
+              'source_page': 'https://en.wikipedia.org/wiki/Port_of_Durban',
+              'author': 'Photographie Wikimedia — port de Durban',
+              'license': 'Voir la licence de la photographie sur la page source Wikimedia.'}],
  'additionalSources': [{'id': 'src-saho-seme-v17',
                         'category': 'B',
                         'title': 'Pixley ka Isaka Seme',

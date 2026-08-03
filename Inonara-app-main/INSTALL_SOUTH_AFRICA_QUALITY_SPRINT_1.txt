@@ -1,0 +1,19 @@
+INONARA — Afrique du Sud — Sprint qualité 1
+
+Ce patch :
+- regroupe les nombreux onglets en 9 grandes rubriques avec sous-navigation ;
+- remplace les libellés internes « À nuancer / Recherche à poursuivre » par des formulations publiques ;
+- ajoute une galerie documentée avec auteur, licence, légende et lien source ;
+- conserve toutes les sous-sections existantes sans supprimer les données.
+
+Installation :
+  cd ~/inonara-app
+  unzip -o /sdcard/Download/inonara-afrique-du-sud-sprint-qualite-1.zip -d ~/inonara-app
+
+Tests :
+  PYTHONPATH=backend python -m pytest -q \
+    backend/tests/test_south_africa_media_gallery.py \
+    backend/tests/test_country_dossier_south_africa.py
+
+Build :
+  cd frontend && npm run build && cd ..

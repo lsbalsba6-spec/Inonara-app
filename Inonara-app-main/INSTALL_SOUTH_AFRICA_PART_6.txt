@@ -1,0 +1,6 @@
+Afrique du Sud — Partie 6 : migrations et diasporas
+
+Installer depuis la racine du dépôt :
+unzip -o /sdcard/Download/inonara-afrique-du-sud-partie-6-migrations-diasporas.zip -d ~/inonara-app
+
+Puis exécuter les tests indiqués dans le message ChatGPT.

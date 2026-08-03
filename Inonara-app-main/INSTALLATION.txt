@@ -1,0 +1,25 @@
+CORRECTIF INONARA — LABELS + COULEURS DES MIGRATIONS
+
+Ce paquet :
+- masque automatiquement les labels qui se chevauchent ;
+- révèle davantage de labels quand on zoome ;
+- centralise couleur, pointillés, épaisseur et libellé des migrations ;
+- garantit que la carte, la légende des routes et la fiche utilisent le même type visuel ;
+- conserve le filtrage temporel existant des routes.
+
+Installation depuis Termux :
+
+cd ~/inonara-app
+tar -xzf /sdcard/Download/inonara-fix-labels-migrations.tar.gz
+
+cd frontend
+npm test -- --watchAll=false atlasDisplay.test.js
+npm run build
+cd ..
+
+git status
+git diff -- frontend/src/pages/Atlas.jsx frontend/src/lib/atlasDisplay.js frontend/src/lib/__tests__/atlasDisplay.test.js
+
+git add frontend/src/pages/Atlas.jsx frontend/src/lib/atlasDisplay.js frontend/src/lib/__tests__/atlasDisplay.test.js
+git commit -m "fix: labels lisibles et styles migrations synchronises"
+git push

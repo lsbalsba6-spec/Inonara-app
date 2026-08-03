@@ -1,0 +1,4 @@
+Afrique du Sud — Partie 7 : Culture et patrimoine
+
+Cette archive doit être extraite à la racine de ~/inonara-app.
+Elle ajoute un module d'enrichissement sans réécrire le grand fichier source historique.

@@ -1,0 +1,2 @@
+Correctif build Vercel : stabilise la référence `sources` utilisée par useMemo dans CountryDossierView.jsx.
+L'erreur ESLint venait d'un tableau vide recréé à chaque rendu.

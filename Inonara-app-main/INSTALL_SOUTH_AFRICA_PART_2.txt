@@ -1,0 +1,1 @@
+Voir les commandes fournies dans ChatGPT. Cette archive doit être extraite à la racine de ~/inonara-app.

@@ -1,0 +1,15 @@
+INONARA — Afrique du Sud — Sprint qualité Histoire
+
+Ce patch ne crée aucun nouvel onglet.
+Il exploite les chapitres historiques détaillés déjà présents dans le dossier Afrique du Sud :
+- période ;
+- titre ;
+- résumé développé ;
+- points de contexte et nuances ;
+- statut éditorial ;
+- sources.
+
+Installation depuis la racine du dépôt :
+python scripts/apply_south_africa_quality_history.py
+
+Le script s'arrête sans modifier le fichier si les points d'insertion attendus ne correspondent pas au dépôt.

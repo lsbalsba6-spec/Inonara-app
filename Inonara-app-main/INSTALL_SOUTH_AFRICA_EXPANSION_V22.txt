@@ -1,0 +1,31 @@
+AFRIQUE DU SUD — ATLAS, TIMELINE, JOURNEY ET GALERIE V22
+
+AJOUTS RÉELS
+- 12 lieux Atlas;
+- 15 événements Timeline;
+- 6 étapes Journey;
+- 4 Stories;
+- 10 visuels de galerie;
+- 1 illustration SVG originale;
+- enrichissement des musées, institutions, parcs, bibliothèques et sites archéologiques;
+- aucune modification des composants ou imports React.
+
+TERMUX
+
+cd ~/inonara-app
+
+unzip -o /sdcard/Download/inonara-afrique-du-sud-atlas-timeline-galerie-v22.zip -d .
+
+python scripts/apply_south_africa_expansion_v22.py
+
+python -m py_compile   backend/data/country_dossiers/south_africa_expansion_v22.py   backend/data/country_dossiers/__init__.py   backend/data/__init__.py
+
+cd frontend
+CI=true npm run build
+
+cd ..
+git add   backend/data   frontend/public/illustrations/south-africa-v22   scripts/apply_south_africa_expansion_v22.py   INSTALL_SOUTH_AFRICA_EXPANSION_V22.txt
+
+git commit -m "feat: enrichir Atlas Timeline Journey et galerie Afrique du Sud V22"
+
+git push

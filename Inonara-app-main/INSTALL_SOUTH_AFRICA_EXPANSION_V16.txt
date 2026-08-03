@@ -1,0 +1,31 @@
+AFRIQUE DU SUD — INSTITUTIONS, SOCIÉTÉ ET PATRIMOINE V16
+
+AJOUTS
+- 4 articles longs sur les institutions du chapitre 9;
+- 3 articles Société;
+- 3 fiches Patrimoine;
+- 2 événements Timeline;
+- 2 lieux Atlas;
+- 2 visuels de galerie;
+- sources officielles du gouvernement sud-africain et de l’UNESCO;
+- aucune modification des imports React.
+
+TERMUX
+
+cd ~/inonara-app
+
+unzip -o /sdcard/Download/inonara-afrique-du-sud-institutions-societe-patrimoine-v16.zip -d .
+
+python scripts/apply_south_africa_expansion_v16.py
+
+python -m py_compile   backend/data/country_dossiers/south_africa_expansion_v16.py   backend/data/country_dossiers/__init__.py   backend/data/__init__.py
+
+cd frontend
+CI=true npm run build
+
+cd ..
+git add   backend/data   scripts/apply_south_africa_expansion_v16.py   INSTALL_SOUTH_AFRICA_EXPANSION_V16.txt
+
+git commit -m "feat: enrichir institutions société et patrimoine Afrique du Sud V16"
+
+git push

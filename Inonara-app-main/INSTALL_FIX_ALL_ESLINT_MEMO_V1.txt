@@ -1,0 +1,16 @@
+CORRECTION GLOBALE DES WARNINGS ESLINT — AFRIQUE DU SUD
+
+Ce patch corrige en une seule fois les avertissements react-hooks/exhaustive-deps
+qui bloquent Vercel en mode CI.
+
+Commandes:
+
+cd ~/inonara-app
+unzip -o /sdcard/Download/inonara-fix-all-eslint-memo-v1.zip -d .
+python scripts/fix_all_south_africa_memo_warnings.py
+cd frontend
+CI=true npm run build
+cd ..
+git add frontend/src/components scripts/fix_all_south_africa_memo_warnings.py INSTALL_FIX_ALL_ESLINT_MEMO_V1.txt
+git commit -m "fix: stabiliser tous les hooks Afrique du Sud"
+git push

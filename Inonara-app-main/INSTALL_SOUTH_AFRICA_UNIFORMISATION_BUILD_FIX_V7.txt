@@ -1,0 +1,7 @@
+Correctif V7 — build Vercel
+
+Ce patch corrige l'avertissement ESLint react-hooks/exhaustive-deps dans
+frontend/src/components/SouthAfricaProvincesCities.jsx.
+
+Il stabilise les tableaux provinces et capitalFunctions avec useMemo afin
+qu'ils ne soient pas recréés à chaque rendu.
