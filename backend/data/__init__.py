@@ -551,7 +551,7 @@ PLACES.extend(item for item in _bw_v1["places"] if item.get("id") not in _existi
 
 _existing_bw_stories = {item.get("id") for item in STORIES}
 STORIES.extend(
-    item for item in COUNTRY_DOSSIERS["botswana"].get("stories", [])
+    item for item in COUNTRY_DOSSIERS["BW"].get("stories", [])
     if item.get("id") not in _existing_bw_stories
 )
 
@@ -570,7 +570,7 @@ FIGURES.extend(
         "image_source_url": item.get("image_source_url"),
         "visual_type": item.get("visual_type"),
     }
-    for item in COUNTRY_DOSSIERS["botswana"].get("figures", [])
+    for item in COUNTRY_DOSSIERS["BW"].get("figures", [])
     if item.get("id") not in _existing_bw_figures
 )
 
@@ -592,7 +592,7 @@ ETHNIC_GROUPS.extend(
         "image_source_url": item.get("image_source_url"),
         "visual_type": item.get("visual_type"),
     }
-    for item in COUNTRY_DOSSIERS["botswana"].get("peoples", [])
+    for item in COUNTRY_DOSSIERS["BW"].get("peoples", [])
     if item.get("id") not in _existing_bw_people
 )
 
@@ -608,7 +608,7 @@ CULTURE_ITEMS.extend(
         "image_source_url": item.get("image_source_url"),
         "visual_type": item.get("visual_type"),
     }
-    for item in COUNTRY_DOSSIERS["botswana"].get("culture", [])
+    for item in COUNTRY_DOSSIERS["BW"].get("culture", [])
     if item.get("id") not in _existing_bw_culture
 )
 

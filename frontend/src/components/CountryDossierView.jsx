@@ -21,7 +21,7 @@ import { SouthAfricaSportMedia } from "./SouthAfricaSportMedia";
 import { SouthAfricaEducationHealth, SouthAfricaInternationalRole, SouthAfricaNationalSymbols, SouthAfricaSociety } from "./SouthAfricaSocietyState";
 import { SouthAfricaEconomy, SouthAfricaInteractiveTimeline, SouthAfricaScientificLibrary } from "./SouthAfricaTimelineEconomy";
 import { useMemo, useState } from "react";
-import { SouthAfricaProvincesCities } from "./SouthAfricaProvincesCities";
+import { SouthAfricaDistrictsCities } from "./SouthAfricaProvincesCities";
 import { SouthAfricaMediaGallery } from "./SouthAfricaMediaGallery";
 
 const STATUS_LABELS = {
@@ -143,7 +143,7 @@ export default function CountryDossierView({ dossier }) {
         {active === "overview" && <SouthAfricaOverview dossier={dossier} sourceMap={sourceMap} />}
         {active === "media" && <SouthAfricaMediaGallery items={dossier.media_gallery || []} />}
         {active === "timeline" && (<div className="space-y-10"><SouthAfricaDeepHistory data={dossier.deep_history} sourceMap={sourceMap} /><SouthAfricaHistory dossier={dossier} sourceMap={sourceMap} /></div>)}
-        {active === "provinces-cities" && (<div className="space-y-10"><SouthAfricaCountryMap cities={dossier.map_visuals?.cities || []} /><SouthAfricaProvincesCities dossier={dossier} sourceMap={sourceMap} /></div>)}
+        {active === "provinces-cities" && (<div className="space-y-10"><SouthAfricaCountryMap cities={dossier.map_visuals?.cities || []} /><SouthAfricaDistrictsCities dossier={dossier} sourceMap={sourceMap} /></div>)}
         {active === "interactive-timeline" && <SouthAfricaInteractiveTimeline dossier={dossier} sourceMap={sourceMap} />}
         {active === "economy" && <SouthAfricaEconomyQuality dossier={dossier} sourceMap={sourceMap} />}
         {active === "society" && <SouthAfricaSocietyQuality dossier={dossier} sourceMap={sourceMap} />}

@@ -330,7 +330,7 @@ _merge_v23(SOUTH_AFRICA_DOSSIER.setdefault('stories',[]),_v23['stories'])
 _merge_v23(SOUTH_AFRICA_DOSSIER.setdefault('media_gallery',[]),_v23['gallery'])
 _merge_v23(SOUTH_AFRICA_DOSSIER.setdefault('sources',[]),_v23['additionalSources'])
 COUNTRY_DOSSIERS = {
-    "botswana": BOTSWANA_DOSSIER,
+    "BW": BOTSWANA_DOSSIER,
     SOUTH_AFRICA_DOSSIER["iso2"]: SOUTH_AFRICA_DOSSIER,
 }
 
@@ -341,10 +341,10 @@ def _merge_bw3(target, incoming):
     existing = {item.get("id") or item.get("name") or item.get("title") or item.get("topic") for item in target}
     target.extend(item for item in incoming if (item.get("id") or item.get("name") or item.get("title") or item.get("topic")) not in existing)
 
-if "botswana" not in COUNTRY_DOSSIERS:
+if "BW" not in COUNTRY_DOSSIERS:
     raise RuntimeError("Botswana V1 doit être installé avant V3")
 
-_bw_dossier = COUNTRY_DOSSIERS["botswana"]
+_bw_dossier = COUNTRY_DOSSIERS["BW"]
 _merge_bw3(_bw_dossier.setdefault("figures", []), _bw3["figures"])
 _merge_bw3(_bw_dossier.setdefault("peoples", []), _bw3["peoples"])
 _merge_bw3(_bw_dossier.setdefault("culture", []), _bw3["culture"])
@@ -360,10 +360,10 @@ def _merge_bw2(target, incoming):
     existing = {item.get("id") or item.get("name") or item.get("title") or item.get("topic") for item in target}
     target.extend(item for item in incoming if (item.get("id") or item.get("name") or item.get("title") or item.get("topic")) not in existing)
 
-if "botswana" not in COUNTRY_DOSSIERS:
+if "BW" not in COUNTRY_DOSSIERS:
     raise RuntimeError("Botswana V1 doit être installé avant V2")
 
-_bw_dossier = COUNTRY_DOSSIERS["botswana"]
+_bw_dossier = COUNTRY_DOSSIERS["BW"]
 _merge_bw2(_bw_dossier.setdefault("figures", []), _bw2["figures"])
 _merge_bw2(_bw_dossier.setdefault("peoples", []), _bw2["peoples"])
 _merge_bw2(_bw_dossier.setdefault("culture", []), _bw2["culture"])
@@ -377,9 +377,9 @@ _merge_bw2(_bw_dossier.setdefault("sources", []), _bw2["sources"])
 
 # Botswana consolidation V4
 _bw4 = BOTSWANA_CONSOLIDATION_V4
-if "botswana" not in COUNTRY_DOSSIERS:
+if "BW" not in COUNTRY_DOSSIERS:
     raise RuntimeError("Botswana V1 doit être installé avant V4")
-_bw = COUNTRY_DOSSIERS["botswana"]
+_bw = COUNTRY_DOSSIERS["BW"]
 _bw.update(_bw4["identity"])
 _bw["presentation"] = _bw4["presentation"]
 _bw.setdefault("overview", {}).update(_bw4["overview"])
