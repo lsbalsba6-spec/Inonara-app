@@ -1,0 +1,61 @@
+Wed Jul 29 17:37:15 CEST 2026
+
+=== GIT ===
+main
+7edbc8cf619b91ba8f3b974eee2c49bad0d3d16f
+ M INSTALLATION.txt
+?? INSTALLATION_TERMUX.txt
+?? "atlas et styles migrations synchronises\""
+?? baseline/
+?? docs/
+?? "lisibles et styles migrations synchronises\""
+
+=== OUTILS ===
+The program node is not installed. Install it by executing:
+ pkg install nodejs
+or
+ pkg install nodejs-lts
+The program npm is not installed. Install it by executing:
+ pkg install npm
+The program python is not installed. Install it by executing:
+ pkg install python
+The program pip is not installed. Install it by executing:
+ pkg install python-pip
+
+=== STRUCTURE ===
+./INSTALLATION.txt
+./INSTALLATION_TERMUX.txt
+./INSTALL_MIGRATION_REGISTRY.txt
+./INSTALL_MIXED_ROUTE_REVIEW.txt
+./INSTALL_PUBLIC_MIGRATION_ROUTES.txt
+./INSTALL_ROUTE_TEMPORAL_CORRECTNESS_V5.txt
+./README.md
+./RUN_LOCALLY.md
+./atlas et styles migrations synchronises"
+./backend/.env
+./backend/db_seed.py
+./backend/requirements.txt
+./backend/seed_countries.py
+./backend/seed_data.py
+./backend/seed_expansion_v2.py
+./backend/seed_expansion_v3.py
+./backend/seed_expansion_v4.py
+./backend/seed_expansion_v5.py
+./backend/seed_expansion_v6.py
+./backend/seed_expansion_v7.py
+./backend/seed_extended.py
+./backend/seed_figure_wiki.py
+./backend/seed_figures.py
+./backend/server.py
+./baseline/baseline-info.txt
+./frontend/.env
+./frontend/.gitignore
+./frontend/README.md
+./frontend/components.json
+./frontend/craco.config.js
+./frontend/jsconfig.json
+./frontend/package.json
+./frontend/postcss.config.js
+./frontend/tailwind.config.js
+./frontend/yarn.lock
+./lisibles et styles migrations synchronises"

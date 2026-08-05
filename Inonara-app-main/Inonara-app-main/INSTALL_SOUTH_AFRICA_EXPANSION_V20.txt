@@ -1,0 +1,35 @@
+AFRIQUE DU SUD — ÉCONOMIE, ÉDUCATION, SANTÉ ET ÉCOSYSTÈME V20
+
+AJOUTS
+- 6 articles Économie;
+- 4 articles Éducation;
+- 4 articles Santé;
+- 3 articles Environnement;
+- 8 lieux Atlas;
+- 6 étapes Journey;
+- 6 événements Timeline;
+- 4 Stories;
+- 8 visuels de galerie;
+- 12 illustrations SVG originales;
+- retrait temporaire des contenus explicitement centrés sur la xénophobie;
+- aucune modification des composants React.
+
+TERMUX
+
+cd ~/inonara-app
+
+unzip -o /sdcard/Download/inonara-afrique-du-sud-economie-education-sante-ecosysteme-v20.zip -d .
+
+python scripts/apply_south_africa_expansion_v20.py
+
+python -m py_compile   backend/data/country_dossiers/south_africa_expansion_v20.py   backend/data/country_dossiers/__init__.py   backend/data/__init__.py
+
+cd frontend
+CI=true npm run build
+
+cd ..
+git add   backend/data   frontend/public/illustrations/south-africa-v20   scripts/apply_south_africa_expansion_v20.py   INSTALL_SOUTH_AFRICA_EXPANSION_V20.txt
+
+git commit -m "feat: enrichir économie éducation santé et écosystème Afrique du Sud V20"
+
+git push

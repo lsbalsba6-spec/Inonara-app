@@ -1,0 +1,90 @@
+{
+  "schemaVersion": "1.0",
+  "sourceFile": "backend/data/diaspora_derived_routes.json",
+  "outputFile": "backend/data/diaspora_public_routes.json",
+  "legacyRouteCount": 177,
+  "publicRouteCount": 165,
+  "excludedLegacyMixedCount": 12,
+  "excludedLegacyMixedRoutes": [
+    {
+      "id": "diaspora-afro-french-from-west-african-migration-senegal-mali-c-te",
+      "name": "Afro-French (Hexagone) ← West African migration (Senegal, Mali, Côte d'Ivoire, Camero",
+      "migrationType": "mixed",
+      "reason": "Legacy mixed route combines distinct movements and is not publishable."
+    },
+    {
+      "id": "diaspora-afro-french-from-maghreb-migration-with-sub-saharan-herit",
+      "name": "Afro-French (Hexagone) ← Maghreb migration with sub-Saharan heritage",
+      "migrationType": "mixed",
+      "reason": "Legacy mixed route combines distinct movements and is not publishable."
+    },
+    {
+      "id": "diaspora-afro-bahamian-from-west-and-central-africa-via-american-loy",
+      "name": "Afro-Bahamian ← West and Central Africa (via American Loyalist migration)",
+      "migrationType": "mixed",
+      "reason": "Legacy mixed route combines distinct movements and is not publishable."
+    },
+    {
+      "id": "diaspora-afro-bahamian-from-liberated-africans-from-intercepted-slav",
+      "name": "Afro-Bahamian ← Liberated Africans from intercepted slave ships after 1807",
+      "migrationType": "mixed",
+      "reason": "Legacy mixed route combines distinct movements and is not publishable."
+    },
+    {
+      "id": "diaspora-afro-trinidadian-from-west-and-west-central-africa-including-a",
+      "name": "Afro-Trinidadian ← West and West-Central Africa, including a notable later wave",
+      "migrationType": "mixed",
+      "reason": "Legacy mixed route combines distinct movements and is not publishable."
+    },
+    {
+      "id": "diaspora-afro-emirati-from-east-africa-historical-via-indian-ocean-",
+      "name": "East African-descended Emiratis and African migrant workers ← East Africa (historical, via Indian Ocean/Gulf trade)",
+      "migrationType": "mixed",
+      "reason": "Legacy mixed route combines distinct movements and is not publishable."
+    },
+    {
+      "id": "diaspora-afro-emirati-from-kenya-uganda-nigeria-ethiopia-contempora",
+      "name": "East African-descended Emiratis and African migrant workers ← Kenya, Uganda, Nigeria, Ethiopia (contemporary labor migrati",
+      "migrationType": "mixed",
+      "reason": "Legacy mixed route combines distinct movements and is not publishable."
+    },
+    {
+      "id": "diaspora-afro-omani-from-zanzibar-and-the-east-african-coast-via-",
+      "name": "Afro-Omani (Zanzibar-linked) ← Zanzibar and the East African coast (via centuries of Omani ",
+      "migrationType": "mixed",
+      "reason": "Legacy mixed route combines distinct movements and is not publishable."
+    },
+    {
+      "id": "diaspora-afro-norwegian-from-somalia-post-1991-civil-war",
+      "name": "Somali and Eritrean Norwegian ← Somalia (post-1991 civil war)",
+      "migrationType": "mixed",
+      "reason": "Legacy mixed route combines distinct movements and is not publishable."
+    },
+    {
+      "id": "diaspora-afro-norwegian-from-eritrea",
+      "name": "Somali and Eritrean Norwegian ← Eritrea",
+      "migrationType": "mixed",
+      "reason": "Legacy mixed route combines distinct movements and is not publishable."
+    },
+    {
+      "id": "diaspora-afro-qatari-from-east-african-coast-historical-via-pearli",
+      "name": "Afro-Qatari and African migrant workers ← East African coast (historical, via pearling economy)",
+      "migrationType": "mixed",
+      "reason": "Legacy mixed route combines distinct movements and is not publishable."
+    },
+    {
+      "id": "diaspora-afro-qatari-from-kenya-uganda-nigeria-ghana-contemporary-",
+      "name": "Afro-Qatari and African migrant workers ← Kenya, Uganda, Nigeria, Ghana (contemporary labor migration)",
+      "migrationType": "mixed",
+      "reason": "Legacy mixed route combines distinct movements and is not publishable."
+    }
+  ],
+  "publicRoutesByType": {
+    "forced": 120,
+    "voluntary": 45
+  },
+  "activeIn2025ByType": {
+    "voluntary": 43
+  },
+  "editorialRule": "A mixed legacy route is never published as a continuous movement. It stays excluded until each distinct movement is independently documented."
+}

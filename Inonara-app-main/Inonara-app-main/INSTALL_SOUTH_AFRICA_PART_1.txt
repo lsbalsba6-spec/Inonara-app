@@ -1,0 +1,7 @@
+Afrique du Sud — Partie 1
+
+1. Extraire l'archive à la racine de ~/inonara-app.
+2. Lancer les tests backend ciblés.
+3. Lancer le build frontend.
+4. Vérifier /countries puis /country/south-africa.
+5. Commit et push uniquement si les vérifications passent.

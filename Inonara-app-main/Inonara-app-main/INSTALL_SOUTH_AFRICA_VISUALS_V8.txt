@@ -1,0 +1,25 @@
+AFRIQUE DU SUD — VISUELS V8
+
+Ce pack ajoute des images traçables sans recopier des photographies dans le dépôt.
+
+- SmartImage avec fallback, chargement différé et crédit.
+- Images Wikipedia/Wikimedia pour Figures, People, Civilizations, Journey, Culture et Stories.
+- 9 nouvelles entrées dans la galerie Afrique du Sud.
+- Légendes et liens vers les pages sources.
+- Fallback élégant lorsqu’aucune image n’est disponible.
+
+TERMUX
+
+cd ~/inonara-app
+unzip -o /sdcard/Download/inonara-afrique-du-sud-visuels-v8.zip -d .
+python scripts/apply_south_africa_visuals_v8.py
+
+python -m py_compile   backend/data/south_africa_visuals_v8.py   backend/data/__init__.py   backend/data/country_dossiers/__init__.py
+
+cd frontend
+CI=true npm run build
+
+cd ..
+git add backend/data frontend/src/components frontend/src/lib frontend/src/pages scripts/apply_south_africa_visuals_v8.py INSTALL_SOUTH_AFRICA_VISUALS_V8.txt
+git commit -m "feat: ajouter des visuels sourcés à travers Inonara"
+git push

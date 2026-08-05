@@ -1,0 +1,23 @@
+CORRECTIF INONARA — LABELS + MIGRATIONS
+
+Fichiers remplacés/ajoutés :
+- frontend/src/pages/Atlas.jsx
+- frontend/src/lib/atlasDisplay.js
+- frontend/src/lib/__tests__/atlasDisplay.test.js
+
+Installation :
+  cd ~/inonara-app
+  tar -xzf /sdcard/Download/inonara-ui-labels-migrations-v1.tar.gz
+
+Vérification :
+  cd frontend
+  npm test -- --watchAll=false --runTestsByPath src/lib/__tests__/atlasDisplay.test.js
+  npm run build
+  cd ..
+
+Puis :
+  git status
+  git diff -- frontend/src/pages/Atlas.jsx frontend/src/lib/atlasDisplay.js frontend/src/lib/__tests__/atlasDisplay.test.js
+  git add frontend/src/pages/Atlas.jsx frontend/src/lib/atlasDisplay.js frontend/src/lib/__tests__/atlasDisplay.test.js
+  git commit -m "fix: labels atlas et styles migrations synchronises"
+  git push

@@ -1,0 +1,11 @@
+Correctif Afrique du Sud — Partie 3 (cartes, drapeaux, stabilité)
+
+1. Copier l'archive dans /sdcard/Download.
+2. Depuis Termux :
+   cd ~/inonara-app
+   unzip -o /sdcard/Download/inonara-afrique-du-sud-partie-3-correctif-complet.zip -d ~/inonara-app
+3. Lancer les tests backend :
+   PYTHONPATH=backend python -m pytest -q backend/tests/test_country_dossier_south_africa.py
+4. Lancer le build frontend :
+   cd frontend && npm run build && cd ..
+5. Commit et push selon les commandes fournies dans ChatGPT.

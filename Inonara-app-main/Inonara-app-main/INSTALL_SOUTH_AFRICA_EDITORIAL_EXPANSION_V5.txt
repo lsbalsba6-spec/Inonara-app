@@ -1,0 +1,23 @@
+AFRIQUE DU SUD — EXPANSION ÉDITORIALE V5
+
+Ajouts:
+- 6 nouvelles biographies longues;
+- 3 développements Éducation;
+- 3 développements Santé;
+- 4 développements Économie;
+- premiers liens croisés éditoriaux;
+- sources supplémentaires;
+- affichage multi-paragraphes dans Éducation, Santé et Économie.
+
+TERMUX
+
+cd ~/inonara-app
+unzip -o /sdcard/Download/inonara-afrique-du-sud-editorial-expansion-v5.zip -d .
+python scripts/apply_south_africa_editorial_expansion_v5.py
+python -m py_compile backend/data/country_dossiers/south_africa_editorial_expansion_v5.py backend/data/country_dossiers/__init__.py
+cd frontend
+CI=true npm run build
+cd ..
+git add backend/data/country_dossiers frontend/src/components scripts/apply_south_africa_editorial_expansion_v5.py INSTALL_SOUTH_AFRICA_EDITORIAL_EXPANSION_V5.txt
+git commit -m "feat: approfondir figures éducation santé et économie Afrique du Sud"
+git push

@@ -1,0 +1,38 @@
+BOTSWANA V2 — APPROFONDISSEMENT
+
+PRÉREQUIS : Botswana V1 déjà installé.
+
+AJOUTS
+- 6 biographies;
+- 5 dossiers People;
+- 4 articles Culture;
+- 3 institutions;
+- 3 patrimoines;
+- 4 Stories;
+- 6 lieux Atlas;
+- 8 événements Timeline;
+- nouvelles sources;
+- aucun SVG.
+
+TERMUX
+
+cd ~/inonara-app
+
+unzip -o /sdcard/Download/inonara-botswana-v2.zip -d .
+
+python scripts/apply_botswana_v2.py
+python scripts/verify_botswana_v2.py
+
+python -m py_compile   backend/data/country_dossiers/botswana_expansion_v2.py   backend/data/country_dossiers/__init__.py   backend/data/__init__.py
+
+cd frontend
+CI=true npm run build
+
+SI LE BUILD EST VERT
+
+cd ~/inonara-app
+
+git add   backend/data/country_dossiers/botswana_expansion_v2.py   backend/data/country_dossiers/__init__.py   backend/data/__init__.py   scripts/apply_botswana_v2.py   scripts/verify_botswana_v2.py   INSTALL_BOTSWANA_V2.txt
+
+git commit -m "feat: approfondir le dossier Botswana V2"
+git push

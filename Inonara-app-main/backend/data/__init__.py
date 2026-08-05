@@ -1,3 +1,5 @@
+from .country_dossiers.botswana_expansion_v3 import BOTSWANA_EXPANSION_V3
+from .country_dossiers.botswana_expansion_v2 import BOTSWANA_EXPANSION_V2
 """AfroAtlas content data package — single source of truth.
 
 Consolidates the fragmented seed_*.py modules behind one clean import surface.
@@ -61,6 +63,8 @@ from .country_dossiers.south_africa_expansion_v21 import SOUTH_AFRICA_EXPANSION_
 from .country_dossiers.south_africa_expansion_v22 import SOUTH_AFRICA_EXPANSION_V22
 
 from .country_dossiers.south_africa_expansion_v23 import SOUTH_AFRICA_EXPANSION_V23
+
+from .botswana_ecosystem_v1 import BOTSWANA_ECOSYSTEM_V1
 
 from .south_africa_ecosystem_complete import (
     SA_CIVILIZATIONS, SA_FIGURES, SA_FIGURE_CIVS, SA_FIGURE_WIKIPEDIA,
@@ -538,6 +542,108 @@ FIGURES.extend({'id':i['id'],'name':i['name'],'category':'artists' if i['field']
 _existing_places_v23={i.get('id') for i in PLACES}; PLACES.extend(i for i in SOUTH_AFRICA_EXPANSION_V23['places'] if i.get('id') not in _existing_places_v23)
 _existing_stories_v23={i.get('id') for i in STORIES}; STORIES.extend(i for i in SOUTH_AFRICA_EXPANSION_V23['stories'] if i.get('id') not in _existing_stories_v23)
 _existing_timeline_v23={i.get('id') for i in SA_TIMELINE_EVENTS}; SA_TIMELINE_EVENTS.extend(i for i in SOUTH_AFRICA_EXPANSION_V23['timeline'] if i.get('id') not in _existing_timeline_v23)
+
+# Botswana global ecosystem V1
+_bw_v1 = BOTSWANA_ECOSYSTEM_V1
+
+_existing_bw_places = {item.get("id") for item in PLACES}
+PLACES.extend(item for item in _bw_v1["places"] if item.get("id") not in _existing_bw_places)
+
+_existing_bw_stories = {item.get("id") for item in STORIES}
+STORIES.extend(
+    item for item in COUNTRY_DOSSIERS["BW"].get("stories", [])
+    if item.get("id") not in _existing_bw_stories
+)
+
+_existing_bw_figures = {item.get("id") for item in FIGURES}
+FIGURES.extend(
+    {
+        "id": item["id"],
+        "name": item["name"],
+        "category": "athletes" if "Athlétisme" in item["field"] else "artists" if "Littérature" in item["field"] else "leaders",
+        "era": "XIXe–XXIe siècles",
+        "region": "Botswana",
+        "summary": item["reason"],
+        "story": " ".join(item.get("paragraphs", [])),
+        "sources": item.get("sources", []),
+        "wikipedia_title": item.get("wikipedia_title"),
+        "image_source_url": item.get("image_source_url"),
+        "visual_type": item.get("visual_type"),
+    }
+    for item in COUNTRY_DOSSIERS["BW"].get("figures", [])
+    if item.get("id") not in _existing_bw_figures
+)
+
+_existing_bw_people = {item.get("id") for item in ETHNIC_GROUPS}
+ETHNIC_GROUPS.extend(
+    {
+        "id": item["id"],
+        "name": item["name"],
+        "homeland": ", ".join(item.get("regions", [])),
+        "coords": [-22.0, 24.0],
+        "population": "Communautés contemporaines diverses",
+        "language_family": ", ".join(item.get("languages", [])),
+        "summary": item.get("history", ""),
+        "language": ", ".join(item.get("languages", [])),
+        "religion": "Pratiques diverses selon les communautés",
+        "culture": item.get("culture", ""),
+        "sources": item.get("sources", []),
+        "wikipedia_title": item.get("wikipedia_title"),
+        "image_source_url": item.get("image_source_url"),
+        "visual_type": item.get("visual_type"),
+    }
+    for item in COUNTRY_DOSSIERS["BW"].get("peoples", [])
+    if item.get("id") not in _existing_bw_people
+)
+
+_existing_bw_culture = {item.get("id") for item in CULTURE_ITEMS}
+CULTURE_ITEMS.extend(
+    {
+        "id": item["id"],
+        "category": "food" if "Cuisine" in item["topic"] else "music" if any(word in item["topic"] for word in ("danse", "Musiques")) else "heritage",
+        "region": "Southern Africa",
+        "title": item["topic"],
+        "blurb": item["text"],
+        "sources": item.get("sources", []),
+        "image_source_url": item.get("image_source_url"),
+        "visual_type": item.get("visual_type"),
+    }
+    for item in COUNTRY_DOSSIERS["BW"].get("culture", [])
+    if item.get("id") not in _existing_bw_culture
+)
+
+_existing_bw_timeline = {item.get("id") for item in SA_TIMELINE_EVENTS}
+SA_TIMELINE_EVENTS.extend(item for item in _bw_v1["timeline"] if item.get("id") not in _existing_bw_timeline)
+
+_existing_bw_journey = {item.get("id") for item in LINEAGE_JOURNEY.get("stops", [])}
+LINEAGE_JOURNEY["stops"] = sorted(
+    LINEAGE_JOURNEY.get("stops", [])
+    + [item for item in _bw_v1["journey"] if item.get("id") not in _existing_bw_journey],
+    key=lambda stop: stop.get("year", -10**12),
+)
+
+# Botswana global ecosystem V2
+_bw2_global = BOTSWANA_EXPANSION_V2
+
+def _merge_global_bw2(target, incoming):
+    existing = {item.get("id") for item in target}
+    target.extend(item for item in incoming if item.get("id") not in existing)
+
+_merge_global_bw2(PLACES, _bw2_global["places"])
+_merge_global_bw2(STORIES, _bw2_global["stories"])
+_merge_global_bw2(SA_TIMELINE_EVENTS, _bw2_global["timeline"])
+
+# Botswana global ecosystem V3
+_bw3_global = BOTSWANA_EXPANSION_V3
+
+def _merge_global_bw3(target, incoming):
+    existing = {item.get("id") for item in target}
+    target.extend(item for item in incoming if item.get("id") not in existing)
+
+_merge_global_bw3(PLACES, _bw3_global["places"])
+_merge_global_bw3(STORIES, _bw3_global["stories"])
+_merge_global_bw3(SA_TIMELINE_EVENTS, _bw3_global["timeline"])
+
 # Backfill missing sources arrays on older PLACES entries
 for _p in PLACES:
     if "sources" not in _p and _p["id"] in PLACE_SOURCES_BACKFILL:

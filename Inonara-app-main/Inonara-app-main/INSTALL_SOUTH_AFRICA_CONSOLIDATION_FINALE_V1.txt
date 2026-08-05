@@ -1,0 +1,15 @@
+AFRIQUE DU SUD — CONSOLIDATION FINALE V1
+
+Ce paquet regroupe les composants qualité déjà préparés et les branche tous dans l'interface actuelle.
+
+Commandes Termux:
+
+cd ~/inonara-app
+unzip -o /sdcard/Download/inonara-afrique-du-sud-consolidation-finale-v1.zip -d .
+bash scripts/apply_all_south_africa_quality.sh
+cd frontend
+npm run build
+cd ..
+git add frontend/src/components scripts INSTALL_SOUTH_AFRICA_CONSOLIDATION_FINALE_V1.txt
+git commit -m "feat: consolider tout le contenu Afrique du Sud"
+git push

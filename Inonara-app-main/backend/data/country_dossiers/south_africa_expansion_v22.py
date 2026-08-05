@@ -290,9 +290,9 @@ SOUTH_AFRICA_EXPANSION_V22 = {'atlas_places': [{'id': 'place-table-mountain-v22'
                             'body': 'Le multilinguisme, le numérique et la participation communautaire transforment '
                                     'les pratiques muséales.'}],
               'sources': ['src-iziko-v22', 'src-apartheid-museum-v22'],
-              'image_url': 'https://commons.wikimedia.org/wiki/Special:FilePath/University%20of%20Cape%20Town%20Library.jpg',
-              'image_source_url': 'https://commons.wikimedia.org/wiki/File:University_of_Cape_Town_Library.jpg',
-              'image_credit': 'Gogontsi — Wikimedia Commons — licence indiquée sur la page source',
+              'wikipedia_title': 'University of Cape Town',
+              'image_source_url': 'https://en.wikipedia.org/wiki/University_of_Cape_Town',
+              'image_credit': 'Photographie Wikimedia — University of Cape Town',
               'visual_type': 'photograph'},
              {'id': 'story-constitution-hill-v22',
               'title': 'De la prison à la Cour constitutionnelle',

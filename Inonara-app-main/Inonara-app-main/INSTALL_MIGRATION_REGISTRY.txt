@@ -1,0 +1,15 @@
+INONARA — Installation du registre mondial des migrations (fondation)
+
+Ce paquet n'altère pas les routes visibles sur la carte.
+Il crée le registre éditorial, inventorie les 177 routes existantes et marque
+les 12 routes mixtes comme "split-required".
+
+Commandes de vérification :
+  python backend/scripts/build_migration_registry.py
+  PYTHONPATH=backend python -m pytest -q backend/tests/test_migration_registry.py
+
+Résultat attendu pour la version analysée :
+  117 familles de migration
+  177 routes candidates
+  12 routes mixtes à scinder
+  3 routes avec dates incohérentes à corriger

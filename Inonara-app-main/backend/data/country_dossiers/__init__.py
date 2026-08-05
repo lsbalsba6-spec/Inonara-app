@@ -1,3 +1,7 @@
+from .botswana_consolidation_v4 import BOTSWANA_CONSOLIDATION_V4
+from .botswana_expansion_v3 import BOTSWANA_EXPANSION_V3
+from .botswana_expansion_v2 import BOTSWANA_EXPANSION_V2
+from .botswana import BOTSWANA_DOSSIER
 from .south_africa import SOUTH_AFRICA_DOSSIER
 from ..south_africa_visuals_v8 import SOUTH_AFRICA_VISUALS_V8
 from .south_africa_timeline_economy import SOUTH_AFRICA_TIMELINE_ECONOMY
@@ -326,8 +330,61 @@ _merge_v23(SOUTH_AFRICA_DOSSIER.setdefault('stories',[]),_v23['stories'])
 _merge_v23(SOUTH_AFRICA_DOSSIER.setdefault('media_gallery',[]),_v23['gallery'])
 _merge_v23(SOUTH_AFRICA_DOSSIER.setdefault('sources',[]),_v23['additionalSources'])
 COUNTRY_DOSSIERS = {
+    "BW": BOTSWANA_DOSSIER,
     SOUTH_AFRICA_DOSSIER["iso2"]: SOUTH_AFRICA_DOSSIER,
 }
+
+# Botswana expansion V3
+_bw3 = BOTSWANA_EXPANSION_V3
+
+def _merge_bw3(target, incoming):
+    existing = {item.get("id") or item.get("name") or item.get("title") or item.get("topic") for item in target}
+    target.extend(item for item in incoming if (item.get("id") or item.get("name") or item.get("title") or item.get("topic")) not in existing)
+
+if "BW" not in COUNTRY_DOSSIERS:
+    raise RuntimeError("Botswana V1 doit être installé avant V3")
+
+_bw_dossier = COUNTRY_DOSSIERS["BW"]
+_merge_bw3(_bw_dossier.setdefault("figures", []), _bw3["figures"])
+_merge_bw3(_bw_dossier.setdefault("peoples", []), _bw3["peoples"])
+_merge_bw3(_bw_dossier.setdefault("culture", []), _bw3["culture"])
+_merge_bw3(_bw_dossier.setdefault("heritage", []), _bw3["heritage"])
+_merge_bw3(_bw_dossier.setdefault("stories", []), _bw3["stories"])
+_merge_bw3(_bw_dossier.setdefault("sources", []), _bw3["sources"])
+
+
+# Botswana expansion V2
+_bw2 = BOTSWANA_EXPANSION_V2
+
+def _merge_bw2(target, incoming):
+    existing = {item.get("id") or item.get("name") or item.get("title") or item.get("topic") for item in target}
+    target.extend(item for item in incoming if (item.get("id") or item.get("name") or item.get("title") or item.get("topic")) not in existing)
+
+if "BW" not in COUNTRY_DOSSIERS:
+    raise RuntimeError("Botswana V1 doit être installé avant V2")
+
+_bw_dossier = COUNTRY_DOSSIERS["BW"]
+_merge_bw2(_bw_dossier.setdefault("figures", []), _bw2["figures"])
+_merge_bw2(_bw_dossier.setdefault("peoples", []), _bw2["peoples"])
+_merge_bw2(_bw_dossier.setdefault("culture", []), _bw2["culture"])
+_merge_bw2(_bw_dossier.setdefault("heritage", []), _bw2["heritage"])
+_merge_bw2(_bw_dossier.setdefault("stories", []), _bw2["stories"])
+_merge_bw2(_bw_dossier.setdefault("institutions", {}).setdefault("items", []), _bw2["institutions"])
+_merge_bw2(_bw_dossier.setdefault("sources", []), _bw2["sources"])
+
+
+
+
+# Botswana consolidation V4
+_bw4 = BOTSWANA_CONSOLIDATION_V4
+if "BW" not in COUNTRY_DOSSIERS:
+    raise RuntimeError("Botswana V1 doit être installé avant V4")
+_bw = COUNTRY_DOSSIERS["BW"]
+_bw.update(_bw4["identity"])
+_bw["presentation"] = _bw4["presentation"]
+_bw.setdefault("overview", {}).update(_bw4["overview"])
+for key in ("institutions", "languages", "religions", "polities", "migrations", "law_memory", "sport_media", "national_symbols", "international_role", "interactive_timeline", "scientific_library", "historiography", "research_gaps", "map_visuals"):
+    _bw[key] = _bw4[key]
 
 
 def country_dossier_index():

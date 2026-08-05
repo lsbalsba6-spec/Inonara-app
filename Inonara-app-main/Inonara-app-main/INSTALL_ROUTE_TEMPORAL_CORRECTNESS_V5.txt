@@ -1,0 +1,11 @@
+INONARA — Route temporal correctness v5
+
+This correction stops publishing automatically-derived diaspora routes whose
+route-level dates have not been verified. It preserves every candidate in an
+editorial inventory, but the public Atlas receives only curated macro-routes
+and explicitly reviewed diaspora routes.
+
+Reason: a diaspora community existing in 2025 does not mean the migration
+movement that formed it is active in 2025.
+
+No candidate date has been changed or invented.

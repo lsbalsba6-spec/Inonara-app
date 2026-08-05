@@ -1,0 +1,6 @@
+Afrique du Sud — Partie 10
+
+1. Extraire le ZIP à la racine du dépôt.
+2. Lancer les tests backend indiqués dans le message ChatGPT.
+3. Lancer npm run build dans frontend.
+4. Vérifier les onglets Société, Éducation & santé, Symboles et Monde.

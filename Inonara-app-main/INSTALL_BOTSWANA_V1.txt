@@ -1,0 +1,50 @@
+BOTSWANA V1 — DOSSIER PAYS ET ÉCOSYSTÈME
+
+AJOUTS
+- présentation générale complète;
+- géographie et histoire;
+- 7 peuples;
+- 8 figures;
+- 8 articles Culture;
+- 5 patrimoines;
+- économie, société, éducation, santé, environnement et institutions;
+- 5 Stories;
+- 12 lieux Atlas;
+- 8 événements Timeline;
+- 6 étapes Journey;
+- sources officielles et institutionnelles;
+- aucune illustration SVG.
+
+TERMUX
+
+cd ~/inonara-app
+
+unzip -o /sdcard/Download/inonara-botswana-v1.zip -d .
+
+python scripts/apply_botswana_v1.py
+python scripts/verify_botswana_v1.py
+
+python -m py_compile \
+  backend/data/country_dossiers/botswana.py \
+  backend/data/botswana_ecosystem_v1.py \
+  backend/data/country_dossiers/__init__.py \
+  backend/data/__init__.py
+
+cd frontend
+CI=true npm run build
+
+SI LE BUILD EST VERT
+
+cd ~/inonara-app
+
+git add \
+  backend/data/country_dossiers/botswana.py \
+  backend/data/botswana_ecosystem_v1.py \
+  backend/data/country_dossiers/__init__.py \
+  backend/data/__init__.py \
+  scripts/apply_botswana_v1.py \
+  scripts/verify_botswana_v1.py \
+  INSTALL_BOTSWANA_V1.txt
+
+git commit -m "feat: ajouter le dossier Botswana V1"
+git push

@@ -1,0 +1,19 @@
+RESTAURATION FONCTIONNELLE AFRIQUE DU SUD V1
+
+- remet la carte interactive du pays;
+- remet la carte des migrations historiques;
+- remet la carte des mobilités avant 1652;
+- corrige le crash de Société & culture;
+- remplit Société, Éducation & santé, Économie et Rôle international avec les données déjà présentes.
+
+TERMUX
+
+cd ~/inonara-app
+unzip -o /sdcard/Download/inonara-afrique-du-sud-restauration-fonctionnelle-v1.zip -d .
+python scripts/apply_south_africa_functional_restoration_v1.py
+cd frontend
+CI=true npm run build
+cd ..
+git add frontend/src/components backend/data/country_dossiers/__init__.py scripts/apply_south_africa_functional_restoration_v1.py INSTALL_SOUTH_AFRICA_FUNCTIONAL_RESTORATION_V1.txt
+git commit -m "fix: restaurer cartes et sections Afrique du Sud"
+git push

@@ -1,0 +1,1 @@
+Installer depuis la racine du dépôt, puis exécuter les tests indiqués dans la réponse ChatGPT.

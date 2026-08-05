@@ -1,0 +1,352 @@
+from .south_africa import SOUTH_AFRICA_DOSSIER
+from ..south_africa_visuals_v8 import SOUTH_AFRICA_VISUALS_V8
+from .south_africa_timeline_economy import SOUTH_AFRICA_TIMELINE_ECONOMY
+from .south_africa_society_state import SOUTH_AFRICA_SOCIETY_STATE
+from .south_africa_deep_history import DEEP_HISTORY, DEEP_HISTORY_SOURCES
+from .south_africa_expansion_v23 import SOUTH_AFRICA_EXPANSION_V23
+from .south_africa_expansion_v22 import SOUTH_AFRICA_EXPANSION_V22
+from .south_africa_expansion_v21 import SOUTH_AFRICA_EXPANSION_V21
+from .south_africa_expansion_v20 import SOUTH_AFRICA_EXPANSION_V20
+from .south_africa_expansion_v18 import SOUTH_AFRICA_EXPANSION_V18
+from .south_africa_grand_pack_v17 import SOUTH_AFRICA_GRAND_PACK_V17
+from .south_africa_expansion_v16 import SOUTH_AFRICA_EXPANSION_V16
+from .south_africa_expansion_v15 import SOUTH_AFRICA_EXPANSION_V15
+from .south_africa_expansion_v13 import SOUTH_AFRICA_EXPANSION_V13
+from .south_africa_expansion_v10 import SOUTH_AFRICA_EXPANSION_V10
+from .south_africa_editorial_expansion_v9 import SOUTH_AFRICA_EDITORIAL_EXPANSION_V9
+from .south_africa_editorial_expansion_v7 import SOUTH_AFRICA_EDITORIAL_EXPANSION_V7
+from .south_africa_editorial_expansion_v5 import SOUTH_AFRICA_EDITORIAL_EXPANSION_V5
+from .south_africa_editorial_expansion_v4 import SOUTH_AFRICA_EDITORIAL_EXPANSION_V4
+from .south_africa_editorial_expansion_v3 import SOUTH_AFRICA_EDITORIAL_EXPANSION_V3
+from .south_africa_editorial_expansion import apply_editorial_expansion
+
+SOUTH_AFRICA_DOSSIER["interactive_timeline"] = SOUTH_AFRICA_TIMELINE_ECONOMY["interactive_timeline"]
+SOUTH_AFRICA_DOSSIER["economy"] = SOUTH_AFRICA_TIMELINE_ECONOMY["economy"]
+SOUTH_AFRICA_DOSSIER["scientific_library"] = SOUTH_AFRICA_TIMELINE_ECONOMY["scientificLibrary"]
+_existing_source_ids = {item["id"] for item in SOUTH_AFRICA_DOSSIER.get("sources", [])}
+SOUTH_AFRICA_DOSSIER.setdefault("sources", []).extend(
+    item for item in SOUTH_AFRICA_TIMELINE_ECONOMY["additionalSources"] if item["id"] not in _existing_source_ids
+)
+
+SOUTH_AFRICA_DOSSIER["society"] = SOUTH_AFRICA_SOCIETY_STATE["society"]
+SOUTH_AFRICA_DOSSIER["education_health"] = SOUTH_AFRICA_SOCIETY_STATE["education_health"]
+SOUTH_AFRICA_DOSSIER["national_symbols"] = SOUTH_AFRICA_SOCIETY_STATE["national_symbols"]
+SOUTH_AFRICA_DOSSIER["international_role"] = SOUTH_AFRICA_SOCIETY_STATE["international_role"]
+_existing_source_ids = {item["id"] for item in SOUTH_AFRICA_DOSSIER.get("sources", [])}
+SOUTH_AFRICA_DOSSIER.setdefault("sources", []).extend(
+    item for item in SOUTH_AFRICA_SOCIETY_STATE["additionalSources"] if item["id"] not in _existing_source_ids
+)
+
+
+SOUTH_AFRICA_DOSSIER["deep_history"] = DEEP_HISTORY
+SOUTH_AFRICA_DOSSIER["pre1652_map"] = DEEP_HISTORY.get("pre1652_map")
+_existing_source_ids = {item["id"] for item in SOUTH_AFRICA_DOSSIER.get("sources", [])}
+SOUTH_AFRICA_DOSSIER.setdefault("sources", []).extend(
+    item for item in DEEP_HISTORY_SOURCES if item["id"] not in _existing_source_ids
+)
+
+apply_editorial_expansion(SOUTH_AFRICA_DOSSIER)
+
+
+# Editorial expansion V3
+_v3 = SOUTH_AFRICA_EDITORIAL_EXPANSION_V3
+
+def _merge_unique(target, incoming):
+    existing = {item.get("id") or item.get("name") or item.get("title") or item.get("topic") for item in target}
+    target.extend(
+        item for item in incoming
+        if (item.get("id") or item.get("name") or item.get("title") or item.get("topic")) not in existing
+    )
+
+_merge_unique(SOUTH_AFRICA_DOSSIER.setdefault("figures", []), _v3["figures"])
+_merge_unique(SOUTH_AFRICA_DOSSIER.setdefault("peoples", []), _v3["peoples"])
+_merge_unique(SOUTH_AFRICA_DOSSIER.setdefault("culture", []), _v3["culture"])
+_merge_unique(SOUTH_AFRICA_DOSSIER.setdefault("heritage", []), _v3["heritage"])
+_merge_unique(SOUTH_AFRICA_DOSSIER.setdefault("education_health", {}).setdefault("education", {}).setdefault("items", []), _v3["systems"]["education"])
+_merge_unique(SOUTH_AFRICA_DOSSIER.setdefault("education_health", {}).setdefault("health", {}).setdefault("items", []), _v3["systems"]["health"])
+_merge_unique(SOUTH_AFRICA_DOSSIER.setdefault("economy", {}).setdefault("sections", []), _v3["systems"]["economy"])
+_merge_unique(SOUTH_AFRICA_DOSSIER.setdefault("sources", []), _v3["additionalSources"])
+
+
+# Editorial expansion V4
+_v4 = SOUTH_AFRICA_EDITORIAL_EXPANSION_V4
+
+def _merge_v4(target, incoming):
+    existing = {item.get("id") or item.get("title") for item in target}
+    target.extend(item for item in incoming if (item.get("id") or item.get("title")) not in existing)
+
+law = SOUTH_AFRICA_DOSSIER.setdefault("law_memory", {})
+memory_section = law.setdefault("memory_reconciliation", {"title": "Mémoire, vérité et réconciliation", "items": []})
+_merge_v4(memory_section.setdefault("items", []), _v4["law_memory"])
+_merge_v4(SOUTH_AFRICA_DOSSIER.setdefault("society", {}).setdefault("themes", []), _v4["society"])
+_merge_v4(SOUTH_AFRICA_DOSSIER.setdefault("national_symbols", {}).setdefault("items", []), _v4["symbols"])
+_merge_v4(SOUTH_AFRICA_DOSSIER.setdefault("international_role", {}).setdefault("memberships", []), _v4["international"])
+
+
+# Editorial expansion V5
+_v5 = SOUTH_AFRICA_EDITORIAL_EXPANSION_V5
+
+def _merge_v5(target, incoming):
+    existing = {item.get("id") or item.get("title") or item.get("name") for item in target}
+    target.extend(item for item in incoming if (item.get("id") or item.get("title") or item.get("name")) not in existing)
+
+_merge_v5(SOUTH_AFRICA_DOSSIER.setdefault("figures", []), _v5["figures"])
+_merge_v5(SOUTH_AFRICA_DOSSIER.setdefault("education_health", {}).setdefault("education", {}).setdefault("items", []), _v5["education"])
+_merge_v5(SOUTH_AFRICA_DOSSIER.setdefault("education_health", {}).setdefault("health", {}).setdefault("items", []), _v5["health"])
+_merge_v5(SOUTH_AFRICA_DOSSIER.setdefault("economy", {}).setdefault("sections", []), _v5["economy"])
+_merge_v5(SOUTH_AFRICA_DOSSIER.setdefault("sources", []), _v5["additionalSources"])
+SOUTH_AFRICA_DOSSIER["cross_links"] = _v5["cross_links"]
+
+
+# Editorial expansion V7
+_v7 = SOUTH_AFRICA_EDITORIAL_EXPANSION_V7
+
+def _merge_v7(target, incoming):
+    existing = {item.get("id") or item.get("title") or item.get("name") or item.get("topic") for item in target}
+    target.extend(item for item in incoming if (item.get("id") or item.get("title") or item.get("name") or item.get("topic")) not in existing)
+
+_merge_v7(SOUTH_AFRICA_DOSSIER.setdefault("figures", []), _v7["figures"])
+_merge_v7(SOUTH_AFRICA_DOSSIER.setdefault("culture", []), _v7["culture"])
+_merge_v7(SOUTH_AFRICA_DOSSIER.setdefault("environment", {}).setdefault("items", []), _v7["environment"])
+_merge_v7(SOUTH_AFRICA_DOSSIER.setdefault("media", {}).setdefault("items", []), _v7["media"])
+_merge_v7(SOUTH_AFRICA_DOSSIER.setdefault("sources", []), _v7["additionalSources"])
+
+
+# Visual gallery V8
+_existing_gallery_ids = {item.get("id") for item in SOUTH_AFRICA_DOSSIER.setdefault("media_gallery", [])}
+SOUTH_AFRICA_DOSSIER["media_gallery"].extend(
+    item for item in SOUTH_AFRICA_VISUALS_V8["gallery"]
+    if item.get("id") not in _existing_gallery_ids
+)
+
+
+# Editorial and visual expansion V9
+_v9 = SOUTH_AFRICA_EDITORIAL_EXPANSION_V9
+
+def _merge_v9(target, incoming):
+    existing = {item.get("id") or item.get("title") or item.get("name") or item.get("topic") for item in target}
+    target.extend(
+        item for item in incoming
+        if (item.get("id") or item.get("title") or item.get("name") or item.get("topic")) not in existing
+    )
+
+_merge_v9(SOUTH_AFRICA_DOSSIER.setdefault("figures", []), _v9["figures"])
+_merge_v9(SOUTH_AFRICA_DOSSIER.setdefault("culture", []), _v9["culture"])
+_merge_v9(SOUTH_AFRICA_DOSSIER.setdefault("media_gallery", []), _v9["gallery"])
+_merge_v9(SOUTH_AFRICA_DOSSIER.setdefault("sources", []), _v9["additionalSources"])
+
+
+# South Africa expansion V10
+_v10 = SOUTH_AFRICA_EXPANSION_V10
+
+def _merge_v10(target, incoming):
+    existing = {item.get("id") or item.get("title") or item.get("name") for item in target}
+    target.extend(item for item in incoming if (item.get("id") or item.get("title") or item.get("name")) not in existing)
+
+_merge_v10(SOUTH_AFRICA_DOSSIER.setdefault("figures", []), _v10["figures"])
+_merge_v10(SOUTH_AFRICA_DOSSIER.setdefault("heritage", []), _v10["heritage"])
+_merge_v10(SOUTH_AFRICA_DOSSIER.setdefault("media_gallery", []), _v10["gallery"])
+_merge_v10(SOUTH_AFRICA_DOSSIER.setdefault("sources", []), _v10["additionalSources"])
+
+
+# South Africa expansion V13
+_v13 = SOUTH_AFRICA_EXPANSION_V13
+
+def _merge_v13(target, incoming):
+    existing = {item.get("id") or item.get("title") or item.get("name") for item in target}
+    target.extend(
+        item for item in incoming
+        if (item.get("id") or item.get("title") or item.get("name")) not in existing
+    )
+
+_merge_v13(SOUTH_AFRICA_DOSSIER.setdefault("figures", []), _v13["figures"])
+_merge_v13(SOUTH_AFRICA_DOSSIER.setdefault("heritage", []), _v13["heritage"])
+_merge_v13(SOUTH_AFRICA_DOSSIER.setdefault("society", {}).setdefault("themes", []), _v13["society"])
+_merge_v13(SOUTH_AFRICA_DOSSIER.setdefault("media_gallery", []), _v13["gallery"])
+_merge_v13(SOUTH_AFRICA_DOSSIER.setdefault("sources", []), _v13["additionalSources"])
+
+
+# South Africa expansion V15
+_v15 = SOUTH_AFRICA_EXPANSION_V15
+
+def _merge_v15(target, incoming):
+    existing = {item.get("id") or item.get("title") or item.get("name") or item.get("topic") for item in target}
+    target.extend(
+        item for item in incoming
+        if (item.get("id") or item.get("title") or item.get("name") or item.get("topic")) not in existing
+    )
+
+_merge_v15(SOUTH_AFRICA_DOSSIER.setdefault("figures", []), _v15["figures"])
+_merge_v15(SOUTH_AFRICA_DOSSIER.setdefault("peoples", []), _v15["peoples"])
+_merge_v15(SOUTH_AFRICA_DOSSIER.setdefault("culture", []), _v15["culture"])
+_merge_v15(SOUTH_AFRICA_DOSSIER.setdefault("media_gallery", []), _v15["gallery"])
+_merge_v15(SOUTH_AFRICA_DOSSIER.setdefault("sources", []), _v15["additionalSources"])
+
+
+# South Africa expansion V16
+_v16 = SOUTH_AFRICA_EXPANSION_V16
+
+def _merge_v16(target, incoming):
+    existing = {item.get("id") or item.get("title") or item.get("name") for item in target}
+    target.extend(item for item in incoming if (item.get("id") or item.get("title") or item.get("name")) not in existing)
+
+_merge_v16(SOUTH_AFRICA_DOSSIER.setdefault("law_memory", {}).setdefault("constitutional_democracy", {}).setdefault("items", []), _v16["institutions"])
+_merge_v16(SOUTH_AFRICA_DOSSIER.setdefault("society", {}).setdefault("themes", []), _v16["society"])
+_merge_v16(SOUTH_AFRICA_DOSSIER.setdefault("heritage", []), _v16["heritage"])
+_merge_v16(SOUTH_AFRICA_DOSSIER.setdefault("media_gallery", []), _v16["gallery"])
+_merge_v16(SOUTH_AFRICA_DOSSIER.setdefault("sources", []), _v16["additionalSources"])
+
+
+# South Africa massive grand pack V17
+_gp17 = SOUTH_AFRICA_GRAND_PACK_V17
+_merge_gp17 = lambda target, incoming: target.extend(
+    item for item in incoming
+    if (item.get("id") or item.get("title") or item.get("name") or item.get("topic"))
+    not in {x.get("id") or x.get("title") or x.get("name") or x.get("topic") for x in target}
+)
+_merge_gp17(SOUTH_AFRICA_DOSSIER.setdefault("figures", []), _gp17["figures"])
+_merge_gp17(SOUTH_AFRICA_DOSSIER.setdefault("peoples", []), _gp17["peoples"])
+_merge_gp17(SOUTH_AFRICA_DOSSIER.setdefault("society", {}).setdefault("themes", []), _gp17["society"])
+_merge_gp17(SOUTH_AFRICA_DOSSIER.setdefault("education_health", {}).setdefault("education", {}).setdefault("items", []), _gp17["education"])
+_merge_gp17(SOUTH_AFRICA_DOSSIER.setdefault("education_health", {}).setdefault("health", {}).setdefault("items", []), _gp17["health"])
+_merge_gp17(SOUTH_AFRICA_DOSSIER.setdefault("economy", {}).setdefault("sections", []), _gp17["economy"])
+_merge_gp17(SOUTH_AFRICA_DOSSIER.setdefault("heritage", []), _gp17["heritage"])
+_merge_gp17(SOUTH_AFRICA_DOSSIER.setdefault("media_gallery", []), _gp17["gallery"])
+_merge_gp17(SOUTH_AFRICA_DOSSIER.setdefault("sources", []), _gp17["additionalSources"])
+# Remove xenophobia-specific cards while preserving broader migration history.
+for section in [SOUTH_AFRICA_DOSSIER.get("society", {}).get("themes", []), SOUTH_AFRICA_DOSSIER.get("culture", [])]:
+    section[:] = [item for item in section if "xenoph" not in str(item).lower()]
+
+
+# South Africa expansion V18
+_v18 = SOUTH_AFRICA_EXPANSION_V18
+
+def _merge_v18(target, incoming):
+    existing = {item.get("id") or item.get("title") or item.get("name") or item.get("topic") for item in target}
+    target.extend(item for item in incoming if (item.get("id") or item.get("title") or item.get("name") or item.get("topic")) not in existing)
+
+_merge_v18(SOUTH_AFRICA_DOSSIER.setdefault("society", {}).setdefault("themes", []), _v18["society"])
+_merge_v18(SOUTH_AFRICA_DOSSIER.setdefault("culture", []), _v18["culture"])
+_merge_v18(SOUTH_AFRICA_DOSSIER.setdefault("heritage", []), _v18["heritage"])
+_merge_v18(SOUTH_AFRICA_DOSSIER.setdefault("stories", []), _v18["stories"])
+_merge_v18(SOUTH_AFRICA_DOSSIER.setdefault("media_gallery", []), _v18["gallery"])
+_merge_v18(SOUTH_AFRICA_DOSSIER.setdefault("sources", []), _v18["additionalSources"])
+
+# Remove xenophobia-focused cards from the main dossier for now.
+for section_key in ("society", "law_memory", "international_role"):
+    section = SOUTH_AFRICA_DOSSIER.get(section_key)
+    if isinstance(section, dict):
+        for key, value in list(section.items()):
+            if isinstance(value, list):
+                section[key] = [item for item in value if "xenophob" not in str(item).lower()]
+
+
+# South Africa expansion V20
+_v20 = SOUTH_AFRICA_EXPANSION_V20
+
+def _merge_v20(target, incoming):
+    existing = {item.get("id") or item.get("title") or item.get("name") or item.get("topic") for item in target}
+    target.extend(
+        item for item in incoming
+        if (item.get("id") or item.get("title") or item.get("name") or item.get("topic")) not in existing
+    )
+
+_merge_v20(SOUTH_AFRICA_DOSSIER.setdefault("economy", {}).setdefault("sections", []), _v20["economy"])
+_merge_v20(SOUTH_AFRICA_DOSSIER.setdefault("education_health", {}).setdefault("education", {}).setdefault("items", []), _v20["education"])
+_merge_v20(SOUTH_AFRICA_DOSSIER.setdefault("education_health", {}).setdefault("health", {}).setdefault("items", []), _v20["health"])
+_merge_v20(SOUTH_AFRICA_DOSSIER.setdefault("environment", {}).setdefault("items", []), _v20["environment"])
+_merge_v20(SOUTH_AFRICA_DOSSIER.setdefault("stories", []), _v20["stories"])
+_merge_v20(SOUTH_AFRICA_DOSSIER.setdefault("media_gallery", []), _v20["gallery"])
+_merge_v20(SOUTH_AFRICA_DOSSIER.setdefault("sources", []), _v20["additionalSources"])
+
+def _strip_xenophobia(value):
+    if isinstance(value, list):
+        return [_strip_xenophobia(item) for item in value if "xenophob" not in str(item).lower()]
+    if isinstance(value, dict):
+        return {key: _strip_xenophobia(item) for key, item in value.items()}
+    return value
+
+for _section in ("society", "law_memory", "international_role"):
+    if _section in SOUTH_AFRICA_DOSSIER:
+        SOUTH_AFRICA_DOSSIER[_section] = _strip_xenophobia(SOUTH_AFRICA_DOSSIER[_section])
+
+
+# South Africa expansion V21
+_v21 = SOUTH_AFRICA_EXPANSION_V21
+
+def _merge_v21(target, incoming):
+    existing = {
+        item.get("id") or item.get("title") or item.get("name") or item.get("topic")
+        for item in target
+    }
+    target.extend(
+        item for item in incoming
+        if (item.get("id") or item.get("title") or item.get("name") or item.get("topic"))
+        not in existing
+    )
+
+_merge_v21(SOUTH_AFRICA_DOSSIER.setdefault("figures", []), _v21["figures"])
+_merge_v21(SOUTH_AFRICA_DOSSIER.setdefault("peoples", []), _v21["peoples"])
+_merge_v21(SOUTH_AFRICA_DOSSIER.setdefault("culture", []), _v21["culture"])
+_merge_v21(SOUTH_AFRICA_DOSSIER.setdefault("heritage", []), _v21["heritage"])
+_merge_v21(SOUTH_AFRICA_DOSSIER.setdefault("stories", []), _v21["stories"])
+_merge_v21(SOUTH_AFRICA_DOSSIER.setdefault("media_gallery", []), _v21["gallery"])
+_merge_v21(SOUTH_AFRICA_DOSSIER.setdefault("sources", []), _v21["additionalSources"])
+
+
+# South Africa expansion V22
+_v22 = SOUTH_AFRICA_EXPANSION_V22
+
+def _merge_v22(target, incoming):
+    existing = {
+        item.get("id") or item.get("title") or item.get("name") or item.get("topic")
+        for item in target
+    }
+    target.extend(
+        item for item in incoming
+        if (item.get("id") or item.get("title") or item.get("name") or item.get("topic"))
+        not in existing
+    )
+
+_merge_v22(SOUTH_AFRICA_DOSSIER.setdefault("stories", []), _v22["stories"])
+_merge_v22(SOUTH_AFRICA_DOSSIER.setdefault("media_gallery", []), _v22["gallery"])
+_merge_v22(SOUTH_AFRICA_DOSSIER.setdefault("sources", []), _v22["additionalSources"])
+
+
+# South Africa expansion V23
+_v23=SOUTH_AFRICA_EXPANSION_V23
+def _merge_v23(target,incoming):
+    existing={i.get('id') or i.get('title') or i.get('name') or i.get('topic') for i in target}
+    target.extend(i for i in incoming if (i.get('id') or i.get('title') or i.get('name') or i.get('topic')) not in existing)
+_merge_v23(SOUTH_AFRICA_DOSSIER.setdefault('figures',[]),_v23['figures'])
+_merge_v23(SOUTH_AFRICA_DOSSIER.setdefault('law_memory',{}).setdefault('constitutional_democracy',{}).setdefault('items',[]),_v23['institutions'])
+_merge_v23(SOUTH_AFRICA_DOSSIER.setdefault('society',{}).setdefault('themes',[]),_v23['society'])
+_merge_v23(SOUTH_AFRICA_DOSSIER.setdefault('heritage',[]),_v23['heritage'])
+_merge_v23(SOUTH_AFRICA_DOSSIER.setdefault('stories',[]),_v23['stories'])
+_merge_v23(SOUTH_AFRICA_DOSSIER.setdefault('media_gallery',[]),_v23['gallery'])
+_merge_v23(SOUTH_AFRICA_DOSSIER.setdefault('sources',[]),_v23['additionalSources'])
+COUNTRY_DOSSIERS = {
+    SOUTH_AFRICA_DOSSIER["iso2"]: SOUTH_AFRICA_DOSSIER,
+}
+
+
+def country_dossier_index():
+    """Return lightweight metadata for every published country master dossier."""
+    return [
+        {
+            "iso2": dossier["iso2"],
+            "iso3": dossier.get("iso3"),
+            "slug": dossier["slug"],
+            "name": dossier["name"],
+            "region": dossier.get("region"),
+            "status": dossier.get("status", "draft"),
+            "last_reviewed": dossier.get("last_reviewed"),
+        }
+        for dossier in sorted(
+            COUNTRY_DOSSIERS.values(),
+            key=lambda item: item.get("name", {}).get("fr", item["iso2"]),
+        )
+    ]
+
+
+__all__ = ["COUNTRY_DOSSIERS", "SOUTH_AFRICA_DOSSIER", "country_dossier_index"]

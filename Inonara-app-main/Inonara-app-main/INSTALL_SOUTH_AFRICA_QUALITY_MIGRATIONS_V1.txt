@@ -1,0 +1,10 @@
+AFRIQUE DU SUD — QUALITÉ MIGRATIONS V1
+
+1. Décompresser à la racine du dépôt.
+2. Exécuter:
+   python scripts/apply_south_africa_quality_migrations_v1.py
+3. Vérifier:
+   python scripts/check_frontend_relative_imports.py
+4. Commit et push.
+
+Le patch ne modifie aucune donnée. Il améliore seulement l'affichage des routes existantes.

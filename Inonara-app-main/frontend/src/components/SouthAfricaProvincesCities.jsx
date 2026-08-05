@@ -7,7 +7,7 @@ function normalize(value) {
     .toLowerCase();
 }
 
-export function SouthAfricaProvincesCities({ dossier }) {
+export function SouthAfricaDistrictsCities({ dossier }) {
   const [query, setQuery] = useState("");
   const institutions = dossier?.institutions || {};
   const provinces = useMemo(
@@ -22,7 +22,7 @@ export function SouthAfricaProvincesCities({ dossier }) {
     [institutions.capital_functions]
   );
 
-  const filteredProvinces = useMemo(() => {
+  const filteredDistricts = useMemo(() => {
     const needle = normalize(query.trim());
     if (!needle) return provinces;
     return provinces.filter((province) =>
@@ -35,8 +35,7 @@ export function SouthAfricaProvincesCities({ dossier }) {
       <section>
         <h2 className="font-serif text-3xl text-gold">Capitales nationales</h2>
         <p className="mt-2 max-w-3xl text-bone/65 leading-relaxed">
-          L’Afrique du Sud répartit plusieurs fonctions nationales entre différentes villes.
-          Cette organisation ne doit pas être confondue avec les capitales des neuf provinces.
+          Les fonctions nationales et l’organisation territoriale sont présentées selon le cadre institutionnel propre au pays.
         </p>
         <div className="mt-5 grid gap-4 md:grid-cols-2">
           {capitalFunctions.map((item) => (
@@ -54,10 +53,9 @@ export function SouthAfricaProvincesCities({ dossier }) {
       <section>
         <div className="flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
           <div>
-            <h2 className="font-serif text-3xl text-gold">Provinces et capitales provinciales</h2>
+            <h2 className="font-serif text-3xl text-gold">Districts et centres administratifs</h2>
             <p className="mt-2 text-bone/60">
-              Les provinces actuelles datent de la réorganisation territoriale de 1994 ; elles
-              ne doivent pas être projetées sur les périodes anciennes.
+              Les divisions administratives contemporaines ne doivent pas être projetées sur les périodes anciennes.
             </p>
           </div>
           <label className="block min-w-0 sm:w-72">
@@ -65,21 +63,21 @@ export function SouthAfricaProvincesCities({ dossier }) {
             <input
               value={query}
               onChange={(event) => setQuery(event.target.value)}
-              placeholder="Province ou capitale…"
+              placeholder="District ou capitale…"
               className="w-full rounded-xl border border-bone/15 bg-bone/[0.03] px-4 py-2.5 text-sm text-bone outline-none placeholder:text-bone/35 focus:border-gold/60"
             />
           </label>
         </div>
 
-        {filteredProvinces.length ? (
+        {filteredDistricts.length ? (
           <div className="mt-5 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-            {filteredProvinces.map((province) => (
+            {filteredDistricts.map((province) => (
               <article
                 key={province.name}
                 className="rounded-xl border border-bone/10 bg-bone/[0.025] p-5"
               >
                 <p className="text-[10px] uppercase tracking-[0.2em] text-bone/40">
-                  Province
+                  District
                 </p>
                 <h3 className="mt-1 font-serif text-xl text-bone">{province.name}</h3>
                 <p className="mt-3 text-sm text-bone/60">

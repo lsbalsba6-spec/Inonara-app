@@ -21,7 +21,7 @@ import { SouthAfricaSportMedia } from "./SouthAfricaSportMedia";
 import { SouthAfricaEducationHealth, SouthAfricaInternationalRole, SouthAfricaNationalSymbols, SouthAfricaSociety } from "./SouthAfricaSocietyState";
 import { SouthAfricaEconomy, SouthAfricaInteractiveTimeline, SouthAfricaScientificLibrary } from "./SouthAfricaTimelineEconomy";
 import { useMemo, useState } from "react";
-import { SouthAfricaProvincesCities } from "./SouthAfricaProvincesCities";
+import { SouthAfricaDistrictsCities } from "./SouthAfricaProvincesCities";
 import { SouthAfricaMediaGallery } from "./SouthAfricaMediaGallery";
 
 const STATUS_LABELS = {
@@ -102,7 +102,7 @@ export default function CountryDossierView({ dossier }) {
     { id: "identity", label: "Découvrir", items: [["overview", "Présentation"], ["media", "Galerie"], ["symbols", "Symboles"]] },
     { id: "maps", label: "Territoire", items: [["provinces-cities", "Provinces & villes"]] },
     { id: "history", label: "Histoire", items: [["timeline", "Récit historique"], ["interactive-timeline", "Chronologie"], ["polities", "Royaumes & États"], ["law-memory", "Droit & mémoire"]] },
-    { id: "mobility", label: "Migrations", items: [["migrations", "Migrations & diasporas"], ["international", "Afrique du Sud dans le monde"]] },
+    { id: "mobility", label: "Migrations", items: [["migrations", "Migrations & diasporas"], ["international", `${dossier.name?.fr || "Pays"} dans le monde`]] },
     { id: "society", label: "Société & culture", items: [["peoples", "Peuples"], ["languages", "Langues"], ["religions", "Religions"], ["culture", "Culture"], ["sport-media", "Sports & médias"]] },
     { id: "heritage", label: "Patrimoine & nature", items: [["heritage", "Patrimoine"]] },
     { id: "state", label: "État & économie", items: [["society", "Société"], ["education-health", "Éducation & santé"], ["economy", "Économie"]] },
@@ -114,7 +114,7 @@ export default function CountryDossierView({ dossier }) {
   return (
     <div className="pt-[100px] pb-20 px-5 max-w-5xl mx-auto">
       <p className="overline text-gold mb-2">Pays · {dossier.region?.fr || "Afrique australe"}</p>
-      <h1 className="font-serif text-4xl md:text-5xl text-bone">{dossier.name?.fr || "Afrique du Sud"}</h1>
+      <h1 className="font-serif text-4xl md:text-5xl text-bone">{dossier.name?.fr || dossier.country || "Pays"}</h1>
       <p className="text-bone/55 mt-3 max-w-3xl leading-relaxed">{dossier.editorial_note}</p>
 
       <nav className="mt-8" aria-label="Grandes sections du dossier pays">
@@ -143,7 +143,7 @@ export default function CountryDossierView({ dossier }) {
         {active === "overview" && <SouthAfricaOverview dossier={dossier} sourceMap={sourceMap} />}
         {active === "media" && <SouthAfricaMediaGallery items={dossier.media_gallery || []} />}
         {active === "timeline" && (<div className="space-y-10"><SouthAfricaDeepHistory data={dossier.deep_history} sourceMap={sourceMap} /><SouthAfricaHistory dossier={dossier} sourceMap={sourceMap} /></div>)}
-        {active === "provinces-cities" && (<div className="space-y-10"><SouthAfricaCountryMap cities={dossier.map_visuals?.cities || []} /><SouthAfricaProvincesCities dossier={dossier} sourceMap={sourceMap} /></div>)}
+        {active === "provinces-cities" && (<div className="space-y-10"><SouthAfricaCountryMap cities={dossier.map_visuals?.cities || []} /><SouthAfricaDistrictsCities dossier={dossier} sourceMap={sourceMap} /></div>)}
         {active === "interactive-timeline" && <SouthAfricaInteractiveTimeline dossier={dossier} sourceMap={sourceMap} />}
         {active === "economy" && <SouthAfricaEconomyQuality dossier={dossier} sourceMap={sourceMap} />}
         {active === "society" && <SouthAfricaSocietyQuality dossier={dossier} sourceMap={sourceMap} />}

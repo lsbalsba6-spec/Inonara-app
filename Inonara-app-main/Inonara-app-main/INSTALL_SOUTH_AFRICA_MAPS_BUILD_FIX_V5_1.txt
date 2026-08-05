@@ -1,0 +1,4 @@
+Correctif ESLint du composant SouthAfricaVisuals.
+
+Cause : le hook useEffect de FitBounds utilisait padding sans le déclarer dans ses dépendances, et la valeur par défaut était recréée à chaque rendu.
+Correction : constante stable DEFAULT_MAP_PADDING et dépendance padding explicitement déclarée.

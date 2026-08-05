@@ -88,7 +88,7 @@ export function SouthAfricaInternationalQuality({ dossier, sourceMap }) {
   return (
     <div className="space-y-8">
       <header className="rounded-2xl border border-gold/20 bg-gradient-to-br from-gold/[0.08] to-transparent p-6">
-        <p className="overline text-gold">Afrique du Sud dans le monde</p>
+        <p className="overline text-gold">{dossier.name?.fr || dossier.country || "Pays"} dans le monde</p>
         <h2 className="mt-2 font-serif text-3xl text-bone">
           Organisations, diplomatie et relations régionales
         </h2>

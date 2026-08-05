@@ -103,9 +103,7 @@ export function SouthAfricaEconomyQuality({ dossier, sourceMap }) {
           Transformations, secteurs et inégalités
         </h2>
         <p className="mt-3 max-w-3xl leading-7 text-bone/65">
-          L’économie sud-africaine est présentée dans la durée : réseaux précoloniaux,
-          extraction minière, industrialisation, travail migrant, services, agriculture,
-          commerce, énergie et défis contemporains. Les chiffres doivent toujours être datés.
+          {dossier.economy?.intro || "Cette section présente les transformations historiques, les secteurs structurants et les défis économiques contemporains. Les chiffres doivent toujours être datés."}
         </p>
       </header>
 
