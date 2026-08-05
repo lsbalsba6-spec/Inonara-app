@@ -1,0 +1,17 @@
+cd ~/inonara-app
+unzip -o /sdcard/Download/inonara-botswana-v4-final-build.zip -d .
+python scripts/verify_botswana_v4_final.py
+python -m py_compile \
+  backend/data/country_dossiers/__init__.py \
+  backend/data/country_dossiers/botswana.py \
+  backend/data/country_dossiers/botswana_consolidation_v4.py \
+  backend/data/__init__.py \
+  backend/server.py
+cd frontend
+CI=true npm run build
+
+# Si le build est vert
+cd ~/inonara-app
+git add backend/data/country_dossiers/__init__.py backend/data/__init__.py frontend/src/components/CountryDossierView.jsx scripts/verify_botswana_v4_final.py INSTALL_BOTSWANA_V4_FINAL.txt
+git commit -m "fix: finaliser l'affichage du dossier Botswana V4"
+git push
