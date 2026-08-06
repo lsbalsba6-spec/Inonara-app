@@ -1,0 +1,6 @@
+INSTALLATION TERMUX — INONARA SPRINT V2
+
+1. Placez Inonara-Sprint-V2.zip dans Download.
+2. Exécutez les commandes fournies dans la conversation.
+
+Le paquet ne contient que les fichiers modifiés. Il doit être copié par-dessus le dépôt Git local existant Inonara-app-git.

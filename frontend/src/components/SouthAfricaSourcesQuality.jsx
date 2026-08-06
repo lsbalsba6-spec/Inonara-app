@@ -31,14 +31,18 @@ function SourceCard({ source }) {
         <p className="mt-4 text-sm leading-6 text-bone/65">{source.note}</p>
       )}
 
-      <a
-        href={source.url}
-        target="_blank"
-        rel="noreferrer"
-        className="mt-4 inline-flex rounded-full border border-gold/30 px-3 py-1.5 text-xs text-gold hover:bg-gold/10"
-      >
-        Consulter la source
-      </a>
+      {source.url ? (
+        <a
+          href={source.url}
+          target="_blank"
+          rel="noreferrer"
+          className="mt-4 inline-flex rounded-full border border-gold/30 px-3 py-1.5 text-xs text-gold hover:bg-gold/10"
+        >
+          Consulter la source
+        </a>
+      ) : (
+        <p className="mt-4 text-xs text-bone/45">Référence bibliographique sans lien public renseigné.</p>
+      )}
     </article>
   );
 }
@@ -127,8 +131,8 @@ export function SouthAfricaResearchGaps({ dossier }) {
 
 export function SouthAfricaSources({ dossier }) {
   const sources = useMemo(
-    () => dossier.sources ?? [],
-    [dossier.sources]
+    () => Array.isArray(dossier?.sources) ? dossier.sources.filter(Boolean) : [],
+    [dossier?.sources]
   );
   const categories = useMemo(
     () => [...new Set(sources.map((source) => source.category).filter(Boolean))],

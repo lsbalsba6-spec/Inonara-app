@@ -1,7 +1,7 @@
 import { SouthAfricaOverview } from "./SouthAfricaOverview";
 import SouthAfricaDeepHistory from "./SouthAfricaDeepHistory";
 import SouthAfricaPre1652Routes from "./SouthAfricaPre1652Routes";
-import { SouthAfricaCountryMap, SouthAfricaMigrationMap } from "./SouthAfricaVisuals";
+import { SouthAfricaMigrationMap } from "./SouthAfricaVisuals";
 import { SouthAfricaInternationalQuality } from "./SouthAfricaInternationalQuality";
 import { SouthAfricaSymbolsQuality } from "./SouthAfricaSymbolsQuality";
 import { SouthAfricaEconomyQuality } from "./SouthAfricaEconomyQuality";
@@ -21,8 +21,9 @@ import { SouthAfricaSportMedia } from "./SouthAfricaSportMedia";
 import { SouthAfricaEducationHealth, SouthAfricaInternationalRole, SouthAfricaNationalSymbols, SouthAfricaSociety } from "./SouthAfricaSocietyState";
 import { SouthAfricaEconomy, SouthAfricaInteractiveTimeline, SouthAfricaScientificLibrary } from "./SouthAfricaTimelineEconomy";
 import { useMemo, useState } from "react";
-import { SouthAfricaDistrictsCities } from "./SouthAfricaProvincesCities";
 import { SouthAfricaMediaGallery } from "./SouthAfricaMediaGallery";
+import CountryTerritory from "./CountryTerritory";
+import CountrySectionBoundary from "./CountrySectionBoundary";
 
 const STATUS_LABELS = {
   ready: "Établi",
@@ -140,10 +141,11 @@ export default function CountryDossierView({ dossier }) {
       </nav>
 
       <section className="mt-8">
+        <CountrySectionBoundary resetKey={active} title={activeGroup.label}>
         {active === "overview" && <SouthAfricaOverview dossier={dossier} sourceMap={sourceMap} />}
         {active === "media" && <SouthAfricaMediaGallery items={dossier.media_gallery || []} />}
         {active === "timeline" && (<div className="space-y-10"><SouthAfricaDeepHistory data={dossier.deep_history} sourceMap={sourceMap} /><SouthAfricaHistory dossier={dossier} sourceMap={sourceMap} /></div>)}
-        {active === "provinces-cities" && (<div className="space-y-10"><SouthAfricaCountryMap cities={dossier.map_visuals?.cities || []} /><SouthAfricaDistrictsCities dossier={dossier} sourceMap={sourceMap} /></div>)}
+        {active === "provinces-cities" && <CountryTerritory dossier={dossier} sourceMap={sourceMap} />}
         {active === "interactive-timeline" && <SouthAfricaInteractiveTimeline dossier={dossier} sourceMap={sourceMap} />}
         {active === "economy" && <SouthAfricaEconomyQuality dossier={dossier} sourceMap={sourceMap} />}
         {active === "society" && <SouthAfricaSocietyQuality dossier={dossier} sourceMap={sourceMap} />}
@@ -164,6 +166,7 @@ export default function CountryDossierView({ dossier }) {
         {active === "research" && <SouthAfricaResearchGaps dossier={dossier} />}
         {active === "library" && <SouthAfricaScientificLibrary dossier={dossier} sourceMap={sourceMap} />}
         {active === "sources" && <SouthAfricaSources dossier={dossier} />}
+        </CountrySectionBoundary>
       </section>
     </div>
   );
