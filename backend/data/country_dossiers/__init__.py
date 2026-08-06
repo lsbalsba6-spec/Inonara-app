@@ -1,3 +1,4 @@
+from .botswana_expansion_v5 import BOTSWANA_EXPANSION_V5
 from .botswana_consolidation_v4 import BOTSWANA_CONSOLIDATION_V4
 from .botswana_expansion_v3 import BOTSWANA_EXPANSION_V3
 from .botswana_expansion_v2 import BOTSWANA_EXPANSION_V2
@@ -385,6 +386,14 @@ _bw["presentation"] = _bw4["presentation"]
 _bw.setdefault("overview", {}).update(_bw4["overview"])
 for key in ("institutions", "languages", "religions", "polities", "migrations", "law_memory", "sport_media", "national_symbols", "international_role", "interactive_timeline", "scientific_library", "historiography", "research_gaps", "map_visuals"):
     _bw[key] = _bw4[key]
+
+# Botswana expansion V5: Botswana-centred deep history and migration cartography.
+_bw5 = BOTSWANA_EXPANSION_V5
+_bw["deep_history"] = _bw5["deep_history"]
+_bw.setdefault("overview", {})["history_chapters"] = _bw5["history_chapters"]
+_bw["migrations"] = _bw5["migrations"]
+_bw.setdefault("map_visuals", {})["migration_routes"] = _bw5["migration_routes"]
+_merge_bw3(_bw.setdefault("sources", []), _bw5["sources"])
 
 
 def country_dossier_index():

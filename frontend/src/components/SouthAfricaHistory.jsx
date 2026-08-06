@@ -53,6 +53,7 @@ const FILTERS = [
 ];
 
 export function SouthAfricaHistory({ dossier, sourceMap }) {
+  const countryName = dossier?.name?.fr || dossier?.country || "ce pays";
   const chapters = useMemo(
     () => dossier.overview?.history_chapters || [],
     [dossier],
@@ -78,11 +79,11 @@ export function SouthAfricaHistory({ dossier, sourceMap }) {
       <header className="rounded-2xl border border-gold/20 bg-gradient-to-br from-gold/[0.08] to-transparent p-6">
         <p className="overline text-gold">Récit historique</p>
         <h2 className="mt-2 font-serif text-3xl text-bone">
-          Des temps profonds à l’Afrique du Sud contemporaine
+          Des temps profonds à {countryName} contemporain
         </h2>
         <p className="mt-3 max-w-3xl leading-7 text-bone/65">
           Cette lecture relie les peuplements, les formations politiques, les circulations,
-          la colonisation, les résistances et la démocratie. Les frontières actuelles ne sont
+          les colonisations, les résistances et les transformations contemporaines. Les frontières actuelles ne sont
           jamais projetées automatiquement sur les périodes anciennes.
         </p>
       </header>

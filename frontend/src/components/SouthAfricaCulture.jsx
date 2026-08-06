@@ -28,6 +28,7 @@ function normalizeTopic(item) {
 }
 
 export function SouthAfricaCulture({ dossier, sourceMap }) {
+  const countryName = dossier?.name?.fr || dossier?.country || "ce pays";
   const culture = useMemo(
     () => dossier.culture || [],
     [dossier.culture],
@@ -54,7 +55,7 @@ export function SouthAfricaCulture({ dossier, sourceMap }) {
           Pratiques, créations et transmissions
         </h2>
         <p className="mt-3 max-w-3xl leading-7 text-bone/65">
-          La culture sud-africaine n’est pas un bloc homogène. Cette section distingue les
+          La culture de {countryName} n’est pas un bloc homogène. Cette section distingue les
           pratiques, les histoires locales, les langues, les héritages urbains et ruraux,
           ainsi que les formes contemporaines de création.
         </p>

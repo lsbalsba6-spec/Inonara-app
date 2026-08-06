@@ -55,6 +55,7 @@ function routeType(route) {
 }
 
 export function SouthAfricaMigrations({ dossier, sourceMap }) {
+  const countryName = dossier?.name?.fr || dossier?.country || "ce pays";
   const routes = useMemo(
     () => dossier.migrations || [],
     [dossier.migrations],
@@ -72,7 +73,7 @@ export function SouthAfricaMigrations({ dossier, sourceMap }) {
     <div className="space-y-7">
       <header className="rounded-2xl border border-gold/20 bg-gradient-to-br from-gold/[0.08] to-transparent p-6">
         <p className="overline text-gold">Migrations & diasporas</p>
-        <h2 className="mt-2 font-serif text-3xl text-bone">Circulations humaines liées à l’Afrique du Sud</h2>
+        <h2 className="mt-2 font-serif text-3xl text-bone">Circulations humaines liées à {countryName}</h2>
         <p className="mt-3 max-w-3xl leading-7 text-bone/65">
           Les routes sont séparées par période et par type. Une présence diasporique actuelle
           ne signifie pas automatiquement qu’une route historique reste active aujourd’hui.
