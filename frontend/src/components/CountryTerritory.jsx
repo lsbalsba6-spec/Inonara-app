@@ -107,3 +107,5 @@ export function CountryTerritory({ dossier = {}, territory = {}, sourceMap = new
     </div>
   );
 }
+
+export default CountryTerritory;
