@@ -54,6 +54,76 @@ function routeType(route) {
   return route.type || route.migration_type || "mixed";
 }
 
+
+function MigrationMap({ routes }) {
+  const width = 860;
+  const height = 430;
+  const bounds = { minLon: 15, maxLon: 32, minLat: -28, maxLat: -12 };
+  const project = ([lon, lat]) => [
+    40 + ((lon - bounds.minLon) / (bounds.maxLon - bounds.minLon)) * (width - 80),
+    30 + ((bounds.maxLat - lat) / (bounds.maxLat - bounds.minLat)) * (height - 60),
+  ];
+  const color = (type) => ({
+    forced: "#f87171",
+    voluntary: "#34d399",
+    mixed: "#a78bfa",
+    "coerced-labour": "#fbbf24",
+    ancient: "#22d3ee",
+    trade: "#60a5fa",
+  }[type] || "#d6b36a");
+  const safeRoutes = routes.filter(r => r.origin_coordinates && r.destination_coordinates);
+  return (
+    <section className="rounded-2xl border border-bone/10 bg-black/20 p-4 md:p-5">
+      <div className="mb-4 flex flex-wrap items-end justify-between gap-3">
+        <div>
+          <p className="overline text-gold">Cartographie des mobilités</p>
+          <h3 className="mt-1 font-serif text-2xl text-bone">Routes historiques liées au Botswana</h3>
+        </div>
+        <p className="max-w-xl text-xs leading-5 text-bone/45">
+          Carte schématique, non carte politique. Les lignes représentent des corridors documentés ou
+          des flux agrégés; elles ne prétendent pas reconstituer des itinéraires exacts.
+        </p>
+      </div>
+      <div className="overflow-x-auto">
+        <svg viewBox={`0 0 ${width} ${height}`} className="min-w-[720px] w-full rounded-xl bg-[#0d1716]" role="img" aria-label="Carte schématique des migrations liées au Botswana">
+          <defs>
+            <pattern id="grid" width="32" height="32" patternUnits="userSpaceOnUse">
+              <path d="M 32 0 L 0 0 0 32" fill="none" stroke="rgba(255,255,255,.05)" strokeWidth="1"/>
+            </pattern>
+            <marker id="arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+              <path d="M 0 0 L 10 5 L 0 10 z" fill="currentColor"/>
+            </marker>
+          </defs>
+          <rect x="0" y="0" width={width} height={height} fill="url(#grid)" />
+          <path d="M 285 45 L 300 90 L 360 135 L 390 200 L 380 275 L 425 345 L 455 395 L 330 380 L 260 325 L 235 260 L 220 180 L 245 110 Z"
+            fill="rgba(214,179,106,.08)" stroke="rgba(214,179,106,.35)" strokeWidth="2"/>
+          <text x="310" y="215" fill="rgba(246,240,225,.55)" fontSize="15" letterSpacing="3">BOTSWANA</text>
+          <text x="78" y="70" fill="rgba(246,240,225,.28)" fontSize="11">ANGOLA / NAMIBIE</text>
+          <text x="575" y="365" fill="rgba(246,240,225,.28)" fontSize="11">AFRIQUE DU SUD</text>
+          {safeRoutes.map((r) => {
+            const [x1,y1] = project(r.origin_coordinates);
+            const [x2,y2] = project(r.destination_coordinates);
+            const mx = (x1+x2)/2;
+            const my = Math.min(y1,y2)-35;
+            return (
+              <g key={r.id} style={{color: color(r.type)}}>
+                <path d={`M ${x1} ${y1} Q ${mx} ${my} ${x2} ${y2}`} fill="none" stroke="currentColor" strokeWidth="2.5" strokeDasharray={r.type==="ancient" ? "6 5" : "none"} markerEnd="url(#arrow)" opacity=".9"/>
+                <circle cx={x1} cy={y1} r="4" fill="currentColor"/>
+                <circle cx={x2} cy={y2} r="4" fill="currentColor"/>
+              </g>
+            );
+          })}
+          <circle cx="350" cy="250" r="5" fill="#d6b36a"/>
+          <text x="360" y="254" fill="rgba(246,240,225,.7)" fontSize="11">Gaborone</text>
+        </svg>
+      </div>
+      <p className="mt-3 text-[11px] leading-5 text-bone/40">
+        Les coordonnées sont des points d'ancrage pour visualiser une relation historique; elles ne constituent pas des données GPS d'un trajet.
+      </p>
+    </section>
+  );
+}
+
 export function SouthAfricaMigrations({ dossier, sourceMap }) {
   const countryName = dossier?.name?.fr || dossier?.country || "ce pays";
   const routes = useMemo(
@@ -100,6 +170,8 @@ export function SouthAfricaMigrations({ dossier, sourceMap }) {
           </button>
         ))}
       </div>
+
+      <MigrationMap routes={visibleRoutes} />
 
       <div className="grid gap-4">
         {visibleRoutes.map((route, index) => {

@@ -1,4 +1,5 @@
 from .botswana_expansion_v5 import BOTSWANA_EXPANSION_V5
+from .botswana_expansion_v6 import BOTSWANA_EXPANSION_V6
 from .botswana_consolidation_v4 import BOTSWANA_CONSOLIDATION_V4
 from .botswana_expansion_v3 import BOTSWANA_EXPANSION_V3
 from .botswana_expansion_v2 import BOTSWANA_EXPANSION_V2
@@ -394,6 +395,26 @@ _bw.setdefault("overview", {})["history_chapters"] = _bw5["history_chapters"]
 _bw["migrations"] = _bw5["migrations"]
 _bw.setdefault("map_visuals", {})["migration_routes"] = _bw5["migration_routes"]
 _merge_bw3(_bw.setdefault("sources", []), _bw5["sources"])
+
+# Botswana V5 editorial consolidation: deeper country-specific content, visual gallery and migration map.
+_bw6 = BOTSWANA_EXPANSION_V6
+_bw["editorial"] = _bw6["editorial"]
+_bw.setdefault("overview", {})["history_chapters"] = _bw6["history_chapters"]
+_bw["territory_sections"] = _bw6["territory_sections"]
+_bw["peoples"] = _bw6["peoples"]
+_bw["languages"] = _bw6["languages"]
+_bw["institutions_and_society"] = _bw6["institutions_and_society"]
+_bw["economy_sections"] = _bw6["economy_sections"]
+_bw["culture"] = _bw6["culture"]
+_bw["heritage"] = _bw6["heritage"]
+_bw["environment"] = {"items": _bw6["environment"]}
+_bw["figures"] = _bw6["figures"]
+_bw["migrations"] = _bw6["migration_processes"]
+_bw.setdefault("map_visuals", {})["migration_routes"] = _bw6["migration_routes"]
+_bw["media_gallery"] = _bw6["media_gallery"]
+_bw["research_gaps"] = _bw6["research_gaps"]
+_merge_bw3(_bw.setdefault("sources", []), _bw6["sources"])
+
 
 
 def country_dossier_index():

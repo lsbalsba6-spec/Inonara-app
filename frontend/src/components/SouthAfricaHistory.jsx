@@ -32,24 +32,22 @@ function SourceLinks({ ids = [], sourceMap }) {
 
 function chapterEra(chapter) {
   const text = `${chapter.period || ""} ${chapter.title || ""}`.toLowerCase();
-  if (text.includes("million") || text.includes("homin") || text.includes("premier millénaire")) return "deep";
-  if (text.includes("900") || text.includes("1300") || text.includes("mapungubwe") || text.includes("royaume")) return "precolonial";
-  if (text.includes("1652") || text.includes("1795") || text.includes("cap néerlandais")) return "cape";
-  if (text.includes("1795") || text.includes("1910") || text.includes("xixe")) return "nineteenth";
-  if (text.includes("1910") || text.includes("1948") || text.includes("union")) return "union";
-  if (text.includes("apartheid") || text.includes("1948") || text.includes("1994")) return "apartheid";
-  return "democracy";
+  if (text.includes("préhistoire") || text.includes("tsodilo") || text.includes("kalahari")) return "deep";
+  if (text.includes("toutswe") || text.includes("agro-past") || text.includes("mapungubwe") || text.includes("xiie") || text.includes("xiiie")) return "iron-age";
+  if (text.includes("merafe") || text.includes("kgotla") || text.includes("xviie") || text.includes("xviiie") || text.includes("xixe")) return "precolonial";
+  if (text.includes("protectorat") || text.includes("1885")) return "colonial";
+  if (text.includes("indépendance") || text.includes("1966")) return "independence";
+  return "contemporary";
 }
 
 const FILTERS = [
   ["all", "Tout le récit"],
   ["deep", "Temps profonds"],
-  ["precolonial", "Sociétés précoloniales"],
-  ["cape", "Le Cap colonial"],
-  ["nineteenth", "XIXe siècle"],
-  ["union", "Union & ségrégation"],
-  ["apartheid", "Apartheid"],
-  ["democracy", "Démocratie"],
+  ["iron-age", "Sociétés agro-pastorales"],
+  ["precolonial", "Merafe & sociétés précoloniales"],
+  ["colonial", "Protectorat"],
+  ["independence", "Indépendance"],
+  ["contemporary", "Époque contemporaine"],
 ];
 
 export function SouthAfricaHistory({ dossier, sourceMap }) {
