@@ -1,5 +1,3 @@
-import { useMemo } from "react";
-
 function SourceLinks({ ids = [], sourceMap = new Map() }) {
   const sources = ids.map((id) => sourceMap.get(id)).filter(Boolean);
   if (!sources.length) return null;
@@ -20,7 +18,7 @@ export function CountryTerritory({ dossier = {}, territory = {}, sourceMap = new
   const places = territory.places || [];
   const countryName = dossier?.name?.fr || dossier?.country || territory.country || "ce pays";
 
-  const bounds = useMemo(() => {
+  const bounds = (() => {
     if (!places.length) return { minLon: -20, maxLon: 40, minLat: -35, maxLat: 20 };
     const lons = places.map((p) => Number(p.lon)).filter(Number.isFinite);
     const lats = places.map((p) => Number(p.lat)).filter(Number.isFinite);
@@ -31,7 +29,7 @@ export function CountryTerritory({ dossier = {}, territory = {}, sourceMap = new
       minLon: Math.min(...lons) - padX, maxLon: Math.max(...lons) + padX,
       minLat: Math.min(...lats) - padY, maxLat: Math.max(...lats) + padY
     };
-  }, [places]);
+  })();
 
   const project = (p) => {
     const x = 40 + ((Number(p.lon) - bounds.minLon) / Math.max(.001, bounds.maxLon - bounds.minLon)) * 840;
