@@ -1,4 +1,5 @@
 from .botswana_expansion_v5 import BOTSWANA_EXPANSION_V5
+from .botswana_territory_v8 import BOTSWANA_TERRITORY_V8
 from .botswana_expansion_v6 import BOTSWANA_EXPANSION_V6
 from .botswana_consolidation_v4 import BOTSWANA_CONSOLIDATION_V4
 from .botswana_expansion_v3 import BOTSWANA_EXPANSION_V3
@@ -437,3 +438,11 @@ def country_dossier_index():
 
 
 __all__ = ["COUNTRY_DOSSIERS", "SOUTH_AFRICA_DOSSIER", "country_dossier_index"]
+
+
+# Botswana territory V8
+_bw_v8 = BOTSWANA_TERRITORY_V8
+_bw.setdefault("territory_v8", _bw_v8)
+_bw["territory_sections"] = _bw_v8["sections"]
+_bw.setdefault("map_visuals", {})["territory_places"] = _bw_v8["places"]
+_merge_bw3(_bw.setdefault("sources", []), _bw_v8["sources"])

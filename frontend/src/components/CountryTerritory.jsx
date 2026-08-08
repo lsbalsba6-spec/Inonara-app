@@ -1,203 +1,109 @@
-import { useEffect, useMemo, useState } from "react";
-import { CircleMarker, MapContainer, Popup, TileLayer, Tooltip, useMap } from "react-leaflet";
-import CountrySectionFallback from "./CountrySectionFallback";
+import { useMemo } from "react";
 
-function asArray(value) {
-  return Array.isArray(value) ? value : [];
-}
-
-function firstNonEmptyArray(...values) {
-  return values.find((value) => Array.isArray(value) && value.length > 0) || [];
-}
-
-function normaliseCity(city, index) {
-  const coordinates = Array.isArray(city?.coordinates) ? city.coordinates : null;
-  const lon = Number(coordinates?.[0] ?? city?.lon ?? city?.lng ?? city?.longitude);
-  const lat = Number(coordinates?.[1] ?? city?.lat ?? city?.latitude);
-  if (!Number.isFinite(lat) || !Number.isFinite(lon)) return null;
-
-  return {
-    ...city,
-    id: city.id || `${city.name || city.city || "city"}-${index}`,
-    name: city.name || city.city || city.label || "Localité",
-    lat,
-    lon,
-  };
-}
-
-function FitCountryBounds({ points }) {
-  const map = useMap();
-
-  useEffect(() => {
-    if (!points.length) return;
-    if (points.length === 1) {
-      map.setView([points[0].lat, points[0].lon], 6, { animate: false });
-      return;
-    }
-
-    map.fitBounds(points.map((point) => [point.lat, point.lon]), {
-      padding: [36, 36],
-      animate: false,
-    });
-  }, [map, points]);
-
-  return null;
-}
-
-function TerritoryCards({ dossier }) {
-  const institutions = dossier?.institutions || {};
-  const geography = dossier?.geography || {};
-  const overview = dossier?.overview || {};
-
-  const divisions = firstNonEmptyArray(
-    institutions.provinces,
-    institutions.districts,
-    institutions.administrative_divisions,
-    dossier?.administrative_divisions,
-    dossier?.districts,
-    dossier?.provinces,
-  );
-
-  const capitalFunctions = firstNonEmptyArray(
-    institutions.capital_functions,
-    institutions.capitals,
-    dossier?.capital_functions,
-  );
-
-  const geographySections = firstNonEmptyArray(
-    geography.sections,
-    geography.regions,
-    geography.landscapes,
-    dossier?.territory_sections,
-  );
-
-  const capitalName =
-    overview.capital ||
-    dossier?.capital ||
-    dossier?.identity?.capital ||
-    dossier?.facts?.capital;
-
-  const hasStructuredContent =
-    capitalFunctions.length > 0 ||
-    divisions.length > 0 ||
-    geographySections.length > 0 ||
-    Boolean(capitalName);
-
+function SourceLinks({ ids = [], sourceMap = new Map() }) {
+  const sources = ids.map((id) => sourceMap.get(id)).filter(Boolean);
+  if (!sources.length) return null;
   return (
-    <div className="space-y-10">
-      {(capitalFunctions.length > 0 || capitalName) && (
-        <section>
-          <h2 className="font-serif text-3xl text-gold">Capitale et fonctions nationales</h2>
-          <div className="mt-5 grid gap-4 md:grid-cols-2">
-            {capitalFunctions.length > 0 ? (
-              capitalFunctions.map((item, index) => (
-                <article key={`${item.city || item.name || "capital"}-${index}`} className="rounded-xl border border-bone/10 bg-bone/[0.025] p-5">
-                  <h3 className="font-serif text-xl text-bone">{item.city || item.name || capitalName}</h3>
-                  {(item.function || item.note || item.summary) && (
-                    <p className="mt-2 text-sm leading-relaxed text-bone/65">{item.function || item.note || item.summary}</p>
-                  )}
-                </article>
-              ))
-            ) : (
-              <article className="rounded-xl border border-bone/10 bg-bone/[0.025] p-5">
-                <h3 className="font-serif text-xl text-bone">{capitalName}</h3>
-                <p className="mt-2 text-sm leading-relaxed text-bone/65">Capitale nationale actuellement renseignée dans le dossier.</p>
-              </article>
-            )}
-          </div>
-        </section>
-      )}
-
-      {divisions.length > 0 && (
-        <section>
-          <h2 className="font-serif text-3xl text-gold">Divisions administratives</h2>
-          <div className="mt-5 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-            {divisions.map((division, index) => (
-              <article key={division.id || division.name || division.title || index} className="rounded-xl border border-bone/10 bg-bone/[0.025] p-5">
-                <h3 className="font-serif text-xl text-bone">{division.name || division.title || division.label || "Division administrative"}</h3>
-                {(division.capital || division.centre || division.center || division.seat) && (
-                  <p className="mt-3 text-sm text-bone/60">
-                    Centre administratif : <strong className="font-medium text-gold">{division.capital || division.centre || division.center || division.seat}</strong>
-                  </p>
-                )}
-                {(division.note || division.summary || division.description) && (
-                  <p className="mt-2 text-sm leading-relaxed text-bone/60">{division.note || division.summary || division.description}</p>
-                )}
-              </article>
-            ))}
-          </div>
-        </section>
-      )}
-
-      {geographySections.length > 0 && (
-        <section>
-          <h2 className="font-serif text-3xl text-gold">Territoires et milieux</h2>
-          <div className="mt-5 grid gap-4 md:grid-cols-2">
-            {geographySections.map((section, index) => (
-              <article key={section.id || section.title || section.name || index} className="rounded-xl border border-bone/10 bg-bone/[0.025] p-5">
-                <h3 className="font-serif text-xl text-bone">{section.title || section.name || section.label || "Milieu géographique"}</h3>
-                {(section.summary || section.text || section.note || section.description) && (
-                  <p className="mt-2 text-sm leading-relaxed text-bone/65">{section.summary || section.text || section.note || section.description}</p>
-                )}
-              </article>
-            ))}
-          </div>
-        </section>
-      )}
-
-      {!hasStructuredContent && (
-        <CountrySectionFallback
-          title="Territoire"
-          message="La structure territoriale de ce pays est publiée progressivement. La page reste accessible pendant l’enrichissement des divisions administratives, des villes et des milieux géographiques."
-        />
-      )}
+    <div className="mt-4 flex flex-wrap gap-2">
+      {sources.map((source) => (
+        <a key={source.id} href={source.url} target="_blank" rel="noreferrer"
+          className="rounded-full border border-gold/25 px-3 py-1 text-[11px] text-gold/85 hover:bg-gold/10">
+          {source.publisher}: {source.title}
+        </a>
+      ))}
     </div>
   );
 }
 
-export default function CountryTerritory({ dossier }) {
-  const [mapReady, setMapReady] = useState(false);
+export function CountryTerritory({ dossier = {}, territory = {}, sourceMap = new Map() }) {
+  const sections = territory.sections || dossier.territory_sections || [];
+  const places = territory.places || [];
+  const countryName = dossier?.name?.fr || dossier?.country || territory.country || "ce pays";
 
-  const rawCities = firstNonEmptyArray(
-    dossier?.map_visuals?.cities,
-    dossier?.cities,
-    dossier?.territory?.cities,
-    dossier?.geography?.cities,
-    dossier?.institutions?.cities,
-  );
+  const bounds = useMemo(() => {
+    if (!places.length) return { minLon: -20, maxLon: 40, minLat: -35, maxLat: 20 };
+    const lons = places.map((p) => Number(p.lon)).filter(Number.isFinite);
+    const lats = places.map((p) => Number(p.lat)).filter(Number.isFinite);
+    if (!lons.length || !lats.length) return { minLon: -20, maxLon: 40, minLat: -35, maxLat: 20 };
+    const padX = Math.max(1, (Math.max(...lons) - Math.min(...lons)) * .15);
+    const padY = Math.max(1, (Math.max(...lats) - Math.min(...lats)) * .15);
+    return {
+      minLon: Math.min(...lons) - padX, maxLon: Math.max(...lons) + padX,
+      minLat: Math.min(...lats) - padY, maxLat: Math.max(...lats) + padY
+    };
+  }, [places]);
 
-  const cities = useMemo(
-    () => asArray(rawCities).map(normaliseCity).filter(Boolean),
-    [rawCities],
-  );
-
-  useEffect(() => setMapReady(true), []);
+  const project = (p) => {
+    const x = 40 + ((Number(p.lon) - bounds.minLon) / Math.max(.001, bounds.maxLon - bounds.minLon)) * 840;
+    const y = 35 + ((bounds.maxLat - Number(p.lat)) / Math.max(.001, bounds.maxLat - bounds.minLat)) * 360;
+    return [x, y];
+  };
 
   return (
-    <div className="space-y-10">
-      {cities.length > 0 && mapReady && (
-        <section>
-          <h2 className="font-serif text-3xl text-gold">Carte des principaux centres</h2>
-          <p className="mt-2 text-bone/60">{dossier?.map_visuals?.note || dossier?.territory?.map_note || "Repères contemporains du territoire."}</p>
-          <div className="mt-5 overflow-hidden rounded-2xl border border-bone/10 bg-[#151210]">
-            <MapContainer center={[cities[0].lat, cities[0].lon]} zoom={5} scrollWheelZoom className="h-[520px] w-full md:h-[620px]">
-              <FitCountryBounds points={cities} />
-              <TileLayer attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>' url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
-              {cities.map((city) => (
-                <CircleMarker key={city.id} center={[city.lat, city.lon]} radius={6} pathOptions={{ color: "#151210", weight: 2, fillColor: "#D4AF37", fillOpacity: 1 }}>
-                  <Tooltip direction="top">{city.name}</Tooltip>
-                  <Popup>
-                    <strong>{city.name}</strong>
-                    {(city.kind || city.type) ? <><br />{city.kind || city.type}</> : null}
-                  </Popup>
-                </CircleMarker>
-              ))}
-            </MapContainer>
+    <div className="space-y-8">
+      <header className="rounded-2xl border border-gold/20 bg-gradient-to-br from-gold/[0.08] to-transparent p-6">
+        <p className="overline text-gold">Territoire</p>
+        <h2 className="mt-2 font-serif text-3xl text-bone">{countryName} : espaces, eaux et paysages</h2>
+        <p className="mt-3 max-w-3xl text-sm leading-7 text-bone/65">
+          Les données territoriales sont présentées selon les sources disponibles et ne projettent pas
+          automatiquement les frontières contemporaines sur les périodes anciennes.
+        </p>
+      </header>
+
+      <div className="grid gap-4">
+        {sections.map((section) => (
+          <article key={section.id} className="rounded-2xl border border-bone/10 bg-bone/[0.025] p-5">
+            <div className="flex flex-wrap items-start justify-between gap-3">
+              <h3 className="font-serif text-2xl text-bone">{section.title}</h3>
+              {section.status && (
+                <span className="rounded-full border border-bone/15 px-2.5 py-1 text-[10px] uppercase tracking-wider text-bone/50">
+                  {section.status === "ready" ? "Documenté" : section.status}
+                </span>
+              )}
+            </div>
+            {section.summary && <p className="mt-3 leading-7 text-bone/70">{section.summary}</p>}
+            {section.facts?.length > 0 && (
+              <ul className="mt-4 space-y-2 text-sm leading-6 text-bone/65">
+                {section.facts.map((fact, i) => <li key={i}>• {fact}</li>)}
+              </ul>
+            )}
+            <SourceLinks ids={section.sources} sourceMap={sourceMap} />
+          </article>
+        ))}
+      </div>
+
+      {places.length > 0 && (
+        <section className="rounded-2xl border border-bone/10 bg-black/20 p-4 md:p-5">
+          <p className="overline text-gold">Cartographie</p>
+          <h3 className="mt-1 font-serif text-2xl text-bone">Lieux de référence</h3>
+          <div className="mt-4 overflow-x-auto">
+            <svg viewBox="0 0 920 430" className="min-w-[720px] w-full rounded-xl bg-[#0d1716]" role="img"
+              aria-label={`Carte schématique des lieux de référence de ${countryName}`}>
+              <rect x="0" y="0" width="920" height="430" fill="#0d1716" />
+              <path d="M60 80 C180 35 350 65 470 45 S760 55 860 100 L835 330 C650 385 460 350 280 375 S110 340 60 290 Z"
+                fill="rgba(214,179,106,.05)" stroke="rgba(214,179,106,.35)" />
+              {places.map((place, i) => {
+                const [x, y] = project(place);
+                return (
+                  <g key={place.id || i}>
+                    <circle cx={x} cy={y} r="6" fill="#d6b36a" />
+                    <text x={x + 9} y={y - 9} fill="rgba(245,239,224,.82)" fontSize="12">{place.name}</text>
+                  </g>
+                );
+              })}
+            </svg>
+          </div>
+          <div className="mt-4 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
+            {places.map((place) => (
+              <div key={place.id} className="rounded-xl border border-bone/10 p-3">
+                <p className="text-sm font-medium text-bone">{place.name}</p>
+                <p className="mt-1 text-xs text-bone/50">{place.kind}</p>
+                <SourceLinks ids={place.sources} sourceMap={sourceMap} />
+              </div>
+            ))}
           </div>
         </section>
       )}
-
-      <TerritoryCards dossier={dossier} />
     </div>
   );
 }

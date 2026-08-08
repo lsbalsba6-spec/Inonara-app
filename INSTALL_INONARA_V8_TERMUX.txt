@@ -1,0 +1,14 @@
+INONARA SPRINT V8 — BOTSWANA
+
+cd ~/storage/downloads
+rm -rf Inonara-Sprint-V8
+unzip "Inonara-Sprint-V8-Botswana.zip"
+bash Inonara-Sprint-V8/install-termux.sh
+
+Puis :
+cd ~/storage/downloads/Inonara-app-git
+python backend/data/country_dossiers/audit_botswana_v8.py
+git status
+git add .
+git commit -m "Enrichit le territoire du Botswana"
+git push origin HEAD
