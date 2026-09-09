@@ -34,31 +34,31 @@ export const DiasporaList = () => {
 
       <section className="mt-10 grid gap-4 md:grid-cols-3">
         <div className="rounded-xl border border-gold/20 bg-gold/[0.05] p-5">
-          <p className="overline text-gold">Corpus diaspora</p>
+          <p className="overline text-gold">{t("diaspora.corpus.label")}</p>
           <p className="mt-2 font-serif text-3xl text-bone">{items.length}</p>
-          <p className="mt-1 text-xs text-bone/50">communautés et espaces diasporiques documentés</p>
+          <p className="mt-1 text-xs text-bone/50">{t("diaspora.corpus.copy")}</p>
         </div>
         <div className="rounded-xl border border-bone/10 bg-bone/[0.025] p-5">
-          <p className="overline">Régions</p>
+          <p className="overline">{t("diaspora.regions.label")}</p>
           <p className="mt-2 font-serif text-3xl text-bone">{regions.length}</p>
-          <p className="mt-1 text-xs text-bone/50">grandes régions de destination représentées</p>
+          <p className="mt-1 text-xs text-bone/50">{t("diaspora.regions.copy")}</p>
         </div>
         <Link to="/atlas" className="rounded-xl border border-bone/10 bg-bone/[0.025] p-5 transition hover:border-gold/40">
-          <p className="overline">Routes & connexions</p>
-          <p className="mt-2 font-serif text-xl text-bone">Voir dans l’Atlas</p>
-          <p className="mt-1 text-xs text-bone/50">relier origines africaines, routes historiques et espaces diasporiques</p>
+          <p className="overline">{t("diaspora.routes.label")}</p>
+          <p className="mt-2 font-serif text-xl text-bone">{t("diaspora.routes.title")}</p>
+          <p className="mt-1 text-xs text-bone/50">{t("diaspora.routes.copy")}</p>
         </Link>
       </section>
 
       <section className="mt-10 rounded-2xl border border-bone/10 bg-bone/[0.02] p-5">
         <div className="grid gap-4 lg:grid-cols-[1fr_auto]">
-          <input value={query} onChange={(event) => setQuery(event.target.value)} placeholder="Rechercher une diaspora, un pays ou une région…" className="w-full rounded-xl border border-bone/15 bg-ebony px-4 py-3 text-sm text-bone outline-none placeholder:text-bone/35 focus:border-gold/50" />
+          <input value={query} onChange={(event) => setQuery(event.target.value)} placeholder={t("diaspora.search.placeholder")} className="w-full rounded-xl border border-bone/15 bg-ebony px-4 py-3 text-sm text-bone outline-none placeholder:text-bone/35 focus:border-gold/50" />
           <div className="flex gap-2 overflow-x-auto">
-            <button type="button" onClick={() => setRegion("all")} className={`whitespace-nowrap rounded-full border px-3 py-2 text-xs ${region === "all" ? "border-gold bg-gold/10 text-gold" : "border-bone/15 text-bone/60"}`}>Toutes les régions</button>
+            <button type="button" onClick={() => setRegion("all")} className={`whitespace-nowrap rounded-full border px-3 py-2 text-xs ${region === "all" ? "border-gold bg-gold/10 text-gold" : "border-bone/15 text-bone/60"}`}>{t("diaspora.filter.allRegions")}</button>
             {regions.map((item) => <button key={item} type="button" onClick={() => setRegion(item)} className={`whitespace-nowrap rounded-full border px-3 py-2 text-xs ${region === item ? "border-gold bg-gold/10 text-gold" : "border-bone/15 text-bone/60"}`}>{t(`region.${item}`)}</button>)}
           </div>
         </div>
-        <p className="mt-4 text-xs text-bone/45">{visible.length} résultat{visible.length > 1 ? "s" : ""}</p>
+        <p className="mt-4 text-xs text-bone/45">{visible.length} {visible.length > 1 ? t("diaspora.results.many") : t("diaspora.results.one")}</p>
       </section>
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mt-8">
@@ -75,7 +75,7 @@ export const DiasporaList = () => {
           </Link>
         ))}
       </div>
-      {!visible.length && <div className="mt-8 rounded-xl border border-bone/10 p-6 text-bone/60">Aucune diaspora ne correspond à ces filtres.</div>}
+      {!visible.length && <div className="mt-8 rounded-xl border border-bone/10 p-6 text-bone/60">{t("diaspora.empty")}</div>}
     </div>
   );
 };
@@ -162,27 +162,27 @@ export const DiasporaDetail = () => {
 
         <section className="mt-16 grid gap-4 md:grid-cols-3">
           <Link to="/atlas" className="rounded-xl border border-gold/20 bg-gold/[0.04] p-5 transition hover:border-gold/50">
-            <p className="overline text-gold">Géographie</p>
-            <p className="mt-2 font-serif text-xl text-bone">Routes dans l’Atlas</p>
-            <p className="mt-2 text-xs leading-5 text-bone/50">Explorer les espaces d’origine, les routes et les implantations.</p>
+            <p className="overline text-gold">{t("diaspora.link.geo.label")}</p>
+            <p className="mt-2 font-serif text-xl text-bone">{t("diaspora.link.geo.title")}</p>
+            <p className="mt-2 text-xs leading-5 text-bone/50">{t("diaspora.link.geo.copy")}</p>
           </Link>
           <Link to="/people" className="rounded-xl border border-bone/10 bg-bone/[0.025] p-5 transition hover:border-gold/40">
-            <p className="overline">Héritages</p>
-            <p className="mt-2 font-serif text-xl text-bone">Peuples liés</p>
-            <p className="mt-2 text-xs leading-5 text-bone/50">Retrouver les communautés, langues et héritages associés.</p>
+            <p className="overline">{t("diaspora.link.heritage.label")}</p>
+            <p className="mt-2 font-serif text-xl text-bone">{t("diaspora.link.heritage.title")}</p>
+            <p className="mt-2 text-xs leading-5 text-bone/50">{t("diaspora.link.heritage.copy")}</p>
           </Link>
           <Link to="/culture" className="rounded-xl border border-bone/10 bg-bone/[0.025] p-5 transition hover:border-gold/40">
-            <p className="overline">Continuités</p>
-            <p className="mt-2 font-serif text-xl text-bone">Cultures & transformations</p>
-            <p className="mt-2 text-xs leading-5 text-bone/50">Relier pratiques africaines, créations diasporiques et circulations culturelles.</p>
+            <p className="overline">{t("diaspora.link.continuity.label")}</p>
+            <p className="mt-2 font-serif text-xl text-bone">{t("diaspora.link.continuity.title")}</p>
+            <p className="mt-2 text-xs leading-5 text-bone/50">{t("diaspora.link.continuity.copy")}</p>
           </Link>
         </section>
 
         {(d.image_credit || d.image_source_url) && (
           <section className="mt-10 rounded-2xl border border-bone/10 bg-bone/[0.025] p-6">
-            <p className="overline text-gold">Documentation visuelle</p>
-            {d.image_credit && <p className="mt-3 text-sm text-bone/65">Crédit : {d.image_credit}</p>}
-            {d.image_source_url && <a href={d.image_source_url} target="_blank" rel="noreferrer" className="mt-3 inline-flex text-xs text-gold underline underline-offset-2">Source et droits du visuel</a>}
+            <p className="overline text-gold">{t("diaspora.visualDocs")}</p>
+            {d.image_credit && <p className="mt-3 text-sm text-bone/65">{t("diaspora.credit")} : {d.image_credit}</p>}
+            {d.image_source_url && <a href={d.image_source_url} target="_blank" rel="noreferrer" className="mt-3 inline-flex text-xs text-gold underline underline-offset-2">{t("diaspora.visualRights")}</a>}
           </section>
         )}
 
