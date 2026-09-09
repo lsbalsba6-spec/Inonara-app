@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import { fetchStories, fetchStory } from "../lib/api";
 import { ArrowLeft, BookOpen, Volume2 } from "lucide-react";
@@ -9,7 +9,16 @@ import { SmartImage } from "../components/SmartImage";
 export const StoriesList = () => {
   const { t } = useI18n();
   const [stories, setStories] = useState([]);
+  const [query, setQuery] = useState("");
   useEffect(() => { fetchStories().then(setStories).catch(() => {}); }, []);
+  const visible = useMemo(() => {
+    const needle = query.trim().toLowerCase();
+    return sortChronologically(stories.filter((s) => {
+      const haystack = `${s.title || ""} ${s.summary || ""} ${s.era || ""}`.toLowerCase();
+      return !needle || haystack.includes(needle);
+    }), "era", "title");
+  }, [stories, query]);
+  const illustrated = useMemo(() => stories.filter((s) => s.image_url || s.wikipedia_title).length, [stories]);
   return (
     <div className="pt-32 pb-24 max-w-[1600px] mx-auto px-6 md:px-10" data-testid="stories-page">
       <p className="overline">{t("page.stories.overline")}</p>
@@ -20,8 +29,30 @@ export const StoriesList = () => {
         {t("narrate.comingSoon")}
       </div>
 
-      <div className="grid md:grid-cols-2 gap-6 mt-14">
-        {sortChronologically(stories, "era", "title").map((s) => (
+      <section className="mt-10 grid gap-4 md:grid-cols-3">
+        <div className="rounded-xl border border-gold/20 bg-gold/[0.05] p-5">
+          <p className="overline text-gold">Corpus narratif</p>
+          <p className="mt-2 font-serif text-3xl text-bone">{stories.length}</p>
+          <p className="mt-1 text-xs text-bone/50">récits historiques disponibles</p>
+        </div>
+        <div className="rounded-xl border border-bone/10 bg-bone/[0.025] p-5">
+          <p className="overline">Illustrations</p>
+          <p className="mt-2 font-serif text-3xl text-bone">{illustrated}</p>
+          <p className="mt-1 text-xs text-bone/50">récits disposant déjà d’un repère visuel</p>
+        </div>
+        <Link to="/timeline" className="rounded-xl border border-bone/10 bg-bone/[0.025] p-5 transition hover:border-gold/40">
+          <p className="overline">Contexte</p>
+          <p className="mt-2 font-serif text-xl text-bone">Voir la chronologie</p>
+          <p className="mt-1 text-xs text-bone/50">replacer les récits dans la longue durée</p>
+        </Link>
+      </section>
+      <section className="mt-8 rounded-2xl border border-bone/10 bg-bone/[0.02] p-5">
+        <input value={query} onChange={(event) => setQuery(event.target.value)} placeholder="Rechercher un récit, une époque, un mot-clé…" className="w-full rounded-xl border border-bone/15 bg-ebony px-4 py-3 text-sm text-bone outline-none placeholder:text-bone/35 focus:border-gold/50" />
+        <p className="mt-4 text-xs text-bone/45">{visible.length} récit{visible.length > 1 ? "s" : ""}</p>
+      </section>
+
+      <div className="grid md:grid-cols-2 gap-6 mt-8">
+        {visible.map((s) => (
           <Link
             key={s.id}
             to={`/story/${s.id}`}
@@ -79,6 +110,12 @@ export const StoryDetail = () => {
       <h1 className="font-serif text-5xl text-bone mt-3 leading-tight">{s.title}</h1>
       <p className="text-bone/70 mt-6 text-lg font-light leading-relaxed">{s.summary}</p>
 
+      <section className="mt-12 grid gap-4 md:grid-cols-3">
+        <Link to="/timeline" className="rounded-xl border border-gold/20 bg-gold/[0.04] p-5 transition hover:border-gold/50"><p className="overline text-gold">Chronologie</p><p className="mt-2 font-serif text-lg text-bone">Replacer le récit</p></Link>
+        <Link to="/atlas" className="rounded-xl border border-bone/10 p-5 transition hover:border-gold/40"><p className="overline">Atlas</p><p className="mt-2 font-serif text-lg text-bone">Voir les lieux</p></Link>
+        <Link to="/civilizations" className="rounded-xl border border-bone/10 p-5 transition hover:border-gold/40"><p className="overline">Contextes</p><p className="mt-2 font-serif text-lg text-bone">Civilisations liées</p></Link>
+      </section>
+
       <div className="mt-16 space-y-14">
         {s.chapters.map((ch, i) => (
           <article key={i} data-testid={`chapter-${i}`} className="animate-fade-up" style={{ animationDelay: `${i * 100}ms` }}>
@@ -90,6 +127,13 @@ export const StoryDetail = () => {
         ))}
       </div>
 
+      {(s.image_credit || s.image_source_url) && (
+        <section className="mt-16 border-t border-[#2A2421] pt-10">
+          <p className="overline text-gold">Documentation visuelle</p>
+          {s.image_credit && <p className="mt-3 text-sm text-bone/65">Crédit : {s.image_credit}</p>}
+          {s.image_source_url && <a href={s.image_source_url} target="_blank" rel="noreferrer" className="mt-3 inline-flex text-xs text-gold underline underline-offset-2">Source et droits du visuel</a>}
+        </section>
+      )}
       {s.sources?.length > 0 && (
         <div className="mt-20 border-t border-[#2A2421] pt-10">
           <p className="overline">{t("common.sources")}</p>
