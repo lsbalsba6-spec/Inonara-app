@@ -9,9 +9,9 @@ import { SouthAfricaEducationHealthQuality } from "./SouthAfricaEducationHealthQ
 import { SouthAfricaSocietyQuality } from "./SouthAfricaSocietyQuality";
 import { CountryHistoriography, CountryResearchGaps, CountrySources } from "./CountrySourcesQuality";
 import { SouthAfricaPolities } from "./SouthAfricaPolities";
-import { SouthAfricaLanguages, SouthAfricaReligions } from "./SouthAfricaLanguagesReligions";
-import { SouthAfricaPeoples } from "./SouthAfricaPeoples";
-import { SouthAfricaFigures } from "./SouthAfricaFigures";
+import { CountryLanguages, CountryReligions } from "./CountryLanguagesReligions";
+import { CountryPeoples } from "./CountryPeoples";
+import { CountryFigures } from "./CountryFigures";
 import { SouthAfricaHeritage } from "./SouthAfricaHeritage";
 import { SouthAfricaCulture } from "./SouthAfricaCulture";
 import { SouthAfricaMigrations } from "./SouthAfricaMigrations";
@@ -158,14 +158,14 @@ export default function CountryDossierView({ dossier }) {
         {active === "international" && <SouthAfricaInternationalQuality dossier={dossier} sourceMap={sourceMap} />}
         {active === "sport-media" && <SouthAfricaSportMedia dossier={dossier} sourceMap={sourceMap} />}
         {active === "law-memory" && <SouthAfricaLawMemory dossier={dossier} sourceMap={sourceMap} />}
-        {active === "peoples" && <SouthAfricaPeoples dossier={dossier} sourceMap={sourceMap} />}
+        {active === "peoples" && <CountryPeoples dossier={dossier} sourceMap={sourceMap} />}
         {active === "polities" && <SouthAfricaPolities dossier={dossier} sourceMap={sourceMap} />}
         {active === "migrations" && (<div className="space-y-10"><SouthAfricaPre1652Routes data={dossier.pre1652_map} sourceMap={sourceMap} /><SouthAfricaMigrationMap routes={dossier.map_visuals?.migration_routes || []} note={dossier.map_visuals?.note} /><SouthAfricaMigrations dossier={dossier} sourceMap={sourceMap} /></div>)}
         {active === "heritage" && <SouthAfricaHeritage dossier={dossier} sourceMap={sourceMap} />}
-        {active === "figures" && <SouthAfricaFigures dossier={dossier} sourceMap={sourceMap} />}
+        {active === "figures" && <CountryFigures dossier={dossier} sourceMap={sourceMap} />}
         {active === "culture" && <SouthAfricaCulture dossier={dossier} sourceMap={sourceMap} />}
-        {active === "languages" && <SouthAfricaLanguages dossier={dossier} sourceMap={sourceMap} />}
-        {active === "religions" && <SouthAfricaReligions dossier={dossier} sourceMap={sourceMap} />}
+        {active === "languages" && <CountryLanguages dossier={dossier} sourceMap={sourceMap} />}
+        {active === "religions" && <CountryReligions dossier={dossier} sourceMap={sourceMap} />}
         {active === "historiography" && <CountryHistoriography dossier={dossier} />}
         {active === "research" && <CountryResearchGaps dossier={dossier} />}
         {active === "library" && <SouthAfricaScientificLibrary dossier={dossier} sourceMap={sourceMap} />}
