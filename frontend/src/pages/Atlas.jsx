@@ -233,6 +233,10 @@ const Atlas = () => {
 
       {/* Map */}
       <div className="flex-1 relative">
+        <div className="absolute bottom-3 left-3 z-[500] glass rounded-lg border border-gold/20 px-3 py-2 max-w-[250px]" data-testid="equal-earth-badge">
+          <p className="text-[0.6rem] uppercase tracking-[0.18em] text-gold">Projection Equal Earth</p>
+          <p className="mt-1 text-[0.65rem] leading-4 text-bone/55">Les superficies relatives sont préservées : l’Afrique n’est pas visuellement réduite comme sur Mercator.</p>
+        </div>
         <WorldMap
           onProjectionReady={onProjectionReady}
           onGeoProjectionReady={onGeoProjectionReady}
