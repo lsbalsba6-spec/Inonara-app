@@ -235,7 +235,7 @@ const Atlas = () => {
       <div className="flex-1 relative">
         <div className="absolute bottom-3 left-3 z-[500] glass rounded-lg border border-gold/20 px-3 py-2 max-w-[250px]" data-testid="equal-earth-badge">
           <p className="text-[0.6rem] uppercase tracking-[0.18em] text-gold">Projection Equal Earth</p>
-          <p className="mt-1 text-[0.65rem] leading-4 text-bone/55">Les superficies relatives sont préservées : l’Afrique n’est pas visuellement réduite comme sur Mercator.</p>
+          <p className="mt-1 text-[0.65rem] leading-4 text-bone/55">{t("atlas.equalEarth.copy")}</p>
         </div>
         <WorldMap
           onProjectionReady={onProjectionReady}
@@ -461,7 +461,7 @@ const Atlas = () => {
                 <p className="overline">{t("atlas.activeIn").replace("{era}", eraLabel(year))}</p>
                 <p className="font-serif text-2xl text-bone mt-2">{t("atlas.civsCount").replace("{n}", visibleCivs.length)}</p>
                 {visiblePolities.length > 0 && (
-                  <p className="text-bone/50 text-xs mt-1">{visiblePolities.length} territoire(s) historique(s) approximatif(s)</p>
+                  <p className="text-bone/50 text-xs mt-1">{t("atlas.politiesCount").replace("{n}", visiblePolities.length)}</p>
                 )}
               </div>
               <ul className="divide-y divide-[#2A2421]">
@@ -482,10 +482,9 @@ const Atlas = () => {
             <>
               <div className="p-5 border-b border-[#2A2421]">
                 <p className="overline">{eraLabel(year)}</p>
-                <p className="font-serif text-xl text-bone mt-2">Sortie d'Afrique &amp; ponts terrestres</p>
+                <p className="font-serif text-xl text-bone mt-2">{t("atlas.prehistoric.title")}</p>
                 <p className="text-bone/60 text-xs mt-2 leading-relaxed">
-                  Le niveau des mers a varié de ~120m pendant les glaciations, exposant de vrais ponts terrestres empruntés
-                  par les premières migrations humaines.
+                  {t("atlas.prehistoric.copy")}
                 </p>
               </div>
               <ul className="divide-y divide-[#2A2421]">
@@ -495,7 +494,7 @@ const Atlas = () => {
                     <p className="text-bone/60 text-xs mt-1 leading-relaxed">{p.summary}</p>
                   </li>
                 ))}
-                {visiblePaleo.length === 0 && <li className="p-5 text-bone/60 text-sm">Aucun pont terrestre actif à cette période.</li>}
+                {visiblePaleo.length === 0 && <li className="p-5 text-bone/60 text-sm">{t("atlas.prehistoric.empty")}</li>}
               </ul>
             </>
           )}
@@ -507,11 +506,11 @@ const Atlas = () => {
                 <p className="font-serif text-xl text-bone mt-2">{currentEpoch.name}</p>
                 <p className="text-bone/60 text-xs mt-2 leading-relaxed">{currentEpoch.summary}</p>
                 <p className="text-bone/40 text-[0.65rem] mt-3 italic leading-relaxed">
-                  Schéma simplifié à but pédagogique. Aucun humain n'existait encore à cette échelle de temps.
+                  {t("atlas.geological.disclaimer")}
                 </p>
               </div>
               <div className="p-5 border-t border-[#2A2421]">
-                <p className="text-bone/40 text-[0.65rem] italic leading-relaxed">Sources : {currentEpoch.sources.join(" · ")}</p>
+                <p className="text-bone/40 text-[0.65rem] italic leading-relaxed">{t("atlas.sources")} : {currentEpoch.sources.join(" · ")}</p>
               </div>
             </>
           )}
@@ -525,7 +524,7 @@ const Atlas = () => {
           className="absolute bottom-28 right-6 z-[401] glass px-3 py-2 text-[0.65rem] uppercase tracking-[0.15em] text-gold"
           data-testid="legend-toggle-button"
         >
-          {showLegendPanel ? "✕ Légende" : "☰ Légende"}
+          {showLegendPanel ? t("atlas.legend.hide") : t("atlas.legend.show")}
         </button>
 
         {/* Legend — content adapts to the active mode (geological /
@@ -538,12 +537,11 @@ const Atlas = () => {
             {mode === "geological" && (
               <div className="space-y-2">
                 <p className="text-bone/80 text-xs">
-                  <span className="text-gold">PANGÉE</span> : une seule terre — les frontières et noms de continents
-                  apparaissent progressivement à mesure que le supercontinent se fracture.
+                  {t("atlas.pangea.copy")}
                 </p>
                 <div className="flex items-center gap-3">
                   <span className="w-6 h-[2px]" style={{ background: ATLAS_COLORS.landAfricaBorder }} />
-                  <span className="text-bone/80 text-xs">Contours de masses continentales (approximatif)</span>
+                  <span className="text-bone/80 text-xs">{t("atlas.landmass")}</span>
                 </div>
               </div>
             )}
@@ -556,7 +554,7 @@ const Atlas = () => {
                 </div>
                 <div className="h-px bg-[#2A2421] my-2" />
                 {routes.filter((r) => !r.id.startsWith("diaspora-") && activeRoutes[r.id] !== false).length > 0 && (
-                  <p className="text-bone/60 text-[0.65rem] mb-1">Routes migratoires actives à cette période :</p>
+                  <p className="text-bone/60 text-[0.65rem] mb-1">{t("atlas.activeMigrationRoutes")}</p>
                 )}
                 {routes.filter((r) => !r.id.startsWith("diaspora-")).map((r) => (
                   <label key={r.id} className="flex items-center gap-3 cursor-pointer">
@@ -576,28 +574,28 @@ const Atlas = () => {
 
             {mode === "historical" && (
               <div className="space-y-2">
-                <p className="text-bone/60 text-[0.65rem] uppercase tracking-wider mb-1">Style des lignes migratoires</p>
+                <p className="text-bone/60 text-[0.65rem] uppercase tracking-wider mb-1">{t("atlas.migrationStyles")}</p>
                 <div className="flex items-center gap-3">
                   <span className="w-6 h-[2px]" style={{ background: "#7B2D26" }} />
-                  <span className="text-bone/80 text-xs">Migration forcée (trait plein, plus épais)</span>
+                  <span className="text-bone/80 text-xs">{t("atlas.migration.forced")}</span>
                 </div>
                 <div className="flex items-center gap-3">
                   <span className="w-6 h-[2px]" style={{ background: "#4ade80", borderTop: "2px dotted #4ade80", height: 0 }} />
-                  <span className="text-bone/80 text-xs">Migration volontaire (finement pointillé)</span>
+                  <span className="text-bone/80 text-xs">{t("atlas.migration.voluntary")}</span>
                 </div>
                 <div className="flex items-center gap-3">
                   <span className="w-6" style={{ borderTop: `2px dashed ${ATLAS_COLORS.amber}` }} />
-                  <span className="text-bone/80 text-xs">Mixte (tirets-points)</span>
+                  <span className="text-bone/80 text-xs">{t("atlas.migration.mixed")}</span>
                 </div>
                 <div className="flex items-center gap-3">
                   <span className="w-6" style={{ borderTop: "2px dashed #9CA3AF" }} />
-                  <span className="text-bone/80 text-xs">Conquête / expansion militaire (longs tirets)</span>
+                  <span className="text-bone/80 text-xs">{t("atlas.migration.conquest")}</span>
                 </div>
                 <div className="h-px bg-[#2A2421] my-2" />
                 <label className="flex items-center gap-3 cursor-pointer">
                   <input type="checkbox" checked={showPolities} onChange={(e) => setShowPolities(e.target.checked)} className="accent-gold" data-testid="toggle-polities" />
                   <span className="w-2 h-2 rounded-full border border-dashed" style={{ borderColor: ATLAS_COLORS.gold }} />
-                  <span className="text-bone/80 text-xs">Empires &amp; royaumes (approximatif)</span>
+                  <span className="text-bone/80 text-xs">{t("atlas.polities")}</span>
                 </label>
                 <label className="flex items-center gap-3 cursor-pointer">
                   <input type="checkbox" checked={showPlaces} onChange={(e) => setShowPlaces(e.target.checked)} className="accent-gold" data-testid="toggle-places" />
@@ -632,7 +630,7 @@ const Atlas = () => {
                       data-testid="toggle-diaspora-routes-section"
                     >
                       <span className="text-bone/60 text-xs uppercase tracking-wider">
-                        Routes par diaspora ({routes.filter((r) => r.id.startsWith("diaspora-")).length})
+                        {t("atlas.diasporaRoutes").replace("{n}", routes.filter((r) => r.id.startsWith("diaspora-")).length)}
                       </span>
                       <span className="text-bone/40 text-xs">{showDiasporaRoutesList ? "▾" : "▸"}</span>
                     </button>
@@ -665,12 +663,12 @@ const Atlas = () => {
           <div className="absolute bottom-28 left-1/2 -translate-x-1/2 z-[600] glass w-[92%] max-w-[420px] p-5" data-testid="marker-detail-card">
             <button onClick={() => setSelected(null)} className="absolute top-3 right-4 text-bone/50 hover:text-bone text-lg" data-testid="close-detail">×</button>
             <p className="overline text-[0.6rem]" style={{ color: selected.color || ATLAS_COLORS.gold }}>
-              {selected.kind === "civ" && `Civilisation · ${t(`region.${selected.region}`)}`}
+              {selected.kind === "civ" && `${t("atlas.kind.civ")} · ${t(`region.${selected.region}`)}`}
               {selected.kind === "place" && `${selected.type} · ${selected.era}`}
               {selected.kind === "diaspora" && `Diaspora · ${t(`region.${selected.region}`)}`}
-              {selected.kind === "polity" && "Territoire historique approximatif"}
-              {selected.kind === "paleo" && "Reconstitution préhistorique approximative"}
-              {selected.kind === "route" && "Route migratoire / culturelle"}
+              {selected.kind === "polity" && t("atlas.kind.polity")}
+              {selected.kind === "paleo" && t("atlas.kind.paleo")}
+              {selected.kind === "route" && t("atlas.kind.route")}
             </p>
             <p className="font-serif text-xl text-bone mt-1">{selected.name}</p>
             {selected.kind === "route" && (
@@ -684,7 +682,7 @@ const Atlas = () => {
                   color: { forced: "#7B2D26", voluntary: "#4ade80", mixed: ATLAS_COLORS.amber, conquest: "#9CA3AF" }[selected.migration_type] || "#9CA3AF",
                 }}
               >
-                {{ forced: "Migration forcée", voluntary: "Migration volontaire", mixed: "Migration mixte", conquest: "Conquête / expansion militaire" }[selected.migration_type]}
+                {{ forced: t("atlas.migration.forced"), voluntary: t("atlas.migration.voluntary"), mixed: t("atlas.migration.mixed"), conquest: t("atlas.migration.conquest") }[selected.migration_type]}
               </span>
             )}
             <p className="text-bone/70 text-sm mt-2 leading-relaxed">
@@ -692,7 +690,7 @@ const Atlas = () => {
               {(selected.summary || selected.blurb || "").length > 220 ? "…" : ""}
             </p>
             {selected.sources && (
-              <p className="text-bone/40 text-[0.65rem] mt-3 italic leading-relaxed">Sources : {selected.sources.join(" · ")}</p>
+              <p className="text-bone/40 text-[0.65rem] mt-3 italic leading-relaxed">{t("atlas.sources")} : {selected.sources.join(" · ")}</p>
             )}
             {selected.kind === "civ" && (
               <Link to={`/civilization/${selected.id}`} className="inline-block mt-3 uppercase tracking-[0.18em] text-[0.65rem] text-gold">{t("atlas.openDeepDive")}</Link>
@@ -705,12 +703,12 @@ const Atlas = () => {
             )}
             {selected.kind === "route" && selected.diaspora_id && (
               <Link to={`/diaspora/${selected.diaspora_id}`} className="inline-block mt-3 uppercase tracking-[0.18em] text-[0.65rem] text-gold">
-                En savoir plus sur cette migration →
+                {t("atlas.moreMigration")}
               </Link>
             )}
             {selected.kind === "route" && !selected.diaspora_id && selected.story_id && (
               <Link to={`/story/${selected.story_id}`} className="inline-block mt-3 uppercase tracking-[0.18em] text-[0.65rem] text-gold">
-                Lire l'histoire complète →
+                {t("atlas.readStory")}
               </Link>
             )}
           </div>
