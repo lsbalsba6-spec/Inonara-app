@@ -5,7 +5,7 @@ import { useI18n } from "../i18n";
 import { sortChronologically } from "../lib/contentSort";
 import { SmartImage } from "../components/SmartImage";
 
-const fmt = (y) => (y < 0 ? `${Math.abs(y)} BCE` : `${y} CE`);
+const fmt = (y, t) => (y < 0 ? `${Math.abs(y)} ${t("date.bce")}` : `${y} ${t("date.ce")}`);
 
 const Civilizations = () => {
   const { t } = useI18n();
@@ -41,19 +41,19 @@ const Civilizations = () => {
 
       <section className="mt-10 grid gap-4 md:grid-cols-3">
         <div className="rounded-xl border border-gold/20 bg-gold/[0.05] p-5">
-          <p className="overline text-gold">Corpus actuel</p>
+          <p className="overline text-gold">{t("civilizations.corpus.label")}</p>
           <p className="mt-2 font-serif text-3xl text-bone">{civs.length}</p>
-          <p className="mt-1 text-xs text-bone/50">civilisations et formations historiques documentées</p>
+          <p className="mt-1 text-xs text-bone/50">{t("civilizations.corpus.copy")}</p>
         </div>
         <div className="rounded-xl border border-bone/10 bg-bone/[0.025] p-5">
-          <p className="overline">Amplitude chronologique</p>
-          <p className="mt-2 font-serif text-xl text-bone">{earliest !== null ? fmt(earliest) : "—"} → {latest !== null ? fmt(latest) : "—"}</p>
-          <p className="mt-1 text-xs text-bone/50">du corpus actuellement disponible</p>
+          <p className="overline">{t("civilizations.span.label")}</p>
+          <p className="mt-2 font-serif text-xl text-bone">{earliest !== null ? fmt(earliest, t) : "—"} → {latest !== null ? fmt(latest, t) : "—"}</p>
+          <p className="mt-1 text-xs text-bone/50">{t("civilizations.span.copy")}</p>
         </div>
         <Link to="/atlas" className="rounded-xl border border-bone/10 bg-bone/[0.025] p-5 transition hover:border-gold/40">
-          <p className="overline">Explorer autrement</p>
-          <p className="mt-2 font-serif text-xl text-bone">Voir dans l’Atlas</p>
-          <p className="mt-1 text-xs text-bone/50">replace les civilisations dans l’espace, le temps et les migrations</p>
+          <p className="overline">{t("civilizations.explore.label")}</p>
+          <p className="mt-2 font-serif text-xl text-bone">{t("civilizations.explore.title")}</p>
+          <p className="mt-1 text-xs text-bone/50">{t("civilizations.explore.copy")}</p>
         </Link>
       </section>
 
@@ -62,12 +62,12 @@ const Civilizations = () => {
           <input
             value={query}
             onChange={(event) => setQuery(event.target.value)}
-            placeholder="Rechercher une civilisation, une région ou un mot-clé…"
+            placeholder={t("civilizations.search.placeholder")}
             className="w-full rounded-xl border border-bone/15 bg-ebony px-4 py-3 text-sm text-bone outline-none placeholder:text-bone/35 focus:border-gold/50"
           />
           <div className="flex gap-2 overflow-x-auto">
             <button type="button" onClick={() => setRegion("all")} className={`whitespace-nowrap rounded-full border px-3 py-2 text-xs ${region === "all" ? "border-gold bg-gold/10 text-gold" : "border-bone/15 text-bone/60"}`}>
-              Toutes les régions
+              {t("civilizations.filter.allRegions")}
             </button>
             {regions.map((item) => (
               <button key={item} type="button" onClick={() => setRegion(item)} className={`whitespace-nowrap rounded-full border px-3 py-2 text-xs ${region === item ? "border-gold bg-gold/10 text-gold" : "border-bone/15 text-bone/60"}`}>
@@ -76,7 +76,7 @@ const Civilizations = () => {
             ))}
           </div>
         </div>
-        <p className="mt-4 text-xs text-bone/45">{visible.length} résultat{visible.length > 1 ? "s" : ""}</p>
+        <p className="mt-4 text-xs text-bone/45">{visible.length} {visible.length > 1 ? t("civilizations.results.many") : t("civilizations.results.one")}</p>
       </section>
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mt-8">
@@ -92,7 +92,7 @@ const Civilizations = () => {
             <div className="relative h-full p-7 flex flex-col justify-end">
               <p className="overline text-[0.65rem]">{t(`region.${c.region}`)}</p>
               <h3 className="font-serif text-3xl text-bone mt-3 leading-tight">{c.name}</h3>
-              <p className="text-gold text-xs uppercase tracking-[0.2em] mt-2">{fmt(c.era_start)} — {fmt(c.era_end)}</p>
+              <p className="text-gold text-xs uppercase tracking-[0.2em] mt-2">{fmt(c.era_start, t)} — {fmt(c.era_end, t)}</p>
               <p className="text-bone/70 text-sm font-light mt-4 line-clamp-3">{c.summary}</p>
             </div>
           </Link>
@@ -100,7 +100,7 @@ const Civilizations = () => {
       </div>
       {!visible.length && (
         <div className="mt-8 rounded-xl border border-bone/10 p-6 text-bone/60">
-          Aucun élément du corpus ne correspond à ces filtres.
+          {t("civilizations.empty")}
         </div>
       )}
     </div>
