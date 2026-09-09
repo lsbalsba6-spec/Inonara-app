@@ -3,12 +3,13 @@ import { Link } from "react-router-dom";
 import { fetchCountries, fetchCountryDossiers } from "../lib/api";
 import { slugify } from "./CountryDetail";
 import { AFRICA_REGIONS, FRENCH_COUNTRY_NAMES } from "../data/africa-regions";
+import { useI18n } from "../i18n";
 
 const collator = new Intl.Collator("fr", { sensitivity: "base" });
 
-export function displayCountryName(country) {
+export function displayCountryName(country, lang = "fr") {
   if (!country || typeof country !== "object") return "Pays inconnu";
-  return FRENCH_COUNTRY_NAMES[country.iso2] || country.display_name || country.name || country.iso2 || "Pays inconnu";
+  return (lang === "fr" ? FRENCH_COUNTRY_NAMES[country.iso2] : null) || country.display_name || country.name || country.iso2 || "Unknown country";
 }
 
 export function buildCountrySlug(country, dossierByIso = new Map()) {
@@ -21,6 +22,7 @@ function asArray(value) {
 }
 
 export default function CountriesList() {
+  const { t, lang } = useI18n();
   const [countries, setCountries] = useState([]);
   const [dossiers, setDossiers] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -40,16 +42,16 @@ export default function CountriesList() {
       setLoading(false);
 
       if (countryResult.status === "rejected") {
-        setWarning("La liste complète des pays n'a pas pu être chargée. Réessaie après le redéploiement du backend.");
+        setWarning(t("countries.warning.list"));
       } else if (dossierResult.status === "rejected") {
-        setWarning("Les pays sont disponibles, mais les badges des dossiers approfondis n'ont pas pu être chargés.");
+        setWarning(t("countries.warning.dossiers"));
       }
     });
 
     return () => {
       cancelled = true;
     };
-  }, []);
+  }, [t]);
 
   const validCountries = useMemo(
     () => countries.filter((country) => country && typeof country === "object" && country.iso2),
@@ -66,19 +68,19 @@ export default function CountriesList() {
   const rest = useMemo(
     () => validCountries
       .filter((country) => !africanCodes.has(country.iso2))
-      .sort((a, b) => collator.compare(displayCountryName(a), displayCountryName(b))),
-    [validCountries, africanCodes],
+      .sort((a, b) => collator.compare(displayCountryName(a, lang), displayCountryName(b, lang))),
+    [validCountries, africanCodes, lang],
   );
 
   if (loading) {
-    return <div className="pt-[120px] text-center text-bone/50">Chargement des pays…</div>;
+    return <div className="pt-[120px] text-center text-bone/50">{t("countries.loading")}</div>;
   }
 
   return (
     <div className="pt-[100px] pb-20 px-6 max-w-5xl mx-auto">
-      <h1 className="font-serif text-4xl text-bone mb-2">Pays et territoires</h1>
+      <h1 className="font-serif text-4xl text-bone mb-2">{t("countries.title")}</h1>
       <p className="text-bone/60 mb-6 max-w-3xl">
-        Navigation géographique d&apos;INONARA. Chaque région est classée par ordre alphabétique. Les dossiers approfondis sont signalés et publiés progressivement sans inventer les informations manquantes.
+        {t("countries.copy")}
       </p>
 
       {warning && (
@@ -89,7 +91,7 @@ export default function CountriesList() {
 
       {validCountries.length === 0 ? (
         <div className="rounded border border-bone/10 px-4 py-8 text-center text-bone/60">
-          Aucun pays n'a été reçu depuis l'API. La page reste affichée au lieu de planter.
+          {t("countries.empty")}
         </div>
       ) : (
         <div className="space-y-10">
@@ -97,7 +99,7 @@ export default function CountriesList() {
             const entries = region.iso2
               .map((code) => byIso.get(code))
               .filter(Boolean)
-              .sort((a, b) => collator.compare(displayCountryName(a), displayCountryName(b)));
+              .sort((a, b) => collator.compare(displayCountryName(a, lang), displayCountryName(b, lang)));
 
             if (entries.length === 0) return null;
 
@@ -114,9 +116,9 @@ export default function CountriesList() {
                         to={`/country/${slug}`}
                         className="flex items-center justify-between gap-3 border border-bone/10 rounded px-3 py-2 text-bone/75 hover:border-gold/40 hover:text-gold"
                       >
-                        <span>{displayCountryName(country)}</span>
+                        <span>{displayCountryName(country, lang)}</span>
                         {dossier && (
-                          <span className="shrink-0 text-[10px] uppercase tracking-wider text-gold">Dossier</span>
+                          <span className="shrink-0 text-[10px] uppercase tracking-wider text-gold">{t("countries.dossier")}</span>
                         )}
                       </Link>
                     );
@@ -128,16 +130,16 @@ export default function CountriesList() {
 
           {rest.length > 0 && (
             <section aria-labelledby="region-rest-world">
-              <h2 id="region-rest-world" className="font-serif text-2xl text-gold mb-4">Diasporas majeures et reste du monde</h2>
-              <p className="text-bone/50 text-sm mb-4">Ces pays et territoires seront classés plus finement par grands espaces diasporiques au fil de la documentation.</p>
+              <h2 id="region-rest-world" className="font-serif text-2xl text-gold mb-4">{t("countries.rest.title")}</h2>
+              <p className="text-bone/50 text-sm mb-4">{t("countries.rest.copy")}</p>
               <div className="grid grid-cols-2 md:grid-cols-4 gap-2">
                 {rest.map((country) => {
                   const dossier = dossierByIso.get(country.iso2);
                   const slug = buildCountrySlug(country, dossierByIso);
                   return (
                     <Link key={country.iso2} to={`/country/${slug}`} className="flex items-center gap-2 text-bone/65 hover:text-gold text-sm py-1">
-                      <span>{displayCountryName(country)}</span>
-                      {dossier && <span className="text-[9px] uppercase tracking-wider text-gold">Dossier</span>}
+                      <span>{displayCountryName(country, lang)}</span>
+                      {dossier && <span className="text-[9px] uppercase tracking-wider text-gold">{t("countries.dossier")}</span>}
                     </Link>
                   );
                 })}
