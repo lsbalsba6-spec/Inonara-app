@@ -31,31 +31,31 @@ export const EthnicGroupsList = () => {
       </p>
       <section className="mt-10 grid gap-4 md:grid-cols-3">
         <div className="rounded-xl border border-gold/20 bg-gold/[0.05] p-5">
-          <p className="overline text-gold">Corpus actuel</p>
+          <p className="overline text-gold">{t("ethnic.corpus.label")}</p>
           <p className="mt-2 font-serif text-3xl text-bone">{groups.length}</p>
-          <p className="mt-1 text-xs text-bone/50">peuples et communautés documentés</p>
+          <p className="mt-1 text-xs text-bone/50">{t("ethnic.corpus.copy")}</p>
         </div>
         <div className="rounded-xl border border-bone/10 bg-bone/[0.025] p-5">
-          <p className="overline">Familles linguistiques</p>
+          <p className="overline">{t("ethnic.families.label")}</p>
           <p className="mt-2 font-serif text-3xl text-bone">{families.length}</p>
-          <p className="mt-1 text-xs text-bone/50">familles représentées dans le corpus actuel</p>
+          <p className="mt-1 text-xs text-bone/50">{t("ethnic.families.copy")}</p>
         </div>
         <Link to="/atlas" className="rounded-xl border border-bone/10 bg-bone/[0.025] p-5 transition hover:border-gold/40">
-          <p className="overline">Territoires & mouvements</p>
-          <p className="mt-2 font-serif text-xl text-bone">Explorer dans l’Atlas</p>
-          <p className="mt-1 text-xs text-bone/50">situer les peuples, leurs espaces et leurs migrations</p>
+          <p className="overline">{t("ethnic.atlas.label")}</p>
+          <p className="mt-2 font-serif text-xl text-bone">{t("ethnic.atlas.title")}</p>
+          <p className="mt-1 text-xs text-bone/50">{t("ethnic.atlas.copy")}</p>
         </Link>
       </section>
 
       <section className="mt-10 rounded-2xl border border-bone/10 bg-bone/[0.02] p-5">
         <div className="grid gap-4 lg:grid-cols-[1fr_auto]">
-          <input value={query} onChange={(event) => setQuery(event.target.value)} placeholder="Rechercher un peuple, une région, une langue…" className="w-full rounded-xl border border-bone/15 bg-ebony px-4 py-3 text-sm text-bone outline-none placeholder:text-bone/35 focus:border-gold/50" />
+          <input value={query} onChange={(event) => setQuery(event.target.value)} placeholder={t("ethnic.search.placeholder")} className="w-full rounded-xl border border-bone/15 bg-ebony px-4 py-3 text-sm text-bone outline-none placeholder:text-bone/35 focus:border-gold/50" />
           <div className="flex gap-2 overflow-x-auto">
-            <button type="button" onClick={() => setFamily("all")} className={`whitespace-nowrap rounded-full border px-3 py-2 text-xs ${family === "all" ? "border-gold bg-gold/10 text-gold" : "border-bone/15 text-bone/60"}`}>Toutes les familles</button>
+            <button type="button" onClick={() => setFamily("all")} className={`whitespace-nowrap rounded-full border px-3 py-2 text-xs ${family === "all" ? "border-gold bg-gold/10 text-gold" : "border-bone/15 text-bone/60"}`}>{t("ethnic.filter.allFamilies")}</button>
             {families.map((item) => <button key={item} type="button" onClick={() => setFamily(item)} className={`whitespace-nowrap rounded-full border px-3 py-2 text-xs ${family === item ? "border-gold bg-gold/10 text-gold" : "border-bone/15 text-bone/60"}`}>{item}</button>)}
           </div>
         </div>
-        <p className="mt-4 text-xs text-bone/45">{visible.length} résultat{visible.length > 1 ? "s" : ""}</p>
+        <p className="mt-4 text-xs text-bone/45">{visible.length} {visible.length > 1 ? t("ethnic.results.many") : t("ethnic.results.one")}</p>
       </section>
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mt-8">
@@ -72,7 +72,7 @@ export const EthnicGroupsList = () => {
           </Link>
         ))}
       </div>
-      {!visible.length && <div className="mt-8 rounded-xl border border-bone/10 p-6 text-bone/60">Aucun peuple ne correspond à ces filtres.</div>}
+      {!visible.length && <div className="mt-8 rounded-xl border border-bone/10 p-6 text-bone/60">{t("ethnic.empty")}</div>}
     </div>
   );
 };
@@ -108,26 +108,26 @@ export const EthnicGroupDetail = () => {
       <div className="max-w-[1400px] mx-auto px-6 md:px-10 py-16 space-y-12">
         <section className="grid gap-6 lg:grid-cols-[1.15fr_0.85fr]">
           <div className="grid gap-6 md:grid-cols-2">
-            <Field label="Langue">{g.language}</Field>
-            <Field label="Religion / spiritualités">{g.religion}</Field>
-            <Field label="Culture">{g.culture}</Field>
-            <Field label="Diaspora">{g.diaspora}</Field>
+            <Field label={t("ethnic.field.language")}>{g.language}</Field>
+            <Field label={t("ethnic.field.religion")}>{g.religion}</Field>
+            <Field label={t("ethnic.field.culture")}>{g.culture}</Field>
+            <Field label={t("ethnic.field.diaspora")}>{g.diaspora}</Field>
           </div>
 
           <aside className="rounded-2xl border border-bone/10 bg-bone/[0.025] p-6">
-            <p className="overline text-gold">Repères visuels & sources</p>
-            <h2 className="mt-2 font-serif text-2xl text-bone">Image documentée</h2>
+            <p className="overline text-gold">{t("ethnic.visual.label")}</p>
+            <h2 className="mt-2 font-serif text-2xl text-bone">{t("ethnic.visual.title")}</h2>
             <p className="mt-3 text-sm leading-6 text-bone/60">
-              Les visuels d’Inonara doivent rester traçables : légende, auteur, page source et licence quand ces informations sont disponibles.
+              {t("ethnic.visual.copy")}
             </p>
             <div className="mt-5 space-y-2 text-xs text-bone/50">
-              {g.image_credit && <p><span className="text-bone/75">Crédit :</span> {g.image_credit}</p>}
-              {g.wikipedia_title && <p><span className="text-bone/75">Référence :</span> {g.wikipedia_title}</p>}
-              {!g.image_credit && !g.wikipedia_title && <p>Les métadonnées visuelles de cette fiche doivent encore être complétées.</p>}
+              {g.image_credit && <p><span className="text-bone/75">{t("ethnic.visual.credit")} :</span> {g.image_credit}</p>}
+              {g.wikipedia_title && <p><span className="text-bone/75">{t("ethnic.visual.reference")} :</span> {g.wikipedia_title}</p>}
+              {!g.image_credit && !g.wikipedia_title && <p>{t("ethnic.visual.missing")}</p>}
             </div>
             {g.image_source_url && (
               <a href={g.image_source_url} target="_blank" rel="noreferrer" className="mt-5 inline-flex rounded-full border border-gold/30 px-4 py-2 text-xs text-gold hover:bg-gold/10">
-                Vérifier la source et les droits
+                {t("ethnic.visual.verify")}
               </a>
             )}
           </aside>
@@ -135,19 +135,19 @@ export const EthnicGroupDetail = () => {
 
         <section className="grid gap-4 md:grid-cols-3">
           <Link to="/atlas" className="rounded-xl border border-gold/20 bg-gold/[0.04] p-5 transition hover:border-gold/50">
-            <p className="overline text-gold">Territoire</p>
-            <p className="mt-2 font-serif text-xl text-bone">Voir dans l’Atlas</p>
-            <p className="mt-2 text-xs leading-5 text-bone/50">Situer les espaces historiques, les migrations et les régions associées.</p>
+            <p className="overline text-gold">{t("ethnic.link.territory.label")}</p>
+            <p className="mt-2 font-serif text-xl text-bone">{t("ethnic.link.territory.title")}</p>
+            <p className="mt-2 text-xs leading-5 text-bone/50">{t("ethnic.link.territory.copy")}</p>
           </Link>
           <Link to="/timeline" className="rounded-xl border border-bone/10 bg-bone/[0.025] p-5 transition hover:border-gold/40">
-            <p className="overline">Chronologie</p>
-            <p className="mt-2 font-serif text-xl text-bone">Voir dans le temps</p>
-            <p className="mt-2 text-xs leading-5 text-bone/50">Relier cette communauté aux événements, formations politiques et périodes documentées.</p>
+            <p className="overline">{t("ethnic.link.timeline.label")}</p>
+            <p className="mt-2 font-serif text-xl text-bone">{t("ethnic.link.timeline.title")}</p>
+            <p className="mt-2 text-xs leading-5 text-bone/50">{t("ethnic.link.timeline.copy")}</p>
           </Link>
           <Link to="/culture" className="rounded-xl border border-bone/10 bg-bone/[0.025] p-5 transition hover:border-gold/40">
-            <p className="overline">Culture</p>
-            <p className="mt-2 font-serif text-xl text-bone">Explorer les pratiques</p>
-            <p className="mt-2 text-xs leading-5 text-bone/50">Retrouver arts, objets, musique, oralité, savoirs et traditions associés.</p>
+            <p className="overline">{t("ethnic.link.culture.label")}</p>
+            <p className="mt-2 font-serif text-xl text-bone">{t("ethnic.link.culture.title")}</p>
+            <p className="mt-2 text-xs leading-5 text-bone/50">{t("ethnic.link.culture.copy")}</p>
           </Link>
         </section>
       </div>
