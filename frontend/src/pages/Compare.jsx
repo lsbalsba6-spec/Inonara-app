@@ -1,4 +1,6 @@
 import { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
+import { SmartImage } from "../components/SmartImage";
 import { fetchCivilization, fetchCivilizations } from "../lib/api";
 import { useI18n } from "../i18n";
 
@@ -19,12 +21,23 @@ const Column = ({ civs, civ, onChange, side, t }) => (
     {civ && (
       <div className="mt-6 space-y-6">
         <div className="relative aspect-[4/3] overflow-hidden">
-          <img src={civ.image_url} alt={civ.name} className="absolute inset-0 w-full h-full object-cover" />
+          <SmartImage src={civ.image_url} wikipediaTitle={civ.wikipedia_title} alt={civ.name} wrapperClassName="absolute inset-0" className="h-full w-full object-cover" credit={civ.image_credit} sourceUrl={civ.image_source_url} />
           <div className="absolute inset-0 bg-gradient-to-t from-ebony to-transparent" />
           <div className="absolute bottom-0 left-0 p-5">
             <p className="overline">{t(`region.${civ.region}`)}</p>
             <h2 className="font-serif text-3xl text-bone mt-1">{civ.name}</h2>
             <p className="text-gold text-xs uppercase tracking-[0.2em] mt-1">{fmt(civ.era_start)} — {fmt(civ.era_end)}</p>
+          </div>
+        </div>
+
+        <div className="grid grid-cols-2 gap-3">
+          <div className="rounded-xl border border-bone/10 bg-bone/[0.025] p-4">
+            <p className="overline text-[0.6rem]">Région</p>
+            <p className="mt-2 text-sm text-bone/80">{t(`region.${civ.region}`)}</p>
+          </div>
+          <div className="rounded-xl border border-bone/10 bg-bone/[0.025] p-4">
+            <p className="overline text-[0.6rem]">Durée</p>
+            <p className="mt-2 text-sm text-bone/80">{Number.isFinite(civ.era_start) && Number.isFinite(civ.era_end) ? `${Math.abs(civ.era_end - civ.era_start)} ans` : "—"}</p>
           </div>
         </div>
 
@@ -62,7 +75,32 @@ const Compare = () => {
       <h1 className="font-serif text-5xl md:text-6xl text-bone mt-3 tracking-tight" data-testid="compare-title">{t("page.compare.title")}</h1>
       <p className="text-bone/70 max-w-2xl mt-6 font-light">{t("page.compare.lead")}</p>
 
-      <div className="flex flex-col lg:flex-row gap-10 mt-14">
+      <section className="mt-10 grid gap-4 md:grid-cols-3">
+        <div className="rounded-xl border border-gold/20 bg-gold/[0.05] p-5">
+          <p className="overline text-gold">Corpus comparable</p>
+          <p className="mt-2 font-serif text-3xl text-bone">{civs.length}</p>
+          <p className="mt-1 text-xs text-bone/50">civilisations actuellement disponibles pour comparaison</p>
+        </div>
+        <Link to="/timeline" className="rounded-xl border border-bone/10 bg-bone/[0.025] p-5 transition hover:border-gold/40">
+          <p className="overline">Temps</p><p className="mt-2 font-serif text-xl text-bone">Comparer les périodes</p>
+          <p className="mt-1 text-xs text-bone/50">replacer les deux sociétés dans la chronologie générale</p>
+        </Link>
+        <Link to="/atlas" className="rounded-xl border border-bone/10 bg-bone/[0.025] p-5 transition hover:border-gold/40">
+          <p className="overline">Espace</p><p className="mt-2 font-serif text-xl text-bone">Comparer les territoires</p>
+          <p className="mt-1 text-xs text-bone/50">observer leurs régions et connexions géographiques</p>
+        </Link>
+      </section>
+
+      {left && right && (
+        <section className="mt-8 rounded-2xl border border-gold/15 bg-gold/[0.03] p-5">
+          <p className="overline text-gold">Lecture comparative</p>
+          <p className="mt-2 text-sm leading-6 text-bone/65">
+            {left.name} et {right.name} sont présentés côte à côte selon les mêmes axes : organisation politique, économie et échanges, savoirs, arts et culture. Les différences de période et de région doivent être prises en compte avant toute conclusion.
+          </p>
+        </section>
+      )}
+
+      <div className="flex flex-col lg:flex-row gap-10 mt-10">
         <Column civs={civs} civ={left} onChange={setLeftId} side="left" t={t} />
         <div className="hidden lg:block w-px bg-[#2A2421]" />
         <Column civs={civs} civ={right} onChange={setRightId} side="right" t={t} />
