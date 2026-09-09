@@ -4,7 +4,7 @@ import { SmartImage } from "../components/SmartImage";
 import { fetchCivilization, fetchCivilizations } from "../lib/api";
 import { useI18n } from "../i18n";
 
-const fmt = (y) => (y < 0 ? `${Math.abs(y)} BCE` : `${y} CE`);
+const fmt = (y, t) => (y < 0 ? `${Math.abs(y)} ${t("date.bce")}` : `${y} ${t("date.ce")}`);
 
 const Column = ({ civs, civ, onChange, side, t }) => (
   <div className="flex-1 min-w-0" data-testid={`compare-column-${side}`}>
@@ -26,18 +26,18 @@ const Column = ({ civs, civ, onChange, side, t }) => (
           <div className="absolute bottom-0 left-0 p-5">
             <p className="overline">{t(`region.${civ.region}`)}</p>
             <h2 className="font-serif text-3xl text-bone mt-1">{civ.name}</h2>
-            <p className="text-gold text-xs uppercase tracking-[0.2em] mt-1">{fmt(civ.era_start)} — {fmt(civ.era_end)}</p>
+            <p className="text-gold text-xs uppercase tracking-[0.2em] mt-1">{fmt(civ.era_start, t)} — {fmt(civ.era_end, t)}</p>
           </div>
         </div>
 
         <div className="grid grid-cols-2 gap-3">
           <div className="rounded-xl border border-bone/10 bg-bone/[0.025] p-4">
-            <p className="overline text-[0.6rem]">Région</p>
+            <p className="overline text-[0.6rem]">{t("compare.region")}</p>
             <p className="mt-2 text-sm text-bone/80">{t(`region.${civ.region}`)}</p>
           </div>
           <div className="rounded-xl border border-bone/10 bg-bone/[0.025] p-4">
-            <p className="overline text-[0.6rem]">Durée</p>
-            <p className="mt-2 text-sm text-bone/80">{Number.isFinite(civ.era_start) && Number.isFinite(civ.era_end) ? `${Math.abs(civ.era_end - civ.era_start)} ans` : "—"}</p>
+            <p className="overline text-[0.6rem]">{t("compare.duration")}</p>
+            <p className="mt-2 text-sm text-bone/80">{Number.isFinite(civ.era_start) && Number.isFinite(civ.era_end) ? `${Math.abs(civ.era_end - civ.era_start)} ${t("compare.years")}` : "—"}</p>
           </div>
         </div>
 
@@ -77,25 +77,25 @@ const Compare = () => {
 
       <section className="mt-10 grid gap-4 md:grid-cols-3">
         <div className="rounded-xl border border-gold/20 bg-gold/[0.05] p-5">
-          <p className="overline text-gold">Corpus comparable</p>
+          <p className="overline text-gold">{t("compare.corpus.label")}</p>
           <p className="mt-2 font-serif text-3xl text-bone">{civs.length}</p>
-          <p className="mt-1 text-xs text-bone/50">civilisations actuellement disponibles pour comparaison</p>
+          <p className="mt-1 text-xs text-bone/50">{t("compare.corpus.copy")}</p>
         </div>
         <Link to="/timeline" className="rounded-xl border border-bone/10 bg-bone/[0.025] p-5 transition hover:border-gold/40">
-          <p className="overline">Temps</p><p className="mt-2 font-serif text-xl text-bone">Comparer les périodes</p>
-          <p className="mt-1 text-xs text-bone/50">replacer les deux sociétés dans la chronologie générale</p>
+          <p className="overline">{t("compare.time.label")}</p><p className="mt-2 font-serif text-xl text-bone">{t("compare.time.title")}</p>
+          <p className="mt-1 text-xs text-bone/50">{t("compare.time.copy")}</p>
         </Link>
         <Link to="/atlas" className="rounded-xl border border-bone/10 bg-bone/[0.025] p-5 transition hover:border-gold/40">
-          <p className="overline">Espace</p><p className="mt-2 font-serif text-xl text-bone">Comparer les territoires</p>
-          <p className="mt-1 text-xs text-bone/50">observer leurs régions et connexions géographiques</p>
+          <p className="overline">{t("compare.space.label")}</p><p className="mt-2 font-serif text-xl text-bone">{t("compare.space.title")}</p>
+          <p className="mt-1 text-xs text-bone/50">{t("compare.space.copy")}</p>
         </Link>
       </section>
 
       {left && right && (
         <section className="mt-8 rounded-2xl border border-gold/15 bg-gold/[0.03] p-5">
-          <p className="overline text-gold">Lecture comparative</p>
+          <p className="overline text-gold">{t("compare.reading.label")}</p>
           <p className="mt-2 text-sm leading-6 text-bone/65">
-            {left.name} et {right.name} sont présentés côte à côte selon les mêmes axes : organisation politique, économie et échanges, savoirs, arts et culture. Les différences de période et de région doivent être prises en compte avant toute conclusion.
+            {t("compare.reading.copy").replace("{left}", left.name).replace("{right}", right.name)}
           </p>
         </section>
       )}
