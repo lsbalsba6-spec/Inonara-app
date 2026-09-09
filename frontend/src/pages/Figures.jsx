@@ -30,8 +30,19 @@ export const FiguresList = () => {
   const { t } = useI18n();
   const [items, setItems] = useState([]);
   const [cat, setCat] = useState("all");
+  const [query, setQuery] = useState("");
   useEffect(() => { axios.get(`${API}/figures`).then((r) => setItems(r.data)).catch(() => {}); }, []);
-  const filtered = useMemo(() => sortAlphabetically(cat === "all" ? items : items.filter((i) => i.category === cat), "name"), [items, cat]);
+  const filtered = useMemo(() => {
+    const needle = query.trim().toLowerCase();
+    const base = cat === "all" ? items : items.filter((i) => i.category === cat);
+    return sortAlphabetically(base.filter((i) => {
+      const haystack = `${i.name || ""} ${i.summary || ""} ${i.region || ""} ${i.era || ""} ${i.category || ""}`.toLowerCase();
+      return !needle || haystack.includes(needle);
+    }), "name");
+  }, [items, cat, query]);
+
+  const regions = useMemo(() => new Set(items.map((i) => i.region).filter(Boolean)).size, [items]);
+  const illustrated = useMemo(() => items.filter((i) => i.image_url || i.wikipedia_title).length, [items]);
 
   return (
     <div className="pt-32 pb-24 max-w-[1600px] mx-auto px-6 md:px-10" data-testid="figures-page">
@@ -39,7 +50,27 @@ export const FiguresList = () => {
       <h1 className="font-serif text-5xl md:text-6xl text-bone mt-3 tracking-tight">{t("figures.title")}</h1>
       <p className="text-bone/70 max-w-2xl mt-6 font-light leading-relaxed">{t("figures.copy")}</p>
 
-      <div className="flex flex-wrap gap-2 mt-12" data-testid="figures-filters">
+      <section className="mt-10 grid gap-4 md:grid-cols-3">
+        <div className="rounded-xl border border-gold/20 bg-gold/[0.05] p-5">
+          <p className="overline text-gold">Corpus actuel</p>
+          <p className="mt-2 font-serif text-3xl text-bone">{items.length}</p>
+          <p className="mt-1 text-xs text-bone/50">personnalités documentées</p>
+        </div>
+        <div className="rounded-xl border border-bone/10 bg-bone/[0.025] p-5">
+          <p className="overline">Couverture</p>
+          <p className="mt-2 font-serif text-3xl text-bone">{regions}</p>
+          <p className="mt-1 text-xs text-bone/50">régions représentées dans le corpus</p>
+        </div>
+        <Link to="/timeline" className="rounded-xl border border-bone/10 bg-bone/[0.025] p-5 transition hover:border-gold/40">
+          <p className="overline">Dans le temps</p>
+          <p className="mt-2 font-serif text-xl text-bone">Voir la chronologie</p>
+          <p className="mt-1 text-xs text-bone/50">{illustrated} entrées disposent déjà d’un repère visuel</p>
+        </Link>
+      </section>
+
+      <section className="mt-10 rounded-2xl border border-bone/10 bg-bone/[0.02] p-5">
+        <input value={query} onChange={(event) => setQuery(event.target.value)} placeholder="Rechercher une personnalité, une époque, une région…" className="w-full rounded-xl border border-bone/15 bg-ebony px-4 py-3 text-sm text-bone outline-none placeholder:text-bone/35 focus:border-gold/50" />
+        <div className="flex flex-wrap gap-2 mt-4" data-testid="figures-filters">
         {CATEGORIES.map((c) => (
           <button
             key={c}
@@ -52,7 +83,9 @@ export const FiguresList = () => {
             {c === "all" ? t("figures.allCats") : t(`figures.${c}`)}
           </button>
         ))}
-      </div>
+        </div>
+        <p className="mt-4 text-xs text-bone/45">{filtered.length} résultat{filtered.length > 1 ? "s" : ""}</p>
+      </section>
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 mt-10">
         {filtered.map((f) => <FigureCard key={f.id} f={f} t={t} />)}
@@ -94,6 +127,24 @@ export const FigureDetail = () => {
           <p className="overline">{t("figure.legacy")}</p>
           <p className="text-bone/85 mt-4 text-lg font-light leading-relaxed">{tLegacy || f.legacy}</p>
         </section>
+        <section className="border-t border-[#2A2421] pt-10 grid gap-4 md:grid-cols-3">
+          <Link to="/timeline" className="rounded-xl border border-gold/20 bg-gold/[0.04] p-5 hover:border-gold/50 transition">
+            <p className="overline text-gold">Chronologie</p><p className="mt-2 font-serif text-lg text-bone">Replacer dans son époque</p>
+          </Link>
+          <Link to="/atlas" className="rounded-xl border border-bone/10 p-5 hover:border-gold/40 transition">
+            <p className="overline">Géographie</p><p className="mt-2 font-serif text-lg text-bone">Explorer son espace</p>
+          </Link>
+          <Link to="/culture" className="rounded-xl border border-bone/10 p-5 hover:border-gold/40 transition">
+            <p className="overline">Contextes</p><p className="mt-2 font-serif text-lg text-bone">Culture & héritages</p>
+          </Link>
+        </section>
+        {(f.image_credit || f.image_source_url) && (
+          <section className="border-t border-[#2A2421] pt-10">
+            <p className="overline text-gold">Documentation visuelle</p>
+            {f.image_credit && <p className="mt-3 text-sm text-bone/65">Crédit : {f.image_credit}</p>}
+            {f.image_source_url && <a href={f.image_source_url} target="_blank" rel="noreferrer" className="mt-3 inline-flex text-xs text-gold underline underline-offset-2">Source et droits du visuel</a>}
+          </section>
+        )}
         {f.sources?.length > 0 && (
           <section className="border-t border-[#2A2421] pt-10">
             <p className="overline">{t("common.sources")}</p>
