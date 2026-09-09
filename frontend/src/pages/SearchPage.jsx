@@ -65,7 +65,7 @@ const SearchPage = () => {
         <>
           <p className="overline mt-10" data-testid="search-summary">{t("search.summary").replace("{count}", total).replace("{q}", initial)}</p>
           <div className="mt-5 flex gap-2 overflow-x-auto">
-            {[["all","Tout"],["civilizations","Civilisations"],["figures","Personnalités"],["diaspora","Diaspora"],["modules","Modules"],["stories","Histoires"],["culture","Culture"]].map(([id,label]) => (
+            {[["all",t("search.filter.all")],["civilizations",t("search.filter.civilizations")],["figures",t("search.filter.figures")],["diaspora",t("search.filter.diaspora")],["modules",t("search.filter.modules")],["stories",t("search.filter.stories")],["culture",t("search.filter.culture")]].map(([id,label]) => (
               <button key={id} type="button" onClick={() => setType(id)} className={`whitespace-nowrap rounded-full border px-3 py-2 text-xs ${type === id ? "border-gold bg-gold/10 text-gold" : "border-bone/15 text-bone/60"}`}>{label}</button>
             ))}
           </div>
@@ -144,9 +144,9 @@ const SearchPage = () => {
 
           {total > 0 && (
             <section className="mt-14 grid gap-4 md:grid-cols-3">
-              <Link to="/atlas" className="rounded-xl border border-gold/20 bg-gold/[0.04] p-5 transition hover:border-gold/50"><p className="overline text-gold">Explorer spatialement</p><p className="mt-2 font-serif text-lg text-bone">Ouvrir l’Atlas</p></Link>
-              <Link to="/timeline" className="rounded-xl border border-bone/10 p-5 transition hover:border-gold/40"><p className="overline">Explorer dans le temps</p><p className="mt-2 font-serif text-lg text-bone">Ouvrir la Chronologie</p></Link>
-              <Link to="/compare" className="rounded-xl border border-bone/10 p-5 transition hover:border-gold/40"><p className="overline">Mettre en regard</p><p className="mt-2 font-serif text-lg text-bone">Comparer</p></Link>
+              <Link to="/atlas" className="rounded-xl border border-gold/20 bg-gold/[0.04] p-5 transition hover:border-gold/50"><p className="overline text-gold">{t("search.explore.space.label")}</p><p className="mt-2 font-serif text-lg text-bone">{t("search.explore.space.title")}</p></Link>
+              <Link to="/timeline" className="rounded-xl border border-bone/10 p-5 transition hover:border-gold/40"><p className="overline">{t("search.explore.time.label")}</p><p className="mt-2 font-serif text-lg text-bone">{t("search.explore.time.title")}</p></Link>
+              <Link to="/compare" className="rounded-xl border border-bone/10 p-5 transition hover:border-gold/40"><p className="overline">{t("search.explore.compare.label")}</p><p className="mt-2 font-serif text-lg text-bone">{t("search.explore.compare.title")}</p></Link>
             </section>
           )}
 
