@@ -52,24 +52,24 @@ export const FiguresList = () => {
 
       <section className="mt-10 grid gap-4 md:grid-cols-3">
         <div className="rounded-xl border border-gold/20 bg-gold/[0.05] p-5">
-          <p className="overline text-gold">Corpus actuel</p>
+          <p className="overline text-gold">{t("figures.corpus.label")}</p>
           <p className="mt-2 font-serif text-3xl text-bone">{items.length}</p>
-          <p className="mt-1 text-xs text-bone/50">personnalités documentées</p>
+          <p className="mt-1 text-xs text-bone/50">{t("figures.corpus.copy")}</p>
         </div>
         <div className="rounded-xl border border-bone/10 bg-bone/[0.025] p-5">
-          <p className="overline">Couverture</p>
+          <p className="overline">{t("figures.coverage.label")}</p>
           <p className="mt-2 font-serif text-3xl text-bone">{regions}</p>
-          <p className="mt-1 text-xs text-bone/50">régions représentées dans le corpus</p>
+          <p className="mt-1 text-xs text-bone/50">{t("figures.coverage.copy")}</p>
         </div>
         <Link to="/timeline" className="rounded-xl border border-bone/10 bg-bone/[0.025] p-5 transition hover:border-gold/40">
-          <p className="overline">Dans le temps</p>
-          <p className="mt-2 font-serif text-xl text-bone">Voir la chronologie</p>
-          <p className="mt-1 text-xs text-bone/50">{illustrated} entrées disposent déjà d’un repère visuel</p>
+          <p className="overline">{t("figures.time.label")}</p>
+          <p className="mt-2 font-serif text-xl text-bone">{t("figures.time.title")}</p>
+          <p className="mt-1 text-xs text-bone/50">{t("figures.time.copy").replace("{n}", illustrated)}</p>
         </Link>
       </section>
 
       <section className="mt-10 rounded-2xl border border-bone/10 bg-bone/[0.02] p-5">
-        <input value={query} onChange={(event) => setQuery(event.target.value)} placeholder="Rechercher une personnalité, une époque, une région…" className="w-full rounded-xl border border-bone/15 bg-ebony px-4 py-3 text-sm text-bone outline-none placeholder:text-bone/35 focus:border-gold/50" />
+        <input value={query} onChange={(event) => setQuery(event.target.value)} placeholder={t("figures.search.placeholder")} className="w-full rounded-xl border border-bone/15 bg-ebony px-4 py-3 text-sm text-bone outline-none placeholder:text-bone/35 focus:border-gold/50" />
         <div className="flex flex-wrap gap-2 mt-4" data-testid="figures-filters">
         {CATEGORIES.map((c) => (
           <button
@@ -84,7 +84,7 @@ export const FiguresList = () => {
           </button>
         ))}
         </div>
-        <p className="mt-4 text-xs text-bone/45">{filtered.length} résultat{filtered.length > 1 ? "s" : ""}</p>
+        <p className="mt-4 text-xs text-bone/45">{filtered.length} {filtered.length > 1 ? t("figures.results.many") : t("figures.results.one")}</p>
       </section>
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 mt-10">
@@ -129,20 +129,20 @@ export const FigureDetail = () => {
         </section>
         <section className="border-t border-[#2A2421] pt-10 grid gap-4 md:grid-cols-3">
           <Link to="/timeline" className="rounded-xl border border-gold/20 bg-gold/[0.04] p-5 hover:border-gold/50 transition">
-            <p className="overline text-gold">Chronologie</p><p className="mt-2 font-serif text-lg text-bone">Replacer dans son époque</p>
+            <p className="overline text-gold">{t("figure.link.timeline.label")}</p><p className="mt-2 font-serif text-lg text-bone">{t("figure.link.timeline.title")}</p>
           </Link>
           <Link to="/atlas" className="rounded-xl border border-bone/10 p-5 hover:border-gold/40 transition">
-            <p className="overline">Géographie</p><p className="mt-2 font-serif text-lg text-bone">Explorer son espace</p>
+            <p className="overline">{t("figure.link.geo.label")}</p><p className="mt-2 font-serif text-lg text-bone">{t("figure.link.geo.title")}</p>
           </Link>
           <Link to="/culture" className="rounded-xl border border-bone/10 p-5 hover:border-gold/40 transition">
-            <p className="overline">Contextes</p><p className="mt-2 font-serif text-lg text-bone">Culture & héritages</p>
+            <p className="overline">{t("figure.link.context.label")}</p><p className="mt-2 font-serif text-lg text-bone">{t("figure.link.context.title")}</p>
           </Link>
         </section>
         {(f.image_credit || f.image_source_url) && (
           <section className="border-t border-[#2A2421] pt-10">
-            <p className="overline text-gold">Documentation visuelle</p>
-            {f.image_credit && <p className="mt-3 text-sm text-bone/65">Crédit : {f.image_credit}</p>}
-            {f.image_source_url && <a href={f.image_source_url} target="_blank" rel="noreferrer" className="mt-3 inline-flex text-xs text-gold underline underline-offset-2">Source et droits du visuel</a>}
+            <p className="overline text-gold">{t("figure.visualDocs")}</p>
+            {f.image_credit && <p className="mt-3 text-sm text-bone/65">{t("figure.credit")} : {f.image_credit}</p>}
+            {f.image_source_url && <a href={f.image_source_url} target="_blank" rel="noreferrer" className="mt-3 inline-flex text-xs text-gold underline underline-offset-2">{t("figure.visualRights")}</a>}
           </section>
         )}
         {f.sources?.length > 0 && (
