@@ -25,6 +25,8 @@ const Timeline = () => {
   const [figures, setFigures] = useState([]);
   const [hovered, setHovered] = useState(null);
   const [activeCats, setActiveCats] = useState({});
+  const [query, setQuery] = useState("");
+  const [era, setEra] = useState("all");
   const scrollerRef = useRef(null);
 
   useEffect(() => {
@@ -53,7 +55,29 @@ const Timeline = () => {
   const ticks = [];
   for (let y = Math.ceil(minY / 500) * 500; y <= maxY; y += 500) ticks.push(y);
 
-  const visibleFigures = figures.filter((f) => activeCats[f.category]);
+  const eraOptions = [
+    ["all", "Toutes les périodes"],
+    ["ancient", "Avant 500"],
+    ["medieval", "500–1500"],
+    ["early-modern", "1500–1800"],
+    ["modern", "1800–1950"],
+    ["contemporary", "Depuis 1950"],
+  ];
+
+  const matchesEra = (year) => {
+    if (era === "ancient") return year < 500;
+    if (era === "medieval") return year >= 500 && year < 1500;
+    if (era === "early-modern") return year >= 1500 && year < 1800;
+    if (era === "modern") return year >= 1800 && year < 1950;
+    if (era === "contemporary") return year >= 1950;
+    return true;
+  };
+
+  const needle = query.trim().toLowerCase();
+  const visibleFigures = figures.filter((f) => {
+    const matchesSearch = !needle || `${f.name || ""} ${f.summary || ""} ${f.region || ""} ${f.category || ""}`.toLowerCase().includes(needle);
+    return activeCats[f.category] && matchesEra(f.year) && matchesSearch;
+  });
 
   return (
     <div className="pt-32 pb-12 max-w-[1600px] mx-auto px-6 md:px-10" data-testid="timeline-page">
@@ -63,8 +87,38 @@ const Timeline = () => {
         {t("page.timeline.lead")}
       </p>
 
+      <section className="mt-10 grid gap-4 md:grid-cols-3">
+        <div className="rounded-xl border border-gold/20 bg-gold/[0.05] p-5">
+          <p className="overline text-gold">Corpus chronologique</p>
+          <p className="mt-2 font-serif text-3xl text-bone">{figures.length}</p>
+          <p className="mt-1 text-xs text-bone/50">personnalités et événements positionnés dans le temps</p>
+        </div>
+        <div className="rounded-xl border border-bone/10 bg-bone/[0.025] p-5">
+          <p className="overline">Amplitude</p>
+          <p className="mt-2 font-serif text-xl text-bone">{fmtYear(minY)} → {fmtYear(maxY)}</p>
+          <p className="mt-1 text-xs text-bone/50">une lecture longue durée de l’histoire africaine</p>
+        </div>
+        <Link to="/atlas" className="rounded-xl border border-bone/10 bg-bone/[0.025] p-5 transition hover:border-gold/40">
+          <p className="overline">Temps & espace</p>
+          <p className="mt-2 font-serif text-xl text-bone">Ouvrir l’Atlas</p>
+          <p className="mt-1 text-xs text-bone/50">replacer événements, sociétés et circulations sur la carte</p>
+        </Link>
+      </section>
+
+      <section className="mt-8 rounded-2xl border border-bone/10 bg-bone/[0.02] p-5">
+        <input value={query} onChange={(event) => setQuery(event.target.value)} placeholder="Rechercher une personne, un événement, une région…" className="w-full rounded-xl border border-bone/15 bg-ebony px-4 py-3 text-sm text-bone outline-none placeholder:text-bone/35 focus:border-gold/50" />
+        <div className="mt-4 flex gap-2 overflow-x-auto">
+          {eraOptions.map(([id, label]) => (
+            <button key={id} type="button" onClick={() => setEra(id)} className={`whitespace-nowrap rounded-full border px-3 py-2 text-xs ${era === id ? "border-gold bg-gold/10 text-gold" : "border-bone/15 text-bone/60"}`}>
+              {label}
+            </button>
+          ))}
+        </div>
+        <p className="mt-4 text-xs text-bone/45">{visibleFigures.length} élément{visibleFigures.length > 1 ? "s" : ""} visible{visibleFigures.length > 1 ? "s" : ""}</p>
+      </section>
+
       {/* Legend */}
-      <div className="flex flex-wrap gap-3 mt-8" data-testid="timeline-legend">
+      <div className="flex flex-wrap gap-3 mt-6" data-testid="timeline-legend">
         {LANES.map((cat) => (
           <button
             key={cat}
@@ -150,6 +204,17 @@ const Timeline = () => {
       </div>
 
       <p className="text-bone/40 text-xs mt-4">Survolez un point pour un aperçu · Cliquez pour ouvrir la fiche ou le récit</p>
+      <div className="mt-8 grid gap-4 md:grid-cols-3">
+        <Link to="/civilizations" className="rounded-xl border border-bone/10 p-5 hover:border-gold/40 transition">
+          <p className="overline">Civilisations</p><p className="mt-2 font-serif text-lg text-bone">Suivre les formations historiques</p>
+        </Link>
+        <Link to="/people" className="rounded-xl border border-bone/10 p-5 hover:border-gold/40 transition">
+          <p className="overline">Peuples</p><p className="mt-2 font-serif text-lg text-bone">Relier sociétés et temporalités</p>
+        </Link>
+        <Link to="/diaspora" className="rounded-xl border border-bone/10 p-5 hover:border-gold/40 transition">
+          <p className="overline">Diaspora</p><p className="mt-2 font-serif text-lg text-bone">Suivre les circulations dans le temps</p>
+        </Link>
+      </div>
     </div>
   );
 };
