@@ -99,6 +99,10 @@ function SimpleCards({ items, sourceMap, titleField = "name", bodyField = "note"
 export default function CountryDossierView({ dossier }) {
   const [active, setActive] = useState("overview");
   const sourceMap = useMemo(() => new Map((dossier?.sources || []).map((s) => [s.id, s])), [dossier?.sources]);
+  const territory = useMemo(() => ({
+    sections: dossier?.territory_v8?.sections || dossier?.territory_sections || [],
+    places: dossier?.territory_v8?.places || dossier?.map_visuals?.territory_places || [],
+  }), [dossier?.territory_v8, dossier?.territory_sections, dossier?.map_visuals]);
   const groups = [
     { id: "identity", label: "Découvrir", items: [["overview", "Présentation"], ["media", "Galerie"], ["symbols", "Symboles"]] },
     { id: "maps", label: "Territoire", items: [["provinces-cities", "Provinces & villes"]] },
@@ -145,7 +149,7 @@ export default function CountryDossierView({ dossier }) {
         {active === "overview" && <SouthAfricaOverview dossier={dossier} sourceMap={sourceMap} />}
         {active === "media" && <SouthAfricaMediaGallery items={dossier.media_gallery || []} />}
         {active === "timeline" && (<div className="space-y-10"><SouthAfricaDeepHistory data={dossier.deep_history} sourceMap={sourceMap} /><SouthAfricaHistory dossier={dossier} sourceMap={sourceMap} /></div>)}
-        {active === "provinces-cities" && <CountryTerritory dossier={dossier} sourceMap={sourceMap} />}
+        {active === "provinces-cities" && <CountryTerritory dossier={dossier} territory={territory} sourceMap={sourceMap} />}
         {active === "interactive-timeline" && <SouthAfricaInteractiveTimeline dossier={dossier} sourceMap={sourceMap} />}
         {active === "economy" && <SouthAfricaEconomyQuality dossier={dossier} sourceMap={sourceMap} />}
         {active === "society" && <SouthAfricaSocietyQuality dossier={dossier} sourceMap={sourceMap} />}
