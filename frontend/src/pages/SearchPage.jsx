@@ -11,6 +11,7 @@ const SearchPage = () => {
   const [q, setQ] = useState(initial);
   const [results, setResults] = useState(null);
   const [loading, setLoading] = useState(false);
+  const [type, setType] = useState("all");
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -25,9 +26,16 @@ const SearchPage = () => {
     setParams({ q });
   };
 
-  const total = results
-    ? results.modules.length + results.civilizations.length + results.stories.length + results.culture.length + (results.diaspora?.length || 0) + (results.figures?.length || 0)
-    : 0;
+  const buckets = results ? [
+    ["civilizations", results.civilizations || []],
+    ["figures", results.figures || []],
+    ["diaspora", results.diaspora || []],
+    ["modules", results.modules || []],
+    ["stories", results.stories || []],
+    ["culture", results.culture || []],
+  ] : [];
+  const total = buckets.reduce((sum, [, items]) => sum + items.length, 0);
+  const show = (bucket) => type === "all" || type === bucket;
 
   return (
     <div className="pt-32 pb-24 max-w-[1400px] mx-auto px-6 md:px-10" data-testid="search-page">
@@ -56,8 +64,13 @@ const SearchPage = () => {
       {!loading && results && (
         <>
           <p className="overline mt-10" data-testid="search-summary">{t("search.summary").replace("{count}", total).replace("{q}", initial)}</p>
+          <div className="mt-5 flex gap-2 overflow-x-auto">
+            {[["all","Tout"],["civilizations","Civilisations"],["figures","Personnalités"],["diaspora","Diaspora"],["modules","Modules"],["stories","Histoires"],["culture","Culture"]].map(([id,label]) => (
+              <button key={id} type="button" onClick={() => setType(id)} className={`whitespace-nowrap rounded-full border px-3 py-2 text-xs ${type === id ? "border-gold bg-gold/10 text-gold" : "border-bone/15 text-bone/60"}`}>{label}</button>
+            ))}
+          </div>
 
-          {results.civilizations.length > 0 && (
+          {show("civilizations") && results.civilizations.length > 0 && (
             <Section title={t("search.section.civilizations")}>
               {results.civilizations.map((c) => (
                 <Link key={c.id} to={`/civilization/${c.id}`} className="museum-card p-5 group block" data-testid={`search-civ-${c.id}`}>
@@ -69,7 +82,7 @@ const SearchPage = () => {
             </Section>
           )}
 
-          {results.figures?.length > 0 && (
+          {show("figures") && results.figures?.length > 0 && (
             <Section title={t("search.section.figures")}>
               {results.figures.map((f) => (
                 <Link key={f.id} to={`/figure/${f.id}`} className="museum-card p-5 group block" data-testid={`search-figure-${f.id}`}>
@@ -81,7 +94,7 @@ const SearchPage = () => {
             </Section>
           )}
 
-          {results.diaspora?.length > 0 && (
+          {show("diaspora") && results.diaspora?.length > 0 && (
             <Section title={t("search.section.diaspora")}>
               {results.diaspora.map((d) => (
                 <Link key={d.id} to={`/diaspora/${d.id}`} className="museum-card p-5 group block" data-testid={`search-diaspora-${d.id}`}>
@@ -93,7 +106,7 @@ const SearchPage = () => {
             </Section>
           )}
 
-          {results.modules.length > 0 && (
+          {show("modules") && results.modules.length > 0 && (
             <Section title={t("search.section.modules")}>
               {results.modules.map((m) => (
                 <Link key={m.id} to={`/module/${m.id}`} className="museum-card p-5 group block" data-testid={`search-module-${m.id}`}>
@@ -105,7 +118,7 @@ const SearchPage = () => {
             </Section>
           )}
 
-          {results.stories.length > 0 && (
+          {show("stories") && results.stories.length > 0 && (
             <Section title={t("search.section.stories")}>
               {results.stories.map((s) => (
                 <Link key={s.id} to={`/story/${s.id}`} className="museum-card p-5 group block" data-testid={`search-story-${s.id}`}>
@@ -117,7 +130,7 @@ const SearchPage = () => {
             </Section>
           )}
 
-          {results.culture.length > 0 && (
+          {show("culture") && results.culture.length > 0 && (
             <Section title={t("search.section.culture")}>
               {results.culture.map((i) => (
                 <div key={i.id} className="museum-card p-5" data-testid={`search-culture-${i.id}`}>
@@ -127,6 +140,14 @@ const SearchPage = () => {
                 </div>
               ))}
             </Section>
+          )}
+
+          {total > 0 && (
+            <section className="mt-14 grid gap-4 md:grid-cols-3">
+              <Link to="/atlas" className="rounded-xl border border-gold/20 bg-gold/[0.04] p-5 transition hover:border-gold/50"><p className="overline text-gold">Explorer spatialement</p><p className="mt-2 font-serif text-lg text-bone">Ouvrir l’Atlas</p></Link>
+              <Link to="/timeline" className="rounded-xl border border-bone/10 p-5 transition hover:border-gold/40"><p className="overline">Explorer dans le temps</p><p className="mt-2 font-serif text-lg text-bone">Ouvrir la Chronologie</p></Link>
+              <Link to="/compare" className="rounded-xl border border-bone/10 p-5 transition hover:border-gold/40"><p className="overline">Mettre en regard</p><p className="mt-2 font-serif text-lg text-bone">Comparer</p></Link>
+            </section>
           )}
 
           {total === 0 && (
