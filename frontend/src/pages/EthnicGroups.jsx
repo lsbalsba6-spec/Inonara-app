@@ -105,11 +105,51 @@ export const EthnicGroupDetail = () => {
           <p className="text-bone/80 mt-6 max-w-2xl text-lg font-light leading-relaxed">{g.summary}</p>
         </div>
       </div>
-      <div className="max-w-[1400px] mx-auto px-6 md:px-10 py-16 grid md:grid-cols-2 gap-10">
-        <Field label="Language">{g.language}</Field>
-        <Field label="Religion">{g.religion}</Field>
-        <Field label="Culture">{g.culture}</Field>
-        <Field label="In the Diaspora">{g.diaspora}</Field>
+      <div className="max-w-[1400px] mx-auto px-6 md:px-10 py-16 space-y-12">
+        <section className="grid gap-6 lg:grid-cols-[1.15fr_0.85fr]">
+          <div className="grid gap-6 md:grid-cols-2">
+            <Field label="Langue">{g.language}</Field>
+            <Field label="Religion / spiritualités">{g.religion}</Field>
+            <Field label="Culture">{g.culture}</Field>
+            <Field label="Diaspora">{g.diaspora}</Field>
+          </div>
+
+          <aside className="rounded-2xl border border-bone/10 bg-bone/[0.025] p-6">
+            <p className="overline text-gold">Repères visuels & sources</p>
+            <h2 className="mt-2 font-serif text-2xl text-bone">Image documentée</h2>
+            <p className="mt-3 text-sm leading-6 text-bone/60">
+              Les visuels d’Inonara doivent rester traçables : légende, auteur, page source et licence quand ces informations sont disponibles.
+            </p>
+            <div className="mt-5 space-y-2 text-xs text-bone/50">
+              {g.image_credit && <p><span className="text-bone/75">Crédit :</span> {g.image_credit}</p>}
+              {g.wikipedia_title && <p><span className="text-bone/75">Référence :</span> {g.wikipedia_title}</p>}
+              {!g.image_credit && !g.wikipedia_title && <p>Les métadonnées visuelles de cette fiche doivent encore être complétées.</p>}
+            </div>
+            {g.image_source_url && (
+              <a href={g.image_source_url} target="_blank" rel="noreferrer" className="mt-5 inline-flex rounded-full border border-gold/30 px-4 py-2 text-xs text-gold hover:bg-gold/10">
+                Vérifier la source et les droits
+              </a>
+            )}
+          </aside>
+        </section>
+
+        <section className="grid gap-4 md:grid-cols-3">
+          <Link to="/atlas" className="rounded-xl border border-gold/20 bg-gold/[0.04] p-5 transition hover:border-gold/50">
+            <p className="overline text-gold">Territoire</p>
+            <p className="mt-2 font-serif text-xl text-bone">Voir dans l’Atlas</p>
+            <p className="mt-2 text-xs leading-5 text-bone/50">Situer les espaces historiques, les migrations et les régions associées.</p>
+          </Link>
+          <Link to="/timeline" className="rounded-xl border border-bone/10 bg-bone/[0.025] p-5 transition hover:border-gold/40">
+            <p className="overline">Chronologie</p>
+            <p className="mt-2 font-serif text-xl text-bone">Voir dans le temps</p>
+            <p className="mt-2 text-xs leading-5 text-bone/50">Relier cette communauté aux événements, formations politiques et périodes documentées.</p>
+          </Link>
+          <Link to="/culture" className="rounded-xl border border-bone/10 bg-bone/[0.025] p-5 transition hover:border-gold/40">
+            <p className="overline">Culture</p>
+            <p className="mt-2 font-serif text-xl text-bone">Explorer les pratiques</p>
+            <p className="mt-2 text-xs leading-5 text-bone/50">Retrouver arts, objets, musique, oralité, savoirs et traditions associés.</p>
+          </Link>
+        </section>
       </div>
       {g.sources?.length > 0 && (
         <div className="max-w-[1400px] mx-auto px-6 md:px-10 pb-24">
