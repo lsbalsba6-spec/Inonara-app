@@ -31,24 +31,24 @@ export const StoriesList = () => {
 
       <section className="mt-10 grid gap-4 md:grid-cols-3">
         <div className="rounded-xl border border-gold/20 bg-gold/[0.05] p-5">
-          <p className="overline text-gold">Corpus narratif</p>
+          <p className="overline text-gold">{t("stories.corpus.label")}</p>
           <p className="mt-2 font-serif text-3xl text-bone">{stories.length}</p>
-          <p className="mt-1 text-xs text-bone/50">récits historiques disponibles</p>
+          <p className="mt-1 text-xs text-bone/50">{t("stories.corpus.copy")}</p>
         </div>
         <div className="rounded-xl border border-bone/10 bg-bone/[0.025] p-5">
-          <p className="overline">Illustrations</p>
+          <p className="overline">{t("stories.illustrations.label")}</p>
           <p className="mt-2 font-serif text-3xl text-bone">{illustrated}</p>
-          <p className="mt-1 text-xs text-bone/50">récits disposant déjà d’un repère visuel</p>
+          <p className="mt-1 text-xs text-bone/50">{t("stories.illustrations.copy")}</p>
         </div>
         <Link to="/timeline" className="rounded-xl border border-bone/10 bg-bone/[0.025] p-5 transition hover:border-gold/40">
-          <p className="overline">Contexte</p>
-          <p className="mt-2 font-serif text-xl text-bone">Voir la chronologie</p>
-          <p className="mt-1 text-xs text-bone/50">replacer les récits dans la longue durée</p>
+          <p className="overline">{t("stories.context.label")}</p>
+          <p className="mt-2 font-serif text-xl text-bone">{t("stories.context.title")}</p>
+          <p className="mt-1 text-xs text-bone/50">{t("stories.context.copy")}</p>
         </Link>
       </section>
       <section className="mt-8 rounded-2xl border border-bone/10 bg-bone/[0.02] p-5">
-        <input value={query} onChange={(event) => setQuery(event.target.value)} placeholder="Rechercher un récit, une époque, un mot-clé…" className="w-full rounded-xl border border-bone/15 bg-ebony px-4 py-3 text-sm text-bone outline-none placeholder:text-bone/35 focus:border-gold/50" />
-        <p className="mt-4 text-xs text-bone/45">{visible.length} récit{visible.length > 1 ? "s" : ""}</p>
+        <input value={query} onChange={(event) => setQuery(event.target.value)} placeholder={t("stories.search.placeholder")} className="w-full rounded-xl border border-bone/15 bg-ebony px-4 py-3 text-sm text-bone outline-none placeholder:text-bone/35 focus:border-gold/50" />
+        <p className="mt-4 text-xs text-bone/45">{visible.length} {visible.length > 1 ? t("stories.count.many") : t("stories.count.one")}</p>
       </section>
 
       <div className="grid md:grid-cols-2 gap-6 mt-8">
@@ -111,9 +111,9 @@ export const StoryDetail = () => {
       <p className="text-bone/70 mt-6 text-lg font-light leading-relaxed">{s.summary}</p>
 
       <section className="mt-12 grid gap-4 md:grid-cols-3">
-        <Link to="/timeline" className="rounded-xl border border-gold/20 bg-gold/[0.04] p-5 transition hover:border-gold/50"><p className="overline text-gold">Chronologie</p><p className="mt-2 font-serif text-lg text-bone">Replacer le récit</p></Link>
-        <Link to="/atlas" className="rounded-xl border border-bone/10 p-5 transition hover:border-gold/40"><p className="overline">Atlas</p><p className="mt-2 font-serif text-lg text-bone">Voir les lieux</p></Link>
-        <Link to="/civilizations" className="rounded-xl border border-bone/10 p-5 transition hover:border-gold/40"><p className="overline">Contextes</p><p className="mt-2 font-serif text-lg text-bone">Civilisations liées</p></Link>
+        <Link to="/timeline" className="rounded-xl border border-gold/20 bg-gold/[0.04] p-5 transition hover:border-gold/50"><p className="overline text-gold">{t("stories.detail.timeline.label")}</p><p className="mt-2 font-serif text-lg text-bone">{t("stories.detail.timeline.title")}</p></Link>
+        <Link to="/atlas" className="rounded-xl border border-bone/10 p-5 transition hover:border-gold/40"><p className="overline">{t("stories.detail.atlas.label")}</p><p className="mt-2 font-serif text-lg text-bone">{t("stories.detail.atlas.title")}</p></Link>
+        <Link to="/civilizations" className="rounded-xl border border-bone/10 p-5 transition hover:border-gold/40"><p className="overline">{t("stories.detail.contexts.label")}</p><p className="mt-2 font-serif text-lg text-bone">{t("stories.detail.contexts.title")}</p></Link>
       </section>
 
       <div className="mt-16 space-y-14">
@@ -129,9 +129,9 @@ export const StoryDetail = () => {
 
       {(s.image_credit || s.image_source_url) && (
         <section className="mt-16 border-t border-[#2A2421] pt-10">
-          <p className="overline text-gold">Documentation visuelle</p>
-          {s.image_credit && <p className="mt-3 text-sm text-bone/65">Crédit : {s.image_credit}</p>}
-          {s.image_source_url && <a href={s.image_source_url} target="_blank" rel="noreferrer" className="mt-3 inline-flex text-xs text-gold underline underline-offset-2">Source et droits du visuel</a>}
+          <p className="overline text-gold">{t("stories.visualDocs")}</p>
+          {s.image_credit && <p className="mt-3 text-sm text-bone/65">{t("stories.credit")} : {s.image_credit}</p>}
+          {s.image_source_url && <a href={s.image_source_url} target="_blank" rel="noreferrer" className="mt-3 inline-flex text-xs text-gold underline underline-offset-2">{t("stories.visualRights")}</a>}
         </section>
       )}
       {s.sources?.length > 0 && (
