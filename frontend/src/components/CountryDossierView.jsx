@@ -24,16 +24,54 @@ import { useMemo, useState } from "react";
 import { CountryMediaGallery } from "./CountryMediaGallery";
 import CountryTerritory from "./CountryTerritory";
 import CountrySectionBoundary from "./CountrySectionBoundary";
+import { useI18n } from "../i18n";
+import { useTranslated } from "../lib/useTranslated";
 
-const STATUS_LABELS = {
-  ready: "Établi",
-  provisional: "À lire avec contexte",
-  disputed: "Débat historique",
-  "research-gap": "À suivre",
+const COPY = {
+  en: {
+    country: "Country",
+    southernAfrica: "Southern Africa",
+    navLabel: "Country dossier sections",
+    status: { ready: "Established", provisional: "Read with context", disputed: "Historical debate", "research-gap": "To investigate" },
+    mapping: "Mapping",
+    present: "present",
+    yearsBeforePresent: "years before present",
+    groups: [
+      { id: "identity", label: "Discover", items: [["overview", "Overview"], ["media", "Gallery"], ["symbols", "Symbols"]] },
+      { id: "maps", label: "Territory", items: [["provinces-cities", "Provinces & cities"]] },
+      { id: "history", label: "History", items: [["timeline", "Historical narrative"], ["interactive-timeline", "Timeline"], ["polities", "Kingdoms & states"], ["law-memory", "Law & memory"]] },
+      { id: "mobility", label: "Migrations", items: [["migrations", "Migrations & diasporas"], ["international", "{country} in the world"]] },
+      { id: "society", label: "Society & culture", items: [["peoples", "Peoples"], ["languages", "Languages"], ["religions", "Religions"], ["culture", "Culture"], ["sport-media", "Sports & media"]] },
+      { id: "heritage", label: "Heritage & nature", items: [["heritage", "Heritage"]] },
+      { id: "state", label: "State & economy", items: [["society", "Society"], ["education-health", "Education & health"], ["economy", "Economy"]] },
+      { id: "people", label: "Figures", items: [["figures", "Figures"]] },
+      { id: "sources", label: "Sources", items: [["historiography", "Debates"], ["research", "To investigate"], ["library", "Library"], ["sources", "All sources"]] },
+    ],
+  },
+  fr: {
+    country: "Pays",
+    southernAfrica: "Afrique australe",
+    navLabel: "Grandes sections du dossier pays",
+    status: { ready: "Établi", provisional: "À lire avec contexte", disputed: "Débat historique", "research-gap": "À suivre" },
+    mapping: "Cartographie",
+    present: "aujourd’hui",
+    yearsBeforePresent: "ans avant notre ère",
+    groups: [
+      { id: "identity", label: "Découvrir", items: [["overview", "Présentation"], ["media", "Galerie"], ["symbols", "Symboles"]] },
+      { id: "maps", label: "Territoire", items: [["provinces-cities", "Provinces & villes"]] },
+      { id: "history", label: "Histoire", items: [["timeline", "Récit historique"], ["interactive-timeline", "Chronologie"], ["polities", "Royaumes & États"], ["law-memory", "Droit & mémoire"]] },
+      { id: "mobility", label: "Migrations", items: [["migrations", "Migrations & diasporas"], ["international", "{country} dans le monde"]] },
+      { id: "society", label: "Société & culture", items: [["peoples", "Peuples"], ["languages", "Langues"], ["religions", "Religions"], ["culture", "Culture"], ["sport-media", "Sports & médias"]] },
+      { id: "heritage", label: "Patrimoine & nature", items: [["heritage", "Patrimoine"]] },
+      { id: "state", label: "État & économie", items: [["society", "Société"], ["education-health", "Éducation & santé"], ["economy", "Économie"]] },
+      { id: "people", label: "Personnalités", items: [["figures", "Personnalités"]] },
+      { id: "sources", label: "Sources", items: [["historiography", "Débats"], ["research", "À suivre"], ["library", "Bibliothèque"], ["sources", "Toutes les sources"]] },
+    ],
+  },
 };
 
-function StatusBadge({ status }) {
-  const label = STATUS_LABELS[status] || status;
+function StatusBadge({ status, copy }) {
+  const label = copy.status[status] || status;
   return (
     <span className="inline-flex rounded-full border border-bone/15 px-2 py-0.5 text-[10px] uppercase tracking-wider text-bone/55">
       {label}
@@ -58,16 +96,16 @@ function SourceLinks({ ids, sourceMap }) {
   );
 }
 
-function Timeline({ items, sourceMap }) {
+function Timeline({ items, sourceMap, copy, lang }) {
   return (
     <div className="space-y-5">
       {items.map((item) => (
         <article key={item.id} className="border-l border-gold/30 pl-4">
           <div className="flex flex-wrap items-center gap-2">
             <p className="text-gold text-xs tracking-widest uppercase">
-              {item.start < 0 ? `${Math.abs(item.start).toLocaleString("fr-FR")} ans avant notre ère` : item.end ? `${item.start}–${item.end}` : `${item.start}–aujourd'hui`}
+              {item.start < 0 ? `${Math.abs(item.start).toLocaleString(lang === "fr" ? "fr-FR" : "en-US")} ${copy.yearsBeforePresent}` : item.end ? `${item.start}–${item.end}` : `${item.start}–${copy.present}`}
             </p>
-            <StatusBadge status={item.status} />
+            <StatusBadge status={item.status} copy={copy} />
           </div>
           <h3 className="font-serif text-xl text-bone mt-1">{item.label}</h3>
           <p className="text-bone/75 leading-relaxed mt-1">{item.text}</p>
@@ -78,17 +116,17 @@ function Timeline({ items, sourceMap }) {
   );
 }
 
-function SimpleCards({ items, sourceMap, titleField = "name", bodyField = "note" }) {
+function SimpleCards({ items, sourceMap, copy, titleField = "name", bodyField = "note" }) {
   return (
     <div className="grid gap-4 md:grid-cols-2">
       {items.map((item, index) => (
         <article key={item.id || item[titleField] || index} className="rounded-lg border border-bone/10 bg-bone/[0.025] p-4">
           <div className="flex items-start justify-between gap-2">
             <h3 className="font-serif text-lg text-bone">{item[titleField]}</h3>
-            {item.status && <StatusBadge status={item.status} />}
+            {item.status && <StatusBadge status={item.status} copy={copy} />}
           </div>
           {item[bodyField] && <p className="text-sm text-bone/70 leading-relaxed mt-2">{item[bodyField]}</p>}
-          {item.mapping && <p className="text-xs text-bone/45 mt-2">Cartographie : {item.mapping}</p>}
+          {item.mapping && <p className="text-xs text-bone/45 mt-2">{copy.mapping} : {item.mapping}</p>}
           <SourceLinks ids={item.sources} sourceMap={sourceMap} />
         </article>
       ))}
@@ -97,32 +135,30 @@ function SimpleCards({ items, sourceMap, titleField = "name", bodyField = "note"
 }
 
 export default function CountryDossierView({ dossier }) {
+  const { lang } = useI18n();
+  const copy = COPY[lang] || COPY.en;
   const [active, setActive] = useState("overview");
   const sourceMap = useMemo(() => new Map((dossier?.sources || []).map((s) => [s.id, s])), [dossier?.sources]);
   const territory = useMemo(() => ({
     sections: dossier?.territory_v8?.sections || dossier?.territory_sections || [],
     places: dossier?.territory_v8?.places || dossier?.map_visuals?.territory_places || [],
   }), [dossier?.territory_v8, dossier?.territory_sections, dossier?.map_visuals]);
-  const groups = [
-    { id: "identity", label: "Découvrir", items: [["overview", "Présentation"], ["media", "Galerie"], ["symbols", "Symboles"]] },
-    { id: "maps", label: "Territoire", items: [["provinces-cities", "Provinces & villes"]] },
-    { id: "history", label: "Histoire", items: [["timeline", "Récit historique"], ["interactive-timeline", "Chronologie"], ["polities", "Royaumes & États"], ["law-memory", "Droit & mémoire"]] },
-    { id: "mobility", label: "Migrations", items: [["migrations", "Migrations & diasporas"], ["international", `${dossier.name?.fr || "Pays"} dans le monde`]] },
-    { id: "society", label: "Société & culture", items: [["peoples", "Peuples"], ["languages", "Langues"], ["religions", "Religions"], ["culture", "Culture"], ["sport-media", "Sports & médias"]] },
-    { id: "heritage", label: "Patrimoine & nature", items: [["heritage", "Patrimoine"]] },
-    { id: "state", label: "État & économie", items: [["society", "Société"], ["education-health", "Éducation & santé"], ["economy", "Économie"]] },
-    { id: "people", label: "Personnalités", items: [["figures", "Personnalités"]] },
-    { id: "sources", label: "Sources", items: [["historiography", "Débats"], ["research", "À suivre"], ["library", "Bibliothèque"], ["sources", "Toutes les sources"]] },
-  ];
+  const countryName = dossier.name?.[lang] || dossier.name?.fr || dossier.name?.en || dossier.country || copy.country;
+  const regionName = dossier.region?.[lang] || dossier.region?.fr || dossier.region?.en || copy.southernAfrica;
+  const editorialNote = useTranslated(dossier.editorial_note || "");
+  const groups = useMemo(() => copy.groups.map((group) => ({
+    ...group,
+    items: group.items.map(([id, label]) => [id, label.replace("{country}", countryName)]),
+  })), [copy, countryName]);
   const activeGroup = groups.find((group) => group.items.some(([id]) => id === active)) || groups[0];
 
   return (
     <div className="pt-[100px] pb-20 px-5 max-w-5xl mx-auto">
-      <p className="overline text-gold mb-2">Pays · {dossier.region?.fr || "Afrique australe"}</p>
-      <h1 className="font-serif text-4xl md:text-5xl text-bone">{dossier.name?.fr || dossier.country || "Pays"}</h1>
-      <p className="text-bone/55 mt-3 max-w-3xl leading-relaxed">{dossier.editorial_note}</p>
+      <p className="overline text-gold mb-2">{copy.country} · {regionName}</p>
+      <h1 className="font-serif text-4xl md:text-5xl text-bone">{countryName}</h1>
+      <p className="text-bone/55 mt-3 max-w-3xl leading-relaxed">{editorialNote || dossier.editorial_note}</p>
 
-      <nav className="mt-8" aria-label="Grandes sections du dossier pays">
+      <nav className="mt-8" aria-label={copy.navLabel}>
         <div className="flex gap-2 overflow-x-auto pb-3">
           {groups.map((group) => {
             const selected = group.id === activeGroup.id;
@@ -135,8 +171,8 @@ export default function CountryDossierView({ dossier }) {
         </div>
         {activeGroup.items.length > 1 && (
           <div className="mt-2 flex gap-2 overflow-x-auto rounded-xl border border-bone/10 bg-bone/[0.025] p-2">
-            {activeGroup.items.map(([id, label]) => (
-              <button key={id} onClick={() => setActive(id)} className={`whitespace-nowrap rounded-lg px-3 py-1.5 text-xs ${active === id ? "bg-gold/15 text-gold" : "text-bone/55 hover:bg-bone/5 hover:text-bone"}`}>
+            {activeGroup.items.map(([itemId, label]) => (
+              <button key={itemId} onClick={() => setActive(itemId)} className={`whitespace-nowrap rounded-lg px-3 py-1.5 text-xs ${active === itemId ? "bg-gold/15 text-gold" : "text-bone/55 hover:bg-bone/5 hover:text-bone"}`}>
                 {label}
               </button>
             ))}
