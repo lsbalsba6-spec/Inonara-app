@@ -12,6 +12,8 @@ import {
 import { ATLAS_COLORS } from "../lib/designTokens";
 import CountryMiniMap from "../components/CountryMiniMap";
 import CountryDossierView from "../components/CountryDossierView";
+import { useI18n } from "../i18n";
+import { useTranslated } from "../lib/useTranslated";
 
 export function slugify(name) {
   return (name || "")
@@ -21,12 +23,44 @@ export function slugify(name) {
     .replace(/(^-|-$)/g, "");
 }
 
-// Bespoke, fully-researched country pages — Gabon is the first, built with
-// dedicated research (Kongo/Loango/Mpongwè/Fang dossiers) beyond what the
-// generic African-origin-country/diaspora data alone provides. Other
-// countries render generically (see below) from data ALREADY sourced on
-// the site, rather than fabricating new research for all 58+ countries at
-// once.
+const COPY = {
+  en: {
+    unavailable: "Page not yet available",
+    noData: "No data found for",
+    allCountries: "View all countries",
+    countryCentralAfrica: "Country · Central Africa",
+    africanOrigin: "African country of origin",
+    diaspora: "Diaspora",
+    precolonial: "Precolonial history",
+    colonial: "Colonial period",
+    independence: "Independence",
+    diasporaHere: "Diaspora communities here",
+    fullProfile: "View full profile →",
+    sources: "Sources",
+    editorial: "This page uses content already validated on the site. Master dossiers are published progressively, country by country.",
+  },
+  fr: {
+    unavailable: "Page pas encore disponible",
+    noData: "Aucune donnée trouvée pour",
+    allCountries: "Voir tous les pays",
+    countryCentralAfrica: "Pays · Afrique centrale",
+    africanOrigin: "Pays d’origine africaine",
+    diaspora: "Diaspora",
+    precolonial: "Histoire précoloniale",
+    colonial: "Période coloniale",
+    independence: "Indépendance",
+    diasporaHere: "Communautés de la diaspora ici",
+    fullProfile: "Voir la fiche complète →",
+    sources: "Sources",
+    editorial: "Cette page utilise le contenu déjà validé du site. Les dossiers maîtres sont publiés progressivement pays par pays.",
+  },
+};
+
+function TranslatedText({ text, className = "" }) {
+  const translated = useTranslated(text || "");
+  return <p className={className}>{translated || text}</p>;
+}
+
 const BESPOKE_COUNTRY_CONTENT = {
   gabon: {
     name: "Gabon",
@@ -57,6 +91,8 @@ const BESPOKE_COUNTRY_CONTENT = {
 
 export default function CountryDetail() {
   const { id } = useParams();
+  const { lang, t } = useI18n();
+  const copy = COPY[lang] || COPY.en;
   const [polities, setPolities] = useState([]);
   const [allDiaspora, setAllDiaspora] = useState([]);
   const [routes, setRoutes] = useState([]);
@@ -109,9 +145,8 @@ export default function CountryDetail() {
   const genericDiasporaMatches = allDiaspora.filter((d) => slugify(d.country) === id);
 
   if (loadingGeneric) {
-    return <div className="pt-[120px] text-center text-bone/50">Chargement…</div>;
+    return <div className="pt-[120px] text-center text-bone/50">{t("common.loading")}</div>;
   }
-
 
   if (masterDossier) {
     return <CountryDossierView dossier={masterDossier} />;
@@ -120,9 +155,9 @@ export default function CountryDetail() {
   if (!bespoke && !originCountry && genericDiasporaMatches.length === 0) {
     return (
       <div className="pt-[100px] px-6 max-w-2xl mx-auto text-center">
-        <p className="font-serif text-2xl text-bone mb-4">Page pas encore disponible</p>
-        <p className="text-bone/60">Aucune donnée trouvée pour « {id} ».</p>
-        <Link to="/countries" className="inline-block mt-6 text-gold uppercase tracking-widest text-xs">← Voir tous les pays</Link>
+        <p className="font-serif text-2xl text-bone mb-4">{copy.unavailable}</p>
+        <p className="text-bone/60">{copy.noData} « {id} ».</p>
+        <Link to="/countries" className="inline-block mt-6 text-gold uppercase tracking-widest text-xs">← {copy.allCountries}</Link>
       </div>
     );
   }
@@ -134,30 +169,30 @@ export default function CountryDetail() {
 
     return (
       <div className="pt-[100px] pb-20 px-6 max-w-3xl mx-auto">
-        <p className="overline text-gold mb-2">Pays · Afrique centrale</p>
+        <p className="overline text-gold mb-2">{copy.countryCentralAfrica}</p>
         <h1 className="font-serif text-4xl text-bone mb-8">{bespoke.name}</h1>
         <CountryMiniMap polities={countryPolities} diasporaEntries={countryDiaspora} routes={countryRoutes} defaultYear={1900} />
         <div className="mt-10 space-y-8">
           {bespoke.sections.map((s, i) => (
             <div key={i}>
-              <h2 className="font-serif text-xl text-gold mb-2">{s.heading}</h2>
-              <p className="text-bone/80 leading-relaxed">{s.body}</p>
+              <TranslatedText text={s.heading} className="font-serif text-xl text-gold mb-2" />
+              <TranslatedText text={s.body} className="text-bone/80 leading-relaxed" />
             </div>
           ))}
         </div>
         <div className="mt-12 pt-8 border-t border-[#2A2421]">
-          <p className="overline mb-2" style={{ color: ATLAS_COLORS.deepRed }}>Diaspora</p>
+          <p className="overline mb-2" style={{ color: ATLAS_COLORS.deepRed }}>{copy.diaspora}</p>
           <div className="space-y-8 mt-4">
             {bespoke.diasporaSections.map((s, i) => (
               <div key={i}>
-                <h2 className="font-serif text-xl text-bone mb-2">{s.heading}</h2>
-                <p className="text-bone/80 leading-relaxed">{s.body}</p>
+                <TranslatedText text={s.heading} className="font-serif text-xl text-bone mb-2" />
+                <TranslatedText text={s.body} className="text-bone/80 leading-relaxed" />
               </div>
             ))}
           </div>
         </div>
         <div className="mt-12 pt-6 border-t border-[#2A2421]">
-          <p className="overline text-bone/50 mb-2">Sources</p>
+          <p className="overline text-bone/50 mb-2">{copy.sources}</p>
           {bespoke.sources.map((s, i) => <p key={i} className="text-bone/60 text-xs mb-1">{s}</p>)}
         </div>
       </div>
@@ -166,33 +201,34 @@ export default function CountryDetail() {
 
   return (
     <div className="pt-[100px] pb-20 px-6 max-w-3xl mx-auto">
-      <p className="overline text-gold mb-2">{originCountry ? "Pays d'origine africaine" : "Diaspora"}</p>
+      <p className="overline text-gold mb-2">{originCountry ? copy.africanOrigin : copy.diaspora}</p>
       <h1 className="font-serif text-4xl text-bone mb-8">{originCountry?.country || genericDiasporaMatches[0]?.country}</h1>
 
       {originCountry && (
         <div className="space-y-6">
-          <p className="text-bone/80 leading-relaxed">{originCountry.summary}</p>
+          <TranslatedText text={originCountry.summary} className="text-bone/80 leading-relaxed" />
           {originCountry.precolonial_history && (
             <div>
-              <h2 className="font-serif text-xl text-gold mb-2">Histoire précoloniale</h2>
-              <p className="text-bone/80 leading-relaxed">{originCountry.precolonial_history}</p>
+              <h2 className="font-serif text-xl text-gold mb-2">{copy.precolonial}</h2>
+              <TranslatedText text={originCountry.precolonial_history} className="text-bone/80 leading-relaxed" />
             </div>
           )}
           {originCountry.colonial_period && (
             <div>
-              <h2 className="font-serif text-xl text-gold mb-2">Période coloniale</h2>
-              <p className="text-bone/80 leading-relaxed">
-                {originCountry.colonial_period.colonizer} ({originCountry.colonial_period.start}–{originCountry.colonial_period.end}). {originCountry.colonial_period.notes}
-              </p>
+              <h2 className="font-serif text-xl text-gold mb-2">{copy.colonial}</h2>
+              <TranslatedText
+                text={`${originCountry.colonial_period.colonizer} (${originCountry.colonial_period.start}–${originCountry.colonial_period.end}). ${originCountry.colonial_period.notes}`}
+                className="text-bone/80 leading-relaxed"
+              />
             </div>
           )}
           {originCountry.independence_year && (
-            <p className="text-bone/70 text-sm">Indépendance : {originCountry.independence_year}</p>
+            <p className="text-bone/70 text-sm">{copy.independence} : {originCountry.independence_year}</p>
           )}
           {originCountry.diaspora_notes && (
             <div>
-              <h2 className="font-serif text-xl mb-2" style={{ color: ATLAS_COLORS.deepRed }}>Diaspora</h2>
-              <p className="text-bone/80 leading-relaxed">{originCountry.diaspora_notes}</p>
+              <h2 className="font-serif text-xl mb-2" style={{ color: ATLAS_COLORS.deepRed }}>{copy.diaspora}</h2>
+              <TranslatedText text={originCountry.diaspora_notes} className="text-bone/80 leading-relaxed" />
             </div>
           )}
         </div>
@@ -200,13 +236,13 @@ export default function CountryDetail() {
 
       {genericDiasporaMatches.length > 0 && (
         <div className="mt-10 pt-8 border-t border-[#2A2421] space-y-8">
-          <p className="overline" style={{ color: ATLAS_COLORS.deepRed }}>Communautés de la diaspora ici</p>
+          <p className="overline" style={{ color: ATLAS_COLORS.deepRed }}>{copy.diasporaHere}</p>
           {genericDiasporaMatches.map((d) => (
             <div key={d.id}>
               <h2 className="font-serif text-xl text-bone mb-2">{d.name}</h2>
-              <p className="text-bone/80 leading-relaxed">{d.summary}</p>
-              {d.story && <p className="text-bone/70 mt-2 text-sm">{d.story}</p>}
-              <Link to={`/diaspora/${d.id}`} className="inline-block mt-2 text-gold uppercase tracking-widest text-xs">Voir la fiche complète →</Link>
+              <TranslatedText text={d.summary} className="text-bone/80 leading-relaxed" />
+              {d.story && <TranslatedText text={d.story} className="text-bone/70 mt-2 text-sm" />}
+              <Link to={`/diaspora/${d.id}`} className="inline-block mt-2 text-gold uppercase tracking-widest text-xs">{copy.fullProfile}</Link>
             </div>
           ))}
         </div>
@@ -214,14 +250,12 @@ export default function CountryDetail() {
 
       {(originCountry?.sources || []).length > 0 && (
         <div className="mt-12 pt-6 border-t border-[#2A2421]">
-          <p className="overline text-bone/50 mb-2">Sources</p>
+          <p className="overline text-bone/50 mb-2">{copy.sources}</p>
           {originCountry.sources.map((s, i) => <p key={i} className="text-bone/60 text-xs mb-1">{s}</p>)}
         </div>
       )}
 
-      <p className="text-bone/40 text-xs mt-10">
-        Cette page utilise le contenu déjà validé du site. Les dossiers maîtres sont publiés progressivement pays par pays.
-      </p>
+      <p className="text-bone/40 text-xs mt-10">{copy.editorial}</p>
     </div>
   );
 }
