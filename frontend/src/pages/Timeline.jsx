@@ -4,6 +4,7 @@ import axios from "axios";
 import { useI18n } from "../i18n";
 
 const API = `${process.env.REACT_APP_BACKEND_URL}/api`;
+const CURRENT_YEAR = new Date().getFullYear();
 
 const CATEGORY_COLOR = {
   queens: "#D4AF37",
@@ -38,11 +39,16 @@ const Timeline = () => {
   }, []);
 
   const { minY, maxY } = useMemo(() => {
-    if (figures.length === 0) return { minY: -3000, maxY: 2025 };
-    return { minY: Math.min(-3000, figures[0].year - 100), maxY: 2025 };
+    if (figures.length === 0) return { minY: -3000, maxY: CURRENT_YEAR };
+    const earliestYear = Math.min(...figures.map((figure) => figure.year));
+    const latestYear = Math.max(...figures.map((figure) => figure.year));
+    return {
+      minY: Math.min(-3000, earliestYear - 100),
+      maxY: Math.max(CURRENT_YEAR, latestYear),
+    };
   }, [figures]);
 
-  // 1 year = 1.5px → ~7,500px wide for 5,000-year span
+  // 1 year = 1.5px → ~7,500px wide for a 5,000-year span
   const PX_PER_YEAR = 1.5;
   const totalSpan = maxY - minY;
   const totalWidth = totalSpan * PX_PER_YEAR + 200;
@@ -144,7 +150,7 @@ const Timeline = () => {
             </div>
           ))}
           {/* "Today" marker */}
-          <div className="absolute top-0 bottom-0 border-l border-gold/60" style={{ left: (2025 - minY) * PX_PER_YEAR + 40 }}>
+          <div className="absolute top-0 bottom-0 border-l border-gold/60" style={{ left: (CURRENT_YEAR - minY) * PX_PER_YEAR + 40 }}>
             <span className="absolute top-2 left-2 overline text-gold">{t("timeline.today")}</span>
           </div>
 
