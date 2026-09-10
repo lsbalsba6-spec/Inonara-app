@@ -1,12 +1,12 @@
 // Non-linear time scale for the unified Atlas timeline slider.
 //
 // Why non-linear: Pangaea formed ~300 million years ago; all of recorded
-// human history (-3500 to today) spans only ~5,525 years. On a single LINEAR
-// slider, human history would compress into an unusable sliver a fraction of
-// a pixel wide. Instead, the slider position (0 to 1) maps to year through a
-// piecewise-linear scale with anchor points chosen to give recent, detail-rich
-// periods much more room than deep geological time — while still being one
-// continuous, uninterrupted slider from Pangaea to today.
+// human history (-3500 to today) spans only a few thousand years. On a single
+// LINEAR slider, human history would compress into an unusable sliver a
+// fraction of a pixel wide. Instead, the slider position (0 to 1) maps to year
+// through a piecewise-linear scale with anchor points chosen to give recent,
+// detail-rich periods much more room than deep geological time — while still
+// being one continuous, uninterrupted slider from Pangaea to today.
 //
 // PR1 change: the primary function is now `getTimelinePosition()`, returning
 // a full `TimelinePosition` object (see lib/historicalTypes.js) instead of a
@@ -16,13 +16,18 @@
 //
 // Bugfix included in this PR: `sliderToYear` did not clamp slider values
 // below SLIDER_MIN — a negative input fell through every anchor-point
-// comparison and incorrectly returned the LAST anchor's year (2025) instead
-// of the first (-300,000,000). Out-of-range values are now clamped before
+// comparison and incorrectly returned the LAST anchor's year instead of the
+// first (-300,000,000). Out-of-range values are now clamped before
 // interpolation, for both this function and `getTimelinePosition`.
 
 /** @typedef {import('./historicalTypes').TimelinePosition} TimelinePosition */
 /** @typedef {import('./historicalTypes').TimelineMode} TimelineMode */
 /** @typedef {import('./historicalTypes').PrecisionLevel} PrecisionLevel */
+
+// Keep the "today" anchor current without requiring an annual source edit.
+// Historical thresholds remain fixed; only the upper endpoint follows the
+// calendar year seen by the client/build runtime.
+export const CURRENT_YEAR = new Date().getFullYear();
 
 // Anchor points: [sliderFraction, year]. Both must be strictly increasing.
 export const TIME_ANCHORS = [
@@ -32,15 +37,15 @@ export const TIME_ANCHORS = [
   [0.09, -100000000], // Atlantic Ocean opens
   [0.12, -66000000],  // End of the dinosaurs
   [0.135, -35000000], // India collides with Asia
-  [0.15, -14000000],  // Near-modern world (geological mode ends here — shrunk from 38% to 15% of the slider, since little is shown during this era)
+  [0.15, -14000000],  // Near-modern world (geological mode ends here)
   [0.25, -70000],     // Out-of-Africa dispersal begins (prehistoric mode starts)
-  [0.35, -10000],      // Last Ice Age ends, land bridges submerge
-  [0.38, -3500],       // Recorded civilizations begin (historical mode starts)
-  [0.55, 1000],        // Medieval period / early West African empires
-  [0.68, 1500],        // Eve of the transatlantic slave trade
-  [0.82, 1885],        // Berlin Conference — height of colonization
-  [0.92, 1960],        // Wave of African independence — clearly distinct from colonization
-  [1.00, 2025],        // Today — clearly distinct from independence
+  [0.35, -10000],     // Last Ice Age ends, land bridges submerge
+  [0.38, -3500],      // Recorded civilizations begin (historical mode starts)
+  [0.55, 1000],       // Medieval period / early West African empires
+  [0.68, 1500],       // Eve of the transatlantic slave trade
+  [0.82, 1885],       // Berlin Conference — height of colonization
+  [0.92, 1960],       // Wave of African independence
+  [1.00, CURRENT_YEAR], // Today
 ];
 
 export const SLIDER_MIN = 0;
