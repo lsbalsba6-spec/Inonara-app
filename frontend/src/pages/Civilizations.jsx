@@ -7,11 +7,38 @@ import { SmartImage } from "../components/SmartImage";
 
 const fmt = (y, t) => (y < 0 ? `${Math.abs(y)} ${t("date.bce")}` : `${y} ${t("date.ce")}`);
 
+const CONNECTION_COPY = {
+  en: {
+    overline: "Keep exploring",
+    title: "Put civilizations back into their wider world",
+    body: "A civilization is not an isolated card. Continue through chronology, peoples, territories and diasporas to see how places and communities connect across time.",
+    links: [
+      ["/timeline", "Timeline", "Place political formations, events and historical figures on a shared chronology."],
+      ["/people", "Peoples", "Follow communities, languages, movements and cultural continuities across borders."],
+      ["/countries", "Countries", "Open country dossiers to connect territory, history, heritage and sources."],
+      ["/diaspora", "Diaspora", "Trace long-distance connections, displacement, continuity and cultural transformation."],
+    ],
+  },
+  fr: {
+    overline: "Poursuivre l’exploration",
+    title: "Replacer les civilisations dans leur monde",
+    body: "Une civilisation n’est pas une carte isolée. Poursuis par la chronologie, les peuples, les territoires et les diasporas pour voir comment lieux et communautés se relient dans le temps.",
+    links: [
+      ["/timeline", "Chronologie", "Replace formations politiques, événements et personnalités dans une chronologie commune."],
+      ["/people", "Peuples", "Suis communautés, langues, mouvements et continuités culturelles au-delà des frontières."],
+      ["/countries", "Pays", "Ouvre les dossiers pays pour relier territoire, histoire, patrimoine et sources."],
+      ["/diaspora", "Diaspora", "Suis les connexions à longue distance, déplacements, continuités et transformations culturelles."],
+    ],
+  },
+};
+
 const Civilizations = () => {
-  const { t } = useI18n();
+  const { t, lang } = useI18n();
   const [civs, setCivs] = useState([]);
   const [region, setRegion] = useState("all");
   const [query, setQuery] = useState("");
+  const connections = CONNECTION_COPY[lang] || CONNECTION_COPY.en;
+
   useEffect(() => { fetchCivilizations().then(setCivs).catch(() => {}); }, []);
 
   const regions = useMemo(() => [...new Set(civs.map((c) => c.region).filter(Boolean))].sort(), [civs]);
@@ -103,6 +130,24 @@ const Civilizations = () => {
           {t("civilizations.empty")}
         </div>
       )}
+
+      <section className="mt-16 border-t border-bone/10 pt-12" data-testid="civilizations-connections">
+        <div className="grid gap-8 lg:grid-cols-[0.8fr_1.2fr]">
+          <div>
+            <p className="overline text-gold">{connections.overline}</p>
+            <h2 className="mt-3 max-w-xl font-serif text-3xl md:text-4xl text-bone">{connections.title}</h2>
+            <p className="mt-4 max-w-xl text-sm leading-7 text-bone/60">{connections.body}</p>
+          </div>
+          <div className="grid gap-px overflow-hidden border border-bone/10 bg-bone/10 sm:grid-cols-2">
+            {connections.links.map(([to, title, body]) => (
+              <Link key={to} to={to} className="group bg-ebony p-5 transition hover:bg-bone/[0.035]">
+                <h3 className="font-serif text-xl text-bone transition group-hover:text-gold">{title}</h3>
+                <p className="mt-2 text-xs leading-6 text-bone/55">{body}</p>
+              </Link>
+            ))}
+          </div>
+        </div>
+      </section>
     </div>
   );
 };
