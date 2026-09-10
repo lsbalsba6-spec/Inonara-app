@@ -1,4 +1,57 @@
 import { useMemo, useState } from "react";
+import { useI18n } from "../i18n";
+import { useTranslated } from "../lib/useTranslated";
+
+const COPY = {
+  en: {
+    fallbackTitle: "Society theme",
+    fallbackCategory: "Society",
+    overline: "Society",
+    title: "Citizenship, territories and inequalities",
+    intro: "This section connects contemporary realities with historical legacies: urbanization, access to services, citizenship, spatial inequalities and social change.",
+    search: "Search a society theme…",
+    allThemes: "All themes",
+    keyData: "Key data",
+    period: "Period",
+    context: "Context",
+    caution: "Reading caution",
+    empty: "No society theme matches this search.",
+  },
+  fr: {
+    fallbackTitle: "Thème de société",
+    fallbackCategory: "Société",
+    overline: "Société",
+    title: "Citoyenneté, territoires et inégalités",
+    intro: "Cette section relie les réalités contemporaines aux héritages historiques : urbanisation, accès aux services, citoyenneté, inégalités spatiales et recompositions sociales.",
+    search: "Rechercher un thème de société…",
+    allThemes: "Tous les thèmes",
+    keyData: "Donnée clé",
+    period: "Période",
+    context: "Contexte",
+    caution: "Précaution de lecture",
+    empty: "Aucun thème de société ne correspond à cette recherche.",
+  },
+};
+
+function TranslatedInline({ value }) {
+  const translated = useTranslated(value || "");
+  return translated || value || null;
+}
+
+function SourceLink({ source }) {
+  const translatedTitle = useTranslated(source?.title || "");
+  if (!source) return null;
+  return (
+    <a
+      href={source.url}
+      target="_blank"
+      rel="noreferrer"
+      className="rounded-full border border-gold/25 px-3 py-1 text-[11px] text-gold/85 hover:bg-gold/10"
+    >
+      {source.publisher}: {translatedTitle || source.title}
+    </a>
+  );
+}
 
 function SourceLinks({ ids = [], sourceMap }) {
   if (!ids.length) return null;
@@ -6,28 +59,19 @@ function SourceLinks({ ids = [], sourceMap }) {
     <div className="mt-4 flex flex-wrap gap-2">
       {ids.map((id) => {
         const source = sourceMap.get(id);
-        if (!source) return null;
-        return (
-          <a
-            key={id}
-            href={source.url}
-            target="_blank"
-            rel="noreferrer"
-            className="rounded-full border border-gold/25 px-3 py-1 text-[11px] text-gold/85 hover:bg-gold/10"
-          >
-            {source.publisher}: {source.title}
-          </a>
-        );
+        return source ? <SourceLink key={id} source={source} /> : null;
       })}
     </div>
   );
 }
 
-const getTitle = (item) => item.title || item.name || item.topic || "Thème de société";
+const getTitle = (item, copy) => item.title || item.name || item.topic || copy.fallbackTitle;
 const getBody = (item) => item.text || item.note || item.summary || item.description || "";
-const getCategory = (item) => item.category || item.type || item.domain || "Société";
+const getCategory = (item, copy) => item.category || item.type || item.domain || copy.fallbackCategory;
 
 export function SouthAfricaSocietyQuality({ dossier, sourceMap }) {
+  const { lang } = useI18n();
+  const copy = COPY[lang] || COPY.en;
   const items = useMemo(
     () => dossier.society?.themes || dossier.society?.topics || dossier.society_topics || [],
     [dossier.society, dossier.society_topics],
@@ -37,8 +81,8 @@ export function SouthAfricaSocietyQuality({ dossier, sourceMap }) {
     [items],
   );
   const categories = useMemo(
-    () => [...new Set(normalizedItems.map(getCategory))],
-    [normalizedItems],
+    () => [...new Set(normalizedItems.map((item) => getCategory(item, copy)))],
+    [normalizedItems, copy],
   );
 
   const [query, setQuery] = useState("");
@@ -48,23 +92,20 @@ export function SouthAfricaSocietyQuality({ dossier, sourceMap }) {
   const visible = useMemo(() => {
     const needle = query.trim().toLowerCase();
     return normalizedItems.filter((item) => {
-      const matchesCategory =
-        category === "all" || getCategory(item) === category;
-      const haystack = `${getTitle(item)} ${getBody(item)} ${getCategory(item)}`
-        .toLowerCase();
+      const itemCategory = getCategory(item, copy);
+      const matchesCategory = category === "all" || itemCategory === category;
+      const haystack = `${getTitle(item, copy)} ${getBody(item)} ${itemCategory}`.toLowerCase();
       return matchesCategory && (!needle || haystack.includes(needle));
     });
-  }, [normalizedItems, query, category]);
+  }, [normalizedItems, query, category, copy]);
 
   return (
     <div className="space-y-8">
       <header className="rounded-2xl border border-gold/20 bg-gradient-to-br from-gold/[0.08] to-transparent p-6">
-        <p className="overline text-gold">Société</p>
-        <h2 className="mt-2 font-serif text-3xl text-bone">
-          Citoyenneté, territoires et inégalités
-        </h2>
+        <p className="overline text-gold">{copy.overline}</p>
+        <h2 className="mt-2 font-serif text-3xl text-bone">{copy.title}</h2>
         <p className="mt-3 max-w-3xl leading-7 text-bone/65">
-          {dossier.society?.intro || "Cette section relie les réalités contemporaines aux héritages historiques : urbanisation, accès aux services, citoyenneté, inégalités spatiales et recompositions sociales."}
+          {dossier.society?.intro ? <TranslatedInline value={dossier.society.intro} /> : copy.intro}
         </p>
       </header>
 
@@ -72,7 +113,7 @@ export function SouthAfricaSocietyQuality({ dossier, sourceMap }) {
         <input
           value={query}
           onChange={(event) => setQuery(event.target.value)}
-          placeholder="Rechercher un thème de société…"
+          placeholder={copy.search}
           className="w-full rounded-xl border border-bone/15 bg-bone/[0.025] px-4 py-3 text-sm text-bone outline-none placeholder:text-bone/35 focus:border-gold/50"
         />
 
@@ -81,12 +122,10 @@ export function SouthAfricaSocietyQuality({ dossier, sourceMap }) {
             type="button"
             onClick={() => setCategory("all")}
             className={`whitespace-nowrap rounded-full border px-3 py-1.5 text-xs ${
-              category === "all"
-                ? "border-gold bg-gold/10 text-gold"
-                : "border-bone/15 text-bone/60"
+              category === "all" ? "border-gold bg-gold/10 text-gold" : "border-bone/15 text-bone/60"
             }`}
           >
-            Tous les thèmes
+            {copy.allThemes}
           </button>
           {categories.map((itemCategory) => (
             <button
@@ -94,12 +133,10 @@ export function SouthAfricaSocietyQuality({ dossier, sourceMap }) {
               type="button"
               onClick={() => setCategory(itemCategory)}
               className={`whitespace-nowrap rounded-full border px-3 py-1.5 text-xs ${
-                category === itemCategory
-                  ? "border-gold bg-gold/10 text-gold"
-                  : "border-bone/15 text-bone/60"
+                category === itemCategory ? "border-gold bg-gold/10 text-gold" : "border-bone/15 text-bone/60"
               }`}
             >
-              {itemCategory}
+              <TranslatedInline value={itemCategory} />
             </button>
           ))}
         </div>
@@ -107,14 +144,14 @@ export function SouthAfricaSocietyQuality({ dossier, sourceMap }) {
 
       <div className="grid gap-4">
         {visible.map((item, index) => {
-          const id = item.id || `${getTitle(item)}-${index}`;
+          const title = getTitle(item, copy);
+          const body = getBody(item);
+          const itemCategory = getCategory(item, copy);
+          const id = item.id || `${title}-${index}`;
           const expanded = openId === id;
 
           return (
-            <article
-              key={id}
-              className="overflow-hidden rounded-2xl border border-bone/10 bg-bone/[0.025]"
-            >
+            <article key={id} className="overflow-hidden rounded-2xl border border-bone/10 bg-bone/[0.025]">
               <button
                 type="button"
                 onClick={() => setOpenId(expanded ? null : id)}
@@ -124,18 +161,18 @@ export function SouthAfricaSocietyQuality({ dossier, sourceMap }) {
                 <div className="flex flex-wrap items-start justify-between gap-3">
                   <div>
                     <p className="text-[10px] uppercase tracking-[0.18em] text-gold">
-                      {getCategory(item)}
+                      <TranslatedInline value={itemCategory} />
                     </p>
                     <h3 className="mt-2 font-serif text-2xl text-bone">
-                      {getTitle(item)}
+                      <TranslatedInline value={title} />
                     </h3>
                   </div>
                   <span className="text-xl text-gold">{expanded ? "−" : "+"}</span>
                 </div>
 
-                {getBody(item) && (
+                {body && (
                   <p className="mt-4 max-w-4xl leading-7 text-bone/70">
-                    {getBody(item)}
+                    <TranslatedInline value={body} />
                   </p>
                 )}
               </button>
@@ -145,49 +182,35 @@ export function SouthAfricaSocietyQuality({ dossier, sourceMap }) {
                   {item.paragraphs?.length > 0 && (
                     <div className="mb-5 space-y-4 rounded-xl border border-bone/10 bg-black/10 p-5">
                       {item.paragraphs.map((paragraph, paragraphIndex) => (
-                        <p key={paragraphIndex} className="text-sm leading-7 text-bone/75">{paragraph}</p>
+                        <p key={paragraphIndex} className="text-sm leading-7 text-bone/75">
+                          <TranslatedInline value={paragraph} />
+                        </p>
                       ))}
                     </div>
                   )}
                   <div className="grid gap-3 md:grid-cols-2">
                     {item.data && (
                       <div className="rounded-xl border border-bone/10 bg-black/10 p-4">
-                        <p className="text-[10px] uppercase tracking-[0.18em] text-bone/40">
-                          Donnée clé
-                        </p>
-                        <p className="mt-2 text-sm leading-6 text-bone/72">
-                          {item.data}
-                        </p>
+                        <p className="text-[10px] uppercase tracking-[0.18em] text-bone/40">{copy.keyData}</p>
+                        <p className="mt-2 text-sm leading-6 text-bone/72"><TranslatedInline value={item.data} /></p>
                       </div>
                     )}
                     {item.period && (
                       <div className="rounded-xl border border-bone/10 bg-black/10 p-4">
-                        <p className="text-[10px] uppercase tracking-[0.18em] text-bone/40">
-                          Période
-                        </p>
-                        <p className="mt-2 text-sm leading-6 text-bone/72">
-                          {item.period}
-                        </p>
+                        <p className="text-[10px] uppercase tracking-[0.18em] text-bone/40">{copy.period}</p>
+                        <p className="mt-2 text-sm leading-6 text-bone/72"><TranslatedInline value={item.period} /></p>
                       </div>
                     )}
                     {item.context && (
                       <div className="rounded-xl border border-bone/10 bg-black/10 p-4 md:col-span-2">
-                        <p className="text-[10px] uppercase tracking-[0.18em] text-bone/40">
-                          Contexte
-                        </p>
-                        <p className="mt-2 text-sm leading-6 text-bone/72">
-                          {item.context}
-                        </p>
+                        <p className="text-[10px] uppercase tracking-[0.18em] text-bone/40">{copy.context}</p>
+                        <p className="mt-2 text-sm leading-6 text-bone/72"><TranslatedInline value={item.context} /></p>
                       </div>
                     )}
                     {item.caution && (
                       <div className="rounded-xl border border-amber-400/20 bg-amber-400/[0.04] p-4 md:col-span-2">
-                        <p className="text-[10px] uppercase tracking-[0.18em] text-amber-300/75">
-                          Précaution de lecture
-                        </p>
-                        <p className="mt-2 text-sm leading-6 text-bone/72">
-                          {item.caution}
-                        </p>
+                        <p className="text-[10px] uppercase tracking-[0.18em] text-amber-300/75">{copy.caution}</p>
+                        <p className="mt-2 text-sm leading-6 text-bone/72"><TranslatedInline value={item.caution} /></p>
                       </div>
                     )}
                   </div>
@@ -201,9 +224,7 @@ export function SouthAfricaSocietyQuality({ dossier, sourceMap }) {
       </div>
 
       {!visible.length && (
-        <div className="rounded-xl border border-bone/10 p-5 text-bone/60">
-          Aucun thème de société ne correspond à cette recherche.
-        </div>
+        <div className="rounded-xl border border-bone/10 p-5 text-bone/60">{copy.empty}</div>
       )}
     </div>
   );
