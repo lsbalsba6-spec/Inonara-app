@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
 import { ArrowRight } from "lucide-react";
@@ -21,10 +21,53 @@ const moduleImage = {
   migration: "https://images.unsplash.com/photo-1547471080-7cc2caa01a7e?crop=entropy&cs=srgb&fm=jpg&w=1200&q=80",
 };
 
+const fallbackModules = {
+  en: [
+    { id: "origins", era: "Deep time", title: "Origins", subtitle: "Human origins, archaeology, environments and the evidence used to reconstruct deep history." },
+    { id: "civilizations", era: "Antiquity → early modern", title: "Civilizations", subtitle: "Kingdoms, empires, city-states, trade networks and political formations across Africa." },
+    { id: "dispersal", era: "Long-distance movement", title: "Dispersal", subtitle: "Trace population movements, exchanges, routes and the formation of connected worlds." },
+    { id: "diaspora", era: "Africa & the world", title: "Diaspora", subtitle: "Explore communities of African descent, their histories, continuities and new cultural forms." },
+    { id: "impact", era: "Global influence", title: "Impact", subtitle: "Follow African and diasporic influence across ideas, arts, resistance, politics and everyday life." },
+    { id: "knowledge", era: "Knowledge systems", title: "Knowledge", subtitle: "Discover intellectual traditions, technologies, archives, scholarship and ways of knowing." },
+    { id: "culture", era: "Living heritage", title: "Culture", subtitle: "Music, food, dress, languages, beliefs, visual arts and living traditions in context." },
+    { id: "migration", era: "Routes & encounters", title: "Migrations", subtitle: "Connect places and periods through voluntary, forced and circular movements." },
+  ],
+  fr: [
+    { id: "origins", era: "Temps profond", title: "Origines", subtitle: "Origines humaines, archéologie, environnements et indices utilisés pour reconstruire l’histoire ancienne." },
+    { id: "civilizations", era: "Antiquité → époque moderne", title: "Civilisations", subtitle: "Royaumes, empires, cités, réseaux commerciaux et formations politiques à travers l’Afrique." },
+    { id: "dispersal", era: "Mouvements de longue durée", title: "Dispersion", subtitle: "Suivre les mouvements de populations, les échanges, les routes et la formation de mondes connectés." },
+    { id: "diaspora", era: "Afrique & monde", title: "Diaspora", subtitle: "Explorer les communautés d’ascendance africaine, leurs histoires, leurs continuités et leurs créations." },
+    { id: "impact", era: "Influence mondiale", title: "Impact", subtitle: "Suivre les influences africaines et diasporiques dans les idées, les arts, les résistances et la vie quotidienne." },
+    { id: "knowledge", era: "Systèmes de savoir", title: "Savoirs", subtitle: "Découvrir traditions intellectuelles, technologies, archives, recherches et manières de transmettre les connaissances." },
+    { id: "culture", era: "Patrimoine vivant", title: "Culture", subtitle: "Musique, cuisine, vêtements, langues, croyances, arts visuels et traditions vivantes replacés dans leur contexte." },
+    { id: "migration", era: "Routes & rencontres", title: "Migrations", subtitle: "Relier lieux et époques à travers les mobilités volontaires, forcées et circulaires." },
+  ],
+};
+
 const Landing = () => {
-  const { t } = useI18n();
+  const { t, lang } = useI18n();
   const [modules, setModules] = useState([]);
-  useEffect(() => { fetchModules().then(setModules).catch(() => setModules([])); }, []);
+  const [modulesReady, setModulesReady] = useState(false);
+
+  useEffect(() => {
+    let active = true;
+    fetchModules()
+      .then((data) => {
+        if (active) setModules(Array.isArray(data) ? data : []);
+      })
+      .catch(() => {
+        if (active) setModules([]);
+      })
+      .finally(() => {
+        if (active) setModulesReady(true);
+      });
+    return () => { active = false; };
+  }, []);
+
+  const displayModules = useMemo(() => {
+    if (modules.length) return modules;
+    return fallbackModules[lang] || fallbackModules.en;
+  }, [modules, lang]);
 
   return (
     <div data-testid="landing-page">
@@ -36,7 +79,6 @@ const Landing = () => {
           <div className="absolute inset-0 bg-gradient-to-r from-ebony via-ebony/30 to-transparent" />
         </div>
 
-        {/* Floating brand mark — top-center of hero */}
         <motion.img
           src={AFROATLAS_LOGO}
           alt="AfroAtlas"
@@ -105,7 +147,7 @@ const Landing = () => {
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-8 lg:grid-cols-12 gap-6 auto-rows-[220px]">
-          {modules.map((m, idx) => {
+          {displayModules.map((m, idx) => {
             const layouts = [
               "md:col-span-5 lg:col-span-7 row-span-2",
               "md:col-span-3 lg:col-span-5 row-span-1",
@@ -123,7 +165,7 @@ const Landing = () => {
                 data-testid={`module-card-${m.id}`}
                 className={`museum-card relative overflow-hidden group ${layouts[idx % layouts.length]}`}
               >
-                <img src={moduleImage[m.id]} alt={m.title} className="absolute inset-0 w-full h-full object-cover opacity-50 group-hover:opacity-70 group-hover:scale-105 transition-all duration-1000" />
+                <img src={moduleImage[m.id] || ARTIFACT} alt={m.title} className="absolute inset-0 w-full h-full object-cover opacity-50 group-hover:opacity-70 group-hover:scale-105 transition-all duration-1000" />
                 <div className="absolute inset-0 bg-gradient-to-t from-ebony via-ebony/60 to-transparent" />
                 <div className="relative h-full p-6 flex flex-col justify-end">
                   <p className="overline text-[0.65rem]">{m.era}</p>
@@ -134,6 +176,10 @@ const Landing = () => {
             );
           })}
         </div>
+
+        {!modulesReady && (
+          <p className="sr-only" aria-live="polite">{t("common.loading")}</p>
+        )}
       </section>
 
       {/* INVITATION STRIP */}
