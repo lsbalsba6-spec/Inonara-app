@@ -11,6 +11,62 @@ import {
 } from "react-leaflet";
 import { feature } from "topojson-client";
 import worldTopo from "../data/world-countries-50m.json";
+import { useI18n } from "../i18n";
+
+const COPY = {
+  en: {
+    routeLabels: {
+      forced: "Forced migration",
+      "coerced-labour": "Coerced labour",
+      "colonial-settlement": "Colonial settlement",
+      voluntary: "Voluntary migration",
+    },
+    cityFilters: [
+      ["all", "Show all"],
+      ["national", "National capitals"],
+      ["province", "Provincial capitals"],
+      ["major", "Major cities"],
+    ],
+    currentFlag: "Current flag of South Africa",
+    unionJack: "Union Jack used in the Union of South Africa",
+    historicalFlag: "South African flag used from 1928 to 1994",
+    today: "today",
+    nationalCapital: "National capital",
+    provincialCapital: "Provincial capital",
+    majorCity: "Major city",
+    nationalLegend: "● Light yellow: national capitals",
+    provincialLegend: "● Gold: provincial capitals",
+    majorLegend: "● Ivory: major cities",
+    mapNote: "Interactive contemporary map. Zoom, pan and select markers. The OpenStreetMap base reveals roads, provincial boundaries, terrain and localities as the zoom level increases. Inonara reinforces the national outline above the basemap.",
+    allPeriods: "All periods",
+  },
+  fr: {
+    routeLabels: {
+      forced: "Migration forcée",
+      "coerced-labour": "Travail sous contrainte",
+      "colonial-settlement": "Installation coloniale",
+      voluntary: "Migration volontaire",
+    },
+    cityFilters: [
+      ["all", "Tout afficher"],
+      ["national", "Capitales nationales"],
+      ["province", "Capitales provinciales"],
+      ["major", "Grandes villes"],
+    ],
+    currentFlag: "Drapeau actuel de l'Afrique du Sud",
+    unionJack: "Union Jack utilisé dans l'Union sud-africaine",
+    historicalFlag: "Drapeau sud-africain utilisé de 1928 à 1994",
+    today: "aujourd'hui",
+    nationalCapital: "Capitale nationale",
+    provincialCapital: "Capitale provinciale",
+    majorCity: "Grande ville",
+    nationalLegend: "● Jaune clair : capitales nationales",
+    provincialLegend: "● Or : capitales provinciales",
+    majorLegend: "● Ivoire : grandes villes",
+    mapNote: "Carte contemporaine interactive. Zoomez, déplacez la carte et cliquez sur les marqueurs. Le fond OpenStreetMap permet d’afficher les routes, les frontières provinciales, les reliefs et les localités à mesure que le niveau de zoom augmente. Le contour national est renforcé par-dessus le fond cartographique d’Inonara.",
+    allPeriods: "Toutes les périodes",
+  },
+};
 
 const ROUTE_COLORS = {
   forced: "#B23A2B",
@@ -19,26 +75,12 @@ const ROUTE_COLORS = {
   voluntary: "#4F8A67",
 };
 
-const ROUTE_LABELS = {
-  forced: "Migration forcée",
-  "coerced-labour": "Travail sous contrainte",
-  "colonial-settlement": "Installation coloniale",
-  voluntary: "Migration volontaire",
-};
-
 const SOUTH_AFRICA_BOUNDS = [
   [-35.2, 16.0],
   [-22.0, 33.2],
 ];
 
 const DEFAULT_MAP_PADDING = [24, 24];
-
-const CITY_FILTERS = [
-  ["all", "Tout afficher"],
-  ["national", "Capitales nationales"],
-  ["province", "Capitales provinciales"],
-  ["major", "Grandes villes"],
-];
 
 function FitBounds({ bounds, padding = DEFAULT_MAP_PADDING }) {
   const map = useMap();
@@ -52,10 +94,10 @@ function FitBounds({ bounds, padding = DEFAULT_MAP_PADDING }) {
   return null;
 }
 
-function RouteLegend() {
+function RouteLegend({ labels }) {
   return (
     <div className="flex flex-wrap gap-x-5 gap-y-2 text-xs text-bone/70">
-      {Object.entries(ROUTE_LABELS).map(([type, label]) => (
+      {Object.entries(labels).map(([type, label]) => (
         <span key={type} className="inline-flex items-center gap-2">
           <i
             className="h-2.5 w-7 rounded-full"
@@ -104,11 +146,13 @@ function migrationBounds(routes) {
 }
 
 export function CurrentSouthAfricaFlag({ className = "" }) {
+  const { lang } = useI18n();
+  const copy = COPY[lang] || COPY.en;
   return (
     <svg
       viewBox="0 0 900 600"
       role="img"
-      aria-label="Drapeau actuel de l'Afrique du Sud"
+      aria-label={copy.currentFlag}
       className={className}
     >
       <rect width="900" height="600" fill="#DE3831" />
@@ -122,8 +166,10 @@ export function CurrentSouthAfricaFlag({ className = "" }) {
 }
 
 function UnionJackFlag({ className = "" }) {
+  const { lang } = useI18n();
+  const copy = COPY[lang] || COPY.en;
   return (
-    <svg viewBox="0 0 900 600" role="img" aria-label="Union Jack utilisé dans l'Union sud-africaine" className={className}>
+    <svg viewBox="0 0 900 600" role="img" aria-label={copy.unionJack} className={className}>
       <rect width="900" height="600" fill="#012169" />
       <path d="M0 0 L900 600 M900 0 L0 600" stroke="#FFF" strokeWidth="120" />
       <path d="M0 0 L900 600 M900 0 L0 600" stroke="#C8102E" strokeWidth="48" />
@@ -134,8 +180,10 @@ function UnionJackFlag({ className = "" }) {
 }
 
 function HistoricalFlag1928({ className = "" }) {
+  const { lang } = useI18n();
+  const copy = COPY[lang] || COPY.en;
   return (
-    <svg viewBox="0 0 900 600" role="img" aria-label="Drapeau sud-africain utilisé de 1928 à 1994" className={className}>
+    <svg viewBox="0 0 900 600" role="img" aria-label={copy.historicalFlag} className={className}>
       <rect width="900" height="200" fill="#FF7A00" />
       <rect y="200" width="900" height="200" fill="#FFF" />
       <rect y="400" width="900" height="200" fill="#003DA5" />
@@ -154,6 +202,8 @@ function HistoricalFlag1928({ className = "" }) {
 }
 
 export function SouthAfricaFlagHistory({ items = [] }) {
+  const { lang } = useI18n();
+  const copy = COPY[lang] || COPY.en;
   const renderFlag = (variant) => {
     if (variant === "current") return <CurrentSouthAfricaFlag className="h-full w-full" />;
     if (variant === "1928") return <HistoricalFlag1928 className="h-full w-full" />;
@@ -168,7 +218,7 @@ export function SouthAfricaFlagHistory({ items = [] }) {
             {renderFlag(item.variant)}
           </div>
           <p className="mt-3 text-xs uppercase tracking-widest text-gold">
-            {item.start}–{item.end || "aujourd'hui"}
+            {item.start}–{item.end || copy.today}
           </p>
           <h3 className="mt-1 font-serif text-lg text-bone">{item.label}</h3>
           <p className="mt-2 text-sm leading-relaxed text-bone/65">{item.note}</p>
@@ -184,6 +234,8 @@ function southAfricaGeoJson() {
 }
 
 export function SouthAfricaCountryMap({ cities = [] }) {
+  const { lang } = useI18n();
+  const copy = COPY[lang] || COPY.en;
   const [layer, setLayer] = useState("all");
   const outline = useMemo(() => southAfricaGeoJson(), []);
   const visibleCities = cities.filter((city) => layer === "all" || city.group === layer);
@@ -191,7 +243,7 @@ export function SouthAfricaCountryMap({ cities = [] }) {
   return (
     <div className="space-y-4">
       <div className="flex flex-wrap gap-2">
-        {CITY_FILTERS.map(([id, label]) => (
+        {copy.cityFilters.map(([id, label]) => (
           <button
             key={id}
             type="button"
@@ -255,10 +307,10 @@ export function SouthAfricaCountryMap({ cities = [] }) {
                   <strong>{city.name}</strong>
                   <br />
                   {isNational
-                    ? "Capitale nationale"
+                    ? copy.nationalCapital
                     : isProvince
-                      ? "Capitale provinciale"
-                      : "Grande ville"}
+                      ? copy.provincialCapital
+                      : copy.majorCity}
                 </Popup>
               </CircleMarker>
             );
@@ -267,18 +319,18 @@ export function SouthAfricaCountryMap({ cities = [] }) {
       </div>
 
       <div className="grid gap-3 text-xs text-bone/60 sm:grid-cols-3">
-        <span>● Jaune clair : capitales nationales</span>
-        <span>● Or : capitales provinciales</span>
-        <span>● Ivoire : grandes villes</span>
+        <span>{copy.nationalLegend}</span>
+        <span>{copy.provincialLegend}</span>
+        <span>{copy.majorLegend}</span>
       </div>
-      <p className="text-xs leading-relaxed text-bone/50">
-        Carte contemporaine interactive. Zoomez, déplacez la carte et cliquez sur les marqueurs. Le fond OpenStreetMap permet d’afficher les routes, les frontières provinciales, les reliefs et les localités à mesure que le niveau de zoom augmente. Le contour national est renforcé par-dessus le fond cartographique d’Inonara.
-      </p>
+      <p className="text-xs leading-relaxed text-bone/50">{copy.mapNote}</p>
     </div>
   );
 }
 
 export function SouthAfricaMigrationMap({ routes = [], note }) {
+  const { lang } = useI18n();
+  const copy = COPY[lang] || COPY.en;
   const periods = useMemo(
     () => [...new Set(routes.map((route) => `${route.start}-${route.end}`))],
     [routes],
@@ -299,7 +351,7 @@ export function SouthAfricaMigrationMap({ routes = [], note }) {
             selectedPeriod === "all" ? "border-gold bg-gold/10 text-gold" : "border-bone/15 text-bone/65"
           }`}
         >
-          Toutes les périodes
+          {copy.allPeriods}
         </button>
         {periods.map((period) => (
           <button
@@ -351,7 +403,7 @@ export function SouthAfricaMigrationMap({ routes = [], note }) {
                     <br />
                     {route.start}–{route.end}
                     <br />
-                    {ROUTE_LABELS[route.type] || route.type}
+                    {copy.routeLabels[route.type] || route.type}
                   </Popup>
                 </Polyline>
                 <CircleMarker
@@ -374,7 +426,7 @@ export function SouthAfricaMigrationMap({ routes = [], note }) {
         </MapContainer>
       </div>
 
-      <RouteLegend />
+      <RouteLegend labels={copy.routeLabels} />
 
       <div className="grid gap-3 md:grid-cols-2">
         {visibleRoutes.map((route) => (
