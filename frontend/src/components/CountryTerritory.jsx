@@ -1,11 +1,36 @@
+import { useI18n } from "../i18n";
+import { useTranslated } from "../lib/useTranslated";
+
+const COPY = {
+  en: {
+    country: "this country",
+    overline: "Territory",
+    title: "{country}: spaces, waters and landscapes",
+    intro: "Territorial data is presented according to available sources and does not automatically project contemporary borders onto ancient periods.",
+    documented: "Documented",
+    mapping: "Mapping",
+    places: "Reference places",
+    aria: "Schematic map of reference places in {country}",
+  },
+  fr: {
+    country: "ce pays",
+    overline: "Territoire",
+    title: "{country} : espaces, eaux et paysages",
+    intro: "Les données territoriales sont présentées selon les sources disponibles et ne projettent pas automatiquement les frontières contemporaines sur les périodes anciennes.",
+    documented: "Documenté",
+    mapping: "Cartographie",
+    places: "Lieux de référence",
+    aria: "Carte schématique des lieux de référence de {country}",
+  },
+};
+
 function SourceLinks({ ids = [], sourceMap = new Map() }) {
   const sources = ids.map((id) => sourceMap.get(id)).filter(Boolean);
   if (!sources.length) return null;
   return (
     <div className="mt-4 flex flex-wrap gap-2">
       {sources.map((source) => (
-        <a key={source.id} href={source.url} target="_blank" rel="noreferrer"
-          className="rounded-full border border-gold/25 px-3 py-1 text-[11px] text-gold/85 hover:bg-gold/10">
+        <a key={source.id} href={source.url} target="_blank" rel="noreferrer" className="rounded-full border border-gold/25 px-3 py-1 text-[11px] text-gold/85 hover:bg-gold/10">
           {source.publisher}: {source.title}
         </a>
       ))}
@@ -13,10 +38,18 @@ function SourceLinks({ ids = [], sourceMap = new Map() }) {
   );
 }
 
+function TranslatedText({ value, className = "" }) {
+  const translated = useTranslated(value || "");
+  if (!value) return null;
+  return <p className={className}>{translated || value}</p>;
+}
+
 export function CountryTerritory({ dossier = {}, territory = {}, sourceMap = new Map() }) {
+  const { lang } = useI18n();
+  const copy = COPY[lang] || COPY.en;
   const sections = territory.sections || dossier.territory_sections || [];
   const places = territory.places || [];
-  const countryName = dossier?.name?.fr || dossier?.country || territory.country || "ce pays";
+  const countryName = dossier?.name?.[lang] || dossier?.name?.fr || dossier?.country || territory.country || copy.country;
 
   const bounds = (() => {
     if (!places.length) return { minLon: -20, maxLon: 40, minLat: -35, maxLat: 20 };
@@ -27,7 +60,7 @@ export function CountryTerritory({ dossier = {}, territory = {}, sourceMap = new
     const padY = Math.max(1, (Math.max(...lats) - Math.min(...lats)) * .15);
     return {
       minLon: Math.min(...lons) - padX, maxLon: Math.max(...lons) + padX,
-      minLat: Math.min(...lats) - padY, maxLat: Math.max(...lats) + padY
+      minLat: Math.min(...lats) - padY, maxLat: Math.max(...lats) + padY,
     };
   })();
 
@@ -40,12 +73,9 @@ export function CountryTerritory({ dossier = {}, territory = {}, sourceMap = new
   return (
     <div className="space-y-8">
       <header className="rounded-2xl border border-gold/20 bg-gradient-to-br from-gold/[0.08] to-transparent p-6">
-        <p className="overline text-gold">Territoire</p>
-        <h2 className="mt-2 font-serif text-3xl text-bone">{countryName} : espaces, eaux et paysages</h2>
-        <p className="mt-3 max-w-3xl text-sm leading-7 text-bone/65">
-          Les données territoriales sont présentées selon les sources disponibles et ne projettent pas
-          automatiquement les frontières contemporaines sur les périodes anciennes.
-        </p>
+        <p className="overline text-gold">{copy.overline}</p>
+        <h2 className="mt-2 font-serif text-3xl text-bone">{copy.title.replace("{country}", countryName)}</h2>
+        <p className="mt-3 max-w-3xl text-sm leading-7 text-bone/65">{copy.intro}</p>
       </header>
 
       <div className="grid gap-4">
@@ -55,14 +85,14 @@ export function CountryTerritory({ dossier = {}, territory = {}, sourceMap = new
               <h3 className="font-serif text-2xl text-bone">{section.title}</h3>
               {section.status && (
                 <span className="rounded-full border border-bone/15 px-2.5 py-1 text-[10px] uppercase tracking-wider text-bone/50">
-                  {section.status === "ready" ? "Documenté" : section.status}
+                  {section.status === "ready" ? copy.documented : section.status}
                 </span>
               )}
             </div>
-            {section.summary && <p className="mt-3 leading-7 text-bone/70">{section.summary}</p>}
+            {section.summary && <TranslatedText value={section.summary} className="mt-3 leading-7 text-bone/70" />}
             {section.facts?.length > 0 && (
               <ul className="mt-4 space-y-2 text-sm leading-6 text-bone/65">
-                {section.facts.map((fact, i) => <li key={i}>• {fact}</li>)}
+                {section.facts.map((fact, i) => <li key={i}>• <TranslatedText value={fact} className="inline" /></li>)}
               </ul>
             )}
             <SourceLinks ids={section.sources} sourceMap={sourceMap} />
@@ -72,14 +102,12 @@ export function CountryTerritory({ dossier = {}, territory = {}, sourceMap = new
 
       {places.length > 0 && (
         <section className="rounded-2xl border border-bone/10 bg-black/20 p-4 md:p-5">
-          <p className="overline text-gold">Cartographie</p>
-          <h3 className="mt-1 font-serif text-2xl text-bone">Lieux de référence</h3>
+          <p className="overline text-gold">{copy.mapping}</p>
+          <h3 className="mt-1 font-serif text-2xl text-bone">{copy.places}</h3>
           <div className="mt-4 overflow-x-auto">
-            <svg viewBox="0 0 920 430" className="min-w-[720px] w-full rounded-xl bg-[#0d1716]" role="img"
-              aria-label={`Carte schématique des lieux de référence de ${countryName}`}>
+            <svg viewBox="0 0 920 430" className="min-w-[720px] w-full rounded-xl bg-[#0d1716]" role="img" aria-label={copy.aria.replace("{country}", countryName)}>
               <rect x="0" y="0" width="920" height="430" fill="#0d1716" />
-              <path d="M60 80 C180 35 350 65 470 45 S760 55 860 100 L835 330 C650 385 460 350 280 375 S110 340 60 290 Z"
-                fill="rgba(214,179,106,.05)" stroke="rgba(214,179,106,.35)" />
+              <path d="M60 80 C180 35 350 65 470 45 S760 55 860 100 L835 330 C650 385 460 350 280 375 S110 340 60 290 Z" fill="rgba(214,179,106,.05)" stroke="rgba(214,179,106,.35)" />
               {places.map((place, i) => {
                 const [x, y] = project(place);
                 return (
