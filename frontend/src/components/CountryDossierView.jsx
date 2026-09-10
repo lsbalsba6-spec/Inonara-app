@@ -70,6 +70,11 @@ const COPY = {
   },
 };
 
+function TranslatedInline({ value }) {
+  const translated = useTranslated(value || "");
+  return translated || value || null;
+}
+
 function StatusBadge({ status, copy }) {
   const label = copy.status[status] || status;
   return (
@@ -79,18 +84,23 @@ function StatusBadge({ status, copy }) {
   );
 }
 
+function SourceLink({ source }) {
+  const translatedTitle = useTranslated(source?.title || "");
+  if (!source) return null;
+  return (
+    <a href={source.url} target="_blank" rel="noreferrer" className="text-[11px] text-gold/80 hover:text-gold underline underline-offset-2">
+      {source.publisher}: {translatedTitle || source.title}
+    </a>
+  );
+}
+
 function SourceLinks({ ids, sourceMap }) {
   if (!ids?.length) return null;
   return (
     <div className="mt-3 flex flex-wrap gap-x-3 gap-y-1">
       {ids.map((id) => {
         const source = sourceMap.get(id);
-        if (!source) return null;
-        return (
-          <a key={id} href={source.url} target="_blank" rel="noreferrer" className="text-[11px] text-gold/80 hover:text-gold underline underline-offset-2">
-            {source.publisher}: {source.title}
-          </a>
-        );
+        return source ? <SourceLink key={id} source={source} /> : null;
       })}
     </div>
   );
@@ -107,8 +117,8 @@ function Timeline({ items, sourceMap, copy, lang }) {
             </p>
             <StatusBadge status={item.status} copy={copy} />
           </div>
-          <h3 className="font-serif text-xl text-bone mt-1">{item.label}</h3>
-          <p className="text-bone/75 leading-relaxed mt-1">{item.text}</p>
+          <h3 className="font-serif text-xl text-bone mt-1"><TranslatedInline value={item.label} /></h3>
+          <p className="text-bone/75 leading-relaxed mt-1"><TranslatedInline value={item.text} /></p>
           <SourceLinks ids={item.sources} sourceMap={sourceMap} />
         </article>
       ))}
@@ -122,11 +132,11 @@ function SimpleCards({ items, sourceMap, copy, titleField = "name", bodyField = 
       {items.map((item, index) => (
         <article key={item.id || item[titleField] || index} className="rounded-lg border border-bone/10 bg-bone/[0.025] p-4">
           <div className="flex items-start justify-between gap-2">
-            <h3 className="font-serif text-lg text-bone">{item[titleField]}</h3>
+            <h3 className="font-serif text-lg text-bone"><TranslatedInline value={item[titleField]} /></h3>
             {item.status && <StatusBadge status={item.status} copy={copy} />}
           </div>
-          {item[bodyField] && <p className="text-sm text-bone/70 leading-relaxed mt-2">{item[bodyField]}</p>}
-          {item.mapping && <p className="text-xs text-bone/45 mt-2">{copy.mapping} : {item.mapping}</p>}
+          {item[bodyField] && <p className="text-sm text-bone/70 leading-relaxed mt-2"><TranslatedInline value={item[bodyField]} /></p>}
+          {item.mapping && <p className="text-xs text-bone/45 mt-2">{copy.mapping} : <TranslatedInline value={item.mapping} /></p>}
           <SourceLinks ids={item.sources} sourceMap={sourceMap} />
         </article>
       ))}
