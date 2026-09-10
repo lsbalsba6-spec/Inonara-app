@@ -44,10 +44,48 @@ const fallbackModules = {
   ],
 };
 
+const explorationCopy = {
+  en: {
+    overline: "Explore across the atlas",
+    title: "One history, many ways in.",
+    body: "Move from places to people, from long timelines to individual lives, and follow the links between Africa and its diasporas.",
+    imageAlt: "Topographical map of Africa",
+    maliAlt: "Architecture in Mali",
+    links: [
+      ["/countries", "Countries", "Open country dossiers and connect territory, history, peoples and sources."],
+      ["/timeline", "Timeline", "Place figures, civilizations and turning points in a shared chronology."],
+      ["/people", "Peoples", "Explore communities, languages, movements and cultural continuities."],
+      ["/figures", "Figures", "Meet the people who shaped political, intellectual and cultural history."],
+      ["/diaspora", "Diaspora", "Follow communities of African descent, routes, continuities and new cultures."],
+      ["/stories", "Stories", "Enter source-grounded narrative journeys through places and periods."],
+      ["/compare", "Compare", "Read civilizations side by side without flattening differences in time or place."],
+      ["/atlas", "Atlas", "Explore the spatial connections between territories, routes and historical formations."],
+    ],
+  },
+  fr: {
+    overline: "Explorer tout l’Atlas",
+    title: "Une histoire, plusieurs portes d’entrée.",
+    body: "Passe des lieux aux peuples, des longues chronologies aux trajectoires individuelles, et suis les liens entre l’Afrique et ses diasporas.",
+    imageAlt: "Carte topographique de l’Afrique",
+    maliAlt: "Architecture au Mali",
+    links: [
+      ["/countries", "Pays", "Ouvre les dossiers pays et relie territoire, histoire, peuples et sources."],
+      ["/timeline", "Chronologie", "Replace personnalités, civilisations et tournants dans une chronologie commune."],
+      ["/people", "Peuples", "Explore communautés, langues, mouvements et continuités culturelles."],
+      ["/figures", "Personnalités", "Découvre les personnes qui ont marqué l’histoire politique, intellectuelle et culturelle."],
+      ["/diaspora", "Diaspora", "Suis les communautés d’ascendance africaine, leurs routes, continuités et créations."],
+      ["/stories", "Histoires", "Entre dans des récits documentés qui relient lieux, périodes et sources."],
+      ["/compare", "Comparer", "Lis les civilisations côte à côte sans effacer leurs différences de temps et d’espace."],
+      ["/atlas", "Atlas", "Explore les connexions spatiales entre territoires, routes et formations historiques."],
+    ],
+  },
+};
+
 const Landing = () => {
   const { t, lang } = useI18n();
   const [modules, setModules] = useState([]);
   const [modulesReady, setModulesReady] = useState(false);
+  const explore = explorationCopy[lang] || explorationCopy.en;
 
   useEffect(() => {
     let active = true;
@@ -74,7 +112,7 @@ const Landing = () => {
       {/* HERO */}
       <section className="relative min-h-[760px] sm:min-h-[700px] md:min-h-[640px] md:h-[95vh] overflow-hidden">
         <div className="absolute inset-0">
-          <img src={HERO} alt="Topographical map of Africa" className="w-full h-full object-cover animate-slow-zoom" />
+          <img src={HERO} alt={explore.imageAlt} className="w-full h-full object-cover animate-slow-zoom" />
           <div className="absolute inset-0 bg-gradient-to-b from-ebony/40 via-ebony/60 to-ebony" />
           <div className="absolute inset-0 bg-gradient-to-r from-ebony via-ebony/30 to-transparent" />
         </div>
@@ -182,8 +220,40 @@ const Landing = () => {
         )}
       </section>
 
+      {/* CROSS-MODULE EXPLORATION */}
+      <section className="border-y border-[#2A2421] bg-[#100e0c]" data-testid="exploration-routes">
+        <div className="max-w-[1600px] mx-auto px-6 md:px-10 py-20 md:py-24">
+          <div className="grid lg:grid-cols-[0.8fr_1.2fr] gap-12 lg:gap-16 items-start">
+            <div className="lg:sticky lg:top-28">
+              <p className="overline">{explore.overline}</p>
+              <h2 className="font-serif text-4xl md:text-5xl text-bone mt-3 leading-tight">{explore.title}</h2>
+              <p className="text-bone/65 mt-5 max-w-lg font-light leading-relaxed">{explore.body}</p>
+            </div>
+            <div className="grid sm:grid-cols-2 gap-px bg-bone/10 border border-bone/10">
+              {explore.links.map(([to, title, body], index) => (
+                <Link
+                  key={to}
+                  to={to}
+                  className="group min-h-[180px] bg-ebony p-6 md:p-7 flex flex-col justify-between hover:bg-[#17130f] transition-colors"
+                  data-testid={`explore-route-${index}`}
+                >
+                  <div className="flex items-start justify-between gap-4">
+                    <span className="text-gold/45 text-[10px] tracking-[0.25em]">{String(index + 1).padStart(2, "0")}</span>
+                    <ArrowRight size={15} className="text-gold/55 group-hover:text-gold group-hover:translate-x-1 transition-all" />
+                  </div>
+                  <div className="mt-8">
+                    <h3 className="font-serif text-2xl text-bone group-hover:text-gold transition-colors">{title}</h3>
+                    <p className="text-sm text-bone/55 mt-2 leading-relaxed font-light">{body}</p>
+                  </div>
+                </Link>
+              ))}
+            </div>
+          </div>
+        </div>
+      </section>
+
       {/* INVITATION STRIP */}
-      <section className="border-y border-[#2A2421] bg-[#12100E]">
+      <section className="border-b border-[#2A2421] bg-[#12100E]">
         <div className="max-w-[1600px] mx-auto px-6 md:px-10 py-20 grid md:grid-cols-2 gap-12 items-center">
           <div>
             <p className="overline">{t("landing.storyMode.overline")}</p>
@@ -202,7 +272,7 @@ const Landing = () => {
             </Link>
           </div>
           <div className="relative aspect-[4/3] overflow-hidden">
-            <img src={MALI} alt="Mali architecture" className="w-full h-full object-cover" />
+            <img src={MALI} alt={explore.maliAlt} className="w-full h-full object-cover" />
             <div className="absolute inset-0 bg-gradient-to-tr from-ebony/60 to-transparent" />
           </div>
         </div>
