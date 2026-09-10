@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react";
+import { useState } from "react";
 import { useI18n } from "../i18n";
 import { useTranslated } from "../lib/useTranslated";
 
@@ -68,20 +68,19 @@ export function CountryPolities({ dossier, sourceMap }) {
   const getPeriod = (item) => item.period || (item.start != null ? `${item.start}${item.end != null ? `–${item.end}` : `–${copy.today}`}` : copy.dating);
   const getType = (item) => item.type || item.category || copy.formation;
 
-  const polities = useMemo(() => dossier.polities || [], [dossier.polities]);
-  const types = useMemo(() => [...new Set(polities.map(getType))], [polities, lang]);
+  const polities = dossier.polities || [];
+  const types = [...new Set(polities.map((item) => getType(item)))];
   const [type, setType] = useState("all");
   const [query, setQuery] = useState("");
   const [openId, setOpenId] = useState(polities[0]?.id || null);
 
-  const visible = useMemo(() => {
-    const needle = query.trim().toLowerCase();
-    return polities.filter((item) => {
-      const matchesType = type === "all" || getType(item) === type;
-      const haystack = `${getName(item)} ${getSummary(item)} ${getPeriod(item)} ${getType(item)} ${item.mapping || ""}`.toLowerCase();
-      return matchesType && (!needle || haystack.includes(needle));
-    });
-  }, [polities, query, type, lang]);
+  const needle = query.trim().toLowerCase();
+  const visible = polities.filter((item) => {
+    const itemType = getType(item);
+    const matchesType = type === "all" || itemType === type;
+    const haystack = `${getName(item)} ${getSummary(item)} ${getPeriod(item)} ${itemType} ${item.mapping || ""}`.toLowerCase();
+    return matchesType && (!needle || haystack.includes(needle));
+  });
 
   return (
     <div className="space-y-8">
