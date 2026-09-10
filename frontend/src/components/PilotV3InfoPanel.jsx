@@ -1,27 +1,56 @@
 import { ATLAS_COLORS } from "../lib/designTokens";
+import { useI18n } from "../i18n";
+import { useTranslated } from "../lib/useTranslated";
 
-const STATUS_LABEL_FR = {
-  ready: "Prêt",
-  provisional: "Provisoire",
-  disputed: "Disputé",
-  "research-gap": "Recherche incomplète",
+const COPY = {
+  en: {
+    prototype: "Prototype v3",
+    approximatePosition: "Approximate, unsourced position — real geometry has not yet been integrated.",
+    status: "Status",
+    historiography: "Historiographic phase",
+    sources: "Sources",
+    statuses: {
+      ready: "Established",
+      provisional: "Provisional",
+      disputed: "Disputed",
+      "research-gap": "Research gap",
+    },
+  },
+  fr: {
+    prototype: "Prototype v3",
+    approximatePosition: "Position approximative, non sourcée — la géométrie réelle n’est pas encore intégrée.",
+    status: "Statut",
+    historiography: "Phase historiographique",
+    sources: "Sources",
+    statuses: {
+      ready: "Établi",
+      provisional: "Provisoire",
+      disputed: "Disputé",
+      "research-gap": "Recherche incomplète",
+    },
+  },
 };
 
-const STATUS_COLOR_FR = {
+const STATUS_COLOR = {
   ready: "#4ade80",
   provisional: ATLAS_COLORS.amber,
   disputed: ATLAS_COLORS.deepRed,
   "research-gap": "#9CA3AF",
 };
 
-function Badge({ status }) {
+function TranslatedInline({ value }) {
+  const translated = useTranslated(value || "");
+  return translated || value || null;
+}
+
+function Badge({ status, copy }) {
   if (!status) return null;
   return (
     <span
       className="text-[0.6rem] px-2 py-0.5 rounded-full border"
-      style={{ borderColor: STATUS_COLOR_FR[status] || "#9CA3AF", color: STATUS_COLOR_FR[status] || "#9CA3AF" }}
+      style={{ borderColor: STATUS_COLOR[status] || "#9CA3AF", color: STATUS_COLOR[status] || "#9CA3AF" }}
     >
-      {STATUS_LABEL_FR[status] || status}
+      {copy.statuses[status] || status}
     </span>
   );
 }
@@ -29,9 +58,11 @@ function Badge({ status }) {
 /**
  * Click panel for a pilot v3 marker: shows every coexisting active name,
  * the active status/period-interpretation, sources, and an explicit
- * "approximate, unsourced position" warning (see pilotV3Adapter.js).
+ * approximate-position warning (see pilotV3Adapter.js).
  */
 export default function PilotV3InfoPanel({ marker, onClose }) {
+  const { lang } = useI18n();
+  const copy = COPY[lang] || COPY.en;
   if (!marker) return null;
   const { entity, activeNames, activeStatus, activePeriodInterpretation, isApproximatePosition } = marker;
 
@@ -42,16 +73,21 @@ export default function PilotV3InfoPanel({ marker, onClose }) {
     >
       <div className="flex justify-between items-start mb-2">
         <p className="overline text-[0.6rem]" style={{ color: ATLAS_COLORS.gold }}>
-          Prototype v3 · {entity.category}
+          {copy.prototype} · <TranslatedInline value={entity.category} />
         </p>
-        <button onClick={onClose} className="text-bone/60 hover:text-bone" data-testid="pilot-v3-info-panel-close">
+        <button
+          onClick={onClose}
+          className="text-bone/60 hover:text-bone"
+          data-testid="pilot-v3-info-panel-close"
+          aria-label={lang === "fr" ? "Fermer" : "Close"}
+        >
           ✕
         </button>
       </div>
 
       {isApproximatePosition && (
         <p className="text-[0.65rem] text-amber-400/90 mb-2" data-testid="pilot-v3-approx-warning">
-          ⚠ Position approximative, non sourcée — géométrie réelle non encore intégrée.
+          ⚠ {copy.approximatePosition}
         </p>
       )}
 
@@ -59,37 +95,38 @@ export default function PilotV3InfoPanel({ marker, onClose }) {
         {activeNames.map((name) => (
           <div key={name.id} className="flex items-center justify-between gap-2">
             <span className="font-serif text-bone" style={{ opacity: name.resolvedStyle.opacity }}>
-              {name.value}
+              <TranslatedInline value={name.value} />
               {name.isPreferredDisplayName && <span className="text-gold text-xs ml-1">★</span>}
             </span>
-            <Badge status={name.integrationStatus} />
+            <Badge status={name.integrationStatus} copy={copy} />
           </div>
         ))}
       </div>
 
       {activeStatus && (
         <div className="mb-2 text-sm">
-          <span className="text-bone/70">Statut : </span>
-          <span className="text-bone">{activeStatus.value}</span> <Badge status={activeStatus.integrationStatus} />
+          <span className="text-bone/70">{copy.status} : </span>
+          <span className="text-bone"><TranslatedInline value={activeStatus.value} /></span>{" "}
+          <Badge status={activeStatus.integrationStatus} copy={copy} />
         </div>
       )}
 
       {activePeriodInterpretation && (
         <div className="mb-2 text-sm">
-          <span className="text-bone/70">Phase historiographique : </span>
-          <span className="text-bone">{activePeriodInterpretation.label}</span>{" "}
-          <Badge status={activePeriodInterpretation.integrationStatus} />
+          <span className="text-bone/70">{copy.historiography} : </span>
+          <span className="text-bone"><TranslatedInline value={activePeriodInterpretation.label} /></span>{" "}
+          <Badge status={activePeriodInterpretation.integrationStatus} copy={copy} />
           {activePeriodInterpretation.notes && (
-            <p className="text-[0.65rem] text-bone/60 mt-1">{activePeriodInterpretation.notes}</p>
+            <p className="text-[0.65rem] text-bone/60 mt-1"><TranslatedInline value={activePeriodInterpretation.notes} /></p>
           )}
         </div>
       )}
 
       <div className="border-t border-[#2A2421] pt-2 mt-2">
-        <p className="text-[0.6rem] text-bone/50 mb-1">Sources</p>
-        {(activeNames[0]?.sources || []).map((s, i) => (
-          <p key={i} className="text-[0.65rem] text-bone/70">
-            [{s.category}] {s.label}
+        <p className="text-[0.6rem] text-bone/50 mb-1">{copy.sources}</p>
+        {(activeNames[0]?.sources || []).map((source, index) => (
+          <p key={index} className="text-[0.65rem] text-bone/70">
+            [<TranslatedInline value={source.category} />] <TranslatedInline value={source.label} />
           </p>
         ))}
       </div>
