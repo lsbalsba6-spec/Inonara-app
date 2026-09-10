@@ -8,6 +8,17 @@ import { useI18n } from "../i18n";
 import { sortAlphabetically } from "../lib/contentSort";
 import { SmartImage } from "../components/SmartImage";
 
+const TranslatedText = ({ value }) => {
+  const translated = useTranslated(value || "");
+  return translated || value || null;
+};
+
+const TranslatedParagraph = ({ value, className }) => {
+  const translated = useTranslated(value || "");
+  if (!value && !translated) return null;
+  return <p className={className}>{translated || value}</p>;
+};
+
 export const DiasporaList = () => {
   const { t } = useI18n();
   const [items, setItems] = useState([]);
@@ -69,8 +80,8 @@ export const DiasporaList = () => {
             <div className="relative h-full p-7 flex flex-col justify-end">
               <p className="overline text-[0.65rem]">{t(`region.${d.region}`)}</p>
               <h3 className="font-serif text-3xl text-bone mt-3 leading-tight">{d.name}</h3>
-              <p className="text-gold text-xs uppercase tracking-[0.2em] mt-2">{d.country}</p>
-              <p className="text-bone/70 text-sm font-light mt-4 line-clamp-3">{d.summary}</p>
+              <p className="text-gold text-xs uppercase tracking-[0.2em] mt-2"><TranslatedText value={d.country} /></p>
+              <TranslatedParagraph value={d.summary} className="text-bone/70 text-sm font-light mt-4 line-clamp-3" />
             </div>
           </Link>
         ))}
@@ -109,7 +120,7 @@ export const DiasporaDetail = () => {
           </Link>
           <p className="overline">{t(`region.${d.region}`)}</p>
           <h1 className="font-serif text-5xl md:text-7xl text-bone mt-3 leading-[0.95] tracking-tight">{d.name}</h1>
-          <p className="text-gold text-sm uppercase tracking-[0.25em] mt-4">{d.country}</p>
+          <p className="text-gold text-sm uppercase tracking-[0.25em] mt-4"><TranslatedText value={d.country} /></p>
           <p className="text-bone/80 mt-6 max-w-2xl text-lg font-light leading-relaxed">{tSummary || d.summary}</p>
         </div>
       </div>
@@ -125,20 +136,20 @@ export const DiasporaDetail = () => {
           </div>
           <div className="space-y-6">
             <Block label={t("section.origin_routes")}>
-              <ul className="list-disc pl-5 space-y-1">{d.origin_routes.map((r) => <li key={r}>{r}</li>)}</ul>
+              <ul className="list-disc pl-5 space-y-1">{d.origin_routes.map((r) => <li key={r}><TranslatedText value={r} /></li>)}</ul>
             </Block>
             <Block label={t("section.ethnic_heritage")}>
-              <ul className="list-disc pl-5 space-y-1">{d.ethnicities.map((e) => <li key={e}>{e}</li>)}</ul>
+              <ul className="list-disc pl-5 space-y-1">{d.ethnicities.map((e) => <li key={e}><TranslatedText value={e} /></li>)}</ul>
             </Block>
           </div>
         </div>
 
         <div className="grid md:grid-cols-2 gap-10 mt-16">
           <Block label={t("section.languages")}>
-            <ul className="list-disc pl-5 space-y-1">{d.languages.map((l) => <li key={l}>{l}</li>)}</ul>
+            <ul className="list-disc pl-5 space-y-1">{d.languages.map((l) => <li key={l}><TranslatedText value={l} /></li>)}</ul>
           </Block>
           <Block label={t("section.religions")}>
-            <ul className="list-disc pl-5 space-y-1">{d.religions.map((r) => <li key={r}>{r}</li>)}</ul>
+            <ul className="list-disc pl-5 space-y-1">{d.religions.map((r) => <li key={r}><TranslatedText value={r} /></li>)}</ul>
           </Block>
         </div>
 
@@ -189,7 +200,7 @@ export const DiasporaDetail = () => {
         {d.sources?.length > 0 && (
           <section className="mt-16 border-t border-[#2A2421] pt-10">
             <p className="overline">{t("common.sources")}</p>
-            <ul className="list-disc pl-5 space-y-2 mt-4 text-bone/70">{d.sources.map((s) => <li key={s}>{s}</li>)}</ul>
+            <ul className="list-disc pl-5 space-y-2 mt-4 text-bone/70">{d.sources.map((s) => <li key={s}><TranslatedText value={s} /></li>)}</ul>
           </section>
         )}
       </div>
