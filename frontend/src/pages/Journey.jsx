@@ -4,82 +4,141 @@ import { motion } from "framer-motion";
 import { ArrowRight } from "lucide-react";
 import { fetchJourney } from "../lib/api";
 import { useI18n } from "../i18n";
+import { useTranslated } from "../lib/useTranslated";
 import { sortChronologically } from "../lib/contentSort";
 import { SmartImage } from "../components/SmartImage";
 
-const Journey = () => {
+const COPY = {
+  fr: {
+    timeLabel: "Dans le temps",
+    timeTitle: "Chronologie complète",
+    timeCopy: "Quitter le récit guidé pour explorer librement les périodes et événements.",
+    spaceLabel: "Dans l’espace",
+    spaceTitle: "Atlas interactif",
+    spaceCopy: "Situer chaque étape, route, société et déplacement sur la carte Equal Earth.",
+    deepenLabel: "Approfondir",
+    deepenTitle: "Civilisations",
+    deepenCopy: "Explorer les formations historiques rencontrées dans le parcours.",
+    sourceRights: "source / droits",
+  },
+  en: {
+    timeLabel: "Across time",
+    timeTitle: "Full timeline",
+    timeCopy: "Leave the guided narrative and freely explore periods and events.",
+    spaceLabel: "Across space",
+    spaceTitle: "Interactive atlas",
+    spaceCopy: "Locate each stage, route, society and movement on the Equal Earth map.",
+    deepenLabel: "Go deeper",
+    deepenTitle: "Civilizations",
+    deepenCopy: "Explore the historical formations encountered along the journey.",
+    sourceRights: "source / rights",
+  },
+};
+
+const formatYear = (year, t) => year < 0 ? `${Math.abs(year)} ${t("date.bce")}` : `${year} ${t("date.ce")}`;
+
+const JourneyStop = ({ stop, index, t, copy }) => {
+  const heading = useTranslated(stop.heading || "");
+  const era = useTranslated(stop.era || "");
+  const place = useTranslated(stop.place || "");
+  const story = useTranslated(stop.story || "");
+  const linkLabel = useTranslated(stop.link?.label || "");
+  const displayedHeading = heading || stop.heading || "";
+  const headingParts = displayedHeading.split(".");
+  const stepNumber = headingParts.length > 1 ? headingParts[0] : String(index + 1).padStart(2, "0");
+  const title = headingParts.length > 1 ? headingParts.slice(1).join(".").trim() : displayedHeading;
+
+  return (
+    <motion.section
+      initial={{ opacity: 0, y: 40 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true, margin: "-100px" }}
+      transition={{ duration: 1 }}
+      className="grid lg:grid-cols-2 gap-12 items-center py-16 border-t border-[#2A2421]"
+      data-testid={`journey-stop-${stop.id}`}
+    >
+      <div className={index % 2 === 0 ? "" : "lg:order-2"}>
+        <p className="font-serif text-7xl text-gold/30 leading-none">{stepNumber}</p>
+        <p className="overline mt-4">{era || stop.era} · {place || stop.place}</p>
+        <h2 className="font-serif text-4xl md:text-5xl text-bone mt-4 leading-tight">{title}</h2>
+        <p className="text-bone/80 mt-6 text-lg font-light leading-relaxed">{story || stop.story}</p>
+        <div className="mt-5 flex flex-wrap gap-2 text-[10px] uppercase tracking-[0.15em] text-bone/45">
+          {stop.era && <span className="rounded-full border border-bone/15 px-3 py-1">{era || stop.era}</span>}
+          {stop.place && <span className="rounded-full border border-bone/15 px-3 py-1">{place || stop.place}</span>}
+          {Number.isFinite(stop.year) && <span className="rounded-full border border-gold/20 px-3 py-1 text-gold/75">{formatYear(stop.year, t)}</span>}
+        </div>
+        {stop.link?.to && (
+          <Link
+            to={stop.link.to}
+            className="inline-flex items-center gap-3 mt-8 px-6 py-3 border border-gold/40 text-gold text-xs uppercase tracking-[0.25em] hover:bg-gold hover:text-ebony transition-colors"
+            data-testid={`journey-link-${stop.id}`}
+          >
+            {linkLabel || stop.link.label} <ArrowRight size={14} />
+          </Link>
+        )}
+      </div>
+      <div className={`relative aspect-[4/3] overflow-hidden ${index % 2 === 0 ? "" : "lg:order-1"}`}>
+        <SmartImage src={stop.image_url} wikipediaTitle={stop.wikipedia_title} alt={title || displayedHeading} wrapperClassName="absolute inset-0" className="h-full w-full object-cover" credit={stop.image_credit} sourceUrl={stop.image_source_url} />
+        <div className="absolute inset-0 bg-gradient-to-tr from-ebony/70 to-transparent" />
+        {(stop.image_credit || stop.image_source_url) && (
+          <div className="absolute bottom-3 left-3 right-3 rounded-lg bg-ebony/80 px-3 py-2 text-[10px] text-bone/55 backdrop-blur-sm">
+            {stop.image_credit && <span>{stop.image_credit}</span>}
+            {stop.image_source_url && <a href={stop.image_source_url} target="_blank" rel="noreferrer" className="ml-2 text-gold/85 underline underline-offset-2">{copy.sourceRights}</a>}
+          </div>
+        )}
+      </div>
+    </motion.section>
+  );
+};
+
+const JourneyIntro = ({ journey }) => {
+  const title = useTranslated(journey.title || "");
+  const subtitle = useTranslated(journey.subtitle || "");
+  const blurb = useTranslated(journey.blurb || "");
   const { t } = useI18n();
+
+  return (
+    <section className="pt-32 pb-16 max-w-4xl mx-auto px-6 text-center">
+      <p className="overline">{t("journey.overline")}</p>
+      <h1 className="font-serif text-5xl md:text-7xl text-bone mt-4 tracking-tight leading-[0.95]">{title || journey.title}</h1>
+      <p className="font-serif italic text-2xl text-gold mt-5">{subtitle || journey.subtitle}</p>
+      <p className="text-bone/70 mt-8 font-light leading-relaxed max-w-2xl mx-auto">{blurb || journey.blurb}</p>
+    </section>
+  );
+};
+
+const Journey = () => {
+  const { t, lang } = useI18n();
   const [j, setJ] = useState(null);
+  const copy = COPY[lang] || COPY.en;
   useEffect(() => { fetchJourney().then(setJ).catch(() => {}); }, []);
   if (!j) return <div className="pt-32 text-center text-bone/40 overline">{t("common.loading")}</div>;
 
   return (
     <div data-testid="journey-page">
-      <section className="pt-32 pb-16 max-w-4xl mx-auto px-6 text-center">
-        <p className="overline">{t("journey.overline")}</p>
-        <h1 className="font-serif text-5xl md:text-7xl text-bone mt-4 tracking-tight leading-[0.95]">{j.title}</h1>
-        <p className="font-serif italic text-2xl text-gold mt-5">{j.subtitle}</p>
-        <p className="text-bone/70 mt-8 font-light leading-relaxed max-w-2xl mx-auto">{j.blurb}</p>
-      </section>
+      <JourneyIntro journey={j} />
 
       <div className="max-w-[1400px] mx-auto px-6 md:px-10 pb-24">
         <section className="grid gap-4 md:grid-cols-3 mb-10">
           <Link to="/timeline" className="rounded-xl border border-gold/20 bg-gold/[0.04] p-5 transition hover:border-gold/50">
-            <p className="overline text-gold">Dans le temps</p>
-            <p className="mt-2 font-serif text-xl text-bone">Chronologie complète</p>
-            <p className="mt-2 text-xs leading-5 text-bone/50">Quitter le récit guidé pour explorer librement les périodes et événements.</p>
+            <p className="overline text-gold">{copy.timeLabel}</p>
+            <p className="mt-2 font-serif text-xl text-bone">{copy.timeTitle}</p>
+            <p className="mt-2 text-xs leading-5 text-bone/50">{copy.timeCopy}</p>
           </Link>
           <Link to="/atlas" className="rounded-xl border border-bone/10 bg-bone/[0.025] p-5 transition hover:border-gold/40">
-            <p className="overline">Dans l’espace</p>
-            <p className="mt-2 font-serif text-xl text-bone">Atlas interactif</p>
-            <p className="mt-2 text-xs leading-5 text-bone/50">Situer chaque étape, route, société et déplacement sur la carte Equal Earth.</p>
+            <p className="overline">{copy.spaceLabel}</p>
+            <p className="mt-2 font-serif text-xl text-bone">{copy.spaceTitle}</p>
+            <p className="mt-2 text-xs leading-5 text-bone/50">{copy.spaceCopy}</p>
           </Link>
           <Link to="/civilizations" className="rounded-xl border border-bone/10 bg-bone/[0.025] p-5 transition hover:border-gold/40">
-            <p className="overline">Approfondir</p>
-            <p className="mt-2 font-serif text-xl text-bone">Civilisations</p>
-            <p className="mt-2 text-xs leading-5 text-bone/50">Explorer les formations historiques rencontrées dans le parcours.</p>
+            <p className="overline">{copy.deepenLabel}</p>
+            <p className="mt-2 font-serif text-xl text-bone">{copy.deepenTitle}</p>
+            <p className="mt-2 text-xs leading-5 text-bone/50">{copy.deepenCopy}</p>
           </Link>
         </section>
 
-        {sortChronologically(j.stops, "year", "heading").map((s, i) => (
-          <motion.section
-            key={s.id}
-            initial={{ opacity: 0, y: 40 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, margin: "-100px" }}
-            transition={{ duration: 1 }}
-            className="grid lg:grid-cols-2 gap-12 items-center py-16 border-t border-[#2A2421]"
-            data-testid={`journey-stop-${s.id}`}
-          >
-            <div className={i % 2 === 0 ? "" : "lg:order-2"}>
-              <p className="font-serif text-7xl text-gold/30 leading-none">{s.heading.split(".")[0]}</p>
-              <p className="overline mt-4">{s.era} · {s.place}</p>
-              <h2 className="font-serif text-4xl md:text-5xl text-bone mt-4 leading-tight">{s.heading.split(".").slice(1).join(".").trim()}</h2>
-              <p className="text-bone/80 mt-6 text-lg font-light leading-relaxed">{s.story}</p>
-              <div className="mt-5 flex flex-wrap gap-2 text-[10px] uppercase tracking-[0.15em] text-bone/45">
-                {s.era && <span className="rounded-full border border-bone/15 px-3 py-1">{s.era}</span>}
-                {s.place && <span className="rounded-full border border-bone/15 px-3 py-1">{s.place}</span>}
-                {Number.isFinite(s.year) && <span className="rounded-full border border-gold/20 px-3 py-1 text-gold/75">{s.year < 0 ? `${Math.abs(s.year)} av. J.-C.` : s.year}</span>}
-              </div>
-              <Link
-                to={s.link.to}
-                className="inline-flex items-center gap-3 mt-8 px-6 py-3 border border-gold/40 text-gold text-xs uppercase tracking-[0.25em] hover:bg-gold hover:text-ebony transition-colors"
-                data-testid={`journey-link-${s.id}`}
-              >
-                {s.link.label} <ArrowRight size={14} />
-              </Link>
-            </div>
-            <div className={`relative aspect-[4/3] overflow-hidden ${i % 2 === 0 ? "" : "lg:order-1"}`}>
-              <SmartImage src={s.image_url} wikipediaTitle={s.wikipedia_title} alt={s.heading} wrapperClassName="absolute inset-0" className="h-full w-full object-cover" credit={s.image_credit} sourceUrl={s.image_source_url} />
-              <div className="absolute inset-0 bg-gradient-to-tr from-ebony/70 to-transparent" />
-              {(s.image_credit || s.image_source_url) && (
-                <div className="absolute bottom-3 left-3 right-3 rounded-lg bg-ebony/80 px-3 py-2 text-[10px] text-bone/55 backdrop-blur-sm">
-                  {s.image_credit && <span>{s.image_credit}</span>}
-                  {s.image_source_url && <a href={s.image_source_url} target="_blank" rel="noreferrer" className="ml-2 text-gold/85 underline underline-offset-2">source / droits</a>}
-                </div>
-              )}
-            </div>
-          </motion.section>
+        {sortChronologically(j.stops || [], "year", "heading").map((stop, index) => (
+          <JourneyStop key={stop.id} stop={stop} index={index} t={t} copy={copy} />
         ))}
 
         <div className="text-center mt-24">
