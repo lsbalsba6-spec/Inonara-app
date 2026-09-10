@@ -16,12 +16,16 @@ function SourceLinks({ ids = [], sourceMap }) {
   );
 }
 
+function TranslatedDetail({ text }) {
+  const translated = useTranslated(text || "");
+  return <p className="mt-3 text-sm leading-6 text-bone/62">{translated || text}</p>;
+}
+
 function HistoryChapter({ chapter, index, expanded, onToggle, sourceMap, labels }) {
   const translatedPeriod = useTranslated(chapter.period || "");
   const translatedTitle = useTranslated(chapter.title || "");
   const translatedSummary = useTranslated(chapter.summary || "");
   const translatedStatus = useTranslated(chapter.status || "");
-  const translatedDetails = (chapter.details || []).map((item) => useTranslated(item || ""));
   const id = chapter.id || `history-${index}`;
 
   return (
@@ -38,7 +42,7 @@ function HistoryChapter({ chapter, index, expanded, onToggle, sourceMap, labels 
       {expanded && (
         <div className="mt-4 border-t border-bone/10 pt-4">
           {chapter.summary && <p className="leading-7 text-bone/75">{translatedSummary || chapter.summary}</p>}
-          {translatedDetails.map((item, i) => <p key={i} className="mt-3 text-sm leading-6 text-bone/62">{item || chapter.details[i]}</p>)}
+          {(chapter.details || []).map((item, i) => <TranslatedDetail key={`${id}-detail-${i}`} text={item} />)}
           {chapter.status && <p className="mt-4 text-[10px] uppercase tracking-[.14em] text-bone/35">{labels.editorialStatus}: {translatedStatus || chapter.status}</p>}
           <SourceLinks ids={chapter.sources || []} sourceMap={sourceMap} />
         </div>
