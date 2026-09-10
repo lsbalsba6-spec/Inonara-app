@@ -39,6 +39,11 @@ function FactCard({ label, value }) {
   );
 }
 
+function TranslatedInline({ value }) {
+  const translated = useTranslated(value || "");
+  return translated || value;
+}
+
 function TranslatedText({ value, className = "" }) {
   const translated = useTranslated(value || "");
   if (!value) return null;
@@ -60,7 +65,7 @@ export function SouthAfricaOverview({ dossier, sourceMap }) {
       <section className="grid gap-6 lg:grid-cols-[1.35fr_0.65fr]">
         <div className="rounded-2xl border border-gold/20 bg-gradient-to-br from-gold/[0.08] via-bone/[0.025] to-transparent p-6 md:p-8">
           <p className="overline text-gold">{copy.identity}</p>
-          <h2 className="mt-3 font-serif text-3xl text-bone md:text-4xl"><TranslatedText value={heading} /></h2>
+          <h2 className="mt-3 font-serif text-3xl text-bone md:text-4xl"><TranslatedInline value={heading} /></h2>
           <TranslatedText value={dossier.overview?.summary} className="mt-4 max-w-3xl text-base leading-8 text-bone/75" />
           <div className="mt-6 grid gap-3 sm:grid-cols-2 xl:grid-cols-4">
             {facts.map((item) => <FactCard key={item.label} label={item.label} value={item.value} />)}
