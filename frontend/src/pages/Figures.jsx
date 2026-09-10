@@ -12,6 +12,8 @@ const API = `${process.env.REACT_APP_BACKEND_URL}/api`;
 const CATEGORIES = ["all", "queens", "kings", "military", "scientists", "inventors", "civil_rights", "intellectuals", "artists", "athletes"];
 
 const FigureCard = ({ f, t }) => {
+  const translatedSummary = useTranslated(f.summary || "");
+  const translatedEra = useTranslated(f.era || "");
   return (
     <Link to={`/figure/${f.id}`} data-testid={`figure-card-${f.id}`} className="museum-card relative overflow-hidden group aspect-[3/4]">
       <SmartImage src={f.image_url} wikipediaTitle={f.wikipedia_title} alt={f.name} wrapperClassName="absolute inset-0" className="h-full w-full object-cover opacity-55 transition-all duration-1000 group-hover:scale-105 group-hover:opacity-80" credit={f.image_credit} sourceUrl={f.image_source_url} />
@@ -19,8 +21,8 @@ const FigureCard = ({ f, t }) => {
       <div className="relative h-full p-6 flex flex-col justify-end">
         <p className="overline text-[0.6rem]">{t(`figures.${f.category}`)}</p>
         <h3 className="font-serif text-2xl text-bone mt-2 leading-tight group-hover:text-gold transition-colors">{f.name}</h3>
-        <p className="text-gold text-[0.7rem] uppercase tracking-[0.18em] mt-1">{f.era}</p>
-        <p className="text-bone/70 text-xs font-light mt-2 line-clamp-3">{f.summary}</p>
+        <p className="text-gold text-[0.7rem] uppercase tracking-[0.18em] mt-1">{translatedEra || f.era}</p>
+        <p className="text-bone/70 text-xs font-light mt-2 line-clamp-3">{translatedSummary || f.summary}</p>
       </div>
     </Link>
   );
@@ -102,6 +104,7 @@ export const FigureDetail = () => {
   const tSummary = useTranslated(f?.summary || "");
   const tStory = useTranslated(f?.story || "");
   const tLegacy = useTranslated(f?.legacy || "");
+  const tEra = useTranslated(f?.era || "");
   if (!f) return <div className="pt-32 text-center text-bone/40 overline">{t("common.loading")}</div>;
   return (
     <div data-testid="figure-detail">
@@ -114,7 +117,7 @@ export const FigureDetail = () => {
           </Link>
           <p className="overline">{t(`figures.${f.category}`)} · {t(`region.${f.region}`)}</p>
           <h1 className="font-serif text-5xl md:text-7xl text-bone mt-3 leading-[0.95] tracking-tight">{f.name}</h1>
-          <p className="text-gold text-sm uppercase tracking-[0.25em] mt-4">{f.era}</p>
+          <p className="text-gold text-sm uppercase tracking-[0.25em] mt-4">{tEra || f.era}</p>
           <p className="text-bone/80 mt-6 max-w-2xl text-lg font-light leading-relaxed">{tSummary || f.summary}</p>
         </div>
       </div>
