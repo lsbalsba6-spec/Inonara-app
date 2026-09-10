@@ -3,11 +3,17 @@ import { fetchCulture } from "../lib/api";
 import { useI18n } from "../i18n";
 import { sortAlphabetically } from "../lib/contentSort";
 import { SmartImage } from "../components/SmartImage";
+import { Translated } from "../lib/useTranslated";
 
 const categories = ["all", "food", "music", "clothing", "language", "ritual", "proverbs", "spiritual"];
 
+const CATEGORY_COPY = {
+  en: { all: "All", food: "Food", music: "Music", clothing: "Clothing", language: "Language", ritual: "Ritual", proverbs: "Proverbs", spiritual: "Spirituality" },
+  fr: { all: "Tout", food: "Cuisine", music: "Musique", clothing: "Vêtements", language: "Langues", ritual: "Rituels", proverbs: "Proverbes", spiritual: "Spiritualité" },
+};
+
 const Culture = () => {
-  const { t } = useI18n();
+  const { t, lang } = useI18n();
   const [items, setItems] = useState([]);
   const [cat, setCat] = useState("all");
   const [query, setQuery] = useState("");
@@ -24,6 +30,7 @@ const Culture = () => {
 
   const regions = useMemo(() => new Set(items.map((i) => i.region).filter(Boolean)).size, [items]);
   const illustrated = useMemo(() => items.filter((i) => i.image_url || i.wikipedia_title).length, [items]);
+  const categoryCopy = CATEGORY_COPY[lang] || CATEGORY_COPY.en;
 
   return (
     <div className="pt-32 pb-24 max-w-[1600px] mx-auto px-6 md:px-10" data-testid="culture-page">
@@ -61,7 +68,7 @@ const Culture = () => {
             }`}
             data-testid={`culture-filter-${c}`}
           >
-            {c}
+            {categoryCopy[c] || c}
           </button>
         ))}
         </div>
@@ -70,16 +77,18 @@ const Culture = () => {
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mt-10">
         {filtered.map((i) => (
-          <div key={i.id} className="museum-card overflow-hidden" data-testid={`culture-item-${i.id}`}><SmartImage src={i.image_url} wikipediaTitle={i.wikipedia_title} alt={i.title} wrapperClassName="aspect-[16/10]" className="h-full w-full object-cover transition duration-700 hover:scale-105" credit={i.image_credit} sourceUrl={i.image_source_url} /><div className="p-7">
-            <p className="overline text-[0.65rem]">{i.category} · {i.region}</p>
-            <h3 className="font-serif text-2xl text-bone mt-3">{i.title}</h3>
-            <p className="text-bone/75 mt-3 font-light leading-relaxed text-sm">{i.blurb}</p>
-            {(i.image_credit || i.image_source_url) && (
-              <div className="mt-5 border-t border-bone/10 pt-3 text-[11px] text-bone/45">
-                {i.image_credit && <p>{t("culture.image.credit")} : {i.image_credit}</p>}
-                {i.image_source_url && <a href={i.image_source_url} target="_blank" rel="noreferrer" className="mt-2 inline-flex text-gold/80 underline underline-offset-2">{t("culture.image.rights")}</a>}
-              </div>
-            )}
+          <div key={i.id} className="museum-card overflow-hidden" data-testid={`culture-item-${i.id}`}>
+            <SmartImage src={i.image_url} wikipediaTitle={i.wikipedia_title} alt={i.title} wrapperClassName="aspect-[16/10]" className="h-full w-full object-cover transition duration-700 hover:scale-105" credit={i.image_credit} sourceUrl={i.image_source_url} />
+            <div className="p-7">
+              <p className="overline text-[0.65rem]"><span>{categoryCopy[i.category] || i.category}</span> · <Translated>{i.region || ""}</Translated></p>
+              <Translated as="h3" className="font-serif text-2xl text-bone mt-3">{i.title || ""}</Translated>
+              <Translated as="p" className="text-bone/75 mt-3 font-light leading-relaxed text-sm">{i.blurb || ""}</Translated>
+              {(i.image_credit || i.image_source_url) && (
+                <div className="mt-5 border-t border-bone/10 pt-3 text-[11px] text-bone/45">
+                  {i.image_credit && <p>{t("culture.image.credit")} : {i.image_credit}</p>}
+                  {i.image_source_url && <a href={i.image_source_url} target="_blank" rel="noreferrer" className="mt-2 inline-flex text-gold/80 underline underline-offset-2">{t("culture.image.rights")}</a>}
+                </div>
+              )}
             </div>
           </div>
         ))}
