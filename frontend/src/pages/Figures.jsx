@@ -1,5 +1,5 @@
 import { useEffect, useState, useMemo } from "react";
-import { Link, useParams } from "react-router-dom";
+import { Link, useParams, useSearchParams } from "react-router-dom";
 import { ArrowLeft } from "lucide-react";
 import axios from "axios";
 import { useI18n } from "../i18n";
@@ -30,10 +30,24 @@ const FigureCard = ({ f, t }) => {
 
 export const FiguresList = () => {
   const { t } = useI18n();
+  const [searchParams, setSearchParams] = useSearchParams();
   const [items, setItems] = useState([]);
   const [cat, setCat] = useState("all");
-  const [query, setQuery] = useState("");
+  const [query, setQuery] = useState(() => searchParams.get("q") || "");
   useEffect(() => { axios.get(`${API}/figures`).then((r) => setItems(r.data)).catch(() => {}); }, []);
+  useEffect(() => {
+    const urlQuery = searchParams.get("q") || "";
+    setQuery((current) => current === urlQuery ? current : urlQuery);
+  }, [searchParams]);
+
+  const updateQuery = (value) => {
+    setQuery(value);
+    const next = new URLSearchParams(searchParams);
+    if (value.trim()) next.set("q", value);
+    else next.delete("q");
+    setSearchParams(next, { replace: true });
+  };
+
   const filtered = useMemo(() => {
     const needle = query.trim().toLowerCase();
     const base = cat === "all" ? items : items.filter((i) => i.category === cat);
@@ -71,12 +85,13 @@ export const FiguresList = () => {
       </section>
 
       <section className="mt-10 rounded-2xl border border-bone/10 bg-bone/[0.02] p-5">
-        <input value={query} onChange={(event) => setQuery(event.target.value)} placeholder={t("figures.search.placeholder")} className="w-full rounded-xl border border-bone/15 bg-ebony px-4 py-3 text-sm text-bone outline-none placeholder:text-bone/35 focus:border-gold/50" />
+        <input value={query} onChange={(event) => updateQuery(event.target.value)} placeholder={t("figures.search.placeholder")} aria-label={t("figures.search.placeholder")} className="w-full rounded-xl border border-bone/15 bg-ebony px-4 py-3 text-sm text-bone outline-none placeholder:text-bone/35 focus:border-gold/50" />
         <div className="flex flex-wrap gap-2 mt-4" data-testid="figures-filters">
         {CATEGORIES.map((c) => (
           <button
             key={c}
             onClick={() => setCat(c)}
+            aria-pressed={cat === c}
             className={`px-4 py-2 text-xs uppercase tracking-[0.2em] border transition-colors ${
               cat === c ? "bg-gold text-ebony border-gold" : "border-[#2A2421] text-bone/70 hover:border-gold/50"
             }`}
