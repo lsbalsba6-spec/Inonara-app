@@ -3,27 +3,53 @@ import { useNavigate } from "react-router-dom";
 import { Search } from "lucide-react";
 import { search } from "../lib/api";
 import { useI18n } from "../i18n";
+import { useTranslated } from "../lib/useTranslated";
+
+const TYPE_LABELS = {
+  en: {
+    Civilization: "Civilization",
+    Figure: "Figure",
+    Diaspora: "Diaspora",
+    Module: "Module",
+    Story: "Story",
+    Culture: "Culture",
+  },
+  fr: {
+    Civilization: "Civilisation",
+    Figure: "Personnalité",
+    Diaspora: "Diaspora",
+    Module: "Module",
+    Story: "Histoire",
+    Culture: "Culture",
+  },
+};
 
 const flatten = (results) => {
   if (!results) return [];
   const out = [];
-  results.civilizations.slice(0, 3).forEach((c) => out.push({ type: "Civilization", title: c.name, to: `/civilization/${c.id}` }));
+  (results.civilizations || []).slice(0, 3).forEach((c) => out.push({ type: "Civilization", title: c.name, to: `/civilization/${c.id}` }));
   (results.figures || []).slice(0, 4).forEach((f) => out.push({ type: "Figure", title: f.name, to: `/figure/${f.id}` }));
   (results.diaspora || []).slice(0, 3).forEach((d) => out.push({ type: "Diaspora", title: d.name, to: `/diaspora/${d.id}` }));
-  results.modules.slice(0, 2).forEach((m) => out.push({ type: "Module", title: m.title, to: `/module/${m.id}` }));
-  results.stories.slice(0, 2).forEach((s) => out.push({ type: "Story", title: s.title, to: `/story/${s.id}` }));
-  results.culture.slice(0, 2).forEach((i) => out.push({ type: "Culture", title: i.title, to: `/search?q=${encodeURIComponent(i.title)}` }));
+  (results.modules || []).slice(0, 2).forEach((m) => out.push({ type: "Module", title: m.title, to: `/module/${m.id}` }));
+  (results.stories || []).slice(0, 2).forEach((s) => out.push({ type: "Story", title: s.title, to: `/story/${s.id}` }));
+  (results.culture || []).slice(0, 2).forEach((i) => out.push({ type: "Culture", title: i.title, to: `/search?q=${encodeURIComponent(i.title)}` }));
   return out;
 };
 
+function TranslatedTitle({ value }) {
+  const translated = useTranslated(value || "");
+  return translated || value || null;
+}
+
 export const HeaderSearch = () => {
-  const { t } = useI18n();
+  const { t, lang } = useI18n();
   const [open, setOpen] = useState(false);
   const [q, setQ] = useState("");
   const [items, setItems] = useState([]);
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
   const wrapRef = useRef(null);
+  const typeLabels = TYPE_LABELS[lang] || TYPE_LABELS.en;
 
   useEffect(() => {
     const onDoc = (e) => { if (wrapRef.current && !wrapRef.current.contains(e.target)) setOpen(false); };
@@ -58,7 +84,7 @@ export const HeaderSearch = () => {
       {!open ? (
         <button
           onClick={() => setOpen(true)}
-          aria-label="Open search"
+          aria-label={t("headerSearch.open")}
           className="text-bone/70 hover:text-gold transition-colors"
           data-testid="header-search-toggle"
         >
@@ -91,8 +117,8 @@ export const HeaderSearch = () => {
                     className="w-full text-left px-4 py-3 hover:bg-[#1A1614] border-b border-[#2A2421] last:border-b-0"
                     data-testid="header-search-result"
                   >
-                    <p className="overline text-[0.6rem]">{it.type}</p>
-                    <p className="text-bone text-sm mt-1">{it.title}</p>
+                    <p className="overline text-[0.6rem]">{typeLabels[it.type] || it.type}</p>
+                    <p className="text-bone text-sm mt-1"><TranslatedTitle value={it.title} /></p>
                   </button>
                 </li>
               ))}
