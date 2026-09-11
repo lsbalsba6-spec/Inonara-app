@@ -3,22 +3,22 @@ import { Link, useParams } from "react-router-dom";
 import { fetchStories, fetchStory } from "../lib/api";
 import { ArrowLeft, BookOpen, Volume2 } from "lucide-react";
 import { useI18n } from "../i18n";
-import { sortChronologically } from "../lib/contentSort";
+import { searchableText, sortChronologically } from "../lib/contentSort";
 import { SmartImage } from "../components/SmartImage";
 import { Translated } from "../lib/useTranslated";
 
 export const StoriesList = () => {
-  const { t } = useI18n();
+  const { t, lang } = useI18n();
   const [stories, setStories] = useState([]);
   const [query, setQuery] = useState("");
   useEffect(() => { fetchStories().then(setStories).catch(() => {}); }, []);
   const visible = useMemo(() => {
-    const needle = query.trim().toLowerCase();
+    const needle = query.trim().toLocaleLowerCase(lang === "fr" ? "fr" : "en");
     return sortChronologically(stories.filter((s) => {
-      const haystack = `${s.title || ""} ${s.summary || ""} ${s.era || ""}`.toLowerCase();
+      const haystack = searchableText(s.title, s.summary, s.era);
       return !needle || haystack.includes(needle);
     }), "era", "title");
-  }, [stories, query]);
+  }, [stories, query, lang]);
   const illustrated = useMemo(() => stories.filter((s) => s.image_url || s.wikipedia_title).length, [stories]);
   return (
     <div className="pt-32 pb-24 max-w-[1600px] mx-auto px-6 md:px-10" data-testid="stories-page">
@@ -122,7 +122,7 @@ export const StoryDetail = () => {
       {s.sources?.length > 0 && (
         <div className="mt-20 border-t border-[#2A2421] pt-10">
           <p className="overline">{t("common.sources")}</p>
-          <ul className="list-disc pl-5 space-y-2 mt-4 text-bone/70">{s.sources.map((src) => <Translated as="li" key={src}>{src}</Translated>)}</ul>
+          <ul className="list-disc pl-5 space-y-2 mt-4 text-bone/70">{s.sources.map((src, index) => <Translated as="li" key={src?.id || src?.url || index}>{src}</Translated>)}</ul>
         </div>
       )}
     </div>
