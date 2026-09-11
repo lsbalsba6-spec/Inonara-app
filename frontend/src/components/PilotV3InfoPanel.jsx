@@ -9,6 +9,8 @@ const COPY = {
     status: "Status",
     historiography: "Historiographic phase",
     sources: "Sources",
+    author: "Author",
+    license: "License",
     statuses: {
       ready: "Established",
       provisional: "Provisional",
@@ -22,6 +24,8 @@ const COPY = {
     status: "Statut",
     historiography: "Phase historiographique",
     sources: "Sources",
+    author: "Auteur",
+    license: "Licence",
     statuses: {
       ready: "Établi",
       provisional: "Provisoire",
@@ -52,6 +56,26 @@ function Badge({ status, copy }) {
     >
       {copy.statuses[status] || status}
     </span>
+  );
+}
+
+function SourceItem({ source, copy, index }) {
+  const label = <><span>[<TranslatedInline value={source.category} />]</span>{" "}<TranslatedInline value={source.label || source.title} /></>;
+  return (
+    <div className="text-[0.65rem] text-bone/70" data-testid={`pilot-v3-source-${index}`}>
+      {source.url ? (
+        <a href={source.url} target="_blank" rel="noreferrer" className="text-gold/80 hover:text-gold underline underline-offset-2">
+          {label}
+        </a>
+      ) : label}
+      {(source.author || source.license) && (
+        <p className="mt-0.5 text-[0.58rem] text-bone/45">
+          {source.author && <>{copy.author}: <TranslatedInline value={source.author} /></>}
+          {source.author && source.license && <span> · </span>}
+          {source.license && <>{copy.license}: <TranslatedInline value={source.license} /></>}
+        </p>
+      )}
+    </div>
   );
 }
 
@@ -124,11 +148,11 @@ export default function PilotV3InfoPanel({ marker, onClose }) {
 
       <div className="border-t border-[#2A2421] pt-2 mt-2">
         <p className="text-[0.6rem] text-bone/50 mb-1">{copy.sources}</p>
-        {(activeNames[0]?.sources || []).map((source, index) => (
-          <p key={index} className="text-[0.65rem] text-bone/70">
-            [<TranslatedInline value={source.category} />] <TranslatedInline value={source.label} />
-          </p>
-        ))}
+        <div className="space-y-1.5">
+          {(activeNames[0]?.sources || []).map((source, index) => (
+            <SourceItem key={source.id || source.url || index} source={source} copy={copy} index={index} />
+          ))}
+        </div>
       </div>
     </div>
   );
