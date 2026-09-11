@@ -1,5 +1,6 @@
 import { useI18n } from "../i18n";
 import { useTranslated } from "../lib/useTranslated";
+import { localizedText } from "../lib/contentSort";
 
 const COPY = {
   en: {
@@ -30,12 +31,12 @@ const COPY = {
 
 function Translated({ text, as: Tag = "span", className = "" }) {
   const translated = useTranslated(text || "");
-  return <Tag className={className}>{translated || text}</Tag>;
+  return <Tag className={className}>{translated || localizedText(text)}</Tag>;
 }
 
 function TranslatedImage({ src, alt, className = "" }) {
   const translatedAlt = useTranslated(alt || "");
-  return <img src={src} alt={translatedAlt || alt || ""} className={className} />;
+  return <img src={src} alt={translatedAlt || localizedText(alt)} className={className} />;
 }
 
 function FactCard({ label, value }) {
@@ -45,6 +46,11 @@ function FactCard({ label, value }) {
       <Translated text={value} as="p" className="mt-2 text-sm leading-relaxed text-bone/85" />
     </div>
   );
+}
+
+function SourcePublisher({ value }) {
+  const translated = useTranslated(value || "");
+  return translated || localizedText(value);
 }
 
 export function CountryOverview({ dossier, sourceMap = new Map() }) {
@@ -69,8 +75,8 @@ export function CountryOverview({ dossier, sourceMap = new Map() }) {
           <Translated text={dossier?.overview?.summary} as="p" className="mt-4 max-w-3xl text-base leading-8 text-bone/75" />
           {facts.length > 0 && (
             <div className="mt-6 grid gap-3 sm:grid-cols-2 xl:grid-cols-4">
-              {facts.map((item) => (
-                <FactCard key={item.label} label={item.label} value={item.value} />
+              {facts.map((item, index) => (
+                <FactCard key={item.id || `${localizedText(item.label)}-${index}`} label={item.label} value={item.value} />
               ))}
             </div>
           )}
@@ -144,7 +150,7 @@ export function CountryOverview({ dossier, sourceMap = new Map() }) {
             ))}
             {overviewSources.slice(0, 4).map((source) => (
               <a key={source.id} href={source.url} target="_blank" rel="noreferrer" className="rounded-full border border-bone/15 px-4 py-2 text-xs text-bone/65">
-                {source.publisher}
+                <SourcePublisher value={source.publisher} />
               </a>
             ))}
           </div>
