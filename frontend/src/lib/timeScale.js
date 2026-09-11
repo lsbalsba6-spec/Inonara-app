@@ -113,19 +113,29 @@ export function modeForYear(year) {
 }
 
 /**
- * Human-readable era label for a given year (French).
+ * Human-readable era label for a given year.
+ * Defaults to French for backward compatibility with existing callers.
  * @param {number} year
+ * @param {"fr"|"en"} [lang="fr"]
  * @returns {string}
  */
-export function eraLabel(year) {
+export function eraLabel(year, lang = "fr") {
+  const isFrench = lang === "fr";
+  const locale = isFrench ? "fr-FR" : "en-US";
+
   if (year <= -1000000) {
     const millions = Math.abs(year) / 1000000;
-    return `il y a ${millions.toLocaleString("fr-FR", { maximumFractionDigits: 1 })} millions d'années`;
+    const value = millions.toLocaleString(locale, { maximumFractionDigits: 1 });
+    return isFrench ? `il y a ${value} millions d'années` : `${value} million years ago`;
   }
   if (year <= -10000) {
-    return `il y a ${Math.abs(year).toLocaleString("fr-FR")} ans`;
+    const value = Math.abs(year).toLocaleString(locale);
+    return isFrench ? `il y a ${value} ans` : `${value} years ago`;
   }
-  return year < 0 ? `${Math.abs(year)} av. J.-C.` : `${year} apr. J.-C.`;
+  if (year < 0) {
+    return isFrench ? `${Math.abs(year)} av. J.-C.` : `${Math.abs(year)} BCE`;
+  }
+  return isFrench ? `${year} apr. J.-C.` : `${year} CE`;
 }
 
 const VISIBLE_LAYERS_BY_MODE = {
@@ -162,9 +172,10 @@ const PRECISION_BY_MODE = {
  * against `.year`).
  *
  * @param {number} sliderValue
+ * @param {"fr"|"en"} [lang="fr"]
  * @returns {TimelinePosition}
  */
-export function getTimelinePosition(sliderValue) {
+export function getTimelinePosition(sliderValue, lang = "fr") {
   const clampedSlider = clamp(sliderValue, SLIDER_MIN, SLIDER_MAX);
   const year = sliderToYear(clampedSlider);
   const mode = modeForYear(year);
@@ -175,6 +186,6 @@ export function getTimelinePosition(sliderValue) {
     precision: PRECISION_BY_MODE[mode],
     visibleLayers: VISIBLE_LAYERS_BY_MODE[mode],
     transitionStyle: TRANSITION_STYLE_BY_MODE[mode],
-    label: eraLabel(year),
+    label: eraLabel(year, lang),
   };
 }
