@@ -103,10 +103,15 @@ function boundsFor(routes) {
   return { minLon: Math.min(...lons) - padLon, maxLon: Math.max(...lons) + padLon, minLat: Math.min(...lats) - padLat, maxLat: Math.max(...lats) + padLat };
 }
 
-function TranslatedText({ value, className = "" }) {
+function TranslatedInline({ value }) {
   const translated = useTranslated(value || "");
   if (!value) return null;
-  return <p className={className}>{translated || value}</p>;
+  return translated || value;
+}
+
+function TranslatedText({ value, className = "" }) {
+  if (!value) return null;
+  return <p className={className}><TranslatedInline value={value} /></p>;
 }
 
 function MigrationMap({ routes, countryName, copy }) {
@@ -165,14 +170,24 @@ function MigrationMap({ routes, countryName, copy }) {
   );
 }
 
+function SourceLink({ source, fallbackLabel }) {
+  const publisher = useTranslated(source?.publisher || "");
+  const title = useTranslated(source?.title || "");
+  if (!source?.url) return null;
+  return (
+    <a href={source.url} target="_blank" rel="noreferrer" className="rounded-full border border-gold/25 px-3 py-1 text-[11px] text-gold/85 hover:bg-gold/10">
+      {publisher || source.publisher || fallbackLabel}: {title || source.title || source.id}
+    </a>
+  );
+}
+
 function SourceLinks({ ids = [], sourceMap, copy }) {
   if (!ids.length || !sourceMap) return null;
   return (
     <div className="mt-4 flex flex-wrap gap-2">
       {ids.map((id) => {
         const source = sourceMap.get(id);
-        if (!source?.url) return null;
-        return <a key={id} href={source.url} target="_blank" rel="noreferrer" className="rounded-full border border-gold/25 px-3 py-1 text-[11px] text-gold/85 hover:bg-gold/10">{source.publisher || copy.source}: {source.title || id}</a>;
+        return source?.url ? <SourceLink key={id} source={source} fallbackLabel={copy.source} /> : null;
       })}
     </div>
   );
@@ -206,22 +221,33 @@ export function CountryMigrations({ dossier = {}, sourceMap }) {
 
       <div className="grid gap-4">
         {visible.map((route, index) => {
-          const stableId = route.id || `${route.label || "route"}-${index}`;
+          const stableId = route.id || route.slug || `route-${index}`;
           const expanded = openId === stableId;
+          const panelId = `migration-detail-${stableId}`;
           return (
             <article key={stableId} className="rounded-2xl border border-bone/10 bg-bone/[.025] p-5">
-              <button type="button" onClick={() => setOpenId(expanded ? null : stableId)} className="flex w-full items-start justify-between gap-4 text-left">
+              <button
+                type="button"
+                onClick={() => setOpenId(expanded ? null : stableId)}
+                className="flex w-full items-start justify-between gap-4 text-left"
+                aria-expanded={expanded}
+                aria-controls={panelId}
+              >
                 <div>
                   <p className="text-[10px] uppercase tracking-[.16em] text-gold/75">{periodLabel(route, copy)} · {copy.types[routeType(route)] || routeType(route)}</p>
-                  <h3 className="mt-1 font-serif text-2xl text-bone">{route.label || route.title || copy.documented}</h3>
+                  <h3 className="mt-1 font-serif text-2xl text-bone"><TranslatedInline value={route.label || route.title || copy.documented} /></h3>
                 </div>
-                <span className="text-bone/40">{expanded ? "−" : "+"}</span>
+                <span className="text-bone/40" aria-hidden="true">{expanded ? "−" : "+"}</span>
               </button>
               {expanded && (
-                <div className="mt-4 border-t border-bone/10 pt-4">
+                <div id={panelId} className="mt-4 border-t border-bone/10 pt-4">
                   {route.summary && <TranslatedText value={route.summary} className="leading-7 text-bone/70" />}
                   {route.details?.map((detail, i) => <TranslatedText key={i} value={detail} className="mt-3 text-sm leading-6 text-bone/60" />)}
-                  {(route.origin || route.destination) && <p className="mt-4 text-xs text-bone/45">{route.origin || copy.originUnknown} → {route.destination || copy.destinationUnknown}</p>}
+                  {(route.origin || route.destination) && (
+                    <p className="mt-4 text-xs text-bone/45">
+                      <TranslatedInline value={route.origin || copy.originUnknown} /> → <TranslatedInline value={route.destination || copy.destinationUnknown} />
+                    </p>
+                  )}
                   <SourceLinks ids={route.sources || []} sourceMap={sourceMap} copy={copy} />
                 </div>
               )}
