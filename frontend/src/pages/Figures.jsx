@@ -5,7 +5,7 @@ import { fetchFigure, fetchFigures } from "../lib/api";
 import { useI18n } from "../i18n";
 import { useTranslated } from "../lib/useTranslated";
 import { SmartImage } from "../components/SmartImage";
-import { sortAlphabetically } from "../lib/contentSort";
+import { searchableText, sortAlphabetically } from "../lib/contentSort";
 
 const CATEGORIES = ["all", "queens", "kings", "military", "scientists", "inventors", "civil_rights", "intellectuals", "artists", "athletes"];
 
@@ -47,10 +47,10 @@ export const FiguresList = () => {
   };
 
   const filtered = useMemo(() => {
-    const needle = query.trim().toLowerCase();
+    const needle = query.trim().toLocaleLowerCase("fr");
     const base = cat === "all" ? items : items.filter((i) => i.category === cat);
     return sortAlphabetically(base.filter((i) => {
-      const haystack = `${i.name || ""} ${i.summary || ""} ${i.region || ""} ${i.era || ""} ${i.category || ""}`.toLowerCase();
+      const haystack = searchableText(i.name, i.summary, i.region, i.era, i.category);
       return !needle || haystack.includes(needle);
     }), "name");
   }, [items, cat, query]);
