@@ -2,7 +2,8 @@ import { useEffect, useMemo, useState } from "react";
 import { Link, useSearchParams } from "react-router-dom";
 import { fetchCivilizations } from "../lib/api";
 import { useI18n } from "../i18n";
-import { sortChronologically } from "../lib/contentSort";
+import { searchableText, sortChronologically } from "../lib/contentSort";
+import { useTranslated } from "../lib/useTranslated";
 import { SmartImage } from "../components/SmartImage";
 
 const fmt = (y, t) => (y < 0 ? `${Math.abs(y)} ${t("date.bce")}` : `${y} ${t("date.ce")}`);
@@ -32,6 +33,17 @@ const CONNECTION_COPY = {
   },
 };
 
+function LocalizedText({ value, as: Tag = "span", className = "" }) {
+  const translated = useTranslated(value || "");
+  if (!value && !translated) return null;
+  return <Tag className={className}>{translated || ""}</Tag>;
+}
+
+function LocalizedImage({ alt, ...props }) {
+  const translatedAlt = useTranslated(alt || "");
+  return <SmartImage {...props} alt={translatedAlt || ""} />;
+}
+
 const Civilizations = () => {
   const { t, lang } = useI18n();
   const [searchParams, setSearchParams] = useSearchParams();
@@ -54,19 +66,19 @@ const Civilizations = () => {
     setSearchParams(next, { replace: true });
   };
 
-  const regions = useMemo(() => [...new Set(civs.map((c) => c.region).filter(Boolean))].sort(), [civs]);
+  const regions = useMemo(() => [...new Set(civs.map((c) => c.region).filter((value) => typeof value === "string"))].sort(), [civs]);
   const visible = useMemo(() => {
-    const needle = query.trim().toLowerCase();
+    const needle = query.trim().toLocaleLowerCase(lang === "fr" ? "fr" : "en");
     return sortChronologically(
       civs.filter((c) => {
         const matchesRegion = region === "all" || c.region === region;
-        const haystack = `${c.name || ""} ${c.summary || ""} ${c.region || ""}`.toLowerCase();
+        const haystack = searchableText(c.name, c.summary, c.region, c.alt_names, c.legacy);
         return matchesRegion && (!needle || haystack.includes(needle));
       }),
       "era_start",
       "name"
     );
-  }, [civs, region, query]);
+  }, [civs, region, query, lang]);
 
   const earliest = civs.length ? Math.min(...civs.map((c) => c.era_start).filter(Number.isFinite)) : null;
   const latest = civs.length ? Math.max(...civs.map((c) => c.era_end).filter(Number.isFinite)) : null;
@@ -128,13 +140,13 @@ const Civilizations = () => {
             data-testid={`civ-card-${c.id}`}
             className="museum-card relative group overflow-hidden aspect-[4/5]"
           >
-            <SmartImage src={c.image_url} wikipediaTitle={c.wikipedia_title} alt={c.name} wrapperClassName="absolute inset-0" className="h-full w-full object-cover opacity-55 transition-all duration-1000 group-hover:scale-105 group-hover:opacity-75" credit={c.image_credit} sourceUrl={c.image_source_url} />
+            <LocalizedImage src={c.image_url} wikipediaTitle={c.wikipedia_title} alt={c.name} wrapperClassName="absolute inset-0" className="h-full w-full object-cover opacity-55 transition-all duration-1000 group-hover:scale-105 group-hover:opacity-75" credit={c.image_credit} sourceUrl={c.image_source_url} />
             <div className="absolute inset-0 bg-gradient-to-t from-ebony via-ebony/70 to-ebony/10" />
             <div className="relative h-full p-7 flex flex-col justify-end">
               <p className="overline text-[0.65rem]">{t(`region.${c.region}`)}</p>
-              <h3 className="font-serif text-3xl text-bone mt-3 leading-tight">{c.name}</h3>
+              <LocalizedText value={c.name} as="h3" className="font-serif text-3xl text-bone mt-3 leading-tight" />
               <p className="text-gold text-xs uppercase tracking-[0.2em] mt-2">{fmt(c.era_start, t)} — {fmt(c.era_end, t)}</p>
-              <p className="text-bone/70 text-sm font-light mt-4 line-clamp-3">{c.summary}</p>
+              <LocalizedText value={c.summary} as="p" className="text-bone/70 text-sm font-light mt-4 line-clamp-3" />
             </div>
           </Link>
         ))}
