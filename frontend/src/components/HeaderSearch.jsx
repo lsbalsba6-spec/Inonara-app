@@ -84,7 +84,7 @@ export const HeaderSearch = () => {
       {!open ? (
         <button
           onClick={() => setOpen(true)}
-          aria-label={t("headerSearch.open")}
+          aria-label={lang === "fr" ? "Ouvrir la recherche" : "Open search"}
           className="text-bone/70 hover:text-gold transition-colors"
           data-testid="header-search-toggle"
         >
