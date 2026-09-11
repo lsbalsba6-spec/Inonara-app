@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react";
+import { useState } from "react";
 import { useI18n } from "../i18n";
 import { useTranslated } from "../lib/useTranslated";
 
@@ -84,21 +84,19 @@ function TranslatedText({ value, className = "" }) {
 export function CountryFigures({ dossier, sourceMap }) {
   const { lang } = useI18n();
   const copy = COPY[lang] || COPY.en;
-  const figures = useMemo(() => dossier.figures || [], [dossier.figures]);
+  const figures = dossier.figures || [];
   const getNameRaw = (item) => item.name || item.title || copy.person;
   const getName = (item) => localizedValue(getNameRaw(item), lang) || copy.person;
   const getSummary = (item) => item.reason || item.note || item.summary || item.description || "";
   const getFieldRaw = (item) => item.field || item.domain || item.category || copy.other;
   const getFieldKey = (item) => searchableValue(getFieldRaw(item)) || copy.other;
-  const fields = useMemo(() => {
-    const seen = new Map();
-    figures.forEach((item) => {
-      const value = getFieldRaw(item);
-      const key = searchableValue(value) || copy.other;
-      if (!seen.has(key)) seen.set(key, value);
-    });
-    return [...seen.entries()].map(([key, value]) => ({ key, value }));
-  }, [figures, copy.other]);
+  const fieldMap = new Map();
+  figures.forEach((item) => {
+    const value = getFieldRaw(item);
+    const key = searchableValue(value) || copy.other;
+    if (!fieldMap.has(key)) fieldMap.set(key, value);
+  });
+  const fields = [...fieldMap.entries()].map(([key, value]) => ({ key, value }));
 
   const [field, setField] = useState("all");
   const [query, setQuery] = useState("");
