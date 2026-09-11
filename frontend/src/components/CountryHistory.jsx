@@ -2,15 +2,28 @@ import { useState } from "react";
 import { useI18n } from "../i18n";
 import { useTranslated } from "../lib/useTranslated";
 
+function SourceLink({ source }) {
+  const translatedTitle = useTranslated(source?.title || "");
+  if (!source?.url) return null;
+  return (
+    <a
+      href={source.url}
+      target="_blank"
+      rel="noreferrer"
+      className="rounded-full border border-gold/25 px-3 py-1 text-[11px] text-gold/85"
+    >
+      {source.publisher}: {translatedTitle || source.title}
+    </a>
+  );
+}
+
 function SourceLinks({ ids = [], sourceMap }) {
   if (!ids.length || !sourceMap) return null;
   return (
     <div className="mt-4 flex flex-wrap gap-2">
       {ids.map((id) => {
-        const s = sourceMap.get(id);
-        if (!s?.url) return null;
-        return <a key={id} href={s.url} target="_blank" rel="noreferrer"
-          className="rounded-full border border-gold/25 px-3 py-1 text-[11px] text-gold/85">{s.publisher}: {s.title}</a>;
+        const source = sourceMap.get(id);
+        return source?.url ? <SourceLink key={id} source={source} /> : null;
       })}
     </div>
   );
@@ -27,20 +40,27 @@ function HistoryChapter({ chapter, index, expanded, onToggle, sourceMap, labels 
   const translatedSummary = useTranslated(chapter.summary || "");
   const translatedStatus = useTranslated(chapter.status || "");
   const id = chapter.id || `history-${index}`;
+  const panelId = `${id}-content`;
 
   return (
     <article className="rounded-2xl border border-bone/10 bg-bone/[.025] p-5">
-      <button type="button" className="w-full text-left" onClick={() => onToggle(expanded ? null : id)}>
+      <button
+        type="button"
+        className="w-full text-left"
+        onClick={() => onToggle(expanded ? null : id)}
+        aria-expanded={expanded}
+        aria-controls={panelId}
+      >
         <div className="flex items-start justify-between gap-4">
           <div>
             <p className="text-[10px] uppercase tracking-[.16em] text-gold/75">{translatedPeriod || labels.periodFallback}</p>
             <h3 className="mt-1 font-serif text-2xl text-bone">{translatedTitle || labels.chapterFallback}</h3>
           </div>
-          <span className="text-bone/40">{expanded ? "−" : "+"}</span>
+          <span className="text-bone/40" aria-hidden="true">{expanded ? "−" : "+"}</span>
         </div>
       </button>
       {expanded && (
-        <div className="mt-4 border-t border-bone/10 pt-4">
+        <div id={panelId} className="mt-4 border-t border-bone/10 pt-4">
           {chapter.summary && <p className="leading-7 text-bone/75">{translatedSummary || chapter.summary}</p>}
           {(chapter.details || []).map((item, i) => <TranslatedDetail key={`${id}-detail-${i}`} text={item} />)}
           {chapter.status && <p className="mt-4 text-[10px] uppercase tracking-[.14em] text-bone/35">{labels.editorialStatus}: {translatedStatus || chapter.status}</p>}
