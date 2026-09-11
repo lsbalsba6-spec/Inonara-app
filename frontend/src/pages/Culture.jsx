@@ -1,7 +1,7 @@
 import { useEffect, useState, useMemo } from "react";
 import { fetchCulture } from "../lib/api";
 import { useI18n } from "../i18n";
-import { sortAlphabetically } from "../lib/contentSort";
+import { searchableText, sortAlphabetically } from "../lib/contentSort";
 import { SmartImage } from "../components/SmartImage";
 import { Translated } from "../lib/useTranslated";
 
@@ -20,13 +20,13 @@ const Culture = () => {
   useEffect(() => { fetchCulture().then(setItems).catch(() => {}); }, []);
 
   const filtered = useMemo(() => {
-    const needle = query.trim().toLowerCase();
+    const needle = query.trim().toLocaleLowerCase(lang === "fr" ? "fr" : "en");
     const base = cat === "all" ? items : items.filter((i) => i.category === cat);
     return sortAlphabetically(base.filter((i) => {
-      const haystack = `${i.title || ""} ${i.blurb || ""} ${i.region || ""} ${i.category || ""}`.toLowerCase();
+      const haystack = searchableText(i.title, i.blurb, i.region, i.category);
       return !needle || haystack.includes(needle);
     }), "title");
-  }, [items, cat, query]);
+  }, [items, cat, query, lang]);
 
   const regions = useMemo(() => new Set(items.map((i) => i.region).filter(Boolean)).size, [items]);
   const illustrated = useMemo(() => items.filter((i) => i.image_url || i.wikipedia_title).length, [items]);
