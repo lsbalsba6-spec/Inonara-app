@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState } from "react";
-import { Link, useParams } from "react-router-dom";
+import { Link, useParams, useSearchParams } from "react-router-dom";
 import { ArrowLeft } from "lucide-react";
 import { fetchEthnicGroups, fetchEthnicGroup } from "../lib/api";
 import { useI18n } from "../i18n";
@@ -21,10 +21,23 @@ const TranslatedParagraph = ({ value, className }) => {
 
 export const EthnicGroupsList = () => {
   const { t } = useI18n();
+  const [searchParams, setSearchParams] = useSearchParams();
   const [groups, setGroups] = useState([]);
-  const [query, setQuery] = useState("");
+  const [query, setQuery] = useState(() => searchParams.get("q") || "");
   const [family, setFamily] = useState("all");
   useEffect(() => { fetchEthnicGroups().then(setGroups).catch(() => {}); }, []);
+  useEffect(() => {
+    const urlQuery = searchParams.get("q") || "";
+    setQuery((current) => current === urlQuery ? current : urlQuery);
+  }, [searchParams]);
+
+  const updateQuery = (value) => {
+    setQuery(value);
+    const next = new URLSearchParams(searchParams);
+    if (value.trim()) next.set("q", value);
+    else next.delete("q");
+    setSearchParams(next, { replace: true });
+  };
 
   const families = useMemo(() => [...new Set(groups.map((g) => g.language_family).filter(Boolean))].sort(), [groups]);
   const visible = useMemo(() => {
@@ -62,10 +75,10 @@ export const EthnicGroupsList = () => {
 
       <section className="mt-10 rounded-2xl border border-bone/10 bg-bone/[0.02] p-5">
         <div className="grid gap-4 lg:grid-cols-[1fr_auto]">
-          <input value={query} onChange={(event) => setQuery(event.target.value)} placeholder={t("ethnic.search.placeholder")} className="w-full rounded-xl border border-bone/15 bg-ebony px-4 py-3 text-sm text-bone outline-none placeholder:text-bone/35 focus:border-gold/50" />
+          <input value={query} onChange={(event) => updateQuery(event.target.value)} placeholder={t("ethnic.search.placeholder")} aria-label={t("ethnic.search.placeholder")} className="w-full rounded-xl border border-bone/15 bg-ebony px-4 py-3 text-sm text-bone outline-none placeholder:text-bone/35 focus:border-gold/50" />
           <div className="flex gap-2 overflow-x-auto">
-            <button type="button" onClick={() => setFamily("all")} className={`whitespace-nowrap rounded-full border px-3 py-2 text-xs ${family === "all" ? "border-gold bg-gold/10 text-gold" : "border-bone/15 text-bone/60"}`}>{t("ethnic.filter.allFamilies")}</button>
-            {families.map((item) => <button key={item} type="button" onClick={() => setFamily(item)} className={`whitespace-nowrap rounded-full border px-3 py-2 text-xs ${family === item ? "border-gold bg-gold/10 text-gold" : "border-bone/15 text-bone/60"}`}><TranslatedText value={item} /></button>)}
+            <button type="button" onClick={() => setFamily("all")} aria-pressed={family === "all"} className={`whitespace-nowrap rounded-full border px-3 py-2 text-xs ${family === "all" ? "border-gold bg-gold/10 text-gold" : "border-bone/15 text-bone/60"}`}>{t("ethnic.filter.allFamilies")}</button>
+            {families.map((item) => <button key={item} type="button" onClick={() => setFamily(item)} aria-pressed={family === item} className={`whitespace-nowrap rounded-full border px-3 py-2 text-xs ${family === item ? "border-gold bg-gold/10 text-gold" : "border-bone/15 text-bone/60"}`}><TranslatedText value={item} /></button>)}
           </div>
         </div>
         <p className="mt-4 text-xs text-bone/45">{visible.length} {visible.length > 1 ? t("ethnic.results.many") : t("ethnic.results.one")}</p>
