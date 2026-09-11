@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import { useI18n } from "../i18n";
 import { useTranslated } from "../lib/useTranslated";
 
@@ -10,6 +10,7 @@ const COPY = {
     overline: "Kingdoms & States",
     title: "Power, territories and networks",
     intro: "Ancient and modern political formations are presented according to their own periods. An area of influence, trade network or mobility zone should not automatically be turned into a fixed border.",
+    searchLabel: "Search a kingdom, state or period",
     search: "Search a kingdom, state or period…",
     all: "All formations",
     mapping: "Mapping policy",
@@ -26,6 +27,7 @@ const COPY = {
     overline: "Royaumes & États",
     title: "Pouvoirs, territoires et réseaux",
     intro: "Les formations politiques anciennes et modernes sont présentées selon leurs propres périodes. Une aire d’influence, un réseau commercial ou une zone de mobilité ne doit pas être transformé automatiquement en frontière fixe.",
+    searchLabel: "Rechercher un royaume, un État ou une période",
     search: "Rechercher un royaume, un État ou une période…",
     all: "Toutes les formations",
     mapping: "Politique cartographique",
@@ -37,18 +39,41 @@ const COPY = {
   },
 };
 
+function localizedValue(value, lang) {
+  if (!value) return "";
+  if (typeof value === "object") return value[lang] || value.fr || value.en || value.text || "";
+  return String(value);
+}
+
+function searchableValue(value) {
+  if (!value) return "";
+  if (typeof value === "object") return Object.values(value).filter((entry) => typeof entry === "string").join(" ");
+  return String(value);
+}
+
+function TranslatedInline({ value }) {
+  const translated = useTranslated(value || "");
+  if (!value) return null;
+  return translated || localizedValue(value, "fr") || localizedValue(value, "en");
+}
+
+function SourceLink({ source }) {
+  const translatedTitle = useTranslated(source?.title || "");
+  if (!source) return null;
+  return (
+    <a href={source.url} target="_blank" rel="noreferrer" className="rounded-full border border-gold/25 px-3 py-1 text-[11px] text-gold/85 hover:bg-gold/10">
+      {source.publisher}: {translatedTitle || localizedValue(source.title, "fr") || localizedValue(source.title, "en")}
+    </a>
+  );
+}
+
 function SourceLinks({ ids = [], sourceMap }) {
   if (!ids.length) return null;
   return (
     <div className="mt-4 flex flex-wrap gap-2">
       {ids.map((id) => {
         const source = sourceMap.get(id);
-        if (!source) return null;
-        return (
-          <a key={id} href={source.url} target="_blank" rel="noreferrer" className="rounded-full border border-gold/25 px-3 py-1 text-[11px] text-gold/85 hover:bg-gold/10">
-            {source.publisher}: {source.title}
-          </a>
-        );
+        return source ? <SourceLink key={id} source={source} /> : null;
       })}
     </div>
   );
@@ -57,28 +82,38 @@ function SourceLinks({ ids = [], sourceMap }) {
 function TranslatedText({ value, className = "" }) {
   const translated = useTranslated(value || "");
   if (!value) return null;
-  return <p className={className}>{translated || value}</p>;
+  return <p className={className}>{translated || localizedValue(value, "fr") || localizedValue(value, "en")}</p>;
 }
 
 export function CountryPolities({ dossier, sourceMap }) {
   const { lang } = useI18n();
   const copy = COPY[lang] || COPY.en;
-  const getName = (item) => item.name || item.title || item.label || copy.formation;
+  const getNameRaw = (item) => item.name || item.title || item.label || copy.formation;
+  const getName = (item) => localizedValue(getNameRaw(item), lang) || copy.formation;
   const getSummary = (item) => item.note || item.text || item.summary || item.description || "";
   const getPeriod = (item) => item.period || (item.start != null ? `${item.start}${item.end != null ? `–${item.end}` : `–${copy.today}`}` : copy.dating);
-  const getType = (item) => item.type || item.category || copy.formation;
+  const getTypeRaw = (item) => item.type || item.category || copy.formation;
+  const getTypeKey = (item) => searchableValue(getTypeRaw(item)) || copy.formation;
 
   const polities = dossier.polities || [];
-  const types = [...new Set(polities.map((item) => getType(item)))];
+  const types = useMemo(() => {
+    const seen = new Map();
+    polities.forEach((item) => {
+      const value = getTypeRaw(item);
+      const key = searchableValue(value) || copy.formation;
+      if (!seen.has(key)) seen.set(key, value);
+    });
+    return [...seen.entries()].map(([key, value]) => ({ key, value }));
+  }, [polities, copy.formation]);
   const [type, setType] = useState("all");
   const [query, setQuery] = useState("");
   const [openId, setOpenId] = useState(polities[0]?.id || null);
 
   const needle = query.trim().toLowerCase();
   const visible = polities.filter((item) => {
-    const itemType = getType(item);
-    const matchesType = type === "all" || itemType === type;
-    const haystack = `${getName(item)} ${getSummary(item)} ${getPeriod(item)} ${itemType} ${item.mapping || ""}`.toLowerCase();
+    const itemTypeKey = getTypeKey(item);
+    const matchesType = type === "all" || itemTypeKey === type;
+    const haystack = `${searchableValue(getNameRaw(item))} ${searchableValue(getSummary(item))} ${searchableValue(getPeriod(item))} ${searchableValue(getTypeRaw(item))} ${searchableValue(item.mapping)}`.toLowerCase();
     return matchesType && (!needle || haystack.includes(needle));
   });
 
@@ -91,11 +126,11 @@ export function CountryPolities({ dossier, sourceMap }) {
       </header>
 
       <div className="grid gap-3 md:grid-cols-[1fr_auto]">
-        <input value={query} onChange={(event) => setQuery(event.target.value)} placeholder={copy.search} className="w-full rounded-xl border border-bone/15 bg-bone/[0.025] px-4 py-3 text-sm text-bone outline-none placeholder:text-bone/35 focus:border-gold/50" />
+        <input value={query} onChange={(event) => setQuery(event.target.value)} aria-label={copy.searchLabel} placeholder={copy.search} className="w-full rounded-xl border border-bone/15 bg-bone/[0.025] px-4 py-3 text-sm text-bone outline-none placeholder:text-bone/35 focus:border-gold/50" />
         <div className="flex gap-2 overflow-x-auto">
           <button type="button" onClick={() => setType("all")} className={`whitespace-nowrap rounded-full border px-3 py-1.5 text-xs ${type === "all" ? "border-gold bg-gold/10 text-gold" : "border-bone/15 text-bone/60"}`}>{copy.all}</button>
-          {types.map((itemType) => (
-            <button key={itemType} type="button" onClick={() => setType(itemType)} className={`whitespace-nowrap rounded-full border px-3 py-1.5 text-xs ${type === itemType ? "border-gold bg-gold/10 text-gold" : "border-bone/15 text-bone/60"}`}>{itemType}</button>
+          {types.map(({ key, value }) => (
+            <button key={key} type="button" onClick={() => setType(key)} className={`whitespace-nowrap rounded-full border px-3 py-1.5 text-xs ${type === key ? "border-gold bg-gold/10 text-gold" : "border-bone/15 text-bone/60"}`}><TranslatedInline value={value} /></button>
           ))}
         </div>
       </div>
@@ -109,10 +144,10 @@ export function CountryPolities({ dossier, sourceMap }) {
               <button type="button" onClick={() => setOpenId(expanded ? null : id)} className="w-full p-5 text-left" aria-expanded={expanded}>
                 <div className="flex flex-wrap items-start justify-between gap-3">
                   <div>
-                    <p className="text-[10px] uppercase tracking-[0.18em] text-gold">{getPeriod(item)} · {getType(item)}</p>
+                    <p className="text-[10px] uppercase tracking-[0.18em] text-gold"><TranslatedInline value={getPeriod(item)} /> · <TranslatedInline value={getTypeRaw(item)} /></p>
                     <h3 className="mt-2 font-serif text-2xl text-bone">{getName(item)}</h3>
                   </div>
-                  <span className="text-xl text-gold">{expanded ? "−" : "+"}</span>
+                  <span className="text-xl text-gold" aria-hidden="true">{expanded ? "−" : "+"}</span>
                 </div>
                 {getSummary(item) && <TranslatedText value={getSummary(item)} className="mt-4 max-w-4xl leading-7 text-bone/70" />}
               </button>
