@@ -2,19 +2,29 @@ import { useMemo, useState } from "react";
 import { useI18n } from "../i18n";
 import { useTranslated } from "../lib/useTranslated";
 
+function TranslatedInline({ value }) {
+  const translated = useTranslated(value || "");
+  return translated || value || null;
+}
+
+function SourceLink({ source }) {
+  const translatedTitle = useTranslated(source?.title || "");
+  if (!source?.url) return null;
+  return (
+    <a href={source.url} target="_blank" rel="noreferrer"
+      className="rounded-full border border-gold/25 px-3 py-1 text-[11px] text-gold/85 hover:bg-gold/10">
+      {source.publisher}: {translatedTitle || source.title}
+    </a>
+  );
+}
+
 function SourceLinks({ ids = [], sourceMap }) {
   if (!ids.length || !sourceMap) return null;
   return (
     <div className="mt-4 flex flex-wrap gap-2">
       {ids.map((id) => {
         const source = sourceMap.get(id);
-        if (!source?.url) return null;
-        return (
-          <a key={id} href={source.url} target="_blank" rel="noreferrer"
-            className="rounded-full border border-gold/25 px-3 py-1 text-[11px] text-gold/85 hover:bg-gold/10">
-            {source.publisher}: {source.title}
-          </a>
-        );
+        return source ? <SourceLink key={id} source={source} /> : null;
       })}
     </div>
   );
@@ -42,22 +52,23 @@ function PeopleCard({ item, index, openId, setOpenId, sourceMap, labels }) {
   const translatedCaution = useTranslated(item.caution || "");
   const id = item.id || `${rawName || labels.communityFallback}-${index}`;
   const expanded = openId === id;
+  const panelId = `${id}-details`;
 
   return (
     <article className="overflow-hidden rounded-2xl border border-bone/10 bg-bone/[0.025]">
-      <button type="button" onClick={() => setOpenId(expanded ? null : id)} className="w-full p-5 text-left" aria-expanded={expanded}>
+      <button type="button" onClick={() => setOpenId(expanded ? null : id)} className="w-full p-5 text-left" aria-expanded={expanded} aria-controls={panelId}>
         <div className="flex flex-wrap items-start justify-between gap-3">
           <div>
             <p className="text-[10px] uppercase tracking-[0.18em] text-gold">{translatedRegion || rawRegion || labels.regionFallback}</p>
             <h3 className="mt-2 font-serif text-2xl text-bone">{translatedName || rawName || labels.communityFallback}</h3>
           </div>
-          <span className="text-xl text-gold">{expanded ? "−" : "+"}</span>
+          <span className="text-xl text-gold" aria-hidden="true">{expanded ? "−" : "+"}</span>
         </div>
         {rawSummary && <p className="mt-4 max-w-4xl leading-7 text-bone/70">{translatedSummary || rawSummary}</p>}
       </button>
 
       {expanded && (
-        <div className="border-t border-bone/10 px-5 pb-6 pt-5">
+        <div id={panelId} className="border-t border-bone/10 px-5 pb-6 pt-5">
           {item.paragraphs?.length > 0 && (
             <div className="mb-5 space-y-4 rounded-xl border border-bone/10 bg-black/10 p-5">
               <p className="text-[10px] uppercase tracking-[0.18em] text-gold/80">{labels.expandedChapter}</p>
@@ -69,7 +80,7 @@ function PeopleCard({ item, index, openId, setOpenId, sourceMap, labels }) {
               <div className="rounded-xl border border-bone/10 bg-black/10 p-4">
                 <p className="text-[10px] uppercase tracking-[0.18em] text-bone/40">{labels.languages}</p>
                 <div className="mt-3 flex flex-wrap gap-2">
-                  {languageList(item.languages).map((language) => <span key={language} className="rounded-full border border-bone/15 px-3 py-1 text-xs text-bone/70">{language}</span>)}
+                  {languageList(item.languages).map((language) => <span key={language} className="rounded-full border border-bone/15 px-3 py-1 text-xs text-bone/70"><TranslatedInline value={language} /></span>)}
                 </div>
               </div>
             )}
@@ -148,11 +159,11 @@ export function CountryPeoples({ dossier, sourceMap }) {
       </header>
 
       <div className="grid gap-3 md:grid-cols-[1fr_auto]">
-        <input value={query} onChange={(event) => setQuery(event.target.value)} placeholder={labels.placeholder} className="w-full rounded-xl border border-bone/15 bg-bone/[0.025] px-4 py-3 text-sm text-bone outline-none placeholder:text-bone/35 focus:border-gold/50" />
+        <input value={query} onChange={(event) => setQuery(event.target.value)} placeholder={labels.placeholder} aria-label={labels.placeholder} className="w-full rounded-xl border border-bone/15 bg-bone/[0.025] px-4 py-3 text-sm text-bone outline-none placeholder:text-bone/35 focus:border-gold/50" />
         <div className="flex gap-2 overflow-x-auto">
-          <button type="button" onClick={() => setRegion("all")} className={`whitespace-nowrap rounded-full border px-3 py-1.5 text-xs ${region === "all" ? "border-gold bg-gold/10 text-gold" : "border-bone/15 text-bone/60"}`}>{labels.allRegions}</button>
+          <button type="button" onClick={() => setRegion("all")} aria-pressed={region === "all"} className={`whitespace-nowrap rounded-full border px-3 py-1.5 text-xs ${region === "all" ? "border-gold bg-gold/10 text-gold" : "border-bone/15 text-bone/60"}`}>{labels.allRegions}</button>
           {regions.map((itemRegion) => (
-            <button key={itemRegion} type="button" onClick={() => setRegion(itemRegion)} className={`whitespace-nowrap rounded-full border px-3 py-1.5 text-xs ${region === itemRegion ? "border-gold bg-gold/10 text-gold" : "border-bone/15 text-bone/60"}`}>{itemRegion}</button>
+            <button key={itemRegion} type="button" onClick={() => setRegion(itemRegion)} aria-pressed={region === itemRegion} className={`whitespace-nowrap rounded-full border px-3 py-1.5 text-xs ${region === itemRegion ? "border-gold bg-gold/10 text-gold" : "border-bone/15 text-bone/60"}`}><TranslatedInline value={itemRegion} /></button>
           ))}
         </div>
       </div>
