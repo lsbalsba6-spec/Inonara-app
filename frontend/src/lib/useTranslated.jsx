@@ -8,6 +8,33 @@ const API = `${process.env.REACT_APP_BACKEND_URL}/api`;
 const cache = new Map();
 const inflight = new Map();
 
+const asText = (value) => {
+  if (value === null || value === undefined) return "";
+  if (typeof value === "string") return value;
+  if (typeof value === "number" || typeof value === "boolean") return String(value);
+  return "";
+};
+
+const resolveLocalizedValue = (value, lang) => {
+  if (!value) return { text: "", localized: true };
+  if (typeof value !== "object" || Array.isArray(value)) {
+    return { text: asText(value), localized: lang === "en" };
+  }
+
+  const direct = asText(value[lang]);
+  if (direct) return { text: direct, localized: true };
+
+  const english = asText(value.en);
+  const french = asText(value.fr);
+  const generic = asText(value.text);
+  const fallback = english || french || generic;
+
+  // English is the source language for the translation endpoint. If an
+  // object lacks the requested locale, keep a stable textual fallback and
+  // only call the translator for non-English targets.
+  return { text: fallback, localized: lang === "en" || (!english && lang === "fr" && Boolean(french)) };
+};
+
 const fetchTranslation = async (text, target) => {
   const key = `${target}::${text}`;
   if (cache.has(key)) return cache.get(key);
@@ -26,28 +53,46 @@ const fetchTranslation = async (text, target) => {
 };
 
 /**
- * Returns the translated text when language is non-English; otherwise the original.
- * Falls back gracefully on error. Caches per-session.
+ * Returns localized text for either plain strings or structured values such
+ * as { fr, en }. Structured values use the requested locale immediately when
+ * available; otherwise the textual fallback is translated for non-English
+ * locales. Falls back gracefully on error and caches translations per session.
  */
-export const useTranslated = (text) => {
+export const useTranslated = (value) => {
   const { lang } = useI18n();
-  const [out, setOut] = useState(text);
+  const resolved = resolveLocalizedValue(value, lang);
+  const sourceText = resolved.text;
+  const alreadyLocalized = resolved.localized;
+  const [out, setOut] = useState(sourceText);
   const last = useRef("");
+
   useEffect(() => {
-    if (!text) { setOut(""); return; }
-    if (lang === "en") { setOut(text); return; }
-    const key = `${lang}::${text}`;
+    if (!sourceText) {
+      setOut("");
+      return;
+    }
+    if (lang === "en" || alreadyLocalized) {
+      setOut(sourceText);
+      return;
+    }
+
+    const key = `${lang}::${sourceText}`;
     if (last.current === key) return;
     last.current = key;
-    setOut(text); // optimistic: show original while loading
+    setOut(sourceText); // optimistic: show source while loading
     let alive = true;
-    fetchTranslation(text, lang).then((tr) => { if (alive) setOut(tr); });
-    return () => { alive = false; };
-  }, [text, lang]);
+    fetchTranslation(sourceText, lang).then((translated) => {
+      if (alive) setOut(translated);
+    });
+    return () => {
+      alive = false;
+    };
+  }, [sourceText, lang, alreadyLocalized]);
+
   return out;
 };
 
 export const Translated = ({ children, as: As = "span", ...rest }) => {
-  const value = useTranslated(typeof children === "string" ? children : "");
+  const value = useTranslated(children);
   return <As {...rest}>{value}</As>;
 };
