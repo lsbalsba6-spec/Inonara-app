@@ -23,12 +23,7 @@ export default class CountrySectionBoundary extends Component {
 
   render() {
     if (this.state.hasError) {
-      return (
-        <CountrySectionFallback
-          title={this.props.title}
-          message="Cette section contient des données encore incompatibles avec l’affichage. Elle reste accessible pendant sa correction."
-        />
-      );
+      return <CountrySectionFallback title={this.props.title} variant="error" />;
     }
 
     return this.props.children;
