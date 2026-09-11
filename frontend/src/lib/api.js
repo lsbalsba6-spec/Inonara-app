@@ -53,6 +53,8 @@ export const fetchPlaces = () => api.get("/places").then((r) => r.data);
 export const fetchJourney = () => api.get("/journey").then((r) => r.data);
 export const fetchEthnicGroups = () => api.get("/ethnic-groups").then((r) => r.data);
 export const fetchEthnicGroup = (id) => api.get(`/ethnic-groups/${id}`).then((r) => r.data);
+export const fetchFigures = () => api.get("/figures").then((r) => r.data);
+export const fetchFigure = (id) => api.get(`/figures/${id}`).then((r) => r.data);
 export const fetchCivilizationFigures = (id) => api.get(`/civilizations/${id}/figures`).then((r) => r.data);
 export const narrate = (text) => api.post("/narrate", { text }).then((r) => r.data);
 export const askAtlas = (payload) => api.post("/ask", payload).then((r) => r.data);
