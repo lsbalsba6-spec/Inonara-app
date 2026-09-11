@@ -33,6 +33,11 @@ function Translated({ text, as: Tag = "span", className = "" }) {
   return <Tag className={className}>{translated || text}</Tag>;
 }
 
+function TranslatedImage({ src, alt, className = "" }) {
+  const translatedAlt = useTranslated(alt || "");
+  return <img src={src} alt={translatedAlt || alt || ""} className={className} />;
+}
+
 function FactCard({ label, value }) {
   return (
     <div className="rounded-xl border border-bone/10 bg-bone/[0.025] p-4">
@@ -117,7 +122,7 @@ export function CountryOverview({ dossier, sourceMap = new Map() }) {
           <div className="mt-4 grid gap-4 md:grid-cols-3">
             {gallery.map((item) => (
               <figure key={item.id} className="overflow-hidden rounded-xl border border-bone/10">
-                <img src={item.image_url} alt={item.alt || item.title} className="h-56 w-full object-cover" />
+                <TranslatedImage src={item.image_url} alt={item.alt || item.title} className="h-56 w-full object-cover" />
                 <figcaption className="p-4">
                   <Translated text={item.title} as="p" className="font-serif text-lg text-bone" />
                   {item.caption && <Translated text={item.caption} as="p" className="mt-1 text-xs text-bone/50" />}
