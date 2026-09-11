@@ -2,6 +2,8 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import { Link, useSearchParams } from "react-router-dom";
 import { useI18n } from "../i18n";
 import { fetchFiguresTimeline } from "../lib/api";
+import { searchableText } from "../lib/contentSort";
+import { useTranslated } from "../lib/useTranslated";
 
 const CURRENT_YEAR = new Date().getFullYear();
 
@@ -19,6 +21,11 @@ const CATEGORY_COLOR = {
 };
 
 const fmtYear = (y, t) => (y < 0 ? `${Math.abs(y)} ${t("date.bce")}` : `${y} ${t("date.ce")}`);
+
+const TranslatedInline = ({ value }) => {
+  const translated = useTranslated(value || "");
+  return translated || (typeof value === "string" ? value : "") || null;
+};
 
 const Timeline = () => {
   const { t } = useI18n();
@@ -90,9 +97,9 @@ const Timeline = () => {
     return true;
   };
 
-  const needle = query.trim().toLowerCase();
+  const needle = query.trim().toLocaleLowerCase("fr");
   const visibleFigures = figures.filter((f) => {
-    const matchesSearch = !needle || `${f.name || ""} ${f.summary || ""} ${f.region || ""} ${f.category || ""}`.toLowerCase().includes(needle);
+    const matchesSearch = !needle || searchableText(f.name, f.summary, f.region, f.category, f.era).includes(needle);
     return activeCats[f.category] && matchesEra(f.year) && matchesSearch;
   });
 
@@ -206,9 +213,9 @@ const Timeline = () => {
               <p className="overline text-[0.6rem]" style={{ color: CATEGORY_COLOR[hovered.category] }}>
                 {hovered.category === "events" ? t("timeline.events") : t(`figures.${hovered.category}`)} · {fmtYear(hovered.year, t)}
               </p>
-              <p className="font-serif text-lg text-bone mt-1">{hovered.name}</p>
+              <p className="font-serif text-lg text-bone mt-1"><TranslatedInline value={hovered.name} /></p>
               <p className="text-bone/60 text-[0.65rem] mt-1">{t(`region.${hovered.region}`)}</p>
-              <p className="text-bone/70 text-xs mt-2 line-clamp-3 font-light">{hovered.summary}</p>
+              <p className="text-bone/70 text-xs mt-2 line-clamp-3 font-light"><TranslatedInline value={hovered.summary} /></p>
             </div>
           )}
         </div>
