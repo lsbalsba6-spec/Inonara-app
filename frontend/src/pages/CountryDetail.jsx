@@ -61,6 +61,11 @@ function TranslatedText({ text, className = "" }) {
   return <p className={className}>{translated || text}</p>;
 }
 
+function TranslatedInline({ text }) {
+  const translated = useTranslated(text || "");
+  return translated || text || null;
+}
+
 const BESPOKE_COUNTRY_CONTENT = {
   gabon: {
     name: "Gabon",
@@ -239,7 +244,7 @@ export default function CountryDetail() {
           <p className="overline" style={{ color: ATLAS_COLORS.deepRed }}>{copy.diasporaHere}</p>
           {genericDiasporaMatches.map((d) => (
             <div key={d.id}>
-              <h2 className="font-serif text-xl text-bone mb-2">{d.name}</h2>
+              <h2 className="font-serif text-xl text-bone mb-2"><TranslatedInline text={d.name} /></h2>
               <TranslatedText text={d.summary} className="text-bone/80 leading-relaxed" />
               {d.story && <TranslatedText text={d.story} className="text-bone/70 mt-2 text-sm" />}
               <Link to={`/diaspora/${d.id}`} className="inline-block mt-2 text-gold uppercase tracking-widest text-xs">{copy.fullProfile}</Link>
