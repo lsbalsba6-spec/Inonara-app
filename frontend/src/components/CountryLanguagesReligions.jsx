@@ -2,24 +2,33 @@ import { useMemo, useState } from "react";
 import { useI18n } from "../i18n";
 import { useTranslated } from "../lib/useTranslated";
 
+function TranslatedInline({ value }) {
+  const translated = useTranslated(value || "");
+  return translated || value || null;
+}
+
+function SourceLink({ source }) {
+  const translatedTitle = useTranslated(source?.title || "");
+  if (!source?.url) return null;
+  return (
+    <a
+      href={source.url}
+      target="_blank"
+      rel="noreferrer"
+      className="rounded-full border border-gold/25 px-3 py-1 text-[11px] text-gold/85 hover:bg-gold/10"
+    >
+      {source.publisher}: {translatedTitle || source.title}
+    </a>
+  );
+}
+
 function SourceLinks({ ids = [], sourceMap }) {
   if (!ids.length || !sourceMap) return null;
   return (
     <div className="mt-4 flex flex-wrap gap-2">
       {ids.map((id) => {
         const source = sourceMap.get(id);
-        if (!source?.url) return null;
-        return (
-          <a
-            key={id}
-            href={source.url}
-            target="_blank"
-            rel="noreferrer"
-            className="rounded-full border border-gold/25 px-3 py-1 text-[11px] text-gold/85 hover:bg-gold/10"
-          >
-            {source.publisher}: {source.title}
-          </a>
-        );
+        return source ? <SourceLink key={id} source={source} /> : null;
       })}
     </div>
   );
@@ -120,13 +129,13 @@ export function CountryLanguages({ dossier, sourceMap }) {
       <section>
         <p className="overline text-gold">{labels.official}</p>
         <div className="mt-3 flex flex-wrap gap-2">
-          {official.map((language) => <span key={language} className="rounded-full border border-bone/15 bg-bone/[0.025] px-3 py-1.5 text-sm text-bone/75">{language}</span>)}
+          {official.map((language) => <span key={language} className="rounded-full border border-bone/15 bg-bone/[0.025] px-3 py-1.5 text-sm text-bone/75"><TranslatedInline value={language} /></span>)}
         </div>
       </section>
 
       <label className="block">
         <span className="sr-only">{labels.search}</span>
-        <input value={query} onChange={(event) => setQuery(event.target.value)} placeholder={labels.placeholder} className="w-full rounded-xl border border-bone/15 bg-bone/[0.025] px-4 py-3 text-sm text-bone outline-none placeholder:text-bone/35 focus:border-gold/50" />
+        <input value={query} onChange={(event) => setQuery(event.target.value)} placeholder={labels.placeholder} aria-label={labels.search} className="w-full rounded-xl border border-bone/15 bg-bone/[0.025] px-4 py-3 text-sm text-bone outline-none placeholder:text-bone/35 focus:border-gold/50" />
       </label>
 
       <section className="space-y-3">
@@ -186,7 +195,7 @@ export function CountryReligions({ dossier, sourceMap }) {
 
       <label className="block">
         <span className="sr-only">{labels.search}</span>
-        <input value={query} onChange={(event) => setQuery(event.target.value)} placeholder={labels.placeholder} className="w-full rounded-xl border border-bone/15 bg-bone/[0.025] px-4 py-3 text-sm text-bone outline-none placeholder:text-bone/35 focus:border-gold/50" />
+        <input value={query} onChange={(event) => setQuery(event.target.value)} placeholder={labels.placeholder} aria-label={labels.search} className="w-full rounded-xl border border-bone/15 bg-bone/[0.025] px-4 py-3 text-sm text-bone outline-none placeholder:text-bone/35 focus:border-gold/50" />
       </label>
 
       <div className="grid gap-4 sm:grid-cols-2">
