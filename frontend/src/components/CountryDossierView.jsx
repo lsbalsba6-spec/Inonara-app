@@ -21,6 +21,7 @@ import { SouthAfricaSportMedia } from "./SouthAfricaSportMedia";
 import { SouthAfricaEducationHealth, SouthAfricaInternationalRole, SouthAfricaNationalSymbols, SouthAfricaSociety } from "./SouthAfricaSocietyState";
 import { SouthAfricaEconomy, SouthAfricaInteractiveTimeline, SouthAfricaScientificLibrary } from "./SouthAfricaTimelineEconomy";
 import { useMemo, useState } from "react";
+import { Link } from "react-router-dom";
 import { CountryMediaGallery } from "./CountryMediaGallery";
 import CountryTerritory from "./CountryTerritory";
 import CountrySectionBoundary from "./CountrySectionBoundary";
@@ -47,6 +48,21 @@ const COPY = {
       { id: "people", label: "Figures", items: [["figures", "Figures"]] },
       { id: "sources", label: "Sources", items: [["historiography", "Debates"], ["research", "To investigate"], ["library", "Library"], ["sources", "All sources"]] },
     ],
+    explore: {
+      eyebrow: "Explore AfroAtlas",
+      title: "Continue beyond this country",
+      intro: "Connect this dossier with the wider Atlas, timelines, peoples, civilizations and diasporas.",
+      navLabel: "Continue exploring AfroAtlas",
+      items: [
+        ["/atlas", "Atlas", "Locate places, movements and historical layers."],
+        ["/timeline", "Timeline", "Move across periods and connected events."],
+        ["/people", "Peoples", "Explore communities across borders and time."],
+        ["/civilizations", "Civilizations", "Follow kingdoms, states and cultural worlds."],
+        ["/diaspora", "Diaspora", "Trace movements, communities and connections."],
+        ["/figures", "Figures", "Discover people linked to African histories."],
+        ["/compare", "Compare", "Put countries and trajectories side by side."],
+      ],
+    },
   },
   fr: {
     country: "Pays",
@@ -67,6 +83,21 @@ const COPY = {
       { id: "people", label: "Personnalités", items: [["figures", "Personnalités"]] },
       { id: "sources", label: "Sources", items: [["historiography", "Débats"], ["research", "À suivre"], ["library", "Bibliothèque"], ["sources", "Toutes les sources"]] },
     ],
+    explore: {
+      eyebrow: "Explorer AfroAtlas",
+      title: "Continuer au-delà de ce pays",
+      intro: "Reliez ce dossier au reste de l’Atlas, aux chronologies, aux peuples, aux civilisations et aux diasporas.",
+      navLabel: "Continuer l’exploration dans AfroAtlas",
+      items: [
+        ["/atlas", "Atlas", "Situer les lieux, circulations et couches historiques."],
+        ["/timeline", "Chronologie", "Parcourir les périodes et les événements liés."],
+        ["/people", "Peuples", "Explorer les communautés au-delà des frontières et du temps."],
+        ["/civilizations", "Civilisations", "Suivre royaumes, États et mondes culturels."],
+        ["/diaspora", "Diaspora", "Retracer les mobilités, communautés et connexions."],
+        ["/figures", "Personnalités", "Découvrir les personnes liées aux histoires africaines."],
+        ["/compare", "Comparer", "Mettre pays et trajectoires en regard."],
+      ],
+    },
   },
 };
 
@@ -217,6 +248,25 @@ export default function CountryDossierView({ dossier }) {
         {active === "library" && <SouthAfricaScientificLibrary dossier={dossier} sourceMap={sourceMap} />}
         {active === "sources" && <CountrySources dossier={dossier} />}
         </CountrySectionBoundary>
+      </section>
+
+      <section className="mt-14 border-t border-bone/10 pt-8" aria-labelledby="country-explore-title">
+        <p className="overline text-gold mb-2">{copy.explore.eyebrow}</p>
+        <div className="max-w-3xl">
+          <h2 id="country-explore-title" className="font-serif text-2xl md:text-3xl text-bone">{copy.explore.title}</h2>
+          <p className="mt-2 text-sm leading-relaxed text-bone/55">{copy.explore.intro}</p>
+        </div>
+        <nav className="mt-5 grid gap-3 sm:grid-cols-2 lg:grid-cols-3" aria-label={copy.explore.navLabel}>
+          {copy.explore.items.map(([to, label, detail]) => (
+            <Link key={to} to={to} className="group rounded-xl border border-bone/10 bg-bone/[0.025] p-4 transition hover:border-gold/35 hover:bg-gold/[0.045] focus:outline-none focus-visible:ring-2 focus-visible:ring-gold/70">
+              <span className="flex items-center justify-between gap-3 text-sm font-medium text-bone group-hover:text-gold">
+                {label}
+                <span aria-hidden="true" className="text-gold/60 transition-transform group-hover:translate-x-0.5">→</span>
+              </span>
+              <span className="mt-1.5 block text-xs leading-relaxed text-bone/45">{detail}</span>
+            </Link>
+          ))}
+        </nav>
       </section>
     </div>
   );
