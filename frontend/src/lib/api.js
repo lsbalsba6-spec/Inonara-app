@@ -1,13 +1,37 @@
 import axios from "axios";
+import { LOCAL_COUNTRIES, LOCAL_COUNTRY_DOSSIERS, getLocalCountryDossier } from "../data/localCountryDossiers";
 
-const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
-export const API = `${BACKEND_URL}/api`;
+const BACKEND_URL = process.env.REACT_APP_BACKEND_URL || "";
+export const API = BACKEND_URL ? `${BACKEND_URL}/api` : "/api";
 
 export const api = axios.create({ baseURL: API });
 
-export const fetchCountries = () => api.get("/countries").then((r) => r.data);
-export const fetchCountryDossiers = () => api.get("/country-dossiers").then((r) => r.data);
-export const fetchCountryDossier = (iso2) => api.get(`/country-dossiers/${iso2}`).then((r) => r.data);
+function mergeByIso(remote = [], local = []) {
+  const merged = new Map();
+  [...local, ...(Array.isArray(remote) ? remote : [])].forEach((item) => {
+    if (item?.iso2) merged.set(item.iso2, item);
+  });
+  return [...merged.values()];
+}
+
+export const fetchCountries = () => api.get("/countries")
+  .then((r) => mergeByIso(r.data, LOCAL_COUNTRIES))
+  .catch(() => LOCAL_COUNTRIES);
+
+export const fetchCountryDossiers = () => api.get("/country-dossiers")
+  .then((r) => mergeByIso(r.data, LOCAL_COUNTRY_DOSSIERS))
+  .catch(() => LOCAL_COUNTRY_DOSSIERS);
+
+export const fetchCountryDossier = (iso2) => {
+  const local = getLocalCountryDossier(iso2);
+  return api.get(`/country-dossiers/${iso2}`)
+    .then((r) => r.data || local)
+    .catch((error) => {
+      if (local) return local;
+      throw error;
+    });
+};
+
 export const fetchModules = () => api.get("/modules").then((r) => r.data);
 export const fetchCivilizations = () => api.get("/civilizations").then((r) => r.data);
 export const fetchCivilization = (id) => api.get(`/civilizations/${id}`).then((r) => r.data);
