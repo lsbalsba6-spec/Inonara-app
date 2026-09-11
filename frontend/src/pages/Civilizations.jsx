@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useSearchParams } from "react-router-dom";
 import { fetchCivilizations } from "../lib/api";
 import { useI18n } from "../i18n";
 import { sortChronologically } from "../lib/contentSort";
@@ -34,12 +34,25 @@ const CONNECTION_COPY = {
 
 const Civilizations = () => {
   const { t, lang } = useI18n();
+  const [searchParams, setSearchParams] = useSearchParams();
   const [civs, setCivs] = useState([]);
   const [region, setRegion] = useState("all");
-  const [query, setQuery] = useState("");
+  const [query, setQuery] = useState(() => searchParams.get("q") || "");
   const connections = CONNECTION_COPY[lang] || CONNECTION_COPY.en;
 
   useEffect(() => { fetchCivilizations().then(setCivs).catch(() => {}); }, []);
+  useEffect(() => {
+    const urlQuery = searchParams.get("q") || "";
+    setQuery((current) => current === urlQuery ? current : urlQuery);
+  }, [searchParams]);
+
+  const updateQuery = (value) => {
+    setQuery(value);
+    const next = new URLSearchParams(searchParams);
+    if (value.trim()) next.set("q", value);
+    else next.delete("q");
+    setSearchParams(next, { replace: true });
+  };
 
   const regions = useMemo(() => [...new Set(civs.map((c) => c.region).filter(Boolean))].sort(), [civs]);
   const visible = useMemo(() => {
@@ -88,16 +101,17 @@ const Civilizations = () => {
         <div className="grid gap-4 lg:grid-cols-[1fr_auto]">
           <input
             value={query}
-            onChange={(event) => setQuery(event.target.value)}
+            onChange={(event) => updateQuery(event.target.value)}
             placeholder={t("civilizations.search.placeholder")}
+            aria-label={t("civilizations.search.placeholder")}
             className="w-full rounded-xl border border-bone/15 bg-ebony px-4 py-3 text-sm text-bone outline-none placeholder:text-bone/35 focus:border-gold/50"
           />
           <div className="flex gap-2 overflow-x-auto">
-            <button type="button" onClick={() => setRegion("all")} className={`whitespace-nowrap rounded-full border px-3 py-2 text-xs ${region === "all" ? "border-gold bg-gold/10 text-gold" : "border-bone/15 text-bone/60"}`}>
+            <button type="button" onClick={() => setRegion("all")} aria-pressed={region === "all"} className={`whitespace-nowrap rounded-full border px-3 py-2 text-xs ${region === "all" ? "border-gold bg-gold/10 text-gold" : "border-bone/15 text-bone/60"}`}>
               {t("civilizations.filter.allRegions")}
             </button>
             {regions.map((item) => (
-              <button key={item} type="button" onClick={() => setRegion(item)} className={`whitespace-nowrap rounded-full border px-3 py-2 text-xs ${region === item ? "border-gold bg-gold/10 text-gold" : "border-bone/15 text-bone/60"}`}>
+              <button key={item} type="button" onClick={() => setRegion(item)} aria-pressed={region === item} className={`whitespace-nowrap rounded-full border px-3 py-2 text-xs ${region === item ? "border-gold bg-gold/10 text-gold" : "border-bone/15 text-bone/60"}`}>
                 {t(`region.${item}`)}
               </button>
             ))}
