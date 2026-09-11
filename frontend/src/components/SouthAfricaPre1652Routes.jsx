@@ -1,16 +1,8 @@
-import { useEffect, useMemo, useState } from "react";
-import {
-  Circle,
-  CircleMarker,
-  MapContainer,
-  Polyline,
-  Popup,
-  TileLayer,
-  Tooltip,
-  useMap,
-} from "react-leaflet";
+import { useMemo, useState } from "react";
+import { Circle, CircleMarker, Polyline, Popup, Tooltip } from "react-leaflet";
 import { useI18n } from "../i18n";
 import { useTranslated } from "../lib/useTranslated";
+import InonaraLeafletMap, { ZoomAwareLabel } from "./InonaraLeafletMap";
 
 const STYLE = {
   "ancient-mobility": { color: "#BFA76F", label: { en: "Ancient mobility", fr: "Mobilité ancienne" }, dashArray: "5 8" },
@@ -29,6 +21,7 @@ const COPY = {
     variableDating: "variable dating",
     bce: "BCE",
     documentedGoods: "Documented goods:",
+    mapLabel: "Interactive historical map of South Africa and regional connections",
     statuses: { ready: "Established", provisional: "Read with context", disputed: "Debated" },
   },
   fr: {
@@ -37,17 +30,10 @@ const COPY = {
     variableDating: "datation variable",
     bce: "av. n. è.",
     documentedGoods: "Biens documentés :",
+    mapLabel: "Carte historique interactive de l’Afrique du Sud et de ses connexions régionales",
     statuses: { ready: "Établi", provisional: "À nuancer", disputed: "Débattu" },
   },
 };
-
-function FitBounds({ bounds }) {
-  const map = useMap();
-  useEffect(() => {
-    if (bounds?.length === 2) map.fitBounds(bounds, { padding: [26, 26], animate: false });
-  }, [bounds, map]);
-  return null;
-}
 
 function TranslatedInline({ text }) {
   const translated = useTranslated(text || "");
@@ -120,60 +106,57 @@ export default function SouthAfricaPre1652Routes({ data, sourceMap }) {
       </div>
 
       <div className="flex flex-wrap gap-2">
-        <button type="button" onClick={() => setType("all")} className={`rounded-full border px-3 py-1.5 text-xs ${type === "all" ? "border-gold bg-gold/10 text-gold" : "border-bone/15 text-bone/65"}`}>{copy.all}</button>
+        <button type="button" onClick={() => setType("all")} aria-pressed={type === "all"} className={`rounded-full border px-3 py-1.5 text-xs ${type === "all" ? "border-gold bg-gold/10 text-gold" : "border-bone/15 text-bone/65"}`}>{copy.all}</button>
         {Object.entries(STYLE).map(([id, style]) => (
-          <button key={id} type="button" onClick={() => setType(id)} className={`rounded-full border px-3 py-1.5 text-xs ${type === id ? "border-gold bg-gold/10 text-gold" : "border-bone/15 text-bone/65"}`}>{style.label[lang] || style.label.en}</button>
+          <button key={id} type="button" onClick={() => setType(id)} aria-pressed={type === id} className={`rounded-full border px-3 py-1.5 text-xs ${type === id ? "border-gold bg-gold/10 text-gold" : "border-bone/15 text-bone/65"}`}>{style.label[lang] || style.label.en}</button>
         ))}
       </div>
 
-      <div className="overflow-hidden rounded-xl border border-bone/10">
-        <MapContainer bounds={data.bounds} minZoom={3} maxZoom={9} scrollWheelZoom className="h-[580px] w-full md:h-[690px]">
-          <FitBounds bounds={data.bounds} />
-          <TileLayer attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors' url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
+      <InonaraLeafletMap bounds={data.bounds} minZoom={3} maxZoom={11} ariaLabel={copy.mapLabel}>
+        {visibleZones.map((zone) => {
+          const style = STYLE[zone.type] || STYLE["ancient-mobility"];
+          const [lon, lat] = zone.center;
+          return (
+            <Circle key={zone.id} center={[lat, lon]} radius={zone.radius_km * 1000} pathOptions={{ color: style.color, fillColor: style.color, fillOpacity: 0.10, opacity: 0.65, weight: 2, dashArray: style.dashArray }}>
+              <Popup><MobilityPopup item={zone} sourceMap={sourceMap} copy={copy} /></Popup>
+            </Circle>
+          );
+        })}
 
-          {visibleZones.map((zone) => {
-            const style = STYLE[zone.type] || STYLE["ancient-mobility"];
-            const [lon, lat] = zone.center;
-            return (
-              <Circle key={zone.id} center={[lat, lon]} radius={zone.radius_km * 1000} pathOptions={{ color: style.color, fillColor: style.color, fillOpacity: 0.10, opacity: 0.65, weight: 2, dashArray: style.dashArray }}>
-                <Popup><MobilityPopup item={zone} sourceMap={sourceMap} copy={copy} /></Popup>
-              </Circle>
-            );
-          })}
+        {visiblePoliticalZones.map((zone) => {
+          const style = STYLE[zone.type] || STYLE["political-zone"];
+          const [lon, lat] = zone.center;
+          return (
+            <Circle key={zone.id} center={[lat, lon]} radius={zone.radius_km * 1000} pathOptions={{ color: style.color, fillColor: style.color, fillOpacity: 0.08, opacity: 0.8, weight: 2.5, dashArray: style.dashArray }}>
+              <Tooltip sticky><TranslatedInline text={zone.label} /></Tooltip>
+              <Popup><MobilityPopup item={zone} sourceMap={sourceMap} copy={copy} /></Popup>
+              <ZoomAwareLabel position={[lat, lon]} minZoom={5} priority="primary"><TranslatedInline text={zone.label} /></ZoomAwareLabel>
+            </Circle>
+          );
+        })}
 
-          {visiblePoliticalZones.map((zone) => {
-            const style = STYLE[zone.type] || STYLE["political-zone"];
-            const [lon, lat] = zone.center;
-            return (
-              <Circle key={zone.id} center={[lat, lon]} radius={zone.radius_km * 1000} pathOptions={{ color: style.color, fillColor: style.color, fillOpacity: 0.08, opacity: 0.8, weight: 2.5, dashArray: style.dashArray }}>
-                <Tooltip sticky><TranslatedInline text={zone.label} /></Tooltip>
-                <Popup><MobilityPopup item={zone} sourceMap={sourceMap} copy={copy} /></Popup>
-              </Circle>
-            );
-          })}
+        {visibleCorridors.map((route) => {
+          const style = STYLE[route.type] || STYLE["trade-network"];
+          const positions = route.path.map(([lon, lat]) => [lat, lon]);
+          return (
+            <Polyline key={route.id} positions={positions} pathOptions={{ color: style.color, weight: 5, opacity: 0.82, dashArray: style.dashArray, lineCap: "round", lineJoin: "round" }}>
+              <Tooltip sticky><TranslatedInline text={route.label} /></Tooltip>
+              <Popup><MobilityPopup item={route} sourceMap={sourceMap} copy={copy} showGoods /></Popup>
+            </Polyline>
+          );
+        })}
 
-          {visibleCorridors.map((route) => {
-            const style = STYLE[route.type] || STYLE["trade-network"];
-            const positions = route.path.map(([lon, lat]) => [lat, lon]);
-            return (
-              <Polyline key={route.id} positions={positions} pathOptions={{ color: style.color, weight: 6, opacity: 0.86, dashArray: style.dashArray, lineCap: "round", lineJoin: "round" }}>
-                <Tooltip sticky><TranslatedInline text={route.label} /></Tooltip>
-                <Popup><MobilityPopup item={route} sourceMap={sourceMap} copy={copy} showGoods /></Popup>
-              </Polyline>
-            );
-          })}
-
-          {sites.map((site) => {
-            const [lon, lat] = site.coordinates;
-            return (
-              <CircleMarker key={site.id} center={[lat, lon]} radius={6} pathOptions={{ color: "#151210", weight: 2, fillColor: "#FFD166", fillOpacity: 1 }}>
-                <Tooltip direction="top"><TranslatedInline text={site.label} /></Tooltip>
-                <Popup><strong><TranslatedInline text={site.label} /></strong><br /><TranslatedInline text={site.period} /><SourceLinks ids={site.sources} sourceMap={sourceMap} /></Popup>
-              </CircleMarker>
-            );
-          })}
-        </MapContainer>
-      </div>
+        {sites.map((site) => {
+          const [lon, lat] = site.coordinates;
+          return (
+            <CircleMarker key={site.id} center={[lat, lon]} radius={5} pathOptions={{ color: "#ffffff", weight: 2, fillColor: "#285f7d", fillOpacity: 1 }}>
+              <Tooltip direction="top"><TranslatedInline text={site.label} /></Tooltip>
+              <Popup><strong><TranslatedInline text={site.label} /></strong><br /><TranslatedInline text={site.period} /><SourceLinks ids={site.sources} sourceMap={sourceMap} /></Popup>
+              <ZoomAwareLabel position={[lat, lon]} minZoom={6}><TranslatedInline text={site.label} /></ZoomAwareLabel>
+            </CircleMarker>
+          );
+        })}
+      </InonaraLeafletMap>
 
       <div className="flex flex-wrap gap-x-5 gap-y-2 text-xs text-bone/65">
         {Object.entries(STYLE).map(([id, style]) => (
