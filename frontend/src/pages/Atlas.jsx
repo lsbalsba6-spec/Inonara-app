@@ -13,6 +13,7 @@ import {
 } from "../lib/api";
 import { Slider } from "../components/ui/slider";
 import { useI18n } from "../i18n";
+import { useTranslated } from "../lib/useTranslated";
 import WorldMap from "../components/WorldMap";
 import { SLIDER_MIN, SLIDER_MAX, sliderToYear, yearToSlider, modeForYear, eraLabel } from "../lib/timeScale";
 import { ATLAS_COLORS } from "../lib/designTokens";
@@ -41,6 +42,65 @@ const MILESTONES = [
   { year: 1960, label: { fr: "Indépendances", en: "Independences" } },
   { year: CURRENT_YEAR, label: { fr: "Aujourd'hui", en: "Today" } },
 ];
+
+const rawText = (value) => {
+  if (value === null || value === undefined) return "";
+  if (typeof value === "string" || typeof value === "number") return String(value);
+  if (typeof value === "object" && !Array.isArray(value)) {
+    return value.en || value.fr || value.text || value.name || value.title || "";
+  }
+  return "";
+};
+
+const sourceValue = (source) => {
+  if (!source || typeof source !== "object" || Array.isArray(source)) return source;
+  return source.title || source.name || source.label || source.publisher || source;
+};
+
+function LocalizedText({ value, as: As = "span", fallback = "", ...props }) {
+  const translated = useTranslated(value);
+  return <As {...props}>{translated || fallback || rawText(value)}</As>;
+}
+
+function LocalizedExcerpt({ value, max = 220 }) {
+  const translated = useTranslated(value);
+  const text = translated || rawText(value);
+  return <>{text.slice(0, max)}{text.length > max ? "…" : ""}</>;
+}
+
+function LocalizedSourceList({ values = [] }) {
+  return (
+    <>
+      {values.map((source, index) => (
+        <span key={`${rawText(sourceValue(source))}-${index}`}>
+          {index > 0 ? " · " : ""}
+          <LocalizedText value={sourceValue(source)} />
+        </span>
+      ))}
+    </>
+  );
+}
+
+function AtlasMapLabel({ label, zoomScale }) {
+  const translated = useTranslated(label.value ?? label.text);
+  return (
+    <text
+      x={label.x}
+      y={label.y}
+      fontSize={label.fontSizePx / zoomScale}
+      fill={ATLAS_COLORS.textBone}
+      textAnchor="middle"
+      opacity={label.opacity}
+      paintOrder="stroke"
+      stroke={ATLAS_COLORS.ocean}
+      strokeWidth={3 / zoomScale}
+      strokeLinejoin="round"
+      style={{ fontFamily: "serif", pointerEvents: "none" }}
+    >
+      {translated || label.text}
+    </text>
+  );
+}
 
 const Atlas = () => {
   const { t, lang } = useI18n();
@@ -148,7 +208,8 @@ const Atlas = () => {
         const markerRadius = Math.max(1.2, Math.max(4, Math.min(14, importance / 90)) / zoomScale);
         candidates.push({
           id: `polity-${polity.id}`,
-          text: polity.name,
+          text: rawText(polity.name),
+          value: polity.name,
           x: coords[0],
           y: coords[1] - markerRadius - (7 / zoomScale),
           fontSizePx: zoomScale < 2 ? 11 : 10,
@@ -163,7 +224,8 @@ const Atlas = () => {
       if (!coords) continue;
       candidates.push({
         id: `pilot-${marker.id}`,
-        text: marker.primaryName.value,
+        text: rawText(marker.primaryName.value),
+        value: marker.primaryName.value,
         x: coords[0],
         y: coords[1] - Math.max(4, 10 / zoomScale) - (7 / zoomScale),
         fontSizePx: 10,
@@ -215,13 +277,13 @@ const Atlas = () => {
           className="fixed bottom-4 right-2 z-[600] glass rounded-lg p-3 max-w-[220px] text-[0.65rem]"
           data-testid="pilot-v3-fang-process-banner"
         >
-          <p className="text-gold mb-1">{pilotV3FangProcess.label}</p>
+          <p className="text-gold mb-1"><LocalizedText value={pilotV3FangProcess.label} /></p>
           {pilotV3FangProcess.phases.map((phase, i) => (
             <p key={i} className="text-bone/70 mb-1">
-              • {phase.label} ({phase.period})
+              • <LocalizedText value={phase.label} /> (<LocalizedText value={phase.period} />)
             </p>
           ))}
-          <p className="text-amber-400/80 mt-1">⚠ {pilotV3FangProcess.warningNote}</p>
+          <p className="text-amber-400/80 mt-1">⚠ <LocalizedText value={pilotV3FangProcess.warningNote} /></p>
         </div>
       )}
       {selectedPilotV3Marker && (
@@ -246,14 +308,21 @@ const Atlas = () => {
           geoFusion={mode === "geological" && currentEpoch ? currentEpoch.fusion_factor : null}
         >
           {/* Geological mode: labels anchored to their drifting plate group */}
-          {mode === "geological" && currentEpoch && geoProject && currentEpoch.labels.map((l) => {
+          {mode === "geological" && currentEpoch && geoProject && currentEpoch.labels.map((l, index) => {
             const p = geoProject(l.group || "Africa", l.lat, l.lon);
             if (!p) return null;
             return (
-              <text key={l.text} x={p[0]} y={p[1]} fontSize={l.size} fill={ATLAS_COLORS.textBone} textAnchor="middle"
-                style={{ fontFamily: "serif", letterSpacing: "0.05em", pointerEvents: "none" }}>
-                {l.text}
-              </text>
+              <LocalizedText
+                key={`${l.lat}-${l.lon}-${index}`}
+                as="text"
+                value={l.text}
+                x={p[0]}
+                y={p[1]}
+                fontSize={l.size}
+                fill={ATLAS_COLORS.textBone}
+                textAnchor="middle"
+                style={{ fontFamily: "serif", letterSpacing: "0.05em", pointerEvents: "none" }}
+              />
             );
           })}
 
@@ -399,22 +468,7 @@ const Atlas = () => {
 
           {/* LABELS PASS — collision-filtered in screen space. */}
           {mode === "historical" && visibleHistoricalLabels.map((label) => (
-            <text
-              key={`label-${label.id}`}
-              x={label.x}
-              y={label.y}
-              fontSize={label.fontSizePx / zoomScale}
-              fill={ATLAS_COLORS.textBone}
-              textAnchor="middle"
-              opacity={label.opacity}
-              paintOrder="stroke"
-              stroke={ATLAS_COLORS.ocean}
-              strokeWidth={3 / zoomScale}
-              strokeLinejoin="round"
-              style={{ fontFamily: "serif", pointerEvents: "none" }}
-            >
-              {label.text}
-            </text>
+            <AtlasMapLabel key={`label-${label.id}`} label={label} zoomScale={zoomScale} />
           ))}
 
           {/* SELECTED-MARKER HIGHLIGHT — a pulsing bright ring around
@@ -469,7 +523,7 @@ const Atlas = () => {
                 {visibleCivs.map((c) => (
                   <li key={c.id}>
                     <Link to={`/civilization/${c.id}`} className="block px-5 py-4 hover:bg-[#1A1614] transition-colors group" data-testid={`atlas-civ-${c.id}`}>
-                      <p className="font-serif text-lg text-bone group-hover:text-gold transition-colors">{c.name}</p>
+                      <p className="font-serif text-lg text-bone group-hover:text-gold transition-colors"><LocalizedText value={c.name} /></p>
                       <p className="text-bone/60 text-xs uppercase tracking-[0.15em] mt-1">{t(`region.${c.region}`)}</p>
                     </Link>
                   </li>
@@ -491,8 +545,8 @@ const Atlas = () => {
               <ul className="divide-y divide-[#2A2421]">
                 {visiblePaleo.map((p) => (
                   <li key={p.id} className="px-5 py-4 cursor-pointer" onClick={() => setSelected({ kind: "paleo", ...p })}>
-                    <p className="font-serif text-base text-bone">{p.name}</p>
-                    <p className="text-bone/60 text-xs mt-1 leading-relaxed">{p.summary}</p>
+                    <p className="font-serif text-base text-bone"><LocalizedText value={p.name} /></p>
+                    <p className="text-bone/60 text-xs mt-1 leading-relaxed"><LocalizedText value={p.summary} /></p>
                   </li>
                 ))}
                 {visiblePaleo.length === 0 && <li className="p-5 text-bone/60 text-sm">{t("atlas.prehistoric.empty")}</li>}
@@ -503,15 +557,15 @@ const Atlas = () => {
           {mode === "geological" && currentEpoch && (
             <>
               <div className="p-5 border-b border-[#2A2421]">
-                <p className="overline">{currentEpoch.era_label}</p>
-                <p className="font-serif text-xl text-bone mt-2">{currentEpoch.name}</p>
-                <p className="text-bone/60 text-xs mt-2 leading-relaxed">{currentEpoch.summary}</p>
+                <p className="overline"><LocalizedText value={currentEpoch.era_label} /></p>
+                <p className="font-serif text-xl text-bone mt-2"><LocalizedText value={currentEpoch.name} /></p>
+                <p className="text-bone/60 text-xs mt-2 leading-relaxed"><LocalizedText value={currentEpoch.summary} /></p>
                 <p className="text-bone/40 text-[0.65rem] mt-3 italic leading-relaxed">
                   {t("atlas.geological.disclaimer")}
                 </p>
               </div>
               <div className="p-5 border-t border-[#2A2421]">
-                <p className="text-bone/40 text-[0.65rem] italic leading-relaxed">{t("atlas.sources")} : {currentEpoch.sources.join(" · ")}</p>
+                <p className="text-bone/40 text-[0.65rem] italic leading-relaxed">{t("atlas.sources")} : <LocalizedSourceList values={currentEpoch.sources || []} /></p>
               </div>
             </>
           )}
@@ -524,6 +578,7 @@ const Atlas = () => {
           onClick={() => setShowLegendPanel((v) => !v)}
           className="absolute bottom-28 right-6 z-[401] glass px-3 py-2 text-[0.65rem] uppercase tracking-[0.15em] text-gold"
           data-testid="legend-toggle-button"
+          aria-expanded={showLegendPanel}
         >
           {showLegendPanel ? t("atlas.legend.hide") : t("atlas.legend.show")}
         </button>
@@ -569,7 +624,7 @@ const Atlas = () => {
                       data-testid={`route-toggle-${r.id}`}
                     />
                     <span className="w-6 h-[2px]" style={{ background: getMigrationVisualStyle(r.migration_type).color }} />
-                    <span className="text-bone/80 text-xs">{r.name}</span>
+                    <span className="text-bone/80 text-xs"><LocalizedText value={r.name} /></span>
                   </label>
                 ))}
               </div>
@@ -621,7 +676,7 @@ const Atlas = () => {
                       data-testid={`route-toggle-${r.id}`}
                     />
                     <span className="w-6 h-[2px]" style={{ background: getMigrationVisualStyle(r.migration_type).color }} />
-                    <span className="text-bone/80 text-xs">{r.name}</span>
+                    <span className="text-bone/80 text-xs"><LocalizedText value={r.name} /></span>
                   </label>
                 ))}
 
@@ -631,11 +686,12 @@ const Atlas = () => {
                       onClick={() => setShowDiasporaRoutesList((v) => !v)}
                       className="flex items-center justify-between w-full text-left"
                       data-testid="toggle-diaspora-routes-section"
+                      aria-expanded={showDiasporaRoutesList}
                     >
                       <span className="text-bone/60 text-xs uppercase tracking-wider">
                         {t("atlas.diasporaRoutes").replace("{n}", routes.filter((r) => r.id.startsWith("diaspora-")).length)}
                       </span>
-                      <span className="text-bone/40 text-xs">{showDiasporaRoutesList ? "▾" : "▸"}</span>
+                      <span className="text-bone/40 text-xs" aria-hidden="true">{showDiasporaRoutesList ? "▾" : "▸"}</span>
                     </button>
                     {showDiasporaRoutesList && (
                       <div className="max-h-48 overflow-y-auto mt-2 pr-1 space-y-1.5">
@@ -649,7 +705,7 @@ const Atlas = () => {
                               data-testid={`route-toggle-${r.id}`}
                             />
                             <span className="w-6 h-[2px] shrink-0" style={{ background: r.color }} />
-                            <span className="text-bone/80 text-[0.65rem] leading-tight">{r.name}</span>
+                            <span className="text-bone/80 text-[0.65rem] leading-tight"><LocalizedText value={r.name} /></span>
                           </label>
                         ))}
                       </div>
@@ -664,18 +720,23 @@ const Atlas = () => {
         {/* Selected marker detail card */}
         {selected && (
           <div className="absolute bottom-28 left-1/2 -translate-x-1/2 z-[600] glass w-[92%] max-w-[420px] p-5" data-testid="marker-detail-card">
-            <button onClick={() => setSelected(null)} className="absolute top-3 right-4 text-bone/50 hover:text-bone text-lg" data-testid="close-detail">×</button>
+            <button
+              onClick={() => setSelected(null)}
+              className="absolute top-3 right-4 text-bone/50 hover:text-bone text-lg"
+              data-testid="close-detail"
+              aria-label={lang === "fr" ? "Fermer les détails" : "Close details"}
+            >×</button>
             <p className="overline text-[0.6rem]" style={{ color: selected.color || ATLAS_COLORS.gold }}>
               {selected.kind === "civ" && `${t("atlas.kind.civ")} · ${t(`region.${selected.region}`)}`}
-              {selected.kind === "place" && `${selected.type} · ${selected.era}`}
+              {selected.kind === "place" && <><LocalizedText value={selected.type} /> · <LocalizedText value={selected.era} /></>}
               {selected.kind === "diaspora" && `Diaspora · ${t(`region.${selected.region}`)}`}
               {selected.kind === "polity" && t("atlas.kind.polity")}
               {selected.kind === "paleo" && t("atlas.kind.paleo")}
               {selected.kind === "route" && t("atlas.kind.route")}
             </p>
-            <p className="font-serif text-xl text-bone mt-1">{selected.name}</p>
+            <p className="font-serif text-xl text-bone mt-1"><LocalizedText value={selected.name} /></p>
             {selected.kind === "route" && (
-              <p className="text-bone/70 text-sm mt-2">{selected.era}</p>
+              <p className="text-bone/70 text-sm mt-2"><LocalizedText value={selected.era} /></p>
             )}
             {selected.kind === "route" && selected.migration_type && (
               <span
@@ -689,11 +750,10 @@ const Atlas = () => {
               </span>
             )}
             <p className="text-bone/70 text-sm mt-2 leading-relaxed">
-              {(selected.summary || selected.blurb || "").slice(0, 220)}
-              {(selected.summary || selected.blurb || "").length > 220 ? "…" : ""}
+              <LocalizedExcerpt value={selected.summary || selected.blurb || ""} />
             </p>
             {selected.sources && (
-              <p className="text-bone/40 text-[0.65rem] mt-3 italic leading-relaxed">{t("atlas.sources")} : {selected.sources.join(" · ")}</p>
+              <p className="text-bone/40 text-[0.65rem] mt-3 italic leading-relaxed">{t("atlas.sources")} : <LocalizedSourceList values={selected.sources} /></p>
             )}
             {selected.kind === "civ" && (
               <Link to={`/civilization/${selected.id}`} className="inline-block mt-3 uppercase tracking-[0.18em] text-[0.65rem] text-gold">{t("atlas.openDeepDive")}</Link>
