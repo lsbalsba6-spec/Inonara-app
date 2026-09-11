@@ -67,6 +67,17 @@ function TranslatedInline({ text }) {
   return translated || text || null;
 }
 
+function ColonialPeriod({ period, className = "" }) {
+  if (!period) return null;
+  return (
+    <p className={className}>
+      <TranslatedInline text={period.colonizer} />
+      {period.start != null || period.end != null ? ` (${period.start ?? "?"}–${period.end ?? "?"}). ` : " "}
+      <TranslatedInline text={period.notes} />
+    </p>
+  );
+}
+
 const BESPOKE_COUNTRY_CONTENT = {
   gabon: {
     name: { fr: "Gabon", en: "Gabon" },
@@ -272,10 +283,7 @@ export default function CountryDetail() {
           {originCountry.colonial_period && (
             <div>
               <h2 className="font-serif text-xl text-gold mb-2">{copy.colonial}</h2>
-              <TranslatedText
-                text={`${originCountry.colonial_period.colonizer} (${originCountry.colonial_period.start}–${originCountry.colonial_period.end}). ${originCountry.colonial_period.notes}`}
-                className="text-bone/80 leading-relaxed"
-              />
+              <ColonialPeriod period={originCountry.colonial_period} className="text-bone/80 leading-relaxed" />
             </div>
           )}
           {originCountry.independence_year && (
