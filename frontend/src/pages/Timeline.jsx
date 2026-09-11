@@ -1,9 +1,8 @@
 import { useEffect, useMemo, useRef, useState } from "react";
-import { Link } from "react-router-dom";
-import axios from "axios";
+import { Link, useSearchParams } from "react-router-dom";
 import { useI18n } from "../i18n";
+import { fetchFiguresTimeline } from "../lib/api";
 
-const API = `${process.env.REACT_APP_BACKEND_URL}/api`;
 const CURRENT_YEAR = new Date().getFullYear();
 
 const CATEGORY_COLOR = {
@@ -23,20 +22,35 @@ const fmtYear = (y, t) => (y < 0 ? `${Math.abs(y)} ${t("date.bce")}` : `${y} ${t
 
 const Timeline = () => {
   const { t } = useI18n();
+  const [searchParams, setSearchParams] = useSearchParams();
   const [figures, setFigures] = useState([]);
   const [hovered, setHovered] = useState(null);
   const [activeCats, setActiveCats] = useState({});
-  const [query, setQuery] = useState("");
+  const [query, setQuery] = useState(() => searchParams.get("q") || "");
   const [era, setEra] = useState("all");
   const scrollerRef = useRef(null);
 
   useEffect(() => {
-    axios.get(`${API}/figures-timeline`).then((r) => {
-      setFigures(r.data);
-      const cats = Array.from(new Set(r.data.map((f) => f.category)));
+    fetchFiguresTimeline().then((data) => {
+      setFigures(data);
+      const cats = Array.from(new Set(data.map((f) => f.category)));
       setActiveCats(Object.fromEntries(cats.map((c) => [c, true])));
-    });
+    }).catch(() => {});
   }, []);
+
+  useEffect(() => {
+    const urlQuery = searchParams.get("q") || "";
+    setQuery((current) => (current === urlQuery ? current : urlQuery));
+  }, [searchParams]);
+
+  const handleQueryChange = (event) => {
+    const value = event.target.value;
+    setQuery(value);
+    const next = new URLSearchParams(searchParams);
+    if (value.trim()) next.set("q", value);
+    else next.delete("q");
+    setSearchParams(next, { replace: true });
+  };
 
   const { minY, maxY } = useMemo(() => {
     if (figures.length === 0) return { minY: -3000, maxY: CURRENT_YEAR };
@@ -48,12 +62,9 @@ const Timeline = () => {
     };
   }, [figures]);
 
-  // 1 year = 1.5px → ~7,500px wide for a 5,000-year span
   const PX_PER_YEAR = 1.5;
   const totalSpan = maxY - minY;
   const totalWidth = totalSpan * PX_PER_YEAR + 200;
-
-  // Vertical lanes per category for readability
   const LANES = ["events", "queens", "kings", "military", "scientists", "inventors", "civil_rights", "intellectuals", "artists", "athletes"];
   const LANE_HEIGHT = 60;
   const TOP_PAD = 80;
@@ -112,10 +123,10 @@ const Timeline = () => {
       </section>
 
       <section className="mt-8 rounded-2xl border border-bone/10 bg-bone/[0.02] p-5">
-        <input value={query} onChange={(event) => setQuery(event.target.value)} placeholder={t("timeline.search.placeholder")} className="w-full rounded-xl border border-bone/15 bg-ebony px-4 py-3 text-sm text-bone outline-none placeholder:text-bone/35 focus:border-gold/50" />
+        <input value={query} onChange={handleQueryChange} aria-label={t("timeline.search.placeholder")} placeholder={t("timeline.search.placeholder")} className="w-full rounded-xl border border-bone/15 bg-ebony px-4 py-3 text-sm text-bone outline-none placeholder:text-bone/35 focus:border-gold/50" />
         <div className="mt-4 flex gap-2 overflow-x-auto">
           {eraOptions.map(([id, label]) => (
-            <button key={id} type="button" onClick={() => setEra(id)} className={`whitespace-nowrap rounded-full border px-3 py-2 text-xs ${era === id ? "border-gold bg-gold/10 text-gold" : "border-bone/15 text-bone/60"}`}>
+            <button key={id} type="button" onClick={() => setEra(id)} aria-pressed={era === id} className={`whitespace-nowrap rounded-full border px-3 py-2 text-xs ${era === id ? "border-gold bg-gold/10 text-gold" : "border-bone/15 text-bone/60"}`}>
               {label}
             </button>
           ))}
@@ -123,12 +134,12 @@ const Timeline = () => {
         <p className="mt-4 text-xs text-bone/45">{visibleFigures.length} {visibleFigures.length > 1 ? t("timeline.visible.many") : t("timeline.visible.one")}</p>
       </section>
 
-      {/* Legend */}
       <div className="flex flex-wrap gap-3 mt-6" data-testid="timeline-legend">
         {LANES.map((cat) => (
           <button
             key={cat}
             onClick={() => setActiveCats((s) => ({ ...s, [cat]: !s[cat] }))}
+            aria-pressed={Boolean(activeCats[cat])}
             className={`flex items-center gap-2 px-3 py-1.5 text-[0.65rem] uppercase tracking-[0.18em] border transition-colors ${
               activeCats[cat] ? "border-gold/60 text-bone" : "border-[#2A2421] text-bone/40"
             }`}
@@ -140,21 +151,17 @@ const Timeline = () => {
         ))}
       </div>
 
-      {/* Scrollable timeline */}
       <div ref={scrollerRef} className="mt-10 overflow-x-auto overflow-y-hidden border border-[#2A2421] bg-[#0c0a09] relative">
         <div className="relative" style={{ width: totalWidth, height: TOP_PAD + LANES.length * LANE_HEIGHT + 40 }}>
-          {/* Era markers */}
           {ticks.map((y) => (
             <div key={y} className="absolute top-0 bottom-0 border-l border-[#1A1614]" style={{ left: (y - minY) * PX_PER_YEAR + 40 }}>
               <span className="absolute -top-1 left-2 text-[10px] uppercase tracking-[0.18em] text-bone/40">{fmtYear(y, t)}</span>
             </div>
           ))}
-          {/* "Today" marker */}
           <div className="absolute top-0 bottom-0 border-l border-gold/60" style={{ left: (CURRENT_YEAR - minY) * PX_PER_YEAR + 40 }}>
             <span className="absolute top-2 left-2 overline text-gold">{t("timeline.today")}</span>
           </div>
 
-          {/* Lane labels */}
           {LANES.map((cat, i) => (
             <div
               key={cat}
@@ -165,7 +172,6 @@ const Timeline = () => {
             </div>
           ))}
 
-          {/* Figure dots */}
           {visibleFigures.map((f) => {
             const laneIndex = LANES.indexOf(f.category);
             const x = (f.year - minY) * PX_PER_YEAR + 40;
@@ -189,7 +195,6 @@ const Timeline = () => {
             );
           })}
 
-          {/* Hover card */}
           {hovered && (
             <div
               className="absolute glass p-4 w-[260px] pointer-events-none z-10"
