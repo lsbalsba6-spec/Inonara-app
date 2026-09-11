@@ -3,6 +3,7 @@ import { useSearchParams, Link, useNavigate } from "react-router-dom";
 import { Search as SearchIcon, ArrowRight } from "lucide-react";
 import { search } from "../lib/api";
 import { useI18n } from "../i18n";
+import { Translated } from "../lib/useTranslated";
 
 const SearchPage = () => {
   const { t } = useI18n();
@@ -75,8 +76,8 @@ const SearchPage = () => {
               {results.civilizations.map((c) => (
                 <Link key={c.id} to={`/civilization/${c.id}`} className="museum-card p-5 group block" data-testid={`search-civ-${c.id}`}>
                   <p className="overline text-[0.65rem]">{t(`region.${c.region}`)}</p>
-                  <p className="font-serif text-xl text-bone mt-1 group-hover:text-gold transition-colors">{c.name}</p>
-                  <p className="text-bone/70 text-sm mt-2 line-clamp-2 font-light">{c.summary}</p>
+                  <Translated as="p" className="font-serif text-xl text-bone mt-1 group-hover:text-gold transition-colors">{c.name || ""}</Translated>
+                  <Translated as="p" className="text-bone/70 text-sm mt-2 line-clamp-2 font-light">{c.summary || ""}</Translated>
                 </Link>
               ))}
             </Section>
@@ -86,9 +87,9 @@ const SearchPage = () => {
             <Section title={t("search.section.figures")}>
               {results.figures.map((f) => (
                 <Link key={f.id} to={`/figure/${f.id}`} className="museum-card p-5 group block" data-testid={`search-figure-${f.id}`}>
-                  <p className="overline text-[0.65rem]">{f.category} · {f.era}</p>
+                  <p className="overline text-[0.65rem]"><Translated>{f.category || ""}</Translated> · <Translated>{f.era || ""}</Translated></p>
                   <p className="font-serif text-xl text-bone mt-1 group-hover:text-gold transition-colors">{f.name}</p>
-                  <p className="text-bone/70 text-sm mt-2 line-clamp-2 font-light">{f.summary}</p>
+                  <Translated as="p" className="text-bone/70 text-sm mt-2 line-clamp-2 font-light">{f.summary || ""}</Translated>
                 </Link>
               ))}
             </Section>
@@ -98,9 +99,9 @@ const SearchPage = () => {
             <Section title={t("search.section.diaspora")}>
               {results.diaspora.map((d) => (
                 <Link key={d.id} to={`/diaspora/${d.id}`} className="museum-card p-5 group block" data-testid={`search-diaspora-${d.id}`}>
-                  <p className="overline text-[0.65rem]">{t(`region.${d.region}`)} · {d.country}</p>
-                  <p className="font-serif text-xl text-bone mt-1 group-hover:text-gold transition-colors">{d.name}</p>
-                  <p className="text-bone/70 text-sm mt-2 line-clamp-2 font-light">{d.summary}</p>
+                  <p className="overline text-[0.65rem]">{t(`region.${d.region}`)} · <Translated>{d.country || ""}</Translated></p>
+                  <Translated as="p" className="font-serif text-xl text-bone mt-1 group-hover:text-gold transition-colors">{d.name || ""}</Translated>
+                  <Translated as="p" className="text-bone/70 text-sm mt-2 line-clamp-2 font-light">{d.summary || ""}</Translated>
                 </Link>
               ))}
             </Section>
@@ -111,8 +112,8 @@ const SearchPage = () => {
               {results.modules.map((m) => (
                 <Link key={m.id} to={`/module/${m.id}`} className="museum-card p-5 group block" data-testid={`search-module-${m.id}`}>
                   <p className="overline text-[0.65rem]">{t("search.module")}</p>
-                  <p className="font-serif text-xl text-bone mt-1 group-hover:text-gold transition-colors">{m.title}</p>
-                  <p className="text-bone/70 text-sm mt-2 line-clamp-2 font-light">{m.blurb}</p>
+                  <Translated as="p" className="font-serif text-xl text-bone mt-1 group-hover:text-gold transition-colors">{m.title || ""}</Translated>
+                  <Translated as="p" className="text-bone/70 text-sm mt-2 line-clamp-2 font-light">{m.blurb || ""}</Translated>
                 </Link>
               ))}
             </Section>
@@ -122,9 +123,9 @@ const SearchPage = () => {
             <Section title={t("search.section.stories")}>
               {results.stories.map((s) => (
                 <Link key={s.id} to={`/story/${s.id}`} className="museum-card p-5 group block" data-testid={`search-story-${s.id}`}>
-                  <p className="overline text-[0.65rem]">{s.era}</p>
-                  <p className="font-serif text-xl text-bone mt-1 group-hover:text-gold transition-colors">{s.title}</p>
-                  <p className="text-bone/70 text-sm mt-2 line-clamp-2 font-light">{s.summary}</p>
+                  <Translated as="p" className="overline text-[0.65rem]">{s.era || ""}</Translated>
+                  <Translated as="p" className="font-serif text-xl text-bone mt-1 group-hover:text-gold transition-colors">{s.title || ""}</Translated>
+                  <Translated as="p" className="text-bone/70 text-sm mt-2 line-clamp-2 font-light">{s.summary || ""}</Translated>
                 </Link>
               ))}
             </Section>
@@ -134,9 +135,9 @@ const SearchPage = () => {
             <Section title={t("search.section.culture")}>
               {results.culture.map((i) => (
                 <div key={i.id} className="museum-card p-5" data-testid={`search-culture-${i.id}`}>
-                  <p className="overline text-[0.65rem]">{i.category} · {i.region}</p>
-                  <p className="font-serif text-xl text-bone mt-1">{i.title}</p>
-                  <p className="text-bone/70 text-sm mt-2 line-clamp-2 font-light">{i.blurb}</p>
+                  <p className="overline text-[0.65rem]"><Translated>{i.category || ""}</Translated> · <Translated>{i.region || ""}</Translated></p>
+                  <Translated as="p" className="font-serif text-xl text-bone mt-1">{i.title || ""}</Translated>
+                  <Translated as="p" className="text-bone/70 text-sm mt-2 line-clamp-2 font-light">{i.blurb || ""}</Translated>
                 </div>
               ))}
             </Section>
