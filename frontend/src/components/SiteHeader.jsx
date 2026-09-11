@@ -22,12 +22,17 @@ const links = [
 ];
 
 export const SiteHeader = () => {
-  const { t } = useI18n();
+  const { t, lang } = useI18n();
   const [open, setOpen] = useState(false);
   return (
     <header className="fixed top-0 inset-x-0 z-50 glass" data-testid="site-header">
       <div className="max-w-[1600px] mx-auto px-4 sm:px-6 md:px-10 py-3 md:py-4 flex items-center justify-between gap-3">
-        <Link to="/afroatlas" className="flex items-center gap-3 group shrink-0 min-w-0" data-testid="logo-link" aria-label="AfroAtlas — home">
+        <Link
+          to="/afroatlas"
+          className="flex items-center gap-3 group shrink-0 min-w-0"
+          data-testid="logo-link"
+          aria-label={lang === "fr" ? "AfroAtlas — accueil" : "AfroAtlas — home"}
+        >
           <img
             src={AFROATLAS_LOGO}
             alt="AfroAtlas"
@@ -65,7 +70,7 @@ export const SiteHeader = () => {
         <button
           className="md:hidden text-bone"
           onClick={() => setOpen((o) => !o)}
-          aria-label="toggle menu"
+          aria-label={lang === "fr" ? "Ouvrir ou fermer le menu" : "Toggle menu"}
           data-testid="mobile-menu-toggle"
         >
           {open ? <X size={22} /> : <Menu size={22} />}
