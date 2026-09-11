@@ -35,18 +35,41 @@ const COPY = {
   },
 };
 
+function localizedValue(value, lang) {
+  if (!value) return "";
+  if (typeof value === "object") return value[lang] || value.fr || value.en || value.text || "";
+  return String(value);
+}
+
+function searchableValue(value) {
+  if (!value) return "";
+  if (typeof value === "object") return Object.values(value).filter((entry) => typeof entry === "string").join(" ");
+  return String(value);
+}
+
+function TranslatedInline({ value }) {
+  const translated = useTranslated(value || "");
+  if (!value) return null;
+  return translated || localizedValue(value, "fr") || localizedValue(value, "en");
+}
+
+function SourceLink({ source }) {
+  const translatedTitle = useTranslated(source?.title || "");
+  if (!source) return null;
+  return (
+    <a href={source.url} target="_blank" rel="noreferrer" className="rounded-full border border-gold/25 px-3 py-1 text-[11px] text-gold/85 hover:bg-gold/10">
+      {source.publisher}: {translatedTitle || localizedValue(source.title, "fr") || localizedValue(source.title, "en")}
+    </a>
+  );
+}
+
 function SourceLinks({ ids = [], sourceMap }) {
   if (!ids.length) return null;
   return (
     <div className="mt-4 flex flex-wrap gap-2">
       {ids.map((id) => {
         const source = sourceMap.get(id);
-        if (!source) return null;
-        return (
-          <a key={id} href={source.url} target="_blank" rel="noreferrer" className="rounded-full border border-gold/25 px-3 py-1 text-[11px] text-gold/85 hover:bg-gold/10">
-            {source.publisher}: {source.title}
-          </a>
-        );
+        return source ? <SourceLink key={id} source={source} /> : null;
       })}
     </div>
   );
@@ -55,17 +78,27 @@ function SourceLinks({ ids = [], sourceMap }) {
 function TranslatedText({ value, className = "" }) {
   const translated = useTranslated(value || "");
   if (!value) return null;
-  return <p className={className}>{translated || value}</p>;
+  return <p className={className}>{translated || localizedValue(value, "fr") || localizedValue(value, "en")}</p>;
 }
 
 export function CountryFigures({ dossier, sourceMap }) {
   const { lang } = useI18n();
   const copy = COPY[lang] || COPY.en;
   const figures = useMemo(() => dossier.figures || [], [dossier.figures]);
-  const getName = (item) => item.name || item.title || copy.person;
+  const getNameRaw = (item) => item.name || item.title || copy.person;
+  const getName = (item) => localizedValue(getNameRaw(item), lang) || copy.person;
   const getSummary = (item) => item.reason || item.note || item.summary || item.description || "";
-  const getField = (item) => item.field || item.domain || item.category || copy.other;
-  const fields = [...new Set(figures.map((item) => getField(item)))];
+  const getFieldRaw = (item) => item.field || item.domain || item.category || copy.other;
+  const getFieldKey = (item) => searchableValue(getFieldRaw(item)) || copy.other;
+  const fields = useMemo(() => {
+    const seen = new Map();
+    figures.forEach((item) => {
+      const value = getFieldRaw(item);
+      const key = searchableValue(value) || copy.other;
+      if (!seen.has(key)) seen.set(key, value);
+    });
+    return [...seen.entries()].map(([key, value]) => ({ key, value }));
+  }, [figures, copy.other]);
 
   const [field, setField] = useState("all");
   const [query, setQuery] = useState("");
@@ -73,9 +106,9 @@ export function CountryFigures({ dossier, sourceMap }) {
 
   const needle = query.trim().toLowerCase();
   const visible = figures.filter((item) => {
-    const itemField = getField(item);
-    const matchesField = field === "all" || itemField === field;
-    const haystack = `${getName(item)} ${getSummary(item)} ${itemField}`.toLowerCase();
+    const itemFieldKey = getFieldKey(item);
+    const matchesField = field === "all" || itemFieldKey === field;
+    const haystack = `${searchableValue(getNameRaw(item))} ${searchableValue(getSummary(item))} ${searchableValue(getFieldRaw(item))}`.toLowerCase();
     return matchesField && (!needle || haystack.includes(needle));
   });
 
@@ -95,8 +128,8 @@ export function CountryFigures({ dossier, sourceMap }) {
 
         <div className="flex gap-2 overflow-x-auto">
           <button type="button" onClick={() => setField("all")} className={`whitespace-nowrap rounded-full border px-3 py-1.5 text-xs ${field === "all" ? "border-gold bg-gold/10 text-gold" : "border-bone/15 text-bone/60 hover:text-bone"}`}>{copy.all}</button>
-          {fields.map((itemField) => (
-            <button key={itemField} type="button" onClick={() => setField(itemField)} className={`whitespace-nowrap rounded-full border px-3 py-1.5 text-xs ${field === itemField ? "border-gold bg-gold/10 text-gold" : "border-bone/15 text-bone/60 hover:text-bone"}`}>{itemField}</button>
+          {fields.map(({ key, value }) => (
+            <button key={key} type="button" onClick={() => setField(key)} className={`whitespace-nowrap rounded-full border px-3 py-1.5 text-xs ${field === key ? "border-gold bg-gold/10 text-gold" : "border-bone/15 text-bone/60 hover:text-bone"}`}><TranslatedInline value={value} /></button>
           ))}
         </div>
       </div>
@@ -110,10 +143,10 @@ export function CountryFigures({ dossier, sourceMap }) {
               <button type="button" onClick={() => setOpenId(expanded ? null : id)} className="w-full p-5 text-left" aria-expanded={expanded}>
                 <div className="flex flex-wrap items-start justify-between gap-3">
                   <div>
-                    <p className="text-[10px] uppercase tracking-[0.18em] text-gold">{getField(item)}</p>
+                    <p className="text-[10px] uppercase tracking-[0.18em] text-gold"><TranslatedInline value={getFieldRaw(item)} /></p>
                     <h3 className="mt-2 font-serif text-2xl text-bone">{getName(item)}</h3>
                   </div>
-                  <span className="text-xl text-gold">{expanded ? "−" : "+"}</span>
+                  <span className="text-xl text-gold" aria-hidden="true">{expanded ? "−" : "+"}</span>
                 </div>
                 {getSummary(item) && <TranslatedText value={getSummary(item)} className="mt-4 max-w-4xl leading-7 text-bone/70" />}
               </button>
@@ -128,12 +161,12 @@ export function CountryFigures({ dossier, sourceMap }) {
                   )}
                   {item.highlights?.length > 0 && (
                     <div className="mb-5 flex flex-wrap gap-2">
-                      {item.highlights.map((highlight) => <span key={highlight} className="rounded-full border border-gold/20 bg-gold/[0.05] px-3 py-1 text-xs text-gold/85">{highlight}</span>)}
+                      {item.highlights.map((highlight, highlightIndex) => <span key={`${searchableValue(highlight)}-${highlightIndex}`} className="rounded-full border border-gold/20 bg-gold/[0.05] px-3 py-1 text-xs text-gold/85"><TranslatedInline value={highlight} /></span>)}
                     </div>
                   )}
                   <div className="grid gap-3 md:grid-cols-2">
-                    {item.birth && <div className="rounded-xl border border-bone/10 bg-black/10 p-4"><p className="text-[10px] uppercase tracking-[0.18em] text-bone/40">{copy.birth}</p><p className="mt-2 text-sm leading-6 text-bone/72">{item.birth}</p></div>}
-                    {item.death && <div className="rounded-xl border border-bone/10 bg-black/10 p-4"><p className="text-[10px] uppercase tracking-[0.18em] text-bone/40">{copy.death}</p><p className="mt-2 text-sm leading-6 text-bone/72">{item.death}</p></div>}
+                    {item.birth && <div className="rounded-xl border border-bone/10 bg-black/10 p-4"><p className="text-[10px] uppercase tracking-[0.18em] text-bone/40">{copy.birth}</p><p className="mt-2 text-sm leading-6 text-bone/72"><TranslatedInline value={item.birth} /></p></div>}
+                    {item.death && <div className="rounded-xl border border-bone/10 bg-black/10 p-4"><p className="text-[10px] uppercase tracking-[0.18em] text-bone/40">{copy.death}</p><p className="mt-2 text-sm leading-6 text-bone/72"><TranslatedInline value={item.death} /></p></div>}
                     {item.legacy && <div className="rounded-xl border border-bone/10 bg-black/10 p-4 md:col-span-2"><p className="text-[10px] uppercase tracking-[0.18em] text-bone/40">{copy.legacy}</p><TranslatedText value={item.legacy} className="mt-2 text-sm leading-6 text-bone/72" /></div>}
                   </div>
                   <SourceLinks ids={item.sources || item.sourceIds} sourceMap={sourceMap} />
