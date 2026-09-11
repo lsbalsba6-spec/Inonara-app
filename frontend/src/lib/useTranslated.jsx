@@ -1,8 +1,6 @@
 import { useEffect, useState, useRef } from "react";
-import axios from "axios";
 import { useI18n } from "../i18n";
-
-const API = `${process.env.REACT_APP_BACKEND_URL}/api`;
+import { api } from "./api";
 
 // In-memory cache (per session) to avoid redundant requests
 const cache = new Map();
@@ -39,7 +37,7 @@ const fetchTranslation = async (text, target) => {
   const key = `${target}::${text}`;
   if (cache.has(key)) return cache.get(key);
   if (inflight.has(key)) return inflight.get(key);
-  const p = axios.post(`${API}/translate`, { text, target_lang: target }).then((r) => {
+  const p = api.post("/translate", { text, target_lang: target }).then((r) => {
     const out = r.data.translated || text;
     cache.set(key, out);
     inflight.delete(key);
