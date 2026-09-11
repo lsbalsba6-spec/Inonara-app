@@ -1,7 +1,7 @@
 import { CountryOverview } from "./CountryOverview";
 import SouthAfricaDeepHistory from "./SouthAfricaDeepHistory";
 import SouthAfricaPre1652Routes from "./SouthAfricaPre1652Routes";
-import { SouthAfricaMigrationMap } from "./SouthAfricaVisuals";
+import CountryMigrationFlowMap from "./CountryMigrationFlowMap";
 import { SouthAfricaInternationalQuality } from "./SouthAfricaInternationalQuality";
 import { SouthAfricaSymbolsQuality } from "./SouthAfricaSymbolsQuality";
 import { SouthAfricaEconomyQuality } from "./SouthAfricaEconomyQuality";
@@ -27,6 +27,7 @@ import CountryTerritory from "./CountryTerritory";
 import CountrySectionBoundary from "./CountrySectionBoundary";
 import { useI18n } from "../i18n";
 import { useTranslated } from "../lib/useTranslated";
+import { getCountryMigrationRouteSet } from "../data/countryMigrationRoutes";
 
 const COPY = {
   en: {
@@ -194,6 +195,9 @@ export default function CountryDossierView({ dossier }) {
   const countryName = dossier.name?.[lang] || dossier.name?.fr || dossier.name?.en || dossier.country || copy.country;
   const regionName = dossier.region?.[lang] || dossier.region?.fr || dossier.region?.en || copy.southernAfrica;
   const editorialNote = useTranslated(dossier.editorial_note || "");
+  const migrationRouteSet = getCountryMigrationRouteSet(dossier?.iso2);
+  const migrationRoutes = dossier?.map_visuals?.migration_routes?.length ? dossier.map_visuals.migration_routes : (migrationRouteSet?.routes || []);
+  const migrationNote = dossier?.map_visuals?.note || migrationRouteSet?.note;
   const groups = useMemo(() => copy.groups.map((group) => ({
     ...group,
     items: group.items.map(([id, label]) => [id, label.replace("{country}", countryName)]),
@@ -244,7 +248,7 @@ export default function CountryDossierView({ dossier }) {
         {active === "law-memory" && <SouthAfricaLawMemory dossier={dossier} sourceMap={sourceMap} />}
         {active === "peoples" && <CountryPeoples dossier={dossier} sourceMap={sourceMap} />}
         {active === "polities" && <CountryPolities dossier={dossier} sourceMap={sourceMap} />}
-        {active === "migrations" && (<div className="space-y-10"><SouthAfricaPre1652Routes data={dossier.pre1652_map} sourceMap={sourceMap} /><SouthAfricaMigrationMap routes={dossier.map_visuals?.migration_routes || []} note={dossier.map_visuals?.note} /><CountryMigrations dossier={dossier} sourceMap={sourceMap} /></div>)}
+        {active === "migrations" && (<div className="space-y-10"><SouthAfricaPre1652Routes data={dossier.pre1652_map} sourceMap={sourceMap} /><CountryMigrationFlowMap routes={migrationRoutes} note={migrationNote} /><CountryMigrations dossier={dossier} sourceMap={sourceMap} /></div>)}
         {active === "heritage" && <SouthAfricaHeritage dossier={dossier} sourceMap={sourceMap} />}
         {active === "figures" && <CountryFigures dossier={dossier} sourceMap={sourceMap} />}
         {active === "culture" && <SouthAfricaCulture dossier={dossier} sourceMap={sourceMap} />}
