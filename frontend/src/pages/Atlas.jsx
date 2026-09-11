@@ -31,18 +31,19 @@ import PilotV3InfoPanel from "../components/PilotV3InfoPanel";
 // conquest (long dashes — military/political expansion, not a personal
 // migration decision at all). See PR: "difference between forced and
 // voluntary migration, varying honestly by period per the data found."
+const CURRENT_YEAR = new Date().getFullYear();
 const MILESTONES = [
-  { year: -300000000, label: "Pangée" },
-  { year: -66000000, label: "Fin des dinosaures" },
-  { year: -70000, label: "Sortie d'Afrique" },
-  { year: -3500, label: "Civilisations" },
-  { year: 1885, label: "Colonisation" },
-  { year: 1960, label: "Indépendances" },
-  { year: 2025, label: "Aujourd'hui" },
+  { year: -300000000, label: { fr: "Pangée", en: "Pangaea" } },
+  { year: -66000000, label: { fr: "Fin des dinosaures", en: "End of the dinosaurs" } },
+  { year: -70000, label: { fr: "Sortie d'Afrique", en: "Out of Africa" } },
+  { year: -3500, label: { fr: "Civilisations", en: "Civilizations" } },
+  { year: 1885, label: { fr: "Colonisation", en: "Colonization" } },
+  { year: 1960, label: { fr: "Indépendances", en: "Independences" } },
+  { year: CURRENT_YEAR, label: { fr: "Aujourd'hui", en: "Today" } },
 ];
 
 const Atlas = () => {
-  const { t } = useI18n();
+  const { t, lang } = useI18n();
   const [civs, setCivs] = useState([]);
   const [routes, setRoutes] = useState([]);
   const [places, setPlaces] = useState([]);
@@ -206,7 +207,7 @@ const Atlas = () => {
           className="fixed top-[90px] right-2 z-[600] text-[0.6rem] px-2 py-1 rounded bg-black/70 text-gold font-mono"
           data-testid="pilot-v3-active-indicator"
         >
-          Prototype v3 actif (Gabon/Afrique centrale)
+          {lang === "fr" ? "Prototype v3 actif (Gabon/Afrique centrale)" : "Prototype v3 active (Gabon/Central Africa)"}
         </div>
       )}
       {mode === "historical" && pilotV3FangProcess && (
@@ -228,13 +229,13 @@ const Atlas = () => {
       )}
       {/* Current era indicator */}
       <div className="absolute top-[84px] left-1/2 -translate-x-1/2 z-[500] glass px-6 py-2 rounded-full" data-testid="atlas-era-indicator">
-        <p className="font-serif text-gold text-sm md:text-base whitespace-nowrap">{eraLabel(year)}</p>
+        <p className="font-serif text-gold text-sm md:text-base whitespace-nowrap">{eraLabel(year, lang)}</p>
       </div>
 
       {/* Map */}
       <div className="flex-1 relative">
         <div className="absolute bottom-3 left-3 z-[500] glass rounded-lg border border-gold/20 px-3 py-2 max-w-[250px]" data-testid="equal-earth-badge">
-          <p className="text-[0.6rem] uppercase tracking-[0.18em] text-gold">Projection Equal Earth</p>
+          <p className="text-[0.6rem] uppercase tracking-[0.18em] text-gold">{lang === "fr" ? "Projection Equal Earth" : "Equal Earth projection"}</p>
           <p className="mt-1 text-[0.65rem] leading-4 text-bone/55">{t("atlas.equalEarth.copy")}</p>
         </div>
         <WorldMap
@@ -458,7 +459,7 @@ const Atlas = () => {
           {mode === "historical" && (
             <>
               <div className="p-5 border-b border-[#2A2421]">
-                <p className="overline">{t("atlas.activeIn").replace("{era}", eraLabel(year))}</p>
+                <p className="overline">{t("atlas.activeIn").replace("{era}", eraLabel(year, lang))}</p>
                 <p className="font-serif text-2xl text-bone mt-2">{t("atlas.civsCount").replace("{n}", visibleCivs.length)}</p>
                 {visiblePolities.length > 0 && (
                   <p className="text-bone/50 text-xs mt-1">{t("atlas.politiesCount").replace("{n}", visiblePolities.length)}</p>
@@ -481,7 +482,7 @@ const Atlas = () => {
           {mode === "prehistoric" && (
             <>
               <div className="p-5 border-b border-[#2A2421]">
-                <p className="overline">{eraLabel(year)}</p>
+                <p className="overline">{eraLabel(year, lang)}</p>
                 <p className="font-serif text-xl text-bone mt-2">{t("atlas.prehistoric.title")}</p>
                 <p className="text-bone/60 text-xs mt-2 leading-relaxed">
                   {t("atlas.prehistoric.copy")}
@@ -550,7 +551,9 @@ const Atlas = () => {
               <div className="space-y-2">
                 <div className="flex items-center gap-3">
                   <span className="w-3 h-3 rounded-sm" style={{ background: ATLAS_COLORS.amber, opacity: 0.5 }} />
-                  <span className="text-bone/80 text-xs">Ponts terrestres (zone approximative, mer basse)</span>
+                  <span className="text-bone/80 text-xs">
+                    {lang === "fr" ? "Ponts terrestres (zone approximative, mer basse)" : "Land bridges (approximate area, low sea level)"}
+                  </span>
                 </div>
                 <div className="h-px bg-[#2A2421] my-2" />
                 {routes.filter((r) => !r.id.startsWith("diaspora-") && activeRoutes[r.id] !== false).length > 0 && (
@@ -715,7 +718,7 @@ const Atlas = () => {
         )}
       </div>
 
-      {/* Unified timeline bar — one continuous non-linear slider, Pangée to today */}
+      {/* Unified timeline bar — one continuous non-linear slider, Pangaea to today */}
       <div className="glass border-t border-gold/20 px-6 md:px-10 py-5" data-testid="atlas-timeline">
         <div className="max-w-[1600px] mx-auto">
           <Slider
@@ -729,16 +732,16 @@ const Atlas = () => {
           <div className="relative mt-3 h-12">
             {MILESTONES.map((m, i) => (
               <button
-                key={m.label}
+                key={m.year}
                 onClick={() => jumpToYear(m.year)}
                 className="absolute -translate-x-1/2 text-[9px] md:text-[10px] uppercase tracking-[0.15em] text-bone/40 hover:text-gold transition-colors whitespace-nowrap"
                 style={{
                   left: `${Math.min(97, (yearToSlider(m.year) / SLIDER_MAX) * 100)}%`,
                   top: i % 2 === 0 ? 0 : 16,
                 }}
-                data-testid={`milestone-${m.label}`}
+                data-testid={`milestone-${m.year}`}
               >
-                {m.label}
+                {m.label[lang] || m.label.en}
               </button>
             ))}
           </div>
