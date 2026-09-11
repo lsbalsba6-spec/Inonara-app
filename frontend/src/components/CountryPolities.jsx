@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react";
+import { useState } from "react";
 import { useI18n } from "../i18n";
 import { useTranslated } from "../lib/useTranslated";
 
@@ -96,15 +96,13 @@ export function CountryPolities({ dossier, sourceMap }) {
   const getTypeKey = (item) => searchableValue(getTypeRaw(item)) || copy.formation;
 
   const polities = dossier.polities || [];
-  const types = useMemo(() => {
-    const seen = new Map();
-    polities.forEach((item) => {
-      const value = getTypeRaw(item);
-      const key = searchableValue(value) || copy.formation;
-      if (!seen.has(key)) seen.set(key, value);
-    });
-    return [...seen.entries()].map(([key, value]) => ({ key, value }));
-  }, [polities, copy.formation]);
+  const typeMap = new Map();
+  polities.forEach((item) => {
+    const value = getTypeRaw(item);
+    const key = searchableValue(value) || copy.formation;
+    if (!typeMap.has(key)) typeMap.set(key, value);
+  });
+  const types = [...typeMap.entries()].map(([key, value]) => ({ key, value }));
   const [type, setType] = useState("all");
   const [query, setQuery] = useState("");
   const [openId, setOpenId] = useState(polities[0]?.id || null);
