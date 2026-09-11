@@ -1,13 +1,11 @@
 import { useEffect, useState, useMemo } from "react";
 import { Link, useParams, useSearchParams } from "react-router-dom";
 import { ArrowLeft } from "lucide-react";
-import axios from "axios";
+import { fetchFigure, fetchFigures } from "../lib/api";
 import { useI18n } from "../i18n";
 import { useTranslated } from "../lib/useTranslated";
 import { SmartImage } from "../components/SmartImage";
 import { sortAlphabetically } from "../lib/contentSort";
-
-const API = `${process.env.REACT_APP_BACKEND_URL}/api`;
 
 const CATEGORIES = ["all", "queens", "kings", "military", "scientists", "inventors", "civil_rights", "intellectuals", "artists", "athletes"];
 
@@ -34,7 +32,7 @@ export const FiguresList = () => {
   const [items, setItems] = useState([]);
   const [cat, setCat] = useState("all");
   const [query, setQuery] = useState(() => searchParams.get("q") || "");
-  useEffect(() => { axios.get(`${API}/figures`).then((r) => setItems(r.data)).catch(() => {}); }, []);
+  useEffect(() => { fetchFigures().then(setItems).catch(() => {}); }, []);
   useEffect(() => {
     const urlQuery = searchParams.get("q") || "";
     setQuery((current) => current === urlQuery ? current : urlQuery);
@@ -115,7 +113,7 @@ export const FigureDetail = () => {
   const { t } = useI18n();
   const { id } = useParams();
   const [f, setF] = useState(null);
-  useEffect(() => { axios.get(`${API}/figures/${id}`).then((r) => setF(r.data)).catch(() => {}); }, [id]);
+  useEffect(() => { fetchFigure(id).then(setF).catch(() => {}); }, [id]);
   const tSummary = useTranslated(f?.summary || "");
   const tStory = useTranslated(f?.story || "");
   const tLegacy = useTranslated(f?.legacy || "");
