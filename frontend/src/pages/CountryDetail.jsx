@@ -175,7 +175,7 @@ export default function CountryDetail() {
     return (
       <div className="pt-[100px] pb-20 px-6 max-w-3xl mx-auto">
         <p className="overline text-gold mb-2">{copy.countryCentralAfrica}</p>
-        <h1 className="font-serif text-4xl text-bone mb-8">{bespoke.name}</h1>
+        <h1 className="font-serif text-4xl text-bone mb-8"><TranslatedInline text={bespoke.name} /></h1>
         <CountryMiniMap polities={countryPolities} diasporaEntries={countryDiaspora} routes={countryRoutes} defaultYear={1900} />
         <div className="mt-10 space-y-8">
           {bespoke.sections.map((s, i) => (
@@ -204,10 +204,12 @@ export default function CountryDetail() {
     );
   }
 
+  const displayCountryName = originCountry?.country || genericDiasporaMatches[0]?.country || "";
+
   return (
     <div className="pt-[100px] pb-20 px-6 max-w-3xl mx-auto">
       <p className="overline text-gold mb-2">{originCountry ? copy.africanOrigin : copy.diaspora}</p>
-      <h1 className="font-serif text-4xl text-bone mb-8">{originCountry?.country || genericDiasporaMatches[0]?.country}</h1>
+      <h1 className="font-serif text-4xl text-bone mb-8"><TranslatedInline text={displayCountryName} /></h1>
 
       {originCountry && (
         <div className="space-y-6">
