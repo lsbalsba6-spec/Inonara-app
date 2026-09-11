@@ -2,6 +2,13 @@ import { useState, useMemo, useCallback } from "react";
 import WorldMap from "./WorldMap";
 import { SLIDER_MIN, SLIDER_MAX, sliderToYear, yearToSlider, eraLabel } from "../lib/timeScale";
 import { ATLAS_COLORS } from "../lib/designTokens";
+import { useI18n } from "../i18n";
+import { useTranslated } from "../lib/useTranslated";
+
+function TranslatedInline({ value }) {
+  const translated = useTranslated(value || "");
+  return translated || value || null;
+}
 
 /**
  * A self-contained, country-scoped mini-map: its own timeline slider, its
@@ -18,6 +25,7 @@ export default function CountryMiniMap({
   defaultYear = 1900,
   height = 420,
 }) {
+  const { lang } = useI18n();
   const [sliderPos, setSliderPos] = useState(yearToSlider(defaultYear));
   const [project, setProject] = useState(null);
   const [zoomScale, setZoomScale] = useState(1);
@@ -35,15 +43,16 @@ export default function CountryMiniMap({
   return (
     <div className="relative rounded-xl overflow-hidden border border-[#2A2421]" style={{ height }} data-testid="country-mini-map">
       <div className="absolute top-2 left-2 z-[300] glass px-3 py-1 rounded-full">
-        <p className="text-gold text-xs font-serif">{eraLabel(year)}</p>
+        <p className="text-gold text-xs font-serif">{eraLabel(year, lang)}</p>
       </div>
 
       <button
         onClick={() => setShowLegend((v) => !v)}
         className="absolute top-2 right-2 z-[301] glass px-2 py-1 text-[0.6rem] uppercase tracking-wider text-gold"
         data-testid="country-map-legend-toggle"
+        aria-label={lang === "fr" ? "Afficher ou masquer la légende" : "Show or hide the legend"}
       >
-        {showLegend ? "✕" : "☰"} Légende
+        {showLegend ? "✕" : "☰"} {lang === "fr" ? "Légende" : "Legend"}
       </button>
 
       {showLegend && (
@@ -51,13 +60,13 @@ export default function CountryMiniMap({
           {polities.length > 0 && (
             <div className="flex items-center gap-2">
               <span className="w-2 h-2 rounded-full border border-dashed" style={{ borderColor: ATLAS_COLORS.gold }} />
-              <span className="text-bone/80">Royaumes / entités historiques</span>
+              <span className="text-bone/80">{lang === "fr" ? "Royaumes / entités historiques" : "Kingdoms / historical entities"}</span>
             </div>
           )}
           {places.length > 0 && (
             <div className="flex items-center gap-2">
               <span className="w-2 h-2 rounded-full" style={{ background: ATLAS_COLORS.amber }} />
-              <span className="text-bone/80">Sites</span>
+              <span className="text-bone/80">{lang === "fr" ? "Sites" : "Places"}</span>
             </div>
           )}
           {diasporaEntries.length > 0 && (
@@ -69,7 +78,7 @@ export default function CountryMiniMap({
           {routes.map((r) => (
             <div key={r.id} className="flex items-center gap-2">
               <span className="w-4 h-[2px]" style={{ background: r.color }} />
-              <span className="text-bone/80">{r.name}</span>
+              <span className="text-bone/80"><TranslatedInline value={r.name} /></span>
             </div>
           ))}
         </div>
@@ -140,16 +149,25 @@ export default function CountryMiniMap({
           onChange={(e) => setSliderPos(Number(e.target.value))}
           className="w-full accent-gold"
           data-testid="country-map-slider"
+          aria-label={lang === "fr" ? "Chronologie de la carte du pays" : "Country map timeline"}
         />
       </div>
 
       {selected && (
         <div className="absolute bottom-16 left-2 right-2 z-[310] glass p-3 rounded-xl text-xs" data-testid="country-map-selected-panel">
           <div className="flex justify-between items-start">
-            <p className="text-gold font-serif">{selected.name}</p>
-            <button onClick={() => setSelected(null)} className="text-bone/60">✕</button>
+            <p className="text-gold font-serif"><TranslatedInline value={selected.name} /></p>
+            <button
+              onClick={() => setSelected(null)}
+              className="text-bone/60"
+              aria-label={lang === "fr" ? "Fermer le détail" : "Close details"}
+            >✕</button>
           </div>
-          {selected.summary && <p className="text-bone/70 mt-1">{selected.summary.slice(0, 180)}{selected.summary.length > 180 ? "…" : ""}</p>}
+          {selected.summary && (
+            <p className="text-bone/70 mt-1">
+              <TranslatedInline value={`${selected.summary.slice(0, 180)}${selected.summary.length > 180 ? "…" : ""}`} />
+            </p>
+          )}
         </div>
       )}
     </div>
