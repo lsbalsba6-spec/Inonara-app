@@ -5,11 +5,18 @@ import { slugify } from "./CountryDetail";
 import { AFRICA_REGIONS, FRENCH_COUNTRY_NAMES } from "../data/africa-regions";
 import { useI18n } from "../i18n";
 
-const collator = new Intl.Collator("fr", { sensitivity: "base" });
+const REGION_LABELS = {
+  "southern-africa": { fr: "Afrique australe", en: "Southern Africa" },
+  "central-africa": { fr: "Afrique centrale", en: "Central Africa" },
+  "eastern-africa": { fr: "Afrique de l'Est et îles de l'océan Indien", en: "Eastern Africa and Indian Ocean islands" },
+  "western-africa": { fr: "Afrique de l'Ouest", en: "West Africa" },
+  "northern-africa": { fr: "Afrique du Nord", en: "North Africa" },
+  "african-atlantic-territories": { fr: "Territoires africains de l'Atlantique", en: "African Atlantic territories" },
+};
 
 export function displayCountryName(country, lang = "fr") {
-  if (!country || typeof country !== "object") return "Pays inconnu";
-  return (lang === "fr" ? FRENCH_COUNTRY_NAMES[country.iso2] : null) || country.display_name || country.name || country.iso2 || "Unknown country";
+  if (!country || typeof country !== "object") return lang === "fr" ? "Pays inconnu" : "Unknown country";
+  return (lang === "fr" ? FRENCH_COUNTRY_NAMES[country.iso2] : null) || country.display_name || country.name || country.iso2 || (lang === "fr" ? "Pays inconnu" : "Unknown country");
 }
 
 export function buildCountrySlug(country, dossierByIso = new Map()) {
@@ -27,6 +34,7 @@ export default function CountriesList() {
   const [dossiers, setDossiers] = useState([]);
   const [loading, setLoading] = useState(true);
   const [warning, setWarning] = useState("");
+  const collator = useMemo(() => new Intl.Collator(lang === "fr" ? "fr" : "en", { sensitivity: "base" }), [lang]);
 
   useEffect(() => {
     let cancelled = false;
@@ -69,7 +77,7 @@ export default function CountriesList() {
     () => validCountries
       .filter((country) => !africanCodes.has(country.iso2))
       .sort((a, b) => collator.compare(displayCountryName(a, lang), displayCountryName(b, lang))),
-    [validCountries, africanCodes, lang],
+    [validCountries, africanCodes, lang, collator],
   );
 
   if (loading) {
@@ -100,12 +108,13 @@ export default function CountriesList() {
               .map((code) => byIso.get(code))
               .filter(Boolean)
               .sort((a, b) => collator.compare(displayCountryName(a, lang), displayCountryName(b, lang)));
+            const regionLabel = REGION_LABELS[region.id]?.[lang] || region.label;
 
             if (entries.length === 0) return null;
 
             return (
               <section key={region.id} aria-labelledby={`region-${region.id}`}>
-                <h2 id={`region-${region.id}`} className="font-serif text-2xl text-gold mb-4">{region.label}</h2>
+                <h2 id={`region-${region.id}`} className="font-serif text-2xl text-gold mb-4">{regionLabel}</h2>
                 <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-2">
                   {entries.map((country) => {
                     const dossier = dossierByIso.get(country.iso2);
