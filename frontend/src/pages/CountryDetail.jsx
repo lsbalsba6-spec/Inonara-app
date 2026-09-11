@@ -16,7 +16,8 @@ import { useI18n } from "../i18n";
 import { useTranslated } from "../lib/useTranslated";
 
 export function slugify(name) {
-  return (name || "")
+  const value = typeof name === "object" && name !== null ? (name.en || name.fr || name.text || "") : (name || "");
+  return value
     .toLowerCase()
     .normalize("NFD").replace(/[\u0300-\u036f]/g, "")
     .replace(/[^a-z0-9]+/g, "-")
@@ -40,7 +41,7 @@ const COPY = {
     editorial: "This page uses content already validated on the site. Master dossiers are published progressively, country by country.",
   },
   fr: {
-    unavailable: "Page pas encore disponible",
+    unavailable: "Page non encore disponible",
     noData: "Aucune donnée trouvée pour",
     allCountries: "Voir tous les pays",
     countryCentralAfrica: "Pays · Afrique centrale",
@@ -68,18 +69,66 @@ function TranslatedInline({ text }) {
 
 const BESPOKE_COUNTRY_CONTENT = {
   gabon: {
-    name: "Gabon",
+    name: { fr: "Gabon", en: "Gabon" },
     sections: [
-      { heading: "Avant le contact européen", body: "L'estuaire du Gabon est habité par les Mpongwè (sous-groupe nord de l'ensemble myènè) depuis une tradition orale situant leur arrivée vers 1300, en provenance du Haut-Ivindo (Raponda-Walker). Selon l'historien Henry Bucher, un groupe contrôlait déjà l'embouchure du fleuve au plus tard au début du XVIIe siècle. Aucune structure politique unifiée de type royaume n'a jamais existé chez les Mpongwè." },
-      { heading: "Premier contact portugais (1472)", body: "En 1472, des navigateurs portugais atteignent l'estuaire et lui donnent le nom « Gabão ». L'Encyclopédie Universalis précise qu'on ignore la motivation exacte de ce choix." },
-      { heading: "Traités français et fondation de Libreville (XIXe s.)", body: "Le 9 février 1839, traité avec le roi Denis, sans transfert de souveraineté explicite ; le 18 mars 1842, traité séparé avec le roi Louis, qui stipule explicitement un transfert de souveraineté. La fondation de Libreville reste disputée entre les sources (1848, 1849 ou 1850)." },
-      { heading: "Migration fang (XIXe siècle)", body: "Les Fang sont observés en migration vers 1856 par Paul du Chaillu et atteignent l'estuaire vers 1860. Contrairement aux Orungu et Mpongwè côtiers, ils ont généralement refusé de participer à la traite négrière." },
-      { heading: "Colonisation et Afrique-Équatoriale française", body: "Colonie distincte en 1886. Le 15 janvier 1910, création de l'AEF, fédérant le Gabon avec le Moyen-Congo, l'Oubangui-Chari et le Tchad." },
-      { heading: "Indépendance et République gabonaise", body: "Le 28 novembre 1958, État membre de la Communauté française. Indépendance complète le 17 août 1960 par Léon Mba." },
+      {
+        heading: { fr: "Avant le contact européen", en: "Before European contact" },
+        body: {
+          fr: "L'estuaire du Gabon est habité par les Mpongwè (sous-groupe nord de l'ensemble myènè) depuis une tradition orale situant leur arrivée vers 1300, en provenance du Haut-Ivindo (Raponda-Walker). Selon l'historien Henry Bucher, un groupe contrôlait déjà l'embouchure du fleuve au plus tard au début du XVIIe siècle. Aucune structure politique unifiée de type royaume n'a jamais existé chez les Mpongwè.",
+          en: "Oral traditions place the arrival of Mpongwè communities, a northern subgroup of the Myènè cultural-linguistic ensemble, in the Gabon Estuary around 1300 from the Upper Ivindo region, as recorded by Raponda-Walker. Historian Henry Bucher argues that at least one group controlled the river mouth by the early seventeenth century. Mpongwè political organization was not a single unified kingdom.",
+        },
+      },
+      {
+        heading: { fr: "Premier contact portugais (1472)", en: "First Portuguese contact (1472)" },
+        body: {
+          fr: "En 1472, des navigateurs portugais atteignent l'estuaire et lui donnent le nom « Gabão ». L'Encyclopédie Universalis précise qu'on ignore la motivation exacte de ce choix.",
+          en: "In 1472, Portuguese navigators reached the estuary and called it “Gabão”. Encyclopædia Universalis notes that the precise reason for this naming is uncertain.",
+        },
+      },
+      {
+        heading: { fr: "Traités français et fondation de Libreville (XIXe s.)", en: "French treaties and the founding of Libreville (19th century)" },
+        body: {
+          fr: "Le 9 février 1839, traité avec le roi Denis, sans transfert de souveraineté explicite ; le 18 mars 1842, traité séparé avec le roi Louis, qui stipule explicitement un transfert de souveraineté. La fondation de Libreville reste disputée entre les sources (1848, 1849 ou 1850).",
+          en: "A treaty was signed with King Denis on 9 February 1839 without an explicit transfer of sovereignty. A separate treaty with King Louis on 18 March 1842 explicitly provided for such a transfer. Sources differ on the exact founding date of Libreville, variously giving 1848, 1849 or 1850.",
+        },
+      },
+      {
+        heading: { fr: "Migration fang (XIXe siècle)", en: "Fang migration (19th century)" },
+        body: {
+          fr: "Les Fang sont observés en migration vers 1856 par Paul du Chaillu et atteignent l'estuaire vers 1860. Contrairement aux Orungu et Mpongwè côtiers, ils ont généralement refusé de participer à la traite négrière.",
+          en: "Paul du Chaillu observed Fang groups moving through the region around 1856, and they reached the estuary around 1860. In contrast with coastal Orungu and Mpongwè commercial networks, Fang communities are generally described as having resisted participation in the Atlantic slave trade.",
+        },
+      },
+      {
+        heading: { fr: "Colonisation et Afrique-Équatoriale française", en: "Colonization and French Equatorial Africa" },
+        body: {
+          fr: "Colonie distincte en 1886. Le 15 janvier 1910, création de l'AEF, fédérant le Gabon avec le Moyen-Congo, l'Oubangui-Chari et le Tchad.",
+          en: "Gabon became a distinct colony in 1886. On 15 January 1910, French Equatorial Africa was created, federating Gabon with Middle Congo, Ubangi-Shari and Chad.",
+        },
+      },
+      {
+        heading: { fr: "Indépendance et République gabonaise", en: "Independence and the Gabonese Republic" },
+        body: {
+          fr: "Le 28 novembre 1958, État membre de la Communauté française. Indépendance complète le 17 août 1960 par Léon Mba.",
+          en: "On 28 November 1958, Gabon became a member state of the French Community. Full independence followed on 17 August 1960 under Léon Mba.",
+        },
+      },
     ],
     diasporaSections: [
-      { heading: "Diaspora historique — traite atlantique (1760-1850)", body: "L'estuaire du Gabon fut un point actif de la traite négrière transatlantique, surtout 1760-1790 puis illégalement après 1815. Contrairement au Kongo, aucune donnée quantitative fiable sur le nombre exporté n'a été trouvée." },
-      { heading: "Diaspora contemporaine — communauté gabonaise en France", body: "Premiers immigrants dans les années 1970. Recensement 2018 : ~15 600 ressortissants, estimations communautaires dépassant 25 000, concentrés en Île-de-France." },
+      {
+        heading: { fr: "Diaspora historique — traite atlantique (1760-1850)", en: "Historical diaspora — Atlantic slave trade (1760–1850)" },
+        body: {
+          fr: "L'estuaire du Gabon fut un point actif de la traite négrière transatlantique, surtout 1760-1790 puis illégalement après 1815. Contrairement au Kongo, aucune donnée quantitative fiable sur le nombre exporté n'a été trouvée.",
+          en: "The Gabon Estuary was an active point in the transatlantic slave trade, especially between 1760 and 1790 and, illegally, after 1815. Unlike the Kongo region, no sufficiently reliable quantitative total for people exported from the estuary has been established here.",
+        },
+      },
+      {
+        heading: { fr: "Diaspora contemporaine — communauté gabonaise en France", en: "Contemporary diaspora — Gabonese community in France" },
+        body: {
+          fr: "Premiers immigrants dans les années 1970. Recensement 2018 : ~15 600 ressortissants, estimations communautaires dépassant 25 000, concentrés en Île-de-France.",
+          en: "Significant Gabonese migration to France developed from the 1970s. A 2018 census figure cited in the existing source set is about 15,600 nationals, while community estimates exceed 25,000, with a strong concentration in the Paris region.",
+        },
+      },
     ],
     sources: [
       "Encyclopédie Universalis, 'Libreville'",
