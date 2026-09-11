@@ -4,7 +4,7 @@ import { ArrowLeft } from "lucide-react";
 import { fetchEthnicGroups, fetchEthnicGroup } from "../lib/api";
 import { useI18n } from "../i18n";
 import { useTranslated } from "../lib/useTranslated";
-import { sortAlphabetically } from "../lib/contentSort";
+import { searchableText, sortAlphabetically } from "../lib/contentSort";
 import { SmartImage } from "../components/SmartImage";
 
 const TranslatedText = ({ value, className }) => {
@@ -41,10 +41,10 @@ export const EthnicGroupsList = () => {
 
   const families = useMemo(() => [...new Set(groups.map((g) => g.language_family).filter(Boolean))].sort(), [groups]);
   const visible = useMemo(() => {
-    const needle = query.trim().toLowerCase();
+    const needle = query.trim().toLocaleLowerCase("fr");
     return sortAlphabetically(groups.filter((g) => {
       const matchesFamily = family === "all" || g.language_family === family;
-      const haystack = `${g.name || ""} ${g.homeland || ""} ${g.language_family || ""} ${g.summary || ""}`.toLowerCase();
+      const haystack = searchableText(g.name, g.homeland, g.language_family, g.summary);
       return matchesFamily && (!needle || haystack.includes(needle));
     }), "name");
   }, [groups, family, query]);
