@@ -35,7 +35,7 @@ const COPY = {
     status: { ready: "Established", provisional: "Read with context", disputed: "Historical debate", "research-gap": "To investigate" },
     mapping: "Mapping",
     present: "present",
-    yearsBeforePresent: "years before present",
+    bce: "BCE",
     groups: [
       { id: "identity", label: "Discover", items: [["overview", "Overview"], ["media", "Gallery"], ["symbols", "Symbols"]] },
       { id: "maps", label: "Territory", items: [["provinces-cities", "Provinces & cities"]] },
@@ -55,7 +55,7 @@ const COPY = {
     status: { ready: "Établi", provisional: "À lire avec contexte", disputed: "Débat historique", "research-gap": "À suivre" },
     mapping: "Cartographie",
     present: "aujourd’hui",
-    yearsBeforePresent: "ans avant notre ère",
+    bce: "av. J.-C.",
     groups: [
       { id: "identity", label: "Découvrir", items: [["overview", "Présentation"], ["media", "Galerie"], ["symbols", "Symboles"]] },
       { id: "maps", label: "Territoire", items: [["provinces-cities", "Provinces & villes"]] },
@@ -113,7 +113,7 @@ function Timeline({ items, sourceMap, copy, lang }) {
         <article key={item.id} className="border-l border-gold/30 pl-4">
           <div className="flex flex-wrap items-center gap-2">
             <p className="text-gold text-xs tracking-widest uppercase">
-              {item.start < 0 ? `${Math.abs(item.start).toLocaleString(lang === "fr" ? "fr-FR" : "en-US")} ${copy.yearsBeforePresent}` : item.end ? `${item.start}–${item.end}` : `${item.start}–${copy.present}`}
+              {item.start < 0 ? `${Math.abs(item.start).toLocaleString(lang === "fr" ? "fr-FR" : "en-US")} ${copy.bce}` : item.end ? `${item.start}–${item.end}` : `${item.start}–${copy.present}`}
             </p>
             <StatusBadge status={item.status} copy={copy} />
           </div>
