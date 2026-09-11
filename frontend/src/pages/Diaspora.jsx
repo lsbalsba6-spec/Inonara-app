@@ -5,7 +5,7 @@ import { ArrowLeft } from "lucide-react";
 import { fetchDiaspora, fetchDiasporaOne } from "../lib/api";
 import { useTranslated } from "../lib/useTranslated";
 import { useI18n } from "../i18n";
-import { sortAlphabetically } from "../lib/contentSort";
+import { searchableText, sortAlphabetically } from "../lib/contentSort";
 import { SmartImage } from "../components/SmartImage";
 
 const TranslatedText = ({ value }) => {
@@ -42,10 +42,10 @@ export const DiasporaList = () => {
 
   const regions = useMemo(() => [...new Set(items.map((d) => d.region).filter(Boolean))].sort(), [items]);
   const visible = useMemo(() => {
-    const needle = query.trim().toLowerCase();
+    const needle = query.trim().toLocaleLowerCase("fr");
     return sortAlphabetically(items.filter((d) => {
       const matchesRegion = region === "all" || d.region === region;
-      const haystack = `${d.name || ""} ${d.country || ""} ${d.region || ""} ${d.summary || ""}`.toLowerCase();
+      const haystack = searchableText(d.name, d.country, d.region, d.summary);
       return matchesRegion && (!needle || haystack.includes(needle));
     }), "name");
   }, [items, query, region]);
