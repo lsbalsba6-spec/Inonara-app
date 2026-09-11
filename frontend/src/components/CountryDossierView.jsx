@@ -101,6 +101,13 @@ const COPY = {
   },
 };
 
+const COUNTRY_CONTEXT_ROUTES = new Set(["/people", "/civilizations", "/figures"]);
+
+function contextualExplorePath(path, countryName) {
+  if (!COUNTRY_CONTEXT_ROUTES.has(path) || !countryName) return path;
+  return `${path}?q=${encodeURIComponent(countryName)}`;
+}
+
 function TranslatedInline({ value }) {
   const translated = useTranslated(value || "");
   return translated || value || null;
@@ -257,15 +264,18 @@ export default function CountryDossierView({ dossier }) {
           <p className="mt-2 text-sm leading-relaxed text-bone/55">{copy.explore.intro}</p>
         </div>
         <nav className="mt-5 grid gap-3 sm:grid-cols-2 lg:grid-cols-3" aria-label={copy.explore.navLabel}>
-          {copy.explore.items.map(([to, label, detail]) => (
-            <Link key={to} to={to} className="group rounded-xl border border-bone/10 bg-bone/[0.025] p-4 transition hover:border-gold/35 hover:bg-gold/[0.045] focus:outline-none focus-visible:ring-2 focus-visible:ring-gold/70">
-              <span className="flex items-center justify-between gap-3 text-sm font-medium text-bone group-hover:text-gold">
-                {label}
-                <span aria-hidden="true" className="text-gold/60 transition-transform group-hover:translate-x-0.5">→</span>
-              </span>
-              <span className="mt-1.5 block text-xs leading-relaxed text-bone/45">{detail}</span>
-            </Link>
-          ))}
+          {copy.explore.items.map(([to, label, detail]) => {
+            const href = contextualExplorePath(to, countryName);
+            return (
+              <Link key={to} to={href} className="group rounded-xl border border-bone/10 bg-bone/[0.025] p-4 transition hover:border-gold/35 hover:bg-gold/[0.045] focus:outline-none focus-visible:ring-2 focus-visible:ring-gold/70">
+                <span className="flex items-center justify-between gap-3 text-sm font-medium text-bone group-hover:text-gold">
+                  {label}
+                  <span aria-hidden="true" className="text-gold/60 transition-transform group-hover:translate-x-0.5">→</span>
+                </span>
+                <span className="mt-1.5 block text-xs leading-relaxed text-bone/45">{detail}</span>
+              </Link>
+            );
+          })}
         </nav>
       </section>
     </div>
