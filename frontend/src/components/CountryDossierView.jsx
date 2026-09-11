@@ -101,7 +101,7 @@ const COPY = {
   },
 };
 
-const COUNTRY_CONTEXT_ROUTES = new Set(["/people", "/civilizations", "/figures"]);
+const COUNTRY_CONTEXT_ROUTES = new Set(["/people", "/civilizations", "/diaspora", "/figures"]);
 
 function contextualExplorePath(path, countryName) {
   if (!COUNTRY_CONTEXT_ROUTES.has(path) || !countryName) return path;
