@@ -11,6 +11,7 @@ const COPY = {
     title: "Images, maps and objects",
     intro: "Each media item keeps its caption, author, license and source page so its provenance remains verifiable.",
     search: "Search an image, place, author or license…",
+    searchLabel: "Search documented media",
     all: "All media",
     author: "Author",
     license: "License",
@@ -26,6 +27,7 @@ const COPY = {
     title: "Images, cartes et objets",
     intro: "Chaque média conserve sa légende, son auteur, sa licence et sa page source afin de garder une provenance vérifiable.",
     search: "Rechercher une image, un lieu, un auteur ou une licence…",
+    searchLabel: "Rechercher dans les médias documentés",
     all: "Tous les médias",
     author: "Auteur",
     license: "Licence",
@@ -40,21 +42,52 @@ const getCategory = (item, fallback) => item.category || item.type || fallback;
 const getTitle = (item, fallback) => item.title || item.alt || fallback;
 const getCaption = (item) => item.caption || item.description || "";
 
+function localizedValue(value, lang) {
+  if (!value) return "";
+  if (typeof value === "object") return value[lang] || value.fr || value.en || value.text || "";
+  return String(value);
+}
+
+function searchableValue(value) {
+  if (!value) return "";
+  if (typeof value === "object") return Object.values(value).filter((entry) => typeof entry === "string").join(" ");
+  return String(value);
+}
+
 function TranslatedInline({ value }) {
   const translated = useTranslated(value || "");
-  return translated || value;
+  if (!value) return null;
+  return translated || localizedValue(value, "fr") || localizedValue(value, "en");
 }
 
 function TranslatedText({ value, className = "" }) {
   const translated = useTranslated(value || "");
   if (!value) return null;
-  return <p className={className}>{translated || value}</p>;
+  return <p className={className}>{translated || localizedValue(value, "fr") || localizedValue(value, "en")}</p>;
+}
+
+function LocalizedSmartImage({ alt, ...props }) {
+  const translatedAlt = useTranslated(alt || "");
+  return (
+    <SmartImage
+      {...props}
+      alt={translatedAlt || localizedValue(alt, "fr") || localizedValue(alt, "en") || ""}
+    />
+  );
 }
 
 export function CountryMediaGallery({ items = [] }) {
   const { lang } = useI18n();
   const copy = COPY[lang] || COPY.en;
-  const categories = useMemo(() => [...new Set(items.map((item) => getCategory(item, copy.gallery)))], [items, copy.gallery]);
+  const categories = useMemo(() => {
+    const categoryMap = new Map();
+    items.forEach((item) => {
+      const rawCategory = getCategory(item, copy.gallery);
+      const key = searchableValue(rawCategory) || copy.gallery;
+      if (!categoryMap.has(key)) categoryMap.set(key, rawCategory);
+    });
+    return [...categoryMap.entries()].map(([key, value]) => ({ key, value }));
+  }, [items, copy.gallery]);
   const [category, setCategory] = useState("all");
   const [query, setQuery] = useState("");
   const [selected, setSelected] = useState(null);
@@ -64,8 +97,9 @@ export function CountryMediaGallery({ items = [] }) {
     return items.filter((item) => {
       const itemCategory = getCategory(item, copy.gallery);
       const itemTitle = getTitle(item, copy.media);
-      const matchesCategory = category === "all" || itemCategory === category;
-      const haystack = `${itemTitle} ${getCaption(item)} ${item.author || ""} ${item.license || ""}`.toLowerCase();
+      const itemCategoryKey = searchableValue(itemCategory) || copy.gallery;
+      const matchesCategory = category === "all" || itemCategoryKey === category;
+      const haystack = `${searchableValue(itemTitle)} ${searchableValue(getCaption(item))} ${searchableValue(item.author)} ${searchableValue(item.license)}`.toLowerCase();
       return matchesCategory && (!needle || haystack.includes(needle));
     });
   }, [items, category, query, copy.gallery, copy.media]);
@@ -83,6 +117,7 @@ export function CountryMediaGallery({ items = [] }) {
           value={query}
           onChange={(event) => setQuery(event.target.value)}
           placeholder={copy.search}
+          aria-label={copy.searchLabel}
           className="w-full rounded-xl border border-bone/15 bg-bone/[0.025] px-4 py-3 text-sm text-bone outline-none placeholder:text-bone/35 focus:border-gold/50"
         />
         <div className="flex gap-2 overflow-x-auto">
@@ -93,14 +128,14 @@ export function CountryMediaGallery({ items = [] }) {
           >
             {copy.all}
           </button>
-          {categories.map((itemCategory) => (
+          {categories.map(({ key, value }) => (
             <button
-              key={itemCategory}
+              key={key}
               type="button"
-              onClick={() => setCategory(itemCategory)}
-              className={`whitespace-nowrap rounded-full border px-3 py-1.5 text-xs ${category === itemCategory ? "border-gold bg-gold/10 text-gold" : "border-bone/15 text-bone/60"}`}
+              onClick={() => setCategory(key)}
+              className={`whitespace-nowrap rounded-full border px-3 py-1.5 text-xs ${category === key ? "border-gold bg-gold/10 text-gold" : "border-bone/15 text-bone/60"}`}
             >
-              <TranslatedInline value={itemCategory} />
+              <TranslatedInline value={value} />
             </button>
           ))}
         </div>
@@ -111,9 +146,9 @@ export function CountryMediaGallery({ items = [] }) {
           const itemTitle = getTitle(item, copy.media);
           const itemCategory = getCategory(item, copy.gallery);
           return (
-            <figure key={item.id || `${itemTitle}-${index}`} className="overflow-hidden rounded-2xl border border-bone/10 bg-bone/[0.025]">
+            <figure key={item.id || `${searchableValue(itemTitle)}-${index}`} className="overflow-hidden rounded-2xl border border-bone/10 bg-bone/[0.025]">
               <button type="button" onClick={() => setSelected(item)} className="block w-full overflow-hidden bg-black/20 text-left">
-                <SmartImage
+                <LocalizedSmartImage
                   src={item.image_url}
                   wikipediaTitle={item.wikipedia_title}
                   alt={item.alt || itemTitle}
@@ -126,8 +161,8 @@ export function CountryMediaGallery({ items = [] }) {
                 <h3 className="mt-2 font-serif text-xl text-bone"><TranslatedInline value={itemTitle} /></h3>
                 {getCaption(item) && <TranslatedText value={getCaption(item)} className="mt-2 text-sm leading-6 text-bone/60" />}
                 <div className="mt-4 space-y-1 border-t border-bone/10 pt-3 text-[11px] text-bone/40">
-                  {item.author && <p>{copy.author}: {item.author}</p>}
-                  {item.license && <p>{copy.license}: {item.license}</p>}
+                  {item.author && <p>{copy.author}: {localizedValue(item.author, lang)}</p>}
+                  {item.license && <p>{copy.license}: {localizedValue(item.license, lang)}</p>}
                 </div>
                 {item.source_page && (
                   <a href={item.source_page} target="_blank" rel="noreferrer" className="mt-3 inline-flex text-xs text-gold/85 underline underline-offset-2">
@@ -146,7 +181,7 @@ export function CountryMediaGallery({ items = [] }) {
         const selectedTitle = getTitle(selected, copy.media);
         const selectedCategory = getCategory(selected, copy.gallery);
         return (
-          <div className="fixed inset-0 z-[1000] flex items-center justify-center bg-black/90 p-4" role="dialog" aria-modal="true" aria-label={selectedTitle}>
+          <div className="fixed inset-0 z-[1000] flex items-center justify-center bg-black/90 p-4" role="dialog" aria-modal="true" aria-label={localizedValue(selectedTitle, lang) || copy.media}>
             <div className="max-h-[94vh] w-full max-w-5xl overflow-y-auto rounded-2xl border border-bone/15 bg-[#151210]">
               <div className="flex items-center justify-between border-b border-bone/10 p-4">
                 <div>
@@ -155,7 +190,7 @@ export function CountryMediaGallery({ items = [] }) {
                 </div>
                 <button type="button" onClick={() => setSelected(null)} className="rounded-full border border-bone/15 px-3 py-1 text-sm text-bone/70">{copy.close}</button>
               </div>
-              <SmartImage
+              <LocalizedSmartImage
                 src={selected.image_url}
                 wikipediaTitle={selected.wikipedia_title}
                 alt={selected.alt || selectedTitle}
@@ -165,8 +200,8 @@ export function CountryMediaGallery({ items = [] }) {
               <div className="p-5">
                 {getCaption(selected) && <TranslatedText value={getCaption(selected)} className="leading-7 text-bone/68" />}
                 <div className="mt-4 flex flex-wrap gap-3 text-xs text-bone/45">
-                  {selected.author && <span>{copy.author}: {selected.author}</span>}
-                  {selected.license && <span>{copy.license}: {selected.license}</span>}
+                  {selected.author && <span>{copy.author}: {localizedValue(selected.author, lang)}</span>}
+                  {selected.license && <span>{copy.license}: {localizedValue(selected.license, lang)}</span>}
                 </div>
                 {selected.source_page && (
                   <a href={selected.source_page} target="_blank" rel="noreferrer" className="mt-4 inline-flex rounded-full border border-gold/30 px-3 py-1.5 text-xs text-gold hover:bg-gold/10">
