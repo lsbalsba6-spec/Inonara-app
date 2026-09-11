@@ -75,7 +75,22 @@ function TranslatedText({ value, className = "" }) {
   return <p className={className}>{translated || value}</p>;
 }
 
+function searchableValue(value) {
+  if (value === null || value === undefined) return "";
+  if (typeof value === "string" || typeof value === "number") return String(value);
+  if (Array.isArray(value)) return value.map(searchableValue).join(" ");
+  if (typeof value === "object") return Object.values(value).map(searchableValue).join(" ");
+  return "";
+}
+
 function SourceCard({ source, copy }) {
+  const translatedTitle = useTranslated(source?.title || "");
+  const translatedPublisher = useTranslated(source?.publisher || "");
+  const translatedLanguage = useTranslated(source?.language || "");
+  const title = translatedTitle || searchableValue(source?.title);
+  const publisher = translatedPublisher || searchableValue(source?.publisher);
+  const sourceLanguage = translatedLanguage || searchableValue(source?.language);
+
   return (
     <article className="rounded-2xl border border-bone/10 bg-bone/[0.025] p-5">
       <div className="flex flex-wrap items-start justify-between gap-3">
@@ -83,10 +98,10 @@ function SourceCard({ source, copy }) {
           <p className="text-[10px] uppercase tracking-[0.18em] text-gold">
             {copy.categories[source.category] || `${copy.category} ${source.category || copy.unspecified}`}
           </p>
-          <h3 className="mt-2 font-serif text-xl text-bone">{source.title}</h3>
-          <p className="mt-1 text-xs text-bone/45">{source.publisher}{source.year ? ` · ${source.year}` : ""}</p>
+          <h3 className="mt-2 font-serif text-xl text-bone">{title}</h3>
+          <p className="mt-1 text-xs text-bone/45">{publisher}{source.year ? ` · ${source.year}` : ""}</p>
         </div>
-        {source.language && <span className="rounded-full border border-bone/15 px-2.5 py-1 text-[10px] uppercase tracking-wider text-bone/50">{source.language}</span>}
+        {sourceLanguage && <span className="rounded-full border border-bone/15 px-2.5 py-1 text-[10px] uppercase tracking-wider text-bone/50">{sourceLanguage}</span>}
       </div>
       {source.note && <TranslatedText value={source.note} className="mt-4 text-sm leading-6 text-bone/65" />}
       {source.url ? (
@@ -159,7 +174,10 @@ export function CountrySources({ dossier }) {
     const needle = query.trim().toLowerCase();
     return sources.filter((source) => {
       const matchesCategory = category === "all" || String(source.category) === String(category);
-      const haystack = `${source.title || ""} ${source.publisher || ""} ${source.year || ""} ${source.note || ""}`.toLowerCase();
+      const haystack = [source.title, source.publisher, source.year, source.note, source.language]
+        .map(searchableValue)
+        .join(" ")
+        .toLowerCase();
       return matchesCategory && (!needle || haystack.includes(needle));
     });
   }, [sources, query, category]);
@@ -173,11 +191,11 @@ export function CountrySources({ dossier }) {
       </header>
 
       <div className="grid gap-3 md:grid-cols-[1fr_auto]">
-        <input value={query} onChange={(event) => setQuery(event.target.value)} placeholder={copy.search} className="w-full rounded-xl border border-bone/15 bg-bone/[0.025] px-4 py-3 text-sm text-bone outline-none placeholder:text-bone/35 focus:border-gold/50" />
+        <input value={query} onChange={(event) => setQuery(event.target.value)} placeholder={copy.search} aria-label={copy.search} className="w-full rounded-xl border border-bone/15 bg-bone/[0.025] px-4 py-3 text-sm text-bone outline-none placeholder:text-bone/35 focus:border-gold/50" />
         <div className="flex gap-2 overflow-x-auto">
-          <button type="button" onClick={() => setCategory("all")} className={`whitespace-nowrap rounded-full border px-3 py-1.5 text-xs ${category === "all" ? "border-gold bg-gold/10 text-gold" : "border-bone/15 text-bone/60"}`}>{copy.all}</button>
+          <button type="button" aria-pressed={category === "all"} onClick={() => setCategory("all")} className={`whitespace-nowrap rounded-full border px-3 py-1.5 text-xs ${category === "all" ? "border-gold bg-gold/10 text-gold" : "border-bone/15 text-bone/60"}`}>{copy.all}</button>
           {categories.map((itemCategory) => (
-            <button key={itemCategory} type="button" onClick={() => setCategory(itemCategory)} className={`whitespace-nowrap rounded-full border px-3 py-1.5 text-xs ${String(category) === String(itemCategory) ? "border-gold bg-gold/10 text-gold" : "border-bone/15 text-bone/60"}`}>
+            <button key={itemCategory} type="button" aria-pressed={String(category) === String(itemCategory)} onClick={() => setCategory(itemCategory)} className={`whitespace-nowrap rounded-full border px-3 py-1.5 text-xs ${String(category) === String(itemCategory) ? "border-gold bg-gold/10 text-gold" : "border-bone/15 text-bone/60"}`}>
               {copy.categories[itemCategory] || `${copy.category} ${itemCategory}`}
             </button>
           ))}
