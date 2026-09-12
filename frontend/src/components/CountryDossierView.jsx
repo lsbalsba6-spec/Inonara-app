@@ -124,11 +124,14 @@ function StatusBadge({ status, copy }) {
 }
 
 function SourceLink({ source }) {
+  const translatedPublisher = useTranslated(source?.publisher || "");
   const translatedTitle = useTranslated(source?.title || "");
   if (!source) return null;
+  const publisher = translatedPublisher || source.publisher;
+  const title = translatedTitle || source.title;
   return (
     <a href={source.url} target="_blank" rel="noreferrer" className="text-[11px] text-gold/80 hover:text-gold underline underline-offset-2">
-      {source.publisher}: {translatedTitle || source.title}
+      {publisher ? `${publisher}: ` : ""}{title}
     </a>
   );
 }
