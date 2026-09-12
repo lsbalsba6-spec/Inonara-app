@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useI18n } from "../i18n";
+import { localizedValue, searchableText } from "../lib/contentSort";
 import { useTranslated } from "../lib/useTranslated";
 
 const COPY = {
@@ -35,30 +36,23 @@ const COPY = {
   },
 };
 
-function localizedValue(value, lang) {
-  if (!value) return "";
-  if (typeof value === "object") return value[lang] || value.fr || value.en || value.text || "";
-  return String(value);
-}
-
-function searchableValue(value) {
-  if (!value) return "";
-  if (typeof value === "object") return Object.values(value).filter((entry) => typeof entry === "string").join(" ");
-  return String(value);
-}
-
 function TranslatedInline({ value }) {
+  const { lang } = useI18n();
   const translated = useTranslated(value || "");
   if (!value) return null;
-  return translated || localizedValue(value, "fr") || localizedValue(value, "en");
+  return translated || localizedValue(value, lang);
 }
 
 function SourceLink({ source }) {
+  const { lang } = useI18n();
   const translatedTitle = useTranslated(source?.title || "");
+  const translatedPublisher = useTranslated(source?.publisher || "");
   if (!source) return null;
+  const title = translatedTitle || localizedValue(source.title, lang);
+  const publisher = translatedPublisher || localizedValue(source.publisher, lang);
   return (
     <a href={source.url} target="_blank" rel="noreferrer" className="rounded-full border border-gold/25 px-3 py-1 text-[11px] text-gold/85 hover:bg-gold/10">
-      {source.publisher}: {translatedTitle || localizedValue(source.title, "fr") || localizedValue(source.title, "en")}
+      {publisher ? `${publisher}: ` : ""}{title}
     </a>
   );
 }
@@ -76,9 +70,10 @@ function SourceLinks({ ids = [], sourceMap }) {
 }
 
 function TranslatedText({ value, className = "" }) {
+  const { lang } = useI18n();
   const translated = useTranslated(value || "");
   if (!value) return null;
-  return <p className={className}>{translated || localizedValue(value, "fr") || localizedValue(value, "en")}</p>;
+  return <p className={className}>{translated || localizedValue(value, lang)}</p>;
 }
 
 export function CountryFigures({ dossier, sourceMap }) {
@@ -89,11 +84,11 @@ export function CountryFigures({ dossier, sourceMap }) {
   const getName = (item) => localizedValue(getNameRaw(item), lang) || copy.person;
   const getSummary = (item) => item.reason || item.note || item.summary || item.description || "";
   const getFieldRaw = (item) => item.field || item.domain || item.category || copy.other;
-  const getFieldKey = (item) => searchableValue(getFieldRaw(item)) || copy.other;
+  const getFieldKey = (item) => searchableText(getFieldRaw(item)) || copy.other.toLowerCase();
   const fieldMap = new Map();
   figures.forEach((item) => {
     const value = getFieldRaw(item);
-    const key = searchableValue(value) || copy.other;
+    const key = searchableText(value) || copy.other.toLowerCase();
     if (!fieldMap.has(key)) fieldMap.set(key, value);
   });
   const fields = [...fieldMap.entries()].map(([key, value]) => ({ key, value }));
@@ -102,11 +97,11 @@ export function CountryFigures({ dossier, sourceMap }) {
   const [query, setQuery] = useState("");
   const [openId, setOpenId] = useState(figures[0]?.id || null);
 
-  const needle = query.trim().toLowerCase();
+  const needle = query.trim().toLocaleLowerCase(lang === "fr" ? "fr" : "en");
   const visible = figures.filter((item) => {
     const itemFieldKey = getFieldKey(item);
     const matchesField = field === "all" || itemFieldKey === field;
-    const haystack = `${searchableValue(getNameRaw(item))} ${searchableValue(getSummary(item))} ${searchableValue(getFieldRaw(item))}`.toLowerCase();
+    const haystack = searchableText(getNameRaw(item), getSummary(item), getFieldRaw(item));
     return matchesField && (!needle || haystack.includes(needle));
   });
 
@@ -159,7 +154,7 @@ export function CountryFigures({ dossier, sourceMap }) {
                   )}
                   {item.highlights?.length > 0 && (
                     <div className="mb-5 flex flex-wrap gap-2">
-                      {item.highlights.map((highlight, highlightIndex) => <span key={`${searchableValue(highlight)}-${highlightIndex}`} className="rounded-full border border-gold/20 bg-gold/[0.05] px-3 py-1 text-xs text-gold/85"><TranslatedInline value={highlight} /></span>)}
+                      {item.highlights.map((highlight, highlightIndex) => <span key={`${searchableText(highlight)}-${highlightIndex}`} className="rounded-full border border-gold/20 bg-gold/[0.05] px-3 py-1 text-xs text-gold/85"><TranslatedInline value={highlight} /></span>)}
                     </div>
                   )}
                   <div className="grid gap-3 md:grid-cols-2">
