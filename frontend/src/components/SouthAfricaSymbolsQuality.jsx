@@ -1,5 +1,6 @@
 import { useMemo, useState } from "react";
 import { useI18n } from "../i18n";
+import { localizedValue, searchableText } from "../lib/contentSort";
 import { useTranslated } from "../lib/useTranslated";
 
 const COPY = {
@@ -35,14 +36,17 @@ const COPY = {
   },
 };
 
-function TranslatedInline({ value }) {
+function TranslatedInline({ value, lang }) {
   const translated = useTranslated(value || "");
-  return translated || value || null;
+  return translated || localizedValue(value, lang) || null;
 }
 
-function SourceLink({ source }) {
+function SourceLink({ source, lang }) {
   const translatedTitle = useTranslated(source?.title || "");
   if (!source) return null;
+
+  const publisher = localizedValue(source.publisher, lang);
+  const title = translatedTitle || localizedValue(source.title, lang);
 
   return (
     <a
@@ -51,19 +55,19 @@ function SourceLink({ source }) {
       rel="noreferrer"
       className="rounded-full border border-gold/25 px-3 py-1 text-[11px] text-gold/85 hover:bg-gold/10"
     >
-      {source.publisher}: {translatedTitle || source.title}
+      {publisher ? `${publisher}: ` : ""}{title}
     </a>
   );
 }
 
-function SourceLinks({ ids = [], sourceMap }) {
+function SourceLinks({ ids = [], sourceMap, lang }) {
   if (!ids.length) return null;
 
   return (
     <div className="mt-4 flex flex-wrap gap-2">
       {ids.map((id) => {
         const source = sourceMap.get(id);
-        return source ? <SourceLink key={id} source={source} /> : null;
+        return source ? <SourceLink key={id} source={source} lang={lang} /> : null;
       })}
     </div>
   );
@@ -95,34 +99,51 @@ function normalizeSymbols(dossier) {
 export function SouthAfricaSymbolsQuality({ dossier, sourceMap }) {
   const { lang } = useI18n();
   const copy = COPY[lang] || COPY.en;
-  const translatedIntro = useTranslated(dossier.national_symbols?.intro || "");
+  const introValue = dossier.national_symbols?.intro || dossier.symbols?.intro || "";
+  const translatedIntro = useTranslated(introValue);
 
   const items = useMemo(
     () => normalizeSymbols(dossier),
     [dossier],
   );
-  const categories = useMemo(
-    () => [...new Set(items.map((item) => getCategory(item, copy)))],
-    [items, copy],
-  );
+
+  const categories = useMemo(() => {
+    const seen = new Map();
+
+    items.forEach((item) => {
+      const value = getCategory(item, copy);
+      const key = searchableText(value) || localizedValue(value, lang);
+
+      if (key && !seen.has(key)) seen.set(key, { key, value });
+    });
+
+    return [...seen.values()];
+  }, [items, copy, lang]);
 
   const [query, setQuery] = useState("");
   const [category, setCategory] = useState("all");
   const [openId, setOpenId] = useState(items[0]?.id || null);
 
   const visible = useMemo(() => {
-    const needle = query.trim().toLowerCase();
+    const needle = query.trim().toLocaleLowerCase(lang === "fr" ? "fr" : "en");
 
     return items.filter((item) => {
       const itemCategory = getCategory(item, copy);
-      const matchesCategory = category === "all" || itemCategory === category;
-      const haystack = `${getTitle(item, copy)} ${getBody(item)} ${itemCategory} ${
-        item.period || ""
-      } ${item.meaning || ""}`.toLowerCase();
+      const itemCategoryKey = searchableText(itemCategory) || localizedValue(itemCategory, lang);
+      const matchesCategory = category === "all" || itemCategoryKey === category;
+      const haystack = searchableText(
+        getTitle(item, copy),
+        getBody(item),
+        itemCategory,
+        item.period,
+        item.meaning,
+        item.adopted,
+        item.context,
+      );
 
       return matchesCategory && (!needle || haystack.includes(needle));
     });
-  }, [items, query, category, copy]);
+  }, [items, query, category, copy, lang]);
 
   return (
     <div className="space-y-8">
@@ -130,7 +151,7 @@ export function SouthAfricaSymbolsQuality({ dossier, sourceMap }) {
         <p className="overline text-gold">{copy.overline}</p>
         <h2 className="mt-2 font-serif text-3xl text-bone">{copy.title}</h2>
         <p className="mt-3 max-w-3xl leading-7 text-bone/65">
-          {translatedIntro || copy.intro}
+          {translatedIntro || localizedValue(introValue, lang) || copy.intro}
         </p>
       </header>
 
@@ -157,16 +178,16 @@ export function SouthAfricaSymbolsQuality({ dossier, sourceMap }) {
 
           {categories.map((itemCategory) => (
             <button
-              key={itemCategory}
+              key={itemCategory.key}
               type="button"
-              onClick={() => setCategory(itemCategory)}
+              onClick={() => setCategory(itemCategory.key)}
               className={`whitespace-nowrap rounded-full border px-3 py-1.5 text-xs ${
-                category === itemCategory
+                category === itemCategory.key
                   ? "border-gold bg-gold/10 text-gold"
                   : "border-bone/15 text-bone/60"
               }`}
             >
-              <TranslatedInline value={itemCategory} />
+              <TranslatedInline value={itemCategory.value} lang={lang} />
             </button>
           ))}
         </div>
@@ -174,7 +195,9 @@ export function SouthAfricaSymbolsQuality({ dossier, sourceMap }) {
 
       <div className="grid gap-4">
         {visible.map((item, index) => {
-          const id = item.id || `${getTitle(item, copy)}-${index}`;
+          const itemCategory = getCategory(item, copy);
+          const title = getTitle(item, copy);
+          const id = item.id || searchableText(title, itemCategory, item.period) || `symbol-${index}`;
           const expanded = openId === id;
 
           return (
@@ -191,11 +214,11 @@ export function SouthAfricaSymbolsQuality({ dossier, sourceMap }) {
                 <div className="flex flex-wrap items-start justify-between gap-3">
                   <div>
                     <p className="text-[10px] uppercase tracking-[0.18em] text-gold">
-                      <TranslatedInline value={getCategory(item, copy)} />
-                      {item.period ? <> · <TranslatedInline value={item.period} /></> : null}
+                      <TranslatedInline value={itemCategory} lang={lang} />
+                      {item.period ? <> · <TranslatedInline value={item.period} lang={lang} /></> : null}
                     </p>
                     <h3 className="mt-2 font-serif text-2xl text-bone">
-                      <TranslatedInline value={getTitle(item, copy)} />
+                      <TranslatedInline value={title} lang={lang} />
                     </h3>
                   </div>
                   <span className="text-xl text-gold">{expanded ? "−" : "+"}</span>
@@ -203,7 +226,7 @@ export function SouthAfricaSymbolsQuality({ dossier, sourceMap }) {
 
                 {getBody(item) && (
                   <p className="mt-4 max-w-4xl leading-7 text-bone/70">
-                    <TranslatedInline value={getBody(item)} />
+                    <TranslatedInline value={getBody(item)} lang={lang} />
                   </p>
                 )}
               </button>
@@ -215,7 +238,7 @@ export function SouthAfricaSymbolsQuality({ dossier, sourceMap }) {
                       <div className="rounded-xl border border-bone/10 bg-black/10 p-4">
                         <p className="text-[10px] uppercase tracking-[0.18em] text-bone/40">{copy.meaning}</p>
                         <p className="mt-2 text-sm leading-6 text-bone/72">
-                          <TranslatedInline value={item.meaning} />
+                          <TranslatedInline value={item.meaning} lang={lang} />
                         </p>
                       </div>
                     )}
@@ -224,7 +247,7 @@ export function SouthAfricaSymbolsQuality({ dossier, sourceMap }) {
                       <div className="rounded-xl border border-bone/10 bg-black/10 p-4">
                         <p className="text-[10px] uppercase tracking-[0.18em] text-bone/40">{copy.adopted}</p>
                         <p className="mt-2 text-sm leading-6 text-bone/72">
-                          <TranslatedInline value={item.adopted} />
+                          <TranslatedInline value={item.adopted} lang={lang} />
                         </p>
                       </div>
                     )}
@@ -233,7 +256,7 @@ export function SouthAfricaSymbolsQuality({ dossier, sourceMap }) {
                       <div className="rounded-xl border border-bone/10 bg-black/10 p-4 md:col-span-2">
                         <p className="text-[10px] uppercase tracking-[0.18em] text-bone/40">{copy.context}</p>
                         <p className="mt-2 text-sm leading-6 text-bone/72">
-                          <TranslatedInline value={item.context} />
+                          <TranslatedInline value={item.context} lang={lang} />
                         </p>
                       </div>
                     )}
@@ -242,7 +265,7 @@ export function SouthAfricaSymbolsQuality({ dossier, sourceMap }) {
                       <div className="rounded-xl border border-amber-400/20 bg-amber-400/[0.04] p-4 md:col-span-2">
                         <p className="text-[10px] uppercase tracking-[0.18em] text-amber-300/75">{copy.caution}</p>
                         <p className="mt-2 text-sm leading-6 text-bone/72">
-                          <TranslatedInline value={item.caution} />
+                          <TranslatedInline value={item.caution} lang={lang} />
                         </p>
                       </div>
                     )}
@@ -252,12 +275,17 @@ export function SouthAfricaSymbolsQuality({ dossier, sourceMap }) {
                     <div className="mt-4 space-y-3">
                       {item.paragraphs.map((paragraph, paragraphIndex) => (
                         <p key={paragraphIndex} className="text-sm leading-7 text-bone/72">
-                          <TranslatedInline value={paragraph} />
+                          <TranslatedInline value={paragraph} lang={lang} />
                         </p>
                       ))}
                     </div>
                   )}
-                  <SourceLinks ids={item.sources || item.sourceIds} sourceMap={sourceMap} />
+
+                  <SourceLinks
+                    ids={item.sources || item.sourceIds}
+                    sourceMap={sourceMap}
+                    lang={lang}
+                  />
                 </div>
               )}
             </article>
