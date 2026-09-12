@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useI18n } from "../i18n";
 import { useTranslated } from "../lib/useTranslated";
+import { localizedValue, searchableText } from "../lib/contentSort";
 
 const COPY = {
   en: {
@@ -39,30 +40,22 @@ const COPY = {
   },
 };
 
-function localizedValue(value, lang) {
-  if (!value) return "";
-  if (typeof value === "object") return value[lang] || value.fr || value.en || value.text || "";
-  return String(value);
-}
-
-function searchableValue(value) {
-  if (!value) return "";
-  if (typeof value === "object") return Object.values(value).filter((entry) => typeof entry === "string").join(" ");
-  return String(value);
-}
-
 function TranslatedInline({ value }) {
+  const { lang } = useI18n();
   const translated = useTranslated(value || "");
   if (!value) return null;
-  return translated || localizedValue(value, "fr") || localizedValue(value, "en");
+  return translated || localizedValue(value, lang);
 }
 
 function SourceLink({ source }) {
+  const { lang } = useI18n();
   const translatedTitle = useTranslated(source?.title || "");
   if (!source) return null;
+  const publisher = localizedValue(source.publisher, lang);
+  const title = translatedTitle || localizedValue(source.title, lang);
   return (
     <a href={source.url} target="_blank" rel="noreferrer" className="rounded-full border border-gold/25 px-3 py-1 text-[11px] text-gold/85 hover:bg-gold/10">
-      {source.publisher}: {translatedTitle || localizedValue(source.title, "fr") || localizedValue(source.title, "en")}
+      {[publisher, title].filter(Boolean).join(": ")}
     </a>
   );
 }
@@ -80,9 +73,10 @@ function SourceLinks({ ids = [], sourceMap }) {
 }
 
 function TranslatedText({ value, className = "" }) {
+  const { lang } = useI18n();
   const translated = useTranslated(value || "");
   if (!value) return null;
-  return <p className={className}>{translated || localizedValue(value, "fr") || localizedValue(value, "en")}</p>;
+  return <p className={className}>{translated || localizedValue(value, lang)}</p>;
 }
 
 export function CountryPolities({ dossier, sourceMap }) {
@@ -93,13 +87,13 @@ export function CountryPolities({ dossier, sourceMap }) {
   const getSummary = (item) => item.note || item.text || item.summary || item.description || "";
   const getPeriod = (item) => item.period || (item.start != null ? `${item.start}${item.end != null ? `–${item.end}` : `–${copy.today}`}` : copy.dating);
   const getTypeRaw = (item) => item.type || item.category || copy.formation;
-  const getTypeKey = (item) => searchableValue(getTypeRaw(item)) || copy.formation;
+  const getTypeKey = (item) => searchableText(getTypeRaw(item)) || copy.formation.toLowerCase();
 
   const polities = dossier.polities || [];
   const typeMap = new Map();
   polities.forEach((item) => {
     const value = getTypeRaw(item);
-    const key = searchableValue(value) || copy.formation;
+    const key = getTypeKey(item);
     if (!typeMap.has(key)) typeMap.set(key, value);
   });
   const types = [...typeMap.entries()].map(([key, value]) => ({ key, value }));
@@ -107,11 +101,20 @@ export function CountryPolities({ dossier, sourceMap }) {
   const [query, setQuery] = useState("");
   const [openId, setOpenId] = useState(polities[0]?.id || null);
 
-  const needle = query.trim().toLowerCase();
+  const needle = query.trim().toLocaleLowerCase(lang === "fr" ? "fr" : "en");
   const visible = polities.filter((item) => {
     const itemTypeKey = getTypeKey(item);
     const matchesType = type === "all" || itemTypeKey === type;
-    const haystack = `${searchableValue(getNameRaw(item))} ${searchableValue(getSummary(item))} ${searchableValue(getPeriod(item))} ${searchableValue(getTypeRaw(item))} ${searchableValue(item.mapping)}`.toLowerCase();
+    const haystack = searchableText(
+      getNameRaw(item),
+      getSummary(item),
+      getPeriod(item),
+      getTypeRaw(item),
+      item.mapping,
+      item.region,
+      item.organization,
+      item.caution,
+    );
     return matchesType && (!needle || haystack.includes(needle));
   });
 
