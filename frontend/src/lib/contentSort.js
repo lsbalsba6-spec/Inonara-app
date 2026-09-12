@@ -1,3 +1,16 @@
+export const localizedValue = (value, lang = "fr") => {
+  if (value === null || value === undefined) return "";
+  if (typeof value === "string" || typeof value === "number" || typeof value === "boolean") return String(value);
+  if (Array.isArray(value)) return value.map((item) => localizedValue(item, lang)).filter(Boolean).join(" ");
+  if (typeof value === "object") {
+    const preferred = value?.[lang] ?? value?.fr ?? value?.en ?? value?.text;
+    if (preferred !== undefined && preferred !== null) return localizedValue(preferred, lang);
+    const first = Object.values(value).find((item) => item !== undefined && item !== null);
+    return first === undefined ? "" : localizedValue(first, lang);
+  }
+  return "";
+};
+
 export const localizedText = (value) => {
   if (value === null || value === undefined) return "";
   if (typeof value === "string" || typeof value === "number" || typeof value === "boolean") return String(value);
