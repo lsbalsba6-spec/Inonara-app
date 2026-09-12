@@ -255,7 +255,7 @@ export default function CountryDossierView({ dossier }) {
         {active === "law-memory" && <SouthAfricaLawMemory dossier={dossier} sourceMap={sourceMap} />}
         {active === "peoples" && <CountryPeoples dossier={dossier} sourceMap={sourceMap} />}
         {active === "polities" && <CountryPolities dossier={dossier} sourceMap={sourceMap} />}
-        {active === "migrations" && (<div className="space-y-10"><SouthAfricaPre1652Routes data={dossier.pre1652_map} sourceMap={sourceMap} /><CountryMigrationFlowMap routes={migrationRoutes} note={migrationNote} /><CountryMigrations dossier={dossier} sourceMap={sourceMap} /></div>)}
+        {active === "migrations" && (<div className="space-y-10"><SouthAfricaPre1652Routes data={dossier.pre1652_map} sourceMap={sourceMap} /><CountryMigrationFlowMap dossier={dossier} routes={migrationRoutes} note={migrationNote} places={territory.places} /><CountryMigrations dossier={dossier} sourceMap={sourceMap} /></div>)}
         {active === "heritage" && <SouthAfricaHeritage dossier={dossier} sourceMap={sourceMap} />}
         {active === "figures" && <CountryFigures dossier={dossier} sourceMap={sourceMap} />}
         {active === "culture" && <SouthAfricaCulture dossier={dossier} sourceMap={sourceMap} />}
