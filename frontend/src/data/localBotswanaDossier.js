@@ -1,0 +1,111 @@
+export const BOTSWANA_LOCAL_DOSSIER = {
+  id: "country-bw-continuity-v1",
+  country: "Botswana",
+  iso2: "BW",
+  iso3: "BWA",
+  slug: "botswana",
+  name: { fr: "Botswana", en: "Botswana" },
+  region: { id: "southern-africa", fr: "Afrique australe", en: "Southern Africa" },
+  status: "published-continuity",
+  last_reviewed: "2026-09-12",
+  editorial_note: {
+    fr: "Dossier de continuité consacré au Botswana. Il garantit l'accès aux repères essentiels lorsque le dossier éditorial complet n'est pas disponible via l'API, sans remplacer la version de référence plus riche.",
+    en: "Continuity dossier for Botswana. It preserves access to essential reference points when the full editorial dossier is unavailable through the API, without replacing the richer reference version.",
+  },
+  presentation: {
+    heading: { fr: "Le Botswana en un regard", en: "Botswana at a glance" },
+    facts: [
+      { label: { fr: "Nom officiel", en: "Official name" }, value: { fr: "République du Botswana", en: "Republic of Botswana" } },
+      { label: { fr: "Capitale", en: "Capital" }, value: "Gaborone" },
+      { label: { fr: "Situation", en: "Location" }, value: { fr: "État enclavé d'Afrique australe", en: "Landlocked state in Southern Africa" } },
+      { label: { fr: "Superficie", en: "Area" }, value: { fr: "environ 581 730 km²", en: "about 581,730 km²" } },
+      { label: { fr: "Langue officielle", en: "Official language" }, value: { fr: "anglais", en: "English" } },
+      { label: { fr: "Langue nationale", en: "National language" }, value: "Setswana" },
+      { label: { fr: "Monnaie", en: "Currency" }, value: { fr: "pula (BWP)", en: "pula (BWP)" } },
+      { label: { fr: "Indépendance", en: "Independence" }, value: { fr: "30 septembre 1966", en: "30 September 1966" } },
+    ],
+  },
+  overview: {
+    title: { fr: "Botswana", en: "Botswana" },
+    summary: {
+      fr: "Le Botswana est un État enclavé d'Afrique australe, entre la Namibie, la Zambie, le Zimbabwe et l'Afrique du Sud. Son territoire relie le bassin semi-aride du Kalahari, le delta intérieur de l'Okavango, les systèmes du Chobe et du Linyanti et les paysages salins de Makgadikgadi. Son histoire associe de longues occupations humaines, des sociétés san et khoe, des formations agro-pastorales, plusieurs merafe tswana, le protectorat du Bechuanaland, l'indépendance de 1966 et une économie profondément transformée par les diamants.",
+      en: "Botswana is a landlocked Southern African state between Namibia, Zambia, Zimbabwe and South Africa. Its territory connects the semi-arid Kalahari basin, the inland Okavango Delta, the Chobe and Linyanti systems and the salt-pan landscapes of Makgadikgadi. Its history includes long human occupation, San and Khoe societies, agro-pastoral formations, several Tswana merafe, the Bechuanaland Protectorate, independence in 1966 and an economy profoundly transformed by diamonds.",
+    },
+    capital: "Gaborone",
+    official_languages: [{ fr: "anglais", en: "English" }],
+    national_language: "Setswana",
+    currency: "Pula (BWP)",
+    neighbours: [{ fr: "Afrique du Sud", en: "South Africa" }, { fr: "Namibie", en: "Namibia" }, { fr: "Zambie", en: "Zambia" }, { fr: "Zimbabwe", en: "Zimbabwe" }],
+    sources: ["src-bw-government", "src-bw-parliament"],
+    history_chapters: [
+      { id: "bw-long-history", title: { fr: "Longues occupations humaines et Tsodilo", en: "Long human occupation and Tsodilo" }, period: { fr: "Préhistoire – longue durée", en: "Prehistory – long duration" }, summary: { fr: "Tsodilo conserve une séquence archéologique et un paysage d'art rupestre qui documentent une histoire humaine très antérieure aux États et ethnonymes contemporains.", en: "Tsodilo preserves an archaeological sequence and rock-art landscape documenting human history far older than contemporary states and ethnonyms." }, status: "ready", sources: ["src-bw-unesco-tsodilo"] },
+      { id: "bw-tswana-polities", title: { fr: "Merafe et institutions tswana", en: "Tswana merafe and institutions" }, period: { fr: "XVIIe–XIXe siècles", en: "17th–19th centuries" }, summary: { fr: "Plusieurs communautés politiques tswana développent des trajectoires distinctes autour de dikgosi, de capitales et de kgotla ; elles ne constituent pas un royaume unique.", en: "Several Tswana political communities developed distinct trajectories around dikgosi, capitals and kgotla; they did not form a single kingdom." }, status: "ready", sources: ["src-bw-npc"] },
+      { id: "bw-protectorate", title: { fr: "Protectorat du Bechuanaland", en: "Bechuanaland Protectorate" }, period: "1885–1966", summary: { fr: "Le protectorat britannique transforme fiscalité, travail et administration tout en maintenant un rôle important pour les autorités africaines locales.", en: "British protectorate rule transformed taxation, labour and administration while African local authorities retained significant roles." }, status: "ready", sources: ["src-bw-parliament"] },
+      { id: "bw-independence", title: { fr: "Indépendance et République", en: "Independence and the Republic" }, period: { fr: "1966–présent", en: "1966–present" }, summary: { fr: "Le Botswana devient indépendant le 30 septembre 1966. Les décennies suivantes sont marquées par la construction institutionnelle, l'urbanisation et la transformation économique liée notamment aux diamants.", en: "Botswana became independent on 30 September 1966. Subsequent decades were shaped by institution-building, urbanization and economic transformation linked notably to diamonds." }, status: "ready", sources: ["src-bw-parliament", "src-bw-worldbank"] },
+    ],
+  },
+  territory_sections: [
+    { id: "bw-kalahari", title: { fr: "Bassin du Kalahari", en: "Kalahari basin" }, summary: { fr: "Une grande partie du territoire appartient au vaste bassin sableux du Kalahari, composé de savanes, pâturages, broussailles et dépressions salines plutôt que d'un désert uniforme.", en: "Much of the country belongs to the broad sandy Kalahari basin, made up of savannas, rangelands, scrub and salt depressions rather than a uniform desert." }, sources: ["src-bw-government"] },
+    { id: "bw-okavango", title: { fr: "Delta de l'Okavango", en: "Okavango Delta" }, summary: { fr: "Les eaux venues des hauts plateaux angolais traversent la Namibie puis s'étalent dans un delta intérieur au nord-ouest du Botswana.", en: "Water from the Angolan highlands flows through Namibia before spreading into an inland delta in north-western Botswana." }, sources: ["src-bw-unesco-okavango", "src-bw-okacom"] },
+    { id: "bw-makgadikgadi", title: { fr: "Makgadikgadi et salines", en: "Makgadikgadi and salt pans" }, summary: { fr: "Les pans de Makgadikgadi sont les vestiges d'un ancien système lacustre et forment aujourd'hui un paysage saisonnier de sel, prairies et zones humides temporaires.", en: "The Makgadikgadi pans are remnants of an ancient lake system and today form a seasonal landscape of salt, grasslands and temporary wetlands." }, sources: ["src-bw-government"] },
+    { id: "bw-southeast", title: { fr: "Sud-est et couloir urbain", en: "South-east and urban corridor" }, summary: { fr: "Gaborone et plusieurs centres administratifs et économiques se concentrent dans le sud-est, relié aux réseaux régionaux d'Afrique australe.", en: "Gaborone and several administrative and economic centres are concentrated in the south-east, linked to wider Southern African networks." }, sources: ["src-bw-worldbank"] },
+  ],
+  peoples: [
+    { id: "bw-batswana", name: "Batswana", regions: [{ fr: "ensemble du Botswana et pays voisins", en: "Botswana and neighbouring countries" }], languages: ["Setswana"], history: { fr: "Le terme Batswana recouvre plusieurs communautés et merafe aux trajectoires politiques distinctes.", en: "The term Batswana encompasses multiple communities and merafe with distinct political histories." }, sources: ["src-bw-npc"] },
+    { id: "bw-san", name: { fr: "Communautés san", en: "San communities" }, regions: [{ fr: "Kalahari central, nord et ouest", en: "central, northern and western Kalahari" }], history: { fr: "Le terme San regroupe des communautés aux langues et histoires différentes ; leurs territorialités et savoirs ne doivent pas être figés dans une image intemporelle.", en: "The term San encompasses communities with distinct languages and histories; their territoriality and knowledge should not be frozen into an ahistorical image." }, sources: ["src-bw-unesco-tsodilo"] },
+    { id: "bw-kalanga", name: "Bakalanga", regions: [{ fr: "nord-est du Botswana et Zimbabwe", en: "north-eastern Botswana and Zimbabwe" }], languages: ["Ikalanga"], history: { fr: "Les communautés kalanga sont liées à des réseaux historiques de peuplement, agriculture, élevage et commerce du nord-est.", en: "Kalanga communities are linked to long-standing settlement, farming, livestock and trade networks in the north-east." }, sources: ["src-bw-ub"] },
+    { id: "bw-bayei", name: "Bayei", regions: [{ fr: "Okavango et Ngamiland", en: "Okavango and Ngamiland" }], languages: ["Shiyeyi"], history: { fr: "Les Bayei ont développé des savoirs et activités étroitement liés aux milieux aquatiques du delta.", en: "Bayei histories and livelihoods are closely connected to the aquatic environments of the Delta." }, sources: ["src-bw-okacom"] },
+  ],
+  migrations: [
+    { id: "bw-mig-herero", label: { fr: "Déplacements herero vers le Bechuanaland", en: "Herero displacement toward Bechuanaland" }, type: "forced", start: 1904, end: 1920, origin: { fr: "actuelle Namibie", en: "present-day Namibia" }, destination: { fr: "nord-ouest du Botswana", en: "north-western Botswana" }, summary: { fr: "Les violences coloniales allemandes et le génocide provoquent des fuites vers l'est et le Bechuanaland.", en: "German colonial violence and genocide drove flight eastward and into Bechuanaland." }, sources: ["src-bw-jns-herero"] },
+    { id: "bw-mig-labour", label: { fr: "Travail migrant vers l'Afrique du Sud", en: "Migrant labour to South Africa" }, type: "coerced-labour", start: 1890, end: 1997, origin: { fr: "Bechuanaland / Botswana", en: "Bechuanaland / Botswana" }, destination: { fr: "centres miniers sud-africains", en: "South African mining centres" }, summary: { fr: "Fiscalité coloniale, recrutement et manque d'emplois locaux alimentent une longue histoire de travail migrant.", en: "Colonial taxation, recruitment and limited local employment fed a long history of migrant labour." }, sources: ["src-bw-ilo"] },
+    { id: "bw-mig-okavango", label: { fr: "Circulations du bassin de l'Okavango", en: "Okavango basin mobility" }, type: "mixed", start: 1800, end: 2026, origin: { fr: "Angola et Namibie", en: "Angola and Namibia" }, destination: { fr: "Okavango botswanais", en: "Botswana Okavango" }, summary: { fr: "Le bassin transfrontalier relie des communautés, parentés et activités de subsistance à travers les frontières contemporaines.", en: "The transboundary basin connects communities, kinship and livelihoods across present-day borders." }, sources: ["src-bw-okacom"] },
+    { id: "bw-mig-urban", label: { fr: "Urbanisation intérieure", en: "Internal urbanization" }, type: "voluntary", start: 1966, end: 2026, origin: { fr: "zones rurales et villages", en: "rural areas and villages" }, destination: { fr: "Gaborone et autres centres urbains", en: "Gaborone and other urban centres" }, summary: { fr: "L'administration, l'éducation, les services et les activités minières accompagnent la croissance des centres urbains après l'indépendance.", en: "Administration, education, services and mining accompanied the growth of urban centres after independence." }, sources: ["src-bw-worldbank"] },
+  ],
+  heritage: [
+    { id: "bw-tsodilo", title: "Tsodilo", kind: { fr: "Culturel", en: "Cultural" }, text: { fr: "Paysage culturel et archéologique inscrit au patrimoine mondial en 2001.", en: "Cultural and archaeological landscape inscribed on the World Heritage List in 2001." }, sources: ["src-bw-unesco-tsodilo"] },
+    { id: "bw-okavango-heritage", title: { fr: "Delta de l'Okavango", en: "Okavango Delta" }, kind: { fr: "Naturel", en: "Natural" }, text: { fr: "Delta intérieur inscrit au patrimoine mondial en 2014.", en: "Inland delta inscribed on the World Heritage List in 2014." }, sources: ["src-bw-unesco-okavango"] },
+  ],
+  figures: [
+    { id: "bw-seretse-khama", name: "Seretse Khama", role: { fr: "Premier président", en: "First president" }, text: { fr: "Figure majeure de la transition vers l'indépendance et premier président du Botswana indépendant.", en: "A central figure in the transition to independence and the first president of independent Botswana." }, sources: ["src-bw-parliament"] },
+    { id: "bw-bessie-head", name: "Bessie Head", role: { fr: "Écrivaine", en: "Writer" }, text: { fr: "Écrivaine née en Afrique du Sud et installée à Serowe en 1964, où elle développe une part majeure de son œuvre.", en: "South African-born writer who settled in Serowe in 1964, where she developed a major part of her work." }, sources: ["src-bw-ub"] },
+  ],
+  culture: [
+    { id: "bw-kgotla", topic: "Kgotla", text: { fr: "Le kgotla est un espace de réunion, consultation et vie publique dont les formes varient selon les communautés.", en: "The kgotla is a space for assembly, consultation and public life whose forms vary among communities." }, sources: ["src-bw-npc"] },
+    { id: "bw-oral", topic: { fr: "Oralité et mémoire", en: "Orality and memory" }, text: { fr: "Récits, généalogies et traditions orales participent à la transmission de l'histoire sociale et doivent être croisés avec archives et archéologie.", en: "Narratives, genealogies and oral traditions transmit social history and should be read alongside archives and archaeology." }, sources: ["src-bw-npc"] },
+  ],
+  map_visuals: {
+    territory_places: [
+      { id: "bw-gaborone", label: "Gaborone", coordinates: [25.9231, -24.6282], kind: "capital", min_zoom: 4 },
+      { id: "bw-francistown", label: "Francistown", coordinates: [27.5079, -21.17], kind: "city", min_zoom: 6 },
+      { id: "bw-maun", label: "Maun", coordinates: [23.4167, -19.9833], kind: "city", min_zoom: 6 },
+      { id: "bw-kasane", label: "Kasane", coordinates: [25.15, -17.8], kind: "city", min_zoom: 6 },
+      { id: "bw-tsodilo-place", label: "Tsodilo", coordinates: [21.75, -18.75], kind: "heritage", min_zoom: 6 },
+      { id: "bw-okavango-place", label: { fr: "Delta de l'Okavango", en: "Okavango Delta" }, coordinates: [22.9, -19.3], kind: "natural-heritage", min_zoom: 5 },
+    ],
+    bounds: [[-27.0, 19.5], [-17.5, 29.5]],
+  },
+  media_gallery: [],
+  research_gaps: [
+    { id: "bw-gap-migrations", title: { fr: "Quantification des mobilités historiques", en: "Quantifying historical mobility" }, note: { fr: "Les lignes cartographiques sont schématiques et ne doivent pas être transformées en volumes migratoires sans séries statistiques adaptées.", en: "Mapped lines are schematic and should not be converted into migration volumes without appropriate statistical series." }, status: "research-gap" },
+  ],
+  sources: [
+    { id: "src-bw-government", title: "About Our Country", publisher: "Government of Botswana", url: "https://gov.bw/about-our-country", type: "institutional" },
+    { id: "src-bw-parliament", title: "History of Parliament", publisher: "Parliament of Botswana", url: "https://parliament.gov.bw/", type: "institutional-history" },
+    { id: "src-bw-npc", title: "Governance, Peace and Security", publisher: "Botswana National Planning Commission", url: "https://www.npc.gov.bw/governance-peace-and-security", type: "institutional" },
+    { id: "src-bw-unesco-tsodilo", title: "Tsodilo", publisher: "UNESCO World Heritage Centre", url: "https://whc.unesco.org/en/list/1021/", type: "heritage" },
+    { id: "src-bw-unesco-okavango", title: "Okavango Delta", publisher: "UNESCO World Heritage Centre", url: "https://whc.unesco.org/en/list/1432/", type: "heritage" },
+    { id: "src-bw-okacom", title: "The People of the Cubango-Okavango River Basin", publisher: "OKACOM", url: "https://www.okacom.org/people-corb", type: "regional-institution" },
+    { id: "src-bw-worldbank", title: "Botswana overview", publisher: "World Bank", url: "https://www.worldbank.org/en/country/botswana/overview", type: "international-institution" },
+    { id: "src-bw-ilo", title: "The social protection of migrant workers in South Africa — Botswana appendix", publisher: "International Labour Organization", url: "https://webapps.ilo.org/public/french/region/afpro/pretoria/papers/1997/polpap3/appn.htm", type: "institutional-research" },
+    { id: "src-bw-jns-herero", title: "The military campaign in German Southwest Africa, 1904–1907 and the genocide of the Herero and Nama", publisher: "Journal of Namibian Studies", url: "https://namibian-studies.com/index.php/JNS/article/view/21", type: "academic" },
+    { id: "src-bw-ub", title: "University of Botswana", publisher: "University of Botswana", url: "https://www.ub.bw/", type: "academic-institution" },
+  ],
+};
+
+export const BOTSWANA_LOCAL_COUNTRY = {
+  iso2: "BW",
+  iso3: "BWA",
+  name: "Botswana",
+  display_name: "Botswana",
+};
