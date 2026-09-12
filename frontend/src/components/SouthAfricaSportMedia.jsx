@@ -1,31 +1,31 @@
 import { useI18n } from "../i18n";
 import { useTranslated } from "../lib/useTranslated";
+import { localizedValue, searchableText } from "../lib/contentSort";
 
 const COPY = {
   en: {
-    pending: "To investigate",
-    title: "Sports & media",
-    missing: "This section is reserved in the country navigation, but its documented corpus is not yet available in the current backend. It remains visible without breaking the dossier and will only be expanded with verified sources.",
     sports: "Sports",
     media: "Media",
   },
   fr: {
-    pending: "À suivre",
-    title: "Sports et médias",
-    missing: "Cette rubrique est réservée dans la navigation, mais son corpus documenté n’est pas encore présent dans la version actuelle du backend. Elle reste visible sans provoquer de plantage et sera enrichie uniquement avec des sources vérifiées.",
     sports: "Sports",
     media: "Médias",
   },
 };
 
 function TranslatedInline({ value }) {
+  const { lang } = useI18n();
   const translated = useTranslated(value || "");
-  return translated || value || null;
+  return translated || localizedValue(value, lang) || null;
 }
 
 function SourceLink({ source }) {
+  const { lang } = useI18n();
   const translatedTitle = useTranslated(source?.title || "");
-  if (!source) return null;
+  const translatedPublisher = useTranslated(source?.publisher || "");
+  if (!source?.url) return null;
+  const publisher = translatedPublisher || localizedValue(source.publisher, lang);
+  const title = translatedTitle || localizedValue(source.title, lang) || source.id;
   return (
     <a
       href={source.url}
@@ -33,7 +33,7 @@ function SourceLink({ source }) {
       rel="noreferrer"
       className="text-[11px] text-gold/80 underline underline-offset-2 hover:text-gold"
     >
-      {source.publisher}: {translatedTitle || source.title}
+      {publisher ? `${publisher}: ` : ""}{title}
     </a>
   );
 }
@@ -55,15 +55,7 @@ export function SouthAfricaSportMedia({ dossier, sourceMap }) {
   const copy = COPY[lang] || COPY.en;
   const data = dossier?.sport_media;
 
-  if (!data) {
-    return (
-      <div className="rounded-xl border border-bone/10 bg-bone/[0.025] p-6">
-        <p className="text-[10px] uppercase tracking-[0.2em] text-gold">{copy.pending}</p>
-        <h2 className="mt-2 font-serif text-2xl text-bone">{copy.title}</h2>
-        <p className="mt-3 max-w-3xl leading-relaxed text-bone/65">{copy.missing}</p>
-      </div>
-    );
-  }
+  if (!data) return null;
 
   const sections = Array.isArray(data.sections)
     ? data.sections
@@ -80,14 +72,14 @@ export function SouthAfricaSportMedia({ dossier, sourceMap }) {
         </p>
       )}
       {sections.map((section, sectionIndex) => (
-        <section key={section.id || section.title || sectionIndex}>
+        <section key={section.id || `${searchableText(section.title) || "sport-media"}-${sectionIndex}`}>
           <h2 className="mb-4 font-serif text-3xl text-gold">
             <TranslatedInline value={section.title} />
           </h2>
           <div className="grid gap-4 md:grid-cols-2">
             {(section.items || []).map((item, index) => (
               <article
-                key={item.id || item.title || item.name || index}
+                key={item.id || `${searchableText(item.title || item.name) || "item"}-${index}`}
                 className="rounded-xl border border-bone/10 bg-bone/[0.025] p-5"
               >
                 <h3 className="font-serif text-xl text-bone">
