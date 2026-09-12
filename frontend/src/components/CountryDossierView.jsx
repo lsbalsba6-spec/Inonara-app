@@ -18,16 +18,14 @@ import { CountryMigrations } from "./CountryMigrations";
 import { CountryHistory } from "./CountryHistory";
 import { SouthAfricaLawMemory } from "./SouthAfricaLawMemory";
 import { SouthAfricaSportMedia } from "./SouthAfricaSportMedia";
-import { SouthAfricaEducationHealth, SouthAfricaInternationalRole, SouthAfricaNationalSymbols, SouthAfricaSociety } from "./SouthAfricaSocietyState";
-import { SouthAfricaEconomy, SouthAfricaInteractiveTimeline, SouthAfricaScientificLibrary } from "./SouthAfricaTimelineEconomy";
+import { SouthAfricaInteractiveTimeline, SouthAfricaScientificLibrary } from "./SouthAfricaTimelineEconomy";
 import { useMemo, useState } from "react";
 import { Link } from "react-router-dom";
 import { CountryMediaGallery } from "./CountryMediaGallery";
 import CountryTerritory from "./CountryTerritory";
 import CountrySectionBoundary from "./CountrySectionBoundary";
 import { useI18n } from "../i18n";
-import { localizedValue, searchableText } from "../lib/contentSort";
-import { useTranslated } from "../lib/useTranslated";
+import { localizedValue } from "../lib/contentSort";
 import { getCountryMigrationRouteSet } from "../data/countryMigrationRoutes";
 
 const COPY = {
@@ -35,10 +33,6 @@ const COPY = {
     country: "Country",
     southernAfrica: "Southern Africa",
     navLabel: "Country dossier sections",
-    status: { ready: "Established", provisional: "Read with context", disputed: "Historical debate", "research-gap": "To investigate" },
-    mapping: "Mapping",
-    present: "present",
-    bce: "BCE",
     groups: [
       { id: "identity", label: "Discover", items: [["overview", "Overview"], ["media", "Gallery"], ["symbols", "Symbols"]] },
       { id: "maps", label: "Territory", items: [["provinces-cities", "Provinces & cities"]] },
@@ -70,10 +64,6 @@ const COPY = {
     country: "Pays",
     southernAfrica: "Afrique australe",
     navLabel: "Grandes sections du dossier pays",
-    status: { ready: "Établi", provisional: "À lire avec contexte", disputed: "Débat historique", "research-gap": "À suivre" },
-    mapping: "Cartographie",
-    present: "aujourd’hui",
-    bce: "av. J.-C.",
     groups: [
       { id: "identity", label: "Découvrir", items: [["overview", "Présentation"], ["media", "Galerie"], ["symbols", "Symboles"]] },
       { id: "maps", label: "Territoire", items: [["provinces-cities", "Provinces & villes"]] },
@@ -83,7 +73,7 @@ const COPY = {
       { id: "heritage", label: "Patrimoine & nature", items: [["heritage", "Patrimoine"]] },
       { id: "state", label: "État & économie", items: [["society", "Société"], ["education-health", "Éducation & santé"], ["economy", "Économie"]] },
       { id: "people", label: "Personnalités", items: [["figures", "Personnalités"]] },
-      { id: "sources", label: "Sources", items: [["historiography", "Débats"], ["research", "À suivre"], ["library", "Bibliothèque"], ["sources", "Toutes les sources"]] },
+      { id: "sources", label: "Sources", items: [["historiography", "Débats"], ["research", "À approfondir"], ["library", "Bibliothèque"], ["sources", "Toutes les sources"]] },
     ],
     explore: {
       eyebrow: "Explorer AfroAtlas",
@@ -110,98 +100,17 @@ function contextualExplorePath(path, countryName) {
   return `${path}?q=${encodeURIComponent(countryName)}`;
 }
 
-function TranslatedInline({ value }) {
-  const { lang } = useI18n();
-  const translated = useTranslated(value || "");
-  if (!value) return null;
-  return translated || localizedValue(value, lang);
-}
-
-function StatusBadge({ status, copy }) {
-  const label = copy.status[status] || status;
-  return (
-    <span className="inline-flex rounded-full border border-bone/15 px-2 py-0.5 text-[10px] uppercase tracking-wider text-bone/55">
-      {label}
-    </span>
-  );
-}
-
-function SourceLink({ source }) {
-  const { lang } = useI18n();
-  const translatedPublisher = useTranslated(source?.publisher || "");
-  const translatedTitle = useTranslated(source?.title || "");
-  if (!source) return null;
-  const publisher = translatedPublisher || localizedValue(source.publisher, lang);
-  const title = translatedTitle || localizedValue(source.title, lang);
-  return (
-    <a href={source.url} target="_blank" rel="noreferrer" className="text-[11px] text-gold/80 hover:text-gold underline underline-offset-2">
-      {publisher ? `${publisher}: ` : ""}{title}
-    </a>
-  );
-}
-
-function SourceLinks({ ids, sourceMap }) {
-  if (!ids?.length) return null;
-  return (
-    <div className="mt-3 flex flex-wrap gap-x-3 gap-y-1">
-      {ids.map((id) => {
-        const source = sourceMap.get(id);
-        return source ? <SourceLink key={id} source={source} /> : null;
-      })}
-    </div>
-  );
-}
-
-function Timeline({ items, sourceMap, copy, lang }) {
-  return (
-    <div className="space-y-5">
-      {items.map((item, index) => (
-        <article key={item.id || `${searchableText(item.label)}-${index}`} className="border-l border-gold/30 pl-4">
-          <div className="flex flex-wrap items-center gap-2">
-            <p className="text-gold text-xs tracking-widest uppercase">
-              {item.start < 0 ? `${Math.abs(item.start).toLocaleString(lang === "fr" ? "fr-FR" : "en-US")} ${copy.bce}` : item.end ? `${item.start}–${item.end}` : `${item.start}–${copy.present}`}
-            </p>
-            <StatusBadge status={item.status} copy={copy} />
-          </div>
-          <h3 className="font-serif text-xl text-bone mt-1"><TranslatedInline value={item.label} /></h3>
-          <p className="text-bone/75 leading-relaxed mt-1"><TranslatedInline value={item.text} /></p>
-          <SourceLinks ids={item.sources} sourceMap={sourceMap} />
-        </article>
-      ))}
-    </div>
-  );
-}
-
-function SimpleCards({ items, sourceMap, copy, titleField = "name", bodyField = "note" }) {
-  return (
-    <div className="grid gap-4 md:grid-cols-2">
-      {items.map((item, index) => (
-        <article key={item.id || `${searchableText(item[titleField])}-${index}`} className="rounded-lg border border-bone/10 bg-bone/[0.025] p-4">
-          <div className="flex items-start justify-between gap-2">
-            <h3 className="font-serif text-lg text-bone"><TranslatedInline value={item[titleField]} /></h3>
-            {item.status && <StatusBadge status={item.status} copy={copy} />}
-          </div>
-          {item[bodyField] && <p className="text-sm text-bone/70 leading-relaxed mt-2"><TranslatedInline value={item[bodyField]} /></p>}
-          {item.mapping && <p className="text-xs text-bone/45 mt-2">{copy.mapping} : <TranslatedInline value={item.mapping} /></p>}
-          <SourceLinks ids={item.sources} sourceMap={sourceMap} />
-        </article>
-      ))}
-    </div>
-  );
-}
-
 export default function CountryDossierView({ dossier }) {
   const { lang } = useI18n();
   const copy = COPY[lang] || COPY.en;
   const [active, setActive] = useState("overview");
-  const sourceMap = useMemo(() => new Map((dossier?.sources || []).map((s) => [s.id, s])), [dossier?.sources]);
+  const sourceMap = useMemo(() => new Map((dossier?.sources || []).map((source) => [source.id, source])), [dossier?.sources]);
   const territory = useMemo(() => ({
     sections: dossier?.territory_v8?.sections || dossier?.territory_sections || [],
     places: dossier?.territory_v8?.places || dossier?.map_visuals?.territory_places || [],
   }), [dossier?.territory_v8, dossier?.territory_sections, dossier?.map_visuals]);
-  const countryName = localizedValue(dossier.name || dossier.country, lang) || copy.country;
-  const regionName = localizedValue(dossier.region, lang) || copy.southernAfrica;
-  const editorialNote = useTranslated(dossier.editorial_note || "");
+  const countryName = localizedValue(dossier?.name || dossier?.country, lang) || copy.country;
+  const regionName = localizedValue(dossier?.region, lang) || copy.southernAfrica;
   const migrationRouteSet = getCountryMigrationRouteSet(dossier?.iso2);
   const migrationRoutes = migrationRouteSet?.routes?.length ? migrationRouteSet.routes : (dossier?.map_visuals?.migration_routes || []);
   const migrationNote = migrationRouteSet?.note || dossier?.map_visuals?.note;
@@ -215,14 +124,19 @@ export default function CountryDossierView({ dossier }) {
     <div className="pt-[100px] pb-20 px-5 max-w-5xl mx-auto">
       <p className="overline text-gold mb-2">{copy.country} · {regionName}</p>
       <h1 className="font-serif text-4xl md:text-5xl text-bone">{countryName}</h1>
-      {dossier.editorial_note && <p className="text-bone/55 mt-3 max-w-3xl leading-relaxed">{editorialNote || localizedValue(dossier.editorial_note, lang)}</p>}
 
       <nav className="mt-8" aria-label={copy.navLabel}>
         <div className="flex gap-2 overflow-x-auto pb-3">
           {groups.map((group) => {
             const selected = group.id === activeGroup.id;
             return (
-              <button key={group.id} onClick={() => setActive(group.items[0][0])} className={`whitespace-nowrap rounded-full border px-4 py-2 text-xs font-medium ${selected ? "border-gold bg-gold/10 text-gold" : "border-bone/15 text-bone/60 hover:text-bone"}`}>
+              <button
+                key={group.id}
+                type="button"
+                aria-pressed={selected}
+                onClick={() => setActive(group.items[0][0])}
+                className={`whitespace-nowrap rounded-full border px-4 py-2 text-xs font-medium ${selected ? "border-gold bg-gold/10 text-gold" : "border-bone/15 text-bone/60 hover:text-bone"}`}
+              >
                 {group.label}
               </button>
             );
@@ -231,7 +145,13 @@ export default function CountryDossierView({ dossier }) {
         {activeGroup.items.length > 1 && (
           <div className="mt-2 flex gap-2 overflow-x-auto rounded-xl border border-bone/10 bg-bone/[0.025] p-2">
             {activeGroup.items.map(([itemId, label]) => (
-              <button key={itemId} onClick={() => setActive(itemId)} className={`whitespace-nowrap rounded-lg px-3 py-1.5 text-xs ${active === itemId ? "bg-gold/15 text-gold" : "text-bone/55 hover:bg-bone/5 hover:text-bone"}`}>
+              <button
+                key={itemId}
+                type="button"
+                aria-pressed={active === itemId}
+                onClick={() => setActive(itemId)}
+                className={`whitespace-nowrap rounded-lg px-3 py-1.5 text-xs ${active === itemId ? "bg-gold/15 text-gold" : "text-bone/55 hover:bg-bone/5 hover:text-bone"}`}
+              >
                 {label}
               </button>
             ))}
@@ -241,30 +161,41 @@ export default function CountryDossierView({ dossier }) {
 
       <section className="mt-8">
         <CountrySectionBoundary resetKey={active} title={activeGroup.label}>
-        {active === "overview" && <CountryOverview dossier={dossier} sourceMap={sourceMap} />}
-        {active === "media" && <CountryMediaGallery items={dossier.media_gallery || []} />}
-        {active === "timeline" && (<div className="space-y-10"><SouthAfricaDeepHistory data={dossier.deep_history} sourceMap={sourceMap} /><CountryHistory dossier={dossier} sourceMap={sourceMap} /></div>)}
-        {active === "provinces-cities" && <CountryTerritory dossier={dossier} territory={territory} sourceMap={sourceMap} />}
-        {active === "interactive-timeline" && <SouthAfricaInteractiveTimeline dossier={dossier} sourceMap={sourceMap} />}
-        {active === "economy" && <SouthAfricaEconomyQuality dossier={dossier} sourceMap={sourceMap} />}
-        {active === "society" && <SouthAfricaSocietyQuality dossier={dossier} sourceMap={sourceMap} />}
-        {active === "education-health" && <SouthAfricaEducationHealthQuality dossier={dossier} sourceMap={sourceMap} />}
-        {active === "symbols" && <SouthAfricaSymbolsQuality dossier={dossier} sourceMap={sourceMap} />}
-        {active === "international" && <SouthAfricaInternationalQuality dossier={dossier} sourceMap={sourceMap} />}
-        {active === "sport-media" && <SouthAfricaSportMedia dossier={dossier} sourceMap={sourceMap} />}
-        {active === "law-memory" && <SouthAfricaLawMemory dossier={dossier} sourceMap={sourceMap} />}
-        {active === "peoples" && <CountryPeoples dossier={dossier} sourceMap={sourceMap} />}
-        {active === "polities" && <CountryPolities dossier={dossier} sourceMap={sourceMap} />}
-        {active === "migrations" && (<div className="space-y-10"><SouthAfricaPre1652Routes data={dossier.pre1652_map} sourceMap={sourceMap} /><CountryMigrationFlowMap dossier={dossier} routes={migrationRoutes} note={migrationNote} places={territory.places} /><CountryMigrations dossier={dossier} sourceMap={sourceMap} /></div>)}
-        {active === "heritage" && <SouthAfricaHeritage dossier={dossier} sourceMap={sourceMap} />}
-        {active === "figures" && <CountryFigures dossier={dossier} sourceMap={sourceMap} />}
-        {active === "culture" && <SouthAfricaCulture dossier={dossier} sourceMap={sourceMap} />}
-        {active === "languages" && <CountryLanguages dossier={dossier} sourceMap={sourceMap} />}
-        {active === "religions" && <CountryReligions dossier={dossier} sourceMap={sourceMap} />}
-        {active === "historiography" && <CountryHistoriography dossier={dossier} />}
-        {active === "research" && <CountryResearchGaps dossier={dossier} />}
-        {active === "library" && <SouthAfricaScientificLibrary dossier={dossier} sourceMap={sourceMap} />}
-        {active === "sources" && <CountrySources dossier={dossier} />}
+          {active === "overview" && <CountryOverview dossier={dossier} sourceMap={sourceMap} />}
+          {active === "media" && <CountryMediaGallery items={dossier?.media_gallery || []} />}
+          {active === "timeline" && (
+            <div className="space-y-10">
+              <SouthAfricaDeepHistory data={dossier?.deep_history} sourceMap={sourceMap} />
+              <CountryHistory dossier={dossier} sourceMap={sourceMap} />
+            </div>
+          )}
+          {active === "provinces-cities" && <CountryTerritory dossier={dossier} territory={territory} sourceMap={sourceMap} />}
+          {active === "interactive-timeline" && <SouthAfricaInteractiveTimeline dossier={dossier} sourceMap={sourceMap} />}
+          {active === "economy" && <SouthAfricaEconomyQuality dossier={dossier} sourceMap={sourceMap} />}
+          {active === "society" && <SouthAfricaSocietyQuality dossier={dossier} sourceMap={sourceMap} />}
+          {active === "education-health" && <SouthAfricaEducationHealthQuality dossier={dossier} sourceMap={sourceMap} />}
+          {active === "symbols" && <SouthAfricaSymbolsQuality dossier={dossier} sourceMap={sourceMap} />}
+          {active === "international" && <SouthAfricaInternationalQuality dossier={dossier} sourceMap={sourceMap} />}
+          {active === "sport-media" && <SouthAfricaSportMedia dossier={dossier} sourceMap={sourceMap} />}
+          {active === "law-memory" && <SouthAfricaLawMemory dossier={dossier} sourceMap={sourceMap} />}
+          {active === "peoples" && <CountryPeoples dossier={dossier} sourceMap={sourceMap} />}
+          {active === "polities" && <CountryPolities dossier={dossier} sourceMap={sourceMap} />}
+          {active === "migrations" && (
+            <div className="space-y-10">
+              <SouthAfricaPre1652Routes data={dossier?.pre1652_map} sourceMap={sourceMap} />
+              <CountryMigrationFlowMap dossier={dossier} routes={migrationRoutes} note={migrationNote} places={territory.places} />
+              <CountryMigrations dossier={dossier} sourceMap={sourceMap} />
+            </div>
+          )}
+          {active === "heritage" && <SouthAfricaHeritage dossier={dossier} sourceMap={sourceMap} />}
+          {active === "figures" && <CountryFigures dossier={dossier} sourceMap={sourceMap} />}
+          {active === "culture" && <SouthAfricaCulture dossier={dossier} sourceMap={sourceMap} />}
+          {active === "languages" && <CountryLanguages dossier={dossier} sourceMap={sourceMap} />}
+          {active === "religions" && <CountryReligions dossier={dossier} sourceMap={sourceMap} />}
+          {active === "historiography" && <CountryHistoriography dossier={dossier} />}
+          {active === "research" && <CountryResearchGaps dossier={dossier} />}
+          {active === "library" && <SouthAfricaScientificLibrary dossier={dossier} sourceMap={sourceMap} />}
+          {active === "sources" && <CountrySources dossier={dossier} />}
         </CountrySectionBoundary>
       </section>
 
