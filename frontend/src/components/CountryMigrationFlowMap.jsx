@@ -7,6 +7,8 @@ const TYPE_STYLES = {
   "regional-mobility": { color: "#2F80A3", dashArray: undefined },
   "coerced-labour": { color: "#C47B21", dashArray: "10 6" },
   "forced-displacement": { color: "#A33A32", dashArray: "5 7" },
+  forced: { color: "#A33A32", dashArray: "5 7" },
+  mixed: { color: "#7C5AA6", dashArray: "12 5 3 5" },
   voluntary: { color: "#4F8A67", dashArray: undefined },
 };
 
@@ -20,6 +22,8 @@ const COPY = {
       "regional-mobility": "Mobilité régionale / peuplement",
       "coerced-labour": "Travail migrant sous contrainte",
       "forced-displacement": "Déplacement forcé",
+      forced: "Déplacement forcé",
+      mixed: "Mobilités mixtes",
       voluntary: "Migration volontaire",
     },
     origin: "Point de départ / zone d’origine",
@@ -29,6 +33,7 @@ const COPY = {
     people: "Population / groupe concerné",
     source: "Source",
     schematic: "Territoire et flux",
+    present: "aujourd’hui",
   },
   en: {
     title: "Mobility and migration map",
@@ -39,6 +44,8 @@ const COPY = {
       "regional-mobility": "Regional mobility / settlement",
       "coerced-labour": "Coerced migrant labour",
       "forced-displacement": "Forced displacement",
+      forced: "Forced displacement",
+      mixed: "Mixed mobility",
       voluntary: "Voluntary migration",
     },
     origin: "Starting point / origin area",
@@ -48,6 +55,7 @@ const COPY = {
     people: "Population / group concerned",
     source: "Source",
     schematic: "Territory and flows",
+    present: "present",
   },
 };
 
@@ -57,6 +65,17 @@ function localize(value, lang) {
   if (Array.isArray(value)) return value.map((item) => localize(item, lang)).filter(Boolean).join(", ");
   if (typeof value === "object") return value[lang] || value.fr || value.en || "";
   return "";
+}
+
+function periodKey(route) {
+  return `${route.start ?? ""}::${route.end ?? ""}`;
+}
+
+function periodLabel(route, copy) {
+  const start = route.start ?? "";
+  const end = route.end ?? copy.present;
+  if (start === "" && end === copy.present) return copy.present;
+  return `${start}–${end}`;
 }
 
 function routeCurve(origin, destination, steps = 32) {
@@ -91,9 +110,16 @@ function boundsForCountryAndRoutes(routes, iso2) {
 export default function CountryMigrationFlowMap({ dossier, routes = [], note, places = [] }) {
   const { lang } = useI18n();
   const copy = COPY[lang] || COPY.en;
-  const periods = useMemo(() => [...new Set(routes.map((route) => `${route.start}-${route.end}`))], [routes]);
+  const periods = useMemo(() => {
+    const unique = new Map();
+    routes.forEach((route) => {
+      const key = periodKey(route);
+      if (!unique.has(key)) unique.set(key, route);
+    });
+    return [...unique.entries()].map(([key, route]) => ({ key, label: periodLabel(route, copy) }));
+  }, [routes, copy]);
   const [period, setPeriod] = useState("all");
-  const visibleRoutes = period === "all" ? routes : routes.filter((route) => `${route.start}-${route.end}` === period);
+  const visibleRoutes = period === "all" ? routes : routes.filter((route) => periodKey(route) === period);
   const bounds = useMemo(() => boundsForCountryAndRoutes(visibleRoutes, dossier?.iso2), [visibleRoutes, dossier?.iso2]);
 
   if (!routes.length) return null;
@@ -109,13 +135,14 @@ export default function CountryMigrationFlowMap({ dossier, routes = [], note, pl
       <div className="flex flex-wrap gap-2">
         <button type="button" aria-pressed={period === "all"} onClick={() => setPeriod("all")} className={`rounded-full border px-3 py-1.5 text-xs ${period === "all" ? "border-gold bg-gold/10 text-gold" : "border-bone/15 text-bone/65"}`}>{copy.all}</button>
         {periods.map((item) => (
-          <button key={item} type="button" aria-pressed={period === item} onClick={() => setPeriod(item)} className={`rounded-full border px-3 py-1.5 text-xs ${period === item ? "border-gold bg-gold/10 text-gold" : "border-bone/15 text-bone/65"}`}>{item.replace("-", "–")}</button>
+          <button key={item.key} type="button" aria-pressed={period === item.key} onClick={() => setPeriod(item.key)} className={`rounded-full border px-3 py-1.5 text-xs ${period === item.key ? "border-gold bg-gold/10 text-gold" : "border-bone/15 text-bone/65"}`}>{item.label}</button>
         ))}
       </div>
 
       <CountryShapeMap dossier={dossier} places={places} boundsOverride={bounds} minZoom={2} className="h-[560px] w-full md:h-[680px]">
         {visibleRoutes.map((route) => {
           const style = TYPE_STYLES[route.type] || { color: "#7A6A58" };
+          if (!Array.isArray(route.origin_coordinates) || !Array.isArray(route.destination_coordinates)) return null;
           const [originLon, originLat] = route.origin_coordinates;
           const [destinationLon, destinationLat] = route.destination_coordinates;
           const label = localize(route.label, lang);
@@ -127,7 +154,7 @@ export default function CountryMigrationFlowMap({ dossier, routes = [], note, pl
                 <Popup>
                   <div className="max-w-[260px]">
                     <strong>{label}</strong><br />
-                    <span>{route.start}–{route.end}</span><br />
+                    <span>{periodLabel(route, copy)}</span><br />
                     <span>{origin} → {destination}</span>
                     {route.description && <p style={{ marginTop: 8 }}>{localize(route.description, lang)}</p>}
                   </div>
@@ -165,12 +192,12 @@ export default function CountryMigrationFlowMap({ dossier, routes = [], note, pl
               <div className="flex items-start gap-3">
                 <span className="mt-2 h-2.5 w-2.5 shrink-0 rounded-full" style={{ background: style.color }} />
                 <div>
-                  <p className="text-xs uppercase tracking-wider text-gold">{copy.period} · {route.start}–{route.end}</p>
+                  <p className="text-xs uppercase tracking-wider text-gold">{copy.period} · {periodLabel(route, copy)}</p>
                   <h4 className="mt-1 text-bone">{localize(route.label, lang)}</h4>
                   <p className="mt-1 text-xs text-bone/55">{localize(route.origin, lang)} → {localize(route.destination, lang)}</p>
                   {route.people && <p className="mt-2 text-xs text-bone/55">{copy.people} : {localize(route.people, lang)}</p>}
                   {route.description && <p className="mt-2 text-sm leading-relaxed text-bone/65">{localize(route.description, lang)}</p>}
-                  {route.source_url && <a href={route.source_url} target="_blank" rel="noreferrer" className="mt-3 inline-block text-xs text-gold underline underline-offset-2">{copy.source} · {route.source_label}</a>}
+                  {route.source_url && <a href={route.source_url} target="_blank" rel="noreferrer" className="mt-3 inline-block text-xs text-gold underline underline-offset-2">{copy.source} · {localize(route.source_label, lang) || route.source_url}</a>}
                 </div>
               </div>
             </article>
