@@ -4,9 +4,10 @@ import { Search as SearchIcon, ArrowRight } from "lucide-react";
 import { search } from "../lib/api";
 import { useI18n } from "../i18n";
 import { Translated } from "../lib/useTranslated";
+import { localizedValue } from "../lib/contentSort";
 
 const SearchPage = () => {
-  const { t } = useI18n();
+  const { t, lang } = useI18n();
   const [params, setParams] = useSearchParams();
   const initial = params.get("q") || "";
   const [q, setQ] = useState(initial);
@@ -28,6 +29,8 @@ const SearchPage = () => {
   };
 
   const buckets = results ? [
+    ["countries", results.countries || []],
+    ["peoples", results.peoples || []],
     ["civilizations", results.civilizations || []],
     ["figures", results.figures || []],
     ["diaspora", results.diaspora || []],
@@ -66,18 +69,58 @@ const SearchPage = () => {
         <>
           <p className="overline mt-10" data-testid="search-summary">{t("search.summary").replace("{count}", total).replace("{q}", initial)}</p>
           <div className="mt-5 flex gap-2 overflow-x-auto">
-            {[["all",t("search.filter.all")],["civilizations",t("search.filter.civilizations")],["figures",t("search.filter.figures")],["diaspora",t("search.filter.diaspora")],["modules",t("search.filter.modules")],["stories",t("search.filter.stories")],["culture",t("search.filter.culture")]].map(([id,label]) => (
+            {[
+              ["all", t("search.filter.all")],
+              ["countries", t("nav.countries")],
+              ["peoples", t("nav.peoples")],
+              ["civilizations", t("search.filter.civilizations")],
+              ["figures", t("search.filter.figures")],
+              ["diaspora", t("search.filter.diaspora")],
+              ["modules", t("search.filter.modules")],
+              ["stories", t("search.filter.stories")],
+              ["culture", t("search.filter.culture")],
+            ].map(([id,label]) => (
               <button key={id} type="button" onClick={() => setType(id)} className={`whitespace-nowrap rounded-full border px-3 py-2 text-xs ${type === id ? "border-gold bg-gold/10 text-gold" : "border-bone/15 text-bone/60"}`}>{label}</button>
             ))}
           </div>
 
-          {show("civilizations") && results.civilizations.length > 0 && (
+          {show("countries") && results.countries?.length > 0 && (
+            <Section title={t("nav.countries")}>
+              {results.countries.map((country) => {
+                const iso2 = country.iso2 || country.country_iso2;
+                const name = localizedValue(country.name || country.display_name || country.country, lang);
+                const region = localizedValue(country.region, lang);
+                const note = localizedValue(country.editorial_note || country.summary, lang);
+                return (
+                  <Link key={iso2 || country.id || name} to={iso2 ? `/country/${iso2}` : "/countries"} className="museum-card p-5 group block" data-testid={`search-country-${iso2 || country.id || "item"}`}>
+                    <p className="overline text-[0.65rem]">{region || t("nav.countries")}</p>
+                    <p className="font-serif text-xl text-bone mt-1 group-hover:text-gold transition-colors">{name}</p>
+                    {note && <p className="text-bone/70 text-sm mt-2 line-clamp-2 font-light">{note}</p>}
+                  </Link>
+                );
+              })}
+            </Section>
+          )}
+
+          {show("peoples") && results.peoples?.length > 0 && (
+            <Section title={t("nav.peoples")}>
+              {results.peoples.map((people) => (
+                <Link key={people.id} to={`/people/${people.id}`} className="museum-card p-5 group block" data-testid={`search-people-${people.id}`}>
+                  <p className="overline text-[0.65rem]">{localizedValue(people.language_family || people.region || people.regions, lang)}</p>
+                  <p className="font-serif text-xl text-bone mt-1 group-hover:text-gold transition-colors">{localizedValue(people.name, lang)}</p>
+                  <p className="text-bone/70 text-sm mt-2 line-clamp-2 font-light">{localizedValue(people.summary || people.history || people.culture, lang)}</p>
+                </Link>
+              ))}
+            </Section>
+          )}
+
+          {show("civilizations") && results.civilizations?.length > 0 && (
             <Section title={t("search.section.civilizations")}>
               {results.civilizations.map((c) => (
                 <Link key={c.id} to={`/civilization/${c.id}`} className="museum-card p-5 group block" data-testid={`search-civ-${c.id}`}>
-                  <p className="overline text-[0.65rem]">{t(`region.${c.region}`)}</p>
-                  <Translated as="p" className="font-serif text-xl text-bone mt-1 group-hover:text-gold transition-colors">{c.name || ""}</Translated>
-                  <Translated as="p" className="text-bone/70 text-sm mt-2 line-clamp-2 font-light">{c.summary || ""}</Translated>
+                  <p className="overline text-[0.65rem]">{localizedValue(c.region, lang)}</p>
+                  <p className="font-serif text-xl text-bone mt-1 group-hover:text-gold transition-colors">{localizedValue(c.name, lang)}</p>
+                  <p className="text-bone/70 text-sm mt-2 line-clamp-2 font-light">{localizedValue(c.summary, lang)}</p>
                 </Link>
               ))}
             </Section>
@@ -88,8 +131,8 @@ const SearchPage = () => {
               {results.figures.map((f) => (
                 <Link key={f.id} to={`/figure/${f.id}`} className="museum-card p-5 group block" data-testid={`search-figure-${f.id}`}>
                   <p className="overline text-[0.65rem]"><Translated>{f.category || ""}</Translated> · <Translated>{f.era || ""}</Translated></p>
-                  <p className="font-serif text-xl text-bone mt-1 group-hover:text-gold transition-colors">{f.name}</p>
-                  <Translated as="p" className="text-bone/70 text-sm mt-2 line-clamp-2 font-light">{f.summary || ""}</Translated>
+                  <p className="font-serif text-xl text-bone mt-1 group-hover:text-gold transition-colors">{localizedValue(f.name, lang)}</p>
+                  <p className="text-bone/70 text-sm mt-2 line-clamp-2 font-light">{localizedValue(f.summary, lang)}</p>
                 </Link>
               ))}
             </Section>
@@ -99,45 +142,45 @@ const SearchPage = () => {
             <Section title={t("search.section.diaspora")}>
               {results.diaspora.map((d) => (
                 <Link key={d.id} to={`/diaspora/${d.id}`} className="museum-card p-5 group block" data-testid={`search-diaspora-${d.id}`}>
-                  <p className="overline text-[0.65rem]">{t(`region.${d.region}`)} · <Translated>{d.country || ""}</Translated></p>
-                  <Translated as="p" className="font-serif text-xl text-bone mt-1 group-hover:text-gold transition-colors">{d.name || ""}</Translated>
-                  <Translated as="p" className="text-bone/70 text-sm mt-2 line-clamp-2 font-light">{d.summary || ""}</Translated>
+                  <p className="overline text-[0.65rem]">{localizedValue(d.region, lang)} · {localizedValue(d.country, lang)}</p>
+                  <p className="font-serif text-xl text-bone mt-1 group-hover:text-gold transition-colors">{localizedValue(d.name, lang)}</p>
+                  <p className="text-bone/70 text-sm mt-2 line-clamp-2 font-light">{localizedValue(d.summary, lang)}</p>
                 </Link>
               ))}
             </Section>
           )}
 
-          {show("modules") && results.modules.length > 0 && (
+          {show("modules") && results.modules?.length > 0 && (
             <Section title={t("search.section.modules")}>
               {results.modules.map((m) => (
                 <Link key={m.id} to={`/module/${m.id}`} className="museum-card p-5 group block" data-testid={`search-module-${m.id}`}>
                   <p className="overline text-[0.65rem]">{t("search.module")}</p>
-                  <Translated as="p" className="font-serif text-xl text-bone mt-1 group-hover:text-gold transition-colors">{m.title || ""}</Translated>
-                  <Translated as="p" className="text-bone/70 text-sm mt-2 line-clamp-2 font-light">{m.blurb || ""}</Translated>
+                  <p className="font-serif text-xl text-bone mt-1 group-hover:text-gold transition-colors">{localizedValue(m.title, lang)}</p>
+                  <p className="text-bone/70 text-sm mt-2 line-clamp-2 font-light">{localizedValue(m.blurb, lang)}</p>
                 </Link>
               ))}
             </Section>
           )}
 
-          {show("stories") && results.stories.length > 0 && (
+          {show("stories") && results.stories?.length > 0 && (
             <Section title={t("search.section.stories")}>
               {results.stories.map((s) => (
                 <Link key={s.id} to={`/story/${s.id}`} className="museum-card p-5 group block" data-testid={`search-story-${s.id}`}>
-                  <Translated as="p" className="overline text-[0.65rem]">{s.era || ""}</Translated>
-                  <Translated as="p" className="font-serif text-xl text-bone mt-1 group-hover:text-gold transition-colors">{s.title || ""}</Translated>
-                  <Translated as="p" className="text-bone/70 text-sm mt-2 line-clamp-2 font-light">{s.summary || ""}</Translated>
+                  <p className="overline text-[0.65rem]">{localizedValue(s.era, lang)}</p>
+                  <p className="font-serif text-xl text-bone mt-1 group-hover:text-gold transition-colors">{localizedValue(s.title, lang)}</p>
+                  <p className="text-bone/70 text-sm mt-2 line-clamp-2 font-light">{localizedValue(s.summary, lang)}</p>
                 </Link>
               ))}
             </Section>
           )}
 
-          {show("culture") && results.culture.length > 0 && (
+          {show("culture") && results.culture?.length > 0 && (
             <Section title={t("search.section.culture")}>
               {results.culture.map((i) => (
                 <div key={i.id} className="museum-card p-5" data-testid={`search-culture-${i.id}`}>
-                  <p className="overline text-[0.65rem]"><Translated>{i.category || ""}</Translated> · <Translated>{i.region || ""}</Translated></p>
-                  <Translated as="p" className="font-serif text-xl text-bone mt-1">{i.title || ""}</Translated>
-                  <Translated as="p" className="text-bone/70 text-sm mt-2 line-clamp-2 font-light">{i.blurb || ""}</Translated>
+                  <p className="overline text-[0.65rem]">{localizedValue(i.category, lang)} · {localizedValue(i.region, lang)}</p>
+                  <p className="font-serif text-xl text-bone mt-1">{localizedValue(i.title, lang)}</p>
+                  <p className="text-bone/70 text-sm mt-2 line-clamp-2 font-light">{localizedValue(i.blurb, lang)}</p>
                 </div>
               ))}
             </Section>
