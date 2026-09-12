@@ -1,5 +1,6 @@
 import { useMemo, useState } from "react";
 import { useI18n } from "../i18n";
+import { localizedValue, searchableText } from "../lib/contentSort";
 import { useTranslated } from "../lib/useTranslated";
 
 const COPY = {
@@ -70,36 +71,30 @@ const COPY = {
 };
 
 function TranslatedText({ value, className = "" }) {
+  const { lang } = useI18n();
   const translated = useTranslated(value || "");
   if (!value) return null;
-  return <p className={className}>{translated || value}</p>;
-}
-
-function searchableValue(value) {
-  if (value === null || value === undefined) return "";
-  if (typeof value === "string" || typeof value === "number") return String(value);
-  if (Array.isArray(value)) return value.map(searchableValue).join(" ");
-  if (typeof value === "object") return Object.values(value).map(searchableValue).join(" ");
-  return "";
+  return <p className={className}>{translated || localizedValue(value, lang)}</p>;
 }
 
 function SourceCard({ source, copy }) {
+  const { lang } = useI18n();
   const translatedTitle = useTranslated(source?.title || "");
   const translatedPublisher = useTranslated(source?.publisher || "");
   const translatedLanguage = useTranslated(source?.language || "");
-  const title = translatedTitle || searchableValue(source?.title);
-  const publisher = translatedPublisher || searchableValue(source?.publisher);
-  const sourceLanguage = translatedLanguage || searchableValue(source?.language);
+  const title = translatedTitle || localizedValue(source?.title, lang);
+  const publisher = translatedPublisher || localizedValue(source?.publisher, lang);
+  const sourceLanguage = translatedLanguage || localizedValue(source?.language, lang);
 
   return (
     <article className="rounded-2xl border border-bone/10 bg-bone/[0.025] p-5">
       <div className="flex flex-wrap items-start justify-between gap-3">
         <div>
           <p className="text-[10px] uppercase tracking-[0.18em] text-gold">
-            {copy.categories[source.category] || `${copy.category} ${source.category || copy.unspecified}`}
+            {copy.categories[source.category] || `${copy.category} ${localizedValue(source.category, lang) || copy.unspecified}`}
           </p>
           <h3 className="mt-2 font-serif text-xl text-bone">{title}</h3>
-          <p className="mt-1 text-xs text-bone/45">{publisher}{source.year ? ` · ${source.year}` : ""}</p>
+          {(publisher || source.year) && <p className="mt-1 text-xs text-bone/45">{publisher}{publisher && source.year ? " · " : ""}{source.year || ""}</p>}
         </div>
         {sourceLanguage && <span className="rounded-full border border-bone/15 px-2.5 py-1 text-[10px] uppercase tracking-wider text-bone/50">{sourceLanguage}</span>}
       </div>
@@ -126,7 +121,7 @@ export function CountryHistoriography({ dossier }) {
       </header>
       <div className="space-y-4">
         {notes.map((note, index) => (
-          <article key={index} className="rounded-2xl border border-amber-400/20 bg-amber-400/[0.04] p-5">
+          <article key={`${searchableText(note)}-${index}`} className="rounded-2xl border border-amber-400/20 bg-amber-400/[0.04] p-5">
             <div className="flex gap-3"><span className="text-amber-300">⚠</span><TranslatedText value={note} className="text-sm leading-7 text-bone/75" /></div>
           </article>
         ))}
@@ -149,7 +144,7 @@ export function CountryResearchGaps({ dossier }) {
       </header>
       <div className="grid gap-4 md:grid-cols-2">
         {gaps.map((gap, index) => (
-          <article key={index} className="rounded-2xl border border-bone/10 bg-bone/[0.025] p-5">
+          <article key={`${searchableText(gap)}-${index}`} className="rounded-2xl border border-bone/10 bg-bone/[0.025] p-5">
             <div className="flex items-start justify-between gap-4">
               <TranslatedText value={gap} className="text-sm leading-7 text-bone/72" />
               <span className="shrink-0 rounded-full border border-bone/15 px-2.5 py-1 text-[10px] uppercase tracking-wider text-bone/50">{copy.gapsBadge}</span>
@@ -166,21 +161,18 @@ export function CountrySources({ dossier }) {
   const { lang } = useI18n();
   const copy = COPY[lang] || COPY.en;
   const sources = useMemo(() => Array.isArray(dossier?.sources) ? dossier.sources.filter(Boolean) : [], [dossier?.sources]);
-  const categories = useMemo(() => [...new Set(sources.map((source) => source.category).filter(Boolean))], [sources]);
+  const categories = useMemo(() => [...new Set(sources.map((source) => source.category).filter((value) => value !== undefined && value !== null))], [sources]);
   const [query, setQuery] = useState("");
   const [category, setCategory] = useState("all");
 
   const visible = useMemo(() => {
-    const needle = query.trim().toLowerCase();
+    const needle = query.trim().toLocaleLowerCase(lang === "fr" ? "fr" : "en");
     return sources.filter((source) => {
       const matchesCategory = category === "all" || String(source.category) === String(category);
-      const haystack = [source.title, source.publisher, source.year, source.note, source.language]
-        .map(searchableValue)
-        .join(" ")
-        .toLowerCase();
+      const haystack = searchableText(source.title, source.publisher, source.year, source.note, source.language);
       return matchesCategory && (!needle || haystack.includes(needle));
     });
-  }, [sources, query, category]);
+  }, [sources, query, category, lang]);
 
   return (
     <div className="space-y-8">
@@ -195,15 +187,15 @@ export function CountrySources({ dossier }) {
         <div className="flex gap-2 overflow-x-auto">
           <button type="button" aria-pressed={category === "all"} onClick={() => setCategory("all")} className={`whitespace-nowrap rounded-full border px-3 py-1.5 text-xs ${category === "all" ? "border-gold bg-gold/10 text-gold" : "border-bone/15 text-bone/60"}`}>{copy.all}</button>
           {categories.map((itemCategory) => (
-            <button key={itemCategory} type="button" aria-pressed={String(category) === String(itemCategory)} onClick={() => setCategory(itemCategory)} className={`whitespace-nowrap rounded-full border px-3 py-1.5 text-xs ${String(category) === String(itemCategory) ? "border-gold bg-gold/10 text-gold" : "border-bone/15 text-bone/60"}`}>
-              {copy.categories[itemCategory] || `${copy.category} ${itemCategory}`}
+            <button key={String(itemCategory)} type="button" aria-pressed={String(category) === String(itemCategory)} onClick={() => setCategory(itemCategory)} className={`whitespace-nowrap rounded-full border px-3 py-1.5 text-xs ${String(category) === String(itemCategory) ? "border-gold bg-gold/10 text-gold" : "border-bone/15 text-bone/60"}`}>
+              {copy.categories[itemCategory] || `${copy.category} ${localizedValue(itemCategory, lang)}`}
             </button>
           ))}
         </div>
       </div>
 
       <div className="grid gap-4 md:grid-cols-2">
-        {visible.map((source) => <SourceCard key={source.id} source={source} copy={copy} />)}
+        {visible.map((source, index) => <SourceCard key={source.id || `${searchableText(source.title, source.publisher)}-${index}`} source={source} copy={copy} />)}
       </div>
       {!visible.length && <div className="rounded-xl border border-bone/10 p-5 text-bone/60">{copy.empty}</div>}
     </div>
