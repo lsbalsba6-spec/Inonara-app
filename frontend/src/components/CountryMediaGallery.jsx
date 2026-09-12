@@ -2,6 +2,7 @@ import { useMemo, useState } from "react";
 import { SmartImage } from "./SmartImage";
 import { useI18n } from "../i18n";
 import { useTranslated } from "../lib/useTranslated";
+import { localizedValue, searchableText } from "../lib/contentSort";
 
 const COPY = {
   en: {
@@ -42,36 +43,27 @@ const getCategory = (item, fallback) => item.category || item.type || fallback;
 const getTitle = (item, fallback) => item.title || item.alt || fallback;
 const getCaption = (item) => item.caption || item.description || "";
 
-function localizedValue(value, lang) {
-  if (!value) return "";
-  if (typeof value === "object") return value[lang] || value.fr || value.en || value.text || "";
-  return String(value);
-}
-
-function searchableValue(value) {
-  if (!value) return "";
-  if (typeof value === "object") return Object.values(value).filter((entry) => typeof entry === "string").join(" ");
-  return String(value);
-}
-
 function TranslatedInline({ value }) {
+  const { lang } = useI18n();
   const translated = useTranslated(value || "");
   if (!value) return null;
-  return translated || localizedValue(value, "fr") || localizedValue(value, "en");
+  return translated || localizedValue(value, lang);
 }
 
 function TranslatedText({ value, className = "" }) {
+  const { lang } = useI18n();
   const translated = useTranslated(value || "");
   if (!value) return null;
-  return <p className={className}>{translated || localizedValue(value, "fr") || localizedValue(value, "en")}</p>;
+  return <p className={className}>{translated || localizedValue(value, lang)}</p>;
 }
 
 function LocalizedSmartImage({ alt, ...props }) {
+  const { lang } = useI18n();
   const translatedAlt = useTranslated(alt || "");
   return (
     <SmartImage
       {...props}
-      alt={translatedAlt || localizedValue(alt, "fr") || localizedValue(alt, "en") || ""}
+      alt={translatedAlt || localizedValue(alt, lang) || ""}
     />
   );
 }
@@ -83,7 +75,7 @@ export function CountryMediaGallery({ items = [] }) {
     const categoryMap = new Map();
     items.forEach((item) => {
       const rawCategory = getCategory(item, copy.gallery);
-      const key = searchableValue(rawCategory) || copy.gallery;
+      const key = searchableText(rawCategory) || copy.gallery.toLowerCase();
       if (!categoryMap.has(key)) categoryMap.set(key, rawCategory);
     });
     return [...categoryMap.entries()].map(([key, value]) => ({ key, value }));
@@ -93,16 +85,23 @@ export function CountryMediaGallery({ items = [] }) {
   const [selected, setSelected] = useState(null);
 
   const visible = useMemo(() => {
-    const needle = query.trim().toLowerCase();
+    const needle = query.trim().toLocaleLowerCase(lang === "fr" ? "fr" : "en");
     return items.filter((item) => {
       const itemCategory = getCategory(item, copy.gallery);
       const itemTitle = getTitle(item, copy.media);
-      const itemCategoryKey = searchableValue(itemCategory) || copy.gallery;
+      const itemCategoryKey = searchableText(itemCategory) || copy.gallery.toLowerCase();
       const matchesCategory = category === "all" || itemCategoryKey === category;
-      const haystack = `${searchableValue(itemTitle)} ${searchableValue(getCaption(item))} ${searchableValue(item.author)} ${searchableValue(item.license)}`.toLowerCase();
+      const haystack = searchableText(
+        itemTitle,
+        getCaption(item),
+        item.author,
+        item.license,
+        item.source_name,
+        item.provenance,
+      );
       return matchesCategory && (!needle || haystack.includes(needle));
     });
-  }, [items, category, query, copy.gallery, copy.media]);
+  }, [items, category, query, copy.gallery, copy.media, lang]);
 
   return (
     <div className="space-y-8">
@@ -146,7 +145,7 @@ export function CountryMediaGallery({ items = [] }) {
           const itemTitle = getTitle(item, copy.media);
           const itemCategory = getCategory(item, copy.gallery);
           return (
-            <figure key={item.id || `${searchableValue(itemTitle)}-${index}`} className="overflow-hidden rounded-2xl border border-bone/10 bg-bone/[0.025]">
+            <figure key={item.id || `${searchableText(itemTitle)}-${index}`} className="overflow-hidden rounded-2xl border border-bone/10 bg-bone/[0.025]">
               <button type="button" onClick={() => setSelected(item)} className="block w-full overflow-hidden bg-black/20 text-left">
                 <LocalizedSmartImage
                   src={item.image_url}
