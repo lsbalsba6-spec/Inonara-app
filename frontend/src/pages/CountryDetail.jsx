@@ -142,11 +142,11 @@ const BESPOKE_COUNTRY_CONTENT = {
       },
     ],
     sources: [
-      "Encyclopédie Universalis, 'Libreville'",
-      "Doc. IRD (Sallée, citant Raponda-Walker, 1960)",
-      "Henry Bucher (1977), 'The Settlement of the Mpongwe clans in the Gabon estuary'",
-      "mjp.univ-perp.fr, Journal officiel de la République française",
-      "Wikipédia, 'Gabonese people in France', citant l'INSEE",
+      { fr: "Encyclopédie Universalis, « Libreville »", en: "Encyclopædia Universalis, ‘Libreville’" },
+      { fr: "Document IRD (Sallée, citant Raponda-Walker, 1960)", en: "IRD document (Sallée, citing Raponda-Walker, 1960)" },
+      { fr: "Henry Bucher (1977), « The Settlement of the Mpongwe clans in the Gabon estuary »", en: "Henry Bucher (1977), ‘The Settlement of the Mpongwe clans in the Gabon estuary’" },
+      { fr: "mjp.univ-perp.fr, Journal officiel de la République française", en: "mjp.univ-perp.fr, Journal officiel de la République française" },
+      { fr: "Wikipédia, « Gabonese people in France », citant l’INSEE", en: "Wikipedia, ‘Gabonese people in France’, citing INSEE" },
     ],
     polityIds: ["gabao-portuguese", "french-equatorial-africa-aef"],
     diasporaIds: ["afro-gabonese-atlantic", "gabonese-france"],
@@ -258,7 +258,7 @@ export default function CountryDetail() {
         </div>
         <div className="mt-12 pt-6 border-t border-[#2A2421]">
           <p className="overline text-bone/50 mb-2">{copy.sources}</p>
-          {bespoke.sources.map((s, i) => <p key={i} className="text-bone/60 text-xs mb-1">{s}</p>)}
+          {bespoke.sources.map((s, i) => <p key={i} className="text-bone/60 text-xs mb-1"><TranslatedInline text={s} /></p>)}
         </div>
       </div>
     );
@@ -315,7 +315,7 @@ export default function CountryDetail() {
       {(originCountry?.sources || []).length > 0 && (
         <div className="mt-12 pt-6 border-t border-[#2A2421]">
           <p className="overline text-bone/50 mb-2">{copy.sources}</p>
-          {originCountry.sources.map((s, i) => <p key={i} className="text-bone/60 text-xs mb-1">{s}</p>)}
+          {originCountry.sources.map((s, i) => <p key={i} className="text-bone/60 text-xs mb-1"><TranslatedInline text={s} /></p>)}
         </div>
       )}
 
