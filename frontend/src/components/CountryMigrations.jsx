@@ -1,6 +1,7 @@
 import { useMemo, useState } from "react";
 import { useI18n } from "../i18n";
 import { useTranslated } from "../lib/useTranslated";
+import { localizedValue } from "../lib/contentSort";
 
 const COPY = {
   en: {
@@ -104,9 +105,10 @@ function boundsFor(routes) {
 }
 
 function TranslatedInline({ value }) {
+  const { lang } = useI18n();
   const translated = useTranslated(value || "");
   if (!value) return null;
-  return translated || value;
+  return translated || localizedValue(value, lang);
 }
 
 function TranslatedText({ value, className = "" }) {
@@ -171,12 +173,13 @@ function MigrationMap({ routes, countryName, copy }) {
 }
 
 function SourceLink({ source, fallbackLabel }) {
+  const { lang } = useI18n();
   const publisher = useTranslated(source?.publisher || "");
   const title = useTranslated(source?.title || "");
   if (!source?.url) return null;
   return (
     <a href={source.url} target="_blank" rel="noreferrer" className="rounded-full border border-gold/25 px-3 py-1 text-[11px] text-gold/85 hover:bg-gold/10">
-      {publisher || source.publisher || fallbackLabel}: {title || source.title || source.id}
+      {publisher || localizedValue(source.publisher, lang) || fallbackLabel}: {title || localizedValue(source.title, lang) || source.id}
     </a>
   );
 }
@@ -196,7 +199,7 @@ function SourceLinks({ ids = [], sourceMap, copy }) {
 export function CountryMigrations({ dossier = {}, sourceMap }) {
   const { lang } = useI18n();
   const copy = COPY[lang] || COPY.en;
-  const countryName = dossier?.name?.[lang] || dossier?.name?.fr || dossier?.country || copy.country;
+  const countryName = localizedValue(dossier?.name, lang) || localizedValue(dossier?.country, lang) || copy.country;
   const routes = useMemo(() => dossier.migrations || dossier.migration_routes || [], [dossier]);
   const types = useMemo(() => [...new Set(routes.map(routeType))], [routes]);
   const [selectedType, setSelectedType] = useState("all");
@@ -221,9 +224,9 @@ export function CountryMigrations({ dossier = {}, sourceMap }) {
 
       <div className="grid gap-4">
         {visible.map((route, index) => {
-          const stableId = route.id || route.slug || `route-${index}`;
+          const stableId = String(route.id || route.slug || `route-${index}`);
           const expanded = openId === stableId;
-          const panelId = `migration-detail-${stableId}`;
+          const panelId = `migration-detail-${stableId.replace(/[^a-zA-Z0-9_-]/g, "-")}`;
           return (
             <article key={stableId} className="rounded-2xl border border-bone/10 bg-bone/[.025] p-5">
               <button
