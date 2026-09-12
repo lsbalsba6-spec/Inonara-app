@@ -4,23 +4,30 @@ import { ArrowLeft } from "lucide-react";
 import { fetchEthnicGroups, fetchEthnicGroup } from "../lib/api";
 import { useI18n } from "../i18n";
 import { useTranslated } from "../lib/useTranslated";
-import { searchableText, sortAlphabetically } from "../lib/contentSort";
+import { localizedValue, searchableText, sortAlphabetically } from "../lib/contentSort";
 import { SmartImage } from "../components/SmartImage";
 
 const TranslatedText = ({ value, className }) => {
+  const { lang } = useI18n();
   const translated = useTranslated(value || "");
-  if (!value && !translated) return null;
-  return <span className={className}>{translated || value}</span>;
+  const display = translated || localizedValue(value, lang);
+  if (!display) return null;
+  return <span className={className}>{display}</span>;
 };
 
 const TranslatedParagraph = ({ value, className }) => {
+  const { lang } = useI18n();
   const translated = useTranslated(value || "");
-  if (!value && !translated) return null;
-  return <p className={className}>{translated || value}</p>;
+  const display = translated || localizedValue(value, lang);
+  if (!display) return null;
+  return <p className={className}>{display}</p>;
 };
 
+const displayValue = (value, lang) => localizedValue(value, lang) || "";
+const stableKey = (value, lang, fallback) => searchableText(displayValue(value, lang)) || fallback;
+
 export const EthnicGroupsList = () => {
-  const { t } = useI18n();
+  const { t, lang } = useI18n();
   const [searchParams, setSearchParams] = useSearchParams();
   const [groups, setGroups] = useState([]);
   const [query, setQuery] = useState(() => searchParams.get("q") || "");
@@ -39,22 +46,31 @@ export const EthnicGroupsList = () => {
     setSearchParams(next, { replace: true });
   };
 
-  const families = useMemo(() => [...new Set(groups.map((g) => g.language_family).filter(Boolean))].sort(), [groups]);
+  const families = useMemo(() => {
+    const unique = new Map();
+    groups.map((g) => g.language_family).filter(Boolean).forEach((value) => {
+      const key = searchableText(value);
+      if (key && !unique.has(key)) unique.set(key, value);
+    });
+    return [...unique.values()].sort((a, b) => displayValue(a, lang).localeCompare(displayValue(b, lang), lang));
+  }, [groups, lang]);
+
   const visible = useMemo(() => {
-    const needle = query.trim().toLocaleLowerCase("fr");
-    return sortAlphabetically(groups.filter((g) => {
-      const matchesFamily = family === "all" || g.language_family === family;
+    const needle = searchableText(query).trim();
+    const filtered = groups.filter((g) => {
+      const matchesFamily = family === "all" || searchableText(g.language_family) === family;
       const haystack = searchableText(g.name, g.homeland, g.language_family, g.summary);
       return matchesFamily && (!needle || haystack.includes(needle));
-    }), "name");
-  }, [groups, family, query]);
+    });
+    return sortAlphabetically(filtered, "name", lang);
+  }, [groups, family, query, lang]);
+
   return (
     <div className="pt-32 pb-24 max-w-[1600px] mx-auto px-6 md:px-10" data-testid="ethnic-groups-page">
       <p className="overline">{t("page.ethnic.overline")}</p>
       <h1 className="font-serif text-5xl md:text-6xl text-bone mt-3 tracking-tight" data-testid="ethnic-groups-title">{t("page.ethnic.title")}</h1>
-      <p className="text-bone/70 max-w-2xl mt-6 font-light leading-relaxed">
-        {t("page.ethnic.lead")}
-      </p>
+      <p className="text-bone/70 max-w-2xl mt-6 font-light leading-relaxed">{t("page.ethnic.lead")}</p>
+
       <section className="mt-10 grid gap-4 md:grid-cols-3">
         <div className="rounded-xl border border-gold/20 bg-gold/[0.05] p-5">
           <p className="overline text-gold">{t("ethnic.corpus.label")}</p>
@@ -78,25 +94,32 @@ export const EthnicGroupsList = () => {
           <input value={query} onChange={(event) => updateQuery(event.target.value)} placeholder={t("ethnic.search.placeholder")} aria-label={t("ethnic.search.placeholder")} className="w-full rounded-xl border border-bone/15 bg-ebony px-4 py-3 text-sm text-bone outline-none placeholder:text-bone/35 focus:border-gold/50" />
           <div className="flex gap-2 overflow-x-auto">
             <button type="button" onClick={() => setFamily("all")} aria-pressed={family === "all"} className={`whitespace-nowrap rounded-full border px-3 py-2 text-xs ${family === "all" ? "border-gold bg-gold/10 text-gold" : "border-bone/15 text-bone/60"}`}>{t("ethnic.filter.allFamilies")}</button>
-            {families.map((item) => <button key={item} type="button" onClick={() => setFamily(item)} aria-pressed={family === item} className={`whitespace-nowrap rounded-full border px-3 py-2 text-xs ${family === item ? "border-gold bg-gold/10 text-gold" : "border-bone/15 text-bone/60"}`}><TranslatedText value={item} /></button>)}
+            {families.map((item, index) => {
+              const key = searchableText(item) || `family-${index}`;
+              return <button key={key} type="button" onClick={() => setFamily(key)} aria-pressed={family === key} className={`whitespace-nowrap rounded-full border px-3 py-2 text-xs ${family === key ? "border-gold bg-gold/10 text-gold" : "border-bone/15 text-bone/60"}`}><TranslatedText value={item} /></button>;
+            })}
           </div>
         </div>
         <p className="mt-4 text-xs text-bone/45">{visible.length} {visible.length > 1 ? t("ethnic.results.many") : t("ethnic.results.one")}</p>
       </section>
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mt-8">
-        {visible.map((g) => (
-          <Link key={g.id} to={`/people/${g.id}`} className="museum-card relative group overflow-hidden aspect-[4/5]" data-testid={`ethnic-card-${g.id}`}>
-            <SmartImage src={g.image_url} wikipediaTitle={g.wikipedia_title} alt={g.name} wrapperClassName="absolute inset-0" className="h-full w-full object-cover opacity-55 transition-all duration-1000 group-hover:scale-105 group-hover:opacity-75" credit={g.image_credit} sourceUrl={g.image_source_url} />
-            <div className="absolute inset-0 bg-gradient-to-t from-ebony via-ebony/70 to-ebony/10" />
-            <div className="relative h-full p-7 flex flex-col justify-end">
-              <p className="overline text-[0.65rem]"><TranslatedText value={g.language_family} /></p>
-              <h3 className="font-serif text-3xl text-bone mt-3 leading-tight">{g.name}</h3>
-              <p className="text-gold text-xs uppercase tracking-[0.2em] mt-2"><TranslatedText value={g.homeland} /></p>
-              <TranslatedParagraph value={g.summary} className="text-bone/70 text-sm font-light mt-4 line-clamp-3" />
-            </div>
-          </Link>
-        ))}
+        {visible.map((g, index) => {
+          const name = displayValue(g.name, lang);
+          const credit = displayValue(g.image_credit, lang);
+          return (
+            <Link key={g.id || stableKey(g.name, lang, `group-${index}`)} to={`/people/${g.id}`} className="museum-card relative group overflow-hidden aspect-[4/5]" data-testid={`ethnic-card-${g.id}`}>
+              <SmartImage src={g.image_url} wikipediaTitle={g.wikipedia_title} alt={name} wrapperClassName="absolute inset-0" className="h-full w-full object-cover opacity-55 transition-all duration-1000 group-hover:scale-105 group-hover:opacity-75" credit={credit} sourceUrl={g.image_source_url} />
+              <div className="absolute inset-0 bg-gradient-to-t from-ebony via-ebony/70 to-ebony/10" />
+              <div className="relative h-full p-7 flex flex-col justify-end">
+                <p className="overline text-[0.65rem]"><TranslatedText value={g.language_family} /></p>
+                <h3 className="font-serif text-3xl text-bone mt-3 leading-tight">{name}</h3>
+                <p className="text-gold text-xs uppercase tracking-[0.2em] mt-2"><TranslatedText value={g.homeland} /></p>
+                <TranslatedParagraph value={g.summary} className="text-bone/70 text-sm font-light mt-4 line-clamp-3" />
+              </div>
+            </Link>
+          );
+        })}
       </div>
       {!visible.length && <div className="mt-8 rounded-xl border border-bone/10 p-6 text-bone/60">{t("ethnic.empty")}</div>}
     </div>
@@ -111,26 +134,34 @@ const Field = ({ label, children }) => (
 );
 
 export const EthnicGroupDetail = () => {
-  const { t } = useI18n();
+  const { t, lang } = useI18n();
   const { id } = useParams();
   const [g, setG] = useState(null);
   useEffect(() => { fetchEthnicGroup(id).then(setG).catch(() => {}); }, [id]);
   if (!g) return <div className="pt-32 text-center text-bone/40 overline">{t("common.loading")}</div>;
+
+  const name = displayValue(g.name, lang);
+  const credit = displayValue(g.image_credit, lang);
+  const wikipediaTitle = displayValue(g.wikipedia_title, lang) || g.wikipedia_title;
+
   return (
     <div data-testid="ethnic-detail">
       <div className="relative h-[60vh] min-h-[400px] overflow-hidden">
-        <SmartImage src={g.image_url} wikipediaTitle={g.wikipedia_title} alt={g.name} wrapperClassName="absolute inset-0" className="h-full w-full object-cover animate-slow-zoom" credit={g.image_credit} sourceUrl={g.image_source_url} />
+        <SmartImage src={g.image_url} wikipediaTitle={wikipediaTitle} alt={name} wrapperClassName="absolute inset-0" className="h-full w-full object-cover animate-slow-zoom" credit={credit} sourceUrl={g.image_source_url} />
         <div className="absolute inset-0 bg-gradient-to-t from-ebony via-ebony/60 to-ebony/30" />
         <div className="relative max-w-[1600px] mx-auto px-6 md:px-10 h-full flex flex-col justify-end pb-16">
           <Link to="/people" className="text-bone/60 hover:text-gold text-xs uppercase tracking-[0.2em] flex items-center gap-2 mb-6" data-testid="back-to-people">
             <ArrowLeft size={14} /> {t("common.back.peoples")}
           </Link>
           <p className="overline"><TranslatedText value={g.language_family} /></p>
-          <h1 className="font-serif text-5xl md:text-7xl text-bone mt-3 leading-[0.95] tracking-tight">{g.name}</h1>
-          <p className="text-gold text-sm uppercase tracking-[0.25em] mt-4"><TranslatedText value={g.homeland} /> · {g.population}</p>
+          <h1 className="font-serif text-5xl md:text-7xl text-bone mt-3 leading-[0.95] tracking-tight">{name}</h1>
+          <p className="text-gold text-sm uppercase tracking-[0.25em] mt-4">
+            <TranslatedText value={g.homeland} />{g.population ? <> · <TranslatedText value={g.population} /></> : null}
+          </p>
           <TranslatedParagraph value={g.summary} className="text-bone/80 mt-6 max-w-2xl text-lg font-light leading-relaxed" />
         </div>
       </div>
+
       <div className="max-w-[1400px] mx-auto px-6 md:px-10 py-16 space-y-12">
         <section className="grid gap-6 lg:grid-cols-[1.15fr_0.85fr]">
           <div className="grid gap-6 md:grid-cols-2">
@@ -143,13 +174,11 @@ export const EthnicGroupDetail = () => {
           <aside className="rounded-2xl border border-bone/10 bg-bone/[0.025] p-6">
             <p className="overline text-gold">{t("ethnic.visual.label")}</p>
             <h2 className="mt-2 font-serif text-2xl text-bone">{t("ethnic.visual.title")}</h2>
-            <p className="mt-3 text-sm leading-6 text-bone/60">
-              {t("ethnic.visual.copy")}
-            </p>
+            <p className="mt-3 text-sm leading-6 text-bone/60">{t("ethnic.visual.copy")}</p>
             <div className="mt-5 space-y-2 text-xs text-bone/50">
-              {g.image_credit && <p><span className="text-bone/75">{t("ethnic.visual.credit")} :</span> {g.image_credit}</p>}
-              {g.wikipedia_title && <p><span className="text-bone/75">{t("ethnic.visual.reference")} :</span> {g.wikipedia_title}</p>}
-              {!g.image_credit && !g.wikipedia_title && <p>{t("ethnic.visual.missing")}</p>}
+              {credit && <p><span className="text-bone/75">{t("ethnic.visual.credit")} :</span> {credit}</p>}
+              {wikipediaTitle && <p><span className="text-bone/75">{t("ethnic.visual.reference")} :</span> {wikipediaTitle}</p>}
+              {!credit && !wikipediaTitle && <p>{t("ethnic.visual.missing")}</p>}
             </div>
             {g.image_source_url && (
               <a href={g.image_source_url} target="_blank" rel="noreferrer" className="mt-5 inline-flex rounded-full border border-gold/30 px-4 py-2 text-xs text-gold hover:bg-gold/10">
@@ -177,11 +206,16 @@ export const EthnicGroupDetail = () => {
           </Link>
         </section>
       </div>
+
       {g.sources?.length > 0 && (
         <div className="max-w-[1400px] mx-auto px-6 md:px-10 pb-24">
           <div className="border-t border-[#2A2421] pt-10">
             <p className="overline">{t("common.sources")}</p>
-            <ul className="list-disc pl-5 space-y-2 mt-4 text-bone/70">{g.sources.map((s) => <li key={s}><TranslatedText value={s} /></li>)}</ul>
+            <ul className="list-disc pl-5 space-y-2 mt-4 text-bone/70">
+              {g.sources.map((source, index) => (
+                <li key={stableKey(source, lang, `source-${index}`)}><TranslatedText value={source} /></li>
+              ))}
+            </ul>
           </div>
         </div>
       )}
