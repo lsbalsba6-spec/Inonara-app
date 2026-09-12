@@ -1,5 +1,7 @@
 import { useI18n } from "../i18n";
 import { useTranslated } from "../lib/useTranslated";
+import { localizedValue } from "../lib/contentSort";
+import CountryShapeMap from "./CountryShapeMap";
 
 const COPY = {
   en: {
@@ -13,9 +15,9 @@ const COPY = {
       disputed: "Historical debate",
       "research-gap": "To investigate",
     },
-    mapping: "Mapping",
+    mapping: "Interactive geography",
     places: "Reference places",
-    aria: "Schematic map of reference places in {country}",
+    mapIntro: "The map is centered on the country itself. Zoom to reveal more local detail; documented places are layered above the national outline.",
     kinds: {
       capital: "Capital",
       city: "City",
@@ -37,9 +39,9 @@ const COPY = {
       disputed: "Débat historique",
       "research-gap": "À approfondir",
     },
-    mapping: "Cartographie",
+    mapping: "Géographie interactive",
     places: "Lieux de référence",
-    aria: "Carte schématique des lieux de référence de {country}",
+    mapIntro: "La carte est centrée sur le pays lui-même. Zoomez pour faire apparaître davantage de détails locaux ; les lieux documentés sont superposés au contour national.",
     kinds: {
       capital: "Capitale",
       city: "Ville",
@@ -53,18 +55,22 @@ const COPY = {
 };
 
 function TranslatedInline({ value }) {
+  const { lang } = useI18n();
   const translated = useTranslated(value || "");
   if (!value) return null;
-  return translated || value;
+  return translated || localizedValue(value, lang);
 }
 
 function SourceLink({ source }) {
+  const { lang } = useI18n();
   const publisher = useTranslated(source?.publisher || "");
   const title = useTranslated(source?.title || "");
   if (!source?.url) return null;
+  const publisherText = publisher || localizedValue(source?.publisher, lang);
+  const titleText = title || localizedValue(source?.title, lang) || source.id;
   return (
     <a href={source.url} target="_blank" rel="noreferrer" className="rounded-full border border-gold/25 px-3 py-1 text-[11px] text-gold/85 hover:bg-gold/10">
-      {publisher || source.publisher}: {title || source.title || source.id}
+      {publisherText ? `${publisherText}: ` : ""}{titleText}
     </a>
   );
 }
@@ -101,25 +107,7 @@ export function CountryTerritory({ dossier = {}, territory = {}, sourceMap = new
   const copy = COPY[lang] || COPY.en;
   const sections = territory.sections || dossier.territory_sections || [];
   const places = (territory.places || []).map(normalizePlace).filter((place) => Number.isFinite(place.lon) && Number.isFinite(place.lat));
-  const countryName = dossier?.name?.[lang] || dossier?.name?.fr || dossier?.name?.en || dossier?.country || territory.country || copy.country;
-
-  const bounds = (() => {
-    if (!places.length) return { minLon: -20, maxLon: 40, minLat: -35, maxLat: 20 };
-    const lons = places.map((p) => p.lon);
-    const lats = places.map((p) => p.lat);
-    const padX = Math.max(1, (Math.max(...lons) - Math.min(...lons)) * .15);
-    const padY = Math.max(1, (Math.max(...lats) - Math.min(...lats)) * .15);
-    return {
-      minLon: Math.min(...lons) - padX, maxLon: Math.max(...lons) + padX,
-      minLat: Math.min(...lats) - padY, maxLat: Math.max(...lats) + padY,
-    };
-  })();
-
-  const project = (p) => {
-    const x = 40 + ((p.lon - bounds.minLon) / Math.max(.001, bounds.maxLon - bounds.minLon)) * 840;
-    const y = 35 + ((bounds.maxLat - p.lat) / Math.max(.001, bounds.maxLat - bounds.minLat)) * 360;
-    return [x, y];
-  };
+  const countryName = localizedValue(dossier?.name || dossier?.country || territory.country, lang) || copy.country;
 
   return (
     <div className="space-y-8">
@@ -128,6 +116,25 @@ export function CountryTerritory({ dossier = {}, territory = {}, sourceMap = new
         <h2 className="mt-2 font-serif text-3xl text-bone">{copy.title.replace("{country}", countryName)}</h2>
         <p className="mt-3 max-w-3xl text-sm leading-7 text-bone/65">{copy.intro}</p>
       </header>
+
+      <section className="rounded-2xl border border-bone/10 bg-bone/[0.02] p-4 md:p-5">
+        <p className="overline text-gold">{copy.mapping}</p>
+        <h3 className="mt-1 font-serif text-2xl text-bone">{countryName}</h3>
+        <p className="mb-4 mt-2 max-w-3xl text-sm leading-relaxed text-bone/55">{copy.mapIntro}</p>
+        <CountryShapeMap dossier={dossier} places={places} />
+
+        {places.length > 0 && (
+          <div className="mt-5 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
+            {places.map((place, index) => (
+              <div key={place.id || `territory-place-${index}`} className="rounded-xl border border-bone/10 p-3">
+                <p className="text-sm font-medium text-bone"><TranslatedInline value={place.displayName} /></p>
+                {place.kind && <p className="mt-1 text-xs text-bone/50">{copy.kinds[place.kind] || place.kind}</p>}
+                <SourceLinks ids={place.sources} sourceMap={sourceMap} />
+              </div>
+            ))}
+          </div>
+        )}
+      </section>
 
       <div className="grid gap-4">
         {sections.map((section, index) => (
@@ -150,38 +157,6 @@ export function CountryTerritory({ dossier = {}, territory = {}, sourceMap = new
           </article>
         ))}
       </div>
-
-      {places.length > 0 && (
-        <section className="rounded-2xl border border-bone/10 bg-black/20 p-4 md:p-5">
-          <p className="overline text-gold">{copy.mapping}</p>
-          <h3 className="mt-1 font-serif text-2xl text-bone">{copy.places}</h3>
-          <div className="mt-4 overflow-x-auto">
-            <svg viewBox="0 0 920 430" className="min-w-[720px] w-full rounded-xl bg-[#0d1716]" role="img" aria-label={copy.aria.replace("{country}", countryName)}>
-              <rect x="0" y="0" width="920" height="430" fill="#0d1716" />
-              <path d="M60 80 C180 35 350 65 470 45 S760 55 860 100 L835 330 C650 385 460 350 280 375 S110 340 60 290 Z" fill="rgba(214,179,106,.05)" stroke="rgba(214,179,106,.35)" />
-              {places.map((place, i) => {
-                const [x, y] = project(place);
-                const label = typeof place.displayName === "object" ? (place.displayName?.[lang] || place.displayName?.fr || place.displayName?.en || "") : place.displayName;
-                return (
-                  <g key={place.id || i}>
-                    <circle cx={x} cy={y} r="6" fill="#d6b36a" />
-                    <text x={x + 9} y={y - 9} fill="rgba(245,239,224,.82)" fontSize="12">{label}</text>
-                  </g>
-                );
-              })}
-            </svg>
-          </div>
-          <div className="mt-4 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
-            {places.map((place, index) => (
-              <div key={place.id || `territory-place-${index}`} className="rounded-xl border border-bone/10 p-3">
-                <p className="text-sm font-medium text-bone"><TranslatedInline value={place.displayName} /></p>
-                {place.kind && <p className="mt-1 text-xs text-bone/50">{copy.kinds[place.kind] || place.kind}</p>}
-                <SourceLinks ids={place.sources} sourceMap={sourceMap} />
-              </div>
-            ))}
-          </div>
-        </section>
-      )}
     </div>
   );
 }
