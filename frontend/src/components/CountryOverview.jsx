@@ -1,6 +1,7 @@
 import { useI18n } from "../i18n";
 import { useTranslated } from "../lib/useTranslated";
 import { localizedText } from "../lib/contentSort";
+import CountryShapeMap from "./CountryShapeMap";
 
 const COPY = {
   en: {
@@ -14,6 +15,8 @@ const COPY = {
     sourceLicense: "Source and license",
     visualMarkers: "First visual references",
     references: "Reference sources",
+    map: "Country map",
+    mapHint: "Interactive country outline. Zoom to reveal more geographic detail.",
   },
   fr: {
     country: "Pays",
@@ -26,8 +29,16 @@ const COPY = {
     sourceLicense: "Source et licence",
     visualMarkers: "Premiers repères visuels",
     references: "Sources de référence",
+    map: "Carte du pays",
+    mapHint: "Contour interactif du pays. Zoomez pour faire apparaître davantage de détails géographiques.",
   },
 };
+
+function flagEmoji(iso2) {
+  const code = String(iso2 || "").toUpperCase();
+  if (!/^[A-Z]{2}$/.test(code)) return "🏳️";
+  return String.fromCodePoint(...[...code].map((char) => 127397 + char.charCodeAt(0)));
+}
 
 function Translated({ text, as: Tag = "span", className = "" }) {
   const translated = useTranslated(text || "");
@@ -63,10 +74,11 @@ export function CountryOverview({ dossier, sourceMap = new Map() }) {
   const overviewSources = (dossier?.overview?.sources || [])
     .map((id) => sourceMap.get(id))
     .filter(Boolean);
+  const mapPlaces = dossier?.territory_v8?.places || dossier?.map_visuals?.territory_places || [];
 
   return (
     <div className="space-y-10">
-      <section className="grid gap-6 lg:grid-cols-[1.35fr_0.65fr]">
+      <section className="grid gap-6 lg:grid-cols-[1.2fr_0.8fr]">
         <div className="rounded-2xl border border-gold/20 bg-gradient-to-br from-gold/[0.08] via-bone/[0.025] to-transparent p-6 md:p-8">
           <p className="overline text-gold">{copy.identity}</p>
           <h2 className="mt-3 font-serif text-3xl text-bone md:text-4xl">
@@ -82,24 +94,36 @@ export function CountryOverview({ dossier, sourceMap = new Map() }) {
           )}
         </div>
 
-        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-1">
-          {presentation.flag_url && (
-            <figure className="flex min-h-[230px] flex-col items-center justify-center rounded-2xl border border-bone/10 bg-bone/[0.025] p-6">
+        <div className="grid gap-4">
+          <figure className="flex min-h-[190px] flex-col items-center justify-center rounded-2xl border border-bone/10 bg-bone/[0.025] p-5">
+            {presentation.flag_url ? (
               <img
                 src={presentation.flag_url}
                 alt={copy.flagAlt.replace("{country}", countryName)}
-                className="w-full max-w-[320px] rounded-md shadow-2xl"
+                className="w-full max-w-[300px] rounded-md shadow-2xl"
               />
-              <figcaption className="mt-4 text-center">
-                <p className="font-serif text-xl text-bone">{copy.nationalFlag}</p>
-                {presentation.flag_source && (
-                  <a href={presentation.flag_source} target="_blank" rel="noreferrer" className="mt-2 inline-block text-xs text-gold/80 underline">
-                    {copy.sourceLicense}
-                  </a>
-                )}
-              </figcaption>
-            </figure>
-          )}
+            ) : (
+              <div role="img" aria-label={copy.flagAlt.replace("{country}", countryName)} className="text-[7rem] leading-none drop-shadow-2xl">
+                {flagEmoji(dossier?.iso2)}
+              </div>
+            )}
+            <figcaption className="mt-3 text-center">
+              <p className="font-serif text-lg text-bone">{copy.nationalFlag}</p>
+              {presentation.flag_source && (
+                <a href={presentation.flag_source} target="_blank" rel="noreferrer" className="mt-2 inline-block text-xs text-gold/80 underline">
+                  {copy.sourceLicense}
+                </a>
+              )}
+            </figcaption>
+          </figure>
+
+          <figure className="overflow-hidden rounded-2xl border border-bone/10 bg-bone/[0.025] p-3">
+            <CountryShapeMap dossier={dossier} places={mapPlaces} compact className="h-[300px] w-full" />
+            <figcaption className="px-2 pb-2 pt-3">
+              <p className="font-serif text-lg text-bone">{copy.map}</p>
+              <p className="mt-1 text-xs leading-relaxed text-bone/45">{copy.mapHint}</p>
+            </figcaption>
+          </figure>
 
           {presentation.coat_url && (
             <figure className="flex min-h-[230px] flex-col items-center justify-center rounded-2xl border border-bone/10 bg-bone/[0.025] p-6">
