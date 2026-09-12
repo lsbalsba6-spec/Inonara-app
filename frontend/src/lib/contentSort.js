@@ -26,16 +26,16 @@ export const localizedText = (value) => {
 export const searchableText = (...values) =>
   values.map(localizedText).filter(Boolean).join(" ").toLocaleLowerCase("fr");
 
-export const sortLabel = (value) =>
-  localizedText(value)
+export const sortLabel = (value, lang = "fr") =>
+  localizedValue(value, lang)
     .normalize("NFD")
     .replace(/[\u0300-\u036f]/g, "")
     .trim()
-    .toLocaleLowerCase("fr");
+    .toLocaleLowerCase(lang === "en" ? "en" : "fr");
 
-export const sortAlphabetically = (items, field = "name") =>
+export const sortAlphabetically = (items, field = "name", lang = "fr") =>
   [...items].sort((a, b) =>
-    sortLabel(a?.[field]).localeCompare(sortLabel(b?.[field]), "fr", {
+    sortLabel(a?.[field], lang).localeCompare(sortLabel(b?.[field], lang), lang === "en" ? "en" : "fr", {
       sensitivity: "base",
       numeric: true,
     }),
@@ -47,14 +47,14 @@ export const firstHistoricalYear = (value, fallback = 999999999) => {
   return match ? Number(match[0]) : fallback;
 };
 
-export const sortChronologically = (items, yearField = "year", labelField = "title") =>
+export const sortChronologically = (items, yearField = "year", labelField = "title", lang = "fr") =>
   [...items].sort(
     (a, b) =>
       firstHistoricalYear(a?.[yearField] ?? a?.era ?? a?.era_start) -
         firstHistoricalYear(b?.[yearField] ?? b?.era ?? b?.era_start) ||
-      sortLabel(a?.[labelField] ?? a?.name).localeCompare(
-        sortLabel(b?.[labelField] ?? b?.name),
-        "fr",
+      sortLabel(a?.[labelField] ?? a?.name, lang).localeCompare(
+        sortLabel(b?.[labelField] ?? b?.name, lang),
+        lang === "en" ? "en" : "fr",
         { sensitivity: "base", numeric: true },
       ),
   );
