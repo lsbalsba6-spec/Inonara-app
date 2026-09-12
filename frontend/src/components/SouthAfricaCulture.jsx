@@ -1,5 +1,6 @@
 import { useMemo, useState } from "react";
 import { useI18n } from "../i18n";
+import { localizedValue, searchableText } from "../lib/contentSort";
 import { useTranslated } from "../lib/useTranslated";
 
 const COPY = {
@@ -34,19 +35,29 @@ const COPY = {
 };
 
 function TranslatedInline({ value }) {
+  const { lang } = useI18n();
   const translated = useTranslated(value || "");
-  return translated || value;
+  return translated || localizedValue(value, lang);
 }
 
 function TranslatedText({ value, className = "" }) {
+  const { lang } = useI18n();
   const translated = useTranslated(value || "");
   if (!value) return null;
-  return <p className={className}>{translated || value}</p>;
+  return <p className={className}>{translated || localizedValue(value, lang)}</p>;
 }
 
 function SourceChip({ source }) {
+  const { lang } = useI18n();
   const translatedTitle = useTranslated(source?.title || "");
+  const translatedPublisher = useTranslated(source?.publisher || "");
   if (!source) return null;
+
+  const title = translatedTitle || localizedValue(source.title, lang);
+  const publisher = translatedPublisher || localizedValue(source.publisher, lang);
+  const label = [publisher, title].filter(Boolean).join(": ");
+  if (!label) return null;
+
   return (
     <a
       href={source.url}
@@ -54,7 +65,7 @@ function SourceChip({ source }) {
       rel="noreferrer"
       className="rounded-full border border-gold/25 px-3 py-1 text-[11px] text-gold/85 hover:bg-gold/10"
     >
-      {source.publisher}: {translatedTitle || source.title}
+      {label}
     </a>
   );
 }
@@ -77,21 +88,25 @@ function normalizeTopic(item, fallbackTopic) {
 export function SouthAfricaCulture({ dossier, sourceMap }) {
   const { lang } = useI18n();
   const copy = COPY[lang] || COPY.en;
-  const countryName = dossier?.name?.[lang] || dossier?.name?.fr || dossier?.name?.en || dossier?.country || copy.countryFallback;
+  const countryName = localizedValue(dossier?.name || dossier?.country, lang) || copy.countryFallback;
   const culture = useMemo(() => dossier.culture || [], [dossier.culture]);
   const oral = dossier.oral_traditions_and_legends || [];
   const [query, setQuery] = useState("");
   const [openId, setOpenId] = useState(culture[0]?.id || null);
 
   const visible = useMemo(() => {
-    const needle = query.trim().toLowerCase();
+    const needle = query.trim().toLocaleLowerCase(lang);
     if (!needle) return culture;
     return culture.filter((item) =>
-      `${normalizeTopic(item, copy.fallbackTopic)} ${item.text || ""} ${item.note || ""}`
-        .toLowerCase()
-        .includes(needle),
+      searchableText(
+        normalizeTopic(item, copy.fallbackTopic),
+        item.text,
+        item.note,
+        item.context,
+        item.paragraphs,
+      ).includes(needle),
     );
-  }, [culture, query, copy.fallbackTopic]);
+  }, [culture, query, copy.fallbackTopic, lang]);
 
   return (
     <div className="space-y-8">
@@ -116,7 +131,8 @@ export function SouthAfricaCulture({ dossier, sourceMap }) {
       <div className="grid gap-4">
         {visible.map((item, index) => {
           const topic = normalizeTopic(item, copy.fallbackTopic);
-          const id = item.id || `${topic}-${index}`;
+          const topicKey = localizedValue(topic, lang) || `culture-${index}`;
+          const id = item.id || `${topicKey}-${index}`;
           const expanded = openId === id;
           return (
             <article key={id} className="overflow-hidden rounded-2xl border border-bone/10 bg-bone/[0.025]">
@@ -164,7 +180,7 @@ export function SouthAfricaCulture({ dossier, sourceMap }) {
 
           <div className="grid gap-4 md:grid-cols-2">
             {oral.map((item, index) => (
-              <article key={item.id || item.title || index} className="rounded-2xl border border-bone/10 bg-bone/[0.025] p-5">
+              <article key={item.id || localizedValue(item.title || item.name, lang) || `oral-${index}`} className="rounded-2xl border border-bone/10 bg-bone/[0.025] p-5">
                 <h3 className="font-serif text-xl text-bone"><TranslatedInline value={item.title || item.name} /></h3>
                 {(item.note || item.text) && (
                   <TranslatedText value={item.note || item.text} className="mt-3 text-sm leading-6 text-bone/68" />
