@@ -5,7 +5,7 @@ import { ArrowRight } from "lucide-react";
 import { fetchJourney } from "../lib/api";
 import { useI18n } from "../i18n";
 import { useTranslated } from "../lib/useTranslated";
-import { sortChronologically } from "../lib/contentSort";
+import { localizedValue, sortChronologically } from "../lib/contentSort";
 import { SmartImage } from "../components/SmartImage";
 
 const COPY = {
@@ -37,13 +37,18 @@ const COPY = {
 
 const formatYear = (year, t) => year < 0 ? `${Math.abs(year)} ${t("date.bce")}` : `${year} ${t("date.ce")}`;
 
-const JourneyStop = ({ stop, index, t, copy }) => {
+const JourneyStop = ({ stop, index, t, copy, lang }) => {
   const heading = useTranslated(stop.heading || "");
   const era = useTranslated(stop.era || "");
   const place = useTranslated(stop.place || "");
   const story = useTranslated(stop.story || "");
   const linkLabel = useTranslated(stop.link?.label || "");
-  const displayedHeading = heading || stop.heading || "";
+  const displayedHeading = heading || localizedValue(stop.heading, lang);
+  const displayEra = era || localizedValue(stop.era, lang);
+  const displayPlace = place || localizedValue(stop.place, lang);
+  const displayStory = story || localizedValue(stop.story, lang);
+  const displayLinkLabel = linkLabel || localizedValue(stop.link?.label, lang);
+  const credit = localizedValue(stop.image_credit, lang);
   const headingParts = displayedHeading.split(".");
   const stepNumber = headingParts.length > 1 ? headingParts[0] : String(index + 1).padStart(2, "0");
   const title = headingParts.length > 1 ? headingParts.slice(1).join(".").trim() : displayedHeading;
@@ -59,30 +64,30 @@ const JourneyStop = ({ stop, index, t, copy }) => {
     >
       <div className={index % 2 === 0 ? "" : "lg:order-2"}>
         <p className="font-serif text-7xl text-gold/30 leading-none">{stepNumber}</p>
-        <p className="overline mt-4">{era || stop.era} · {place || stop.place}</p>
+        {(displayEra || displayPlace) && <p className="overline mt-4">{displayEra}{displayEra && displayPlace ? " · " : ""}{displayPlace}</p>}
         <h2 className="font-serif text-4xl md:text-5xl text-bone mt-4 leading-tight">{title}</h2>
-        <p className="text-bone/80 mt-6 text-lg font-light leading-relaxed">{story || stop.story}</p>
+        {displayStory && <p className="text-bone/80 mt-6 text-lg font-light leading-relaxed">{displayStory}</p>}
         <div className="mt-5 flex flex-wrap gap-2 text-[10px] uppercase tracking-[0.15em] text-bone/45">
-          {stop.era && <span className="rounded-full border border-bone/15 px-3 py-1">{era || stop.era}</span>}
-          {stop.place && <span className="rounded-full border border-bone/15 px-3 py-1">{place || stop.place}</span>}
+          {displayEra && <span className="rounded-full border border-bone/15 px-3 py-1">{displayEra}</span>}
+          {displayPlace && <span className="rounded-full border border-bone/15 px-3 py-1">{displayPlace}</span>}
           {Number.isFinite(stop.year) && <span className="rounded-full border border-gold/20 px-3 py-1 text-gold/75">{formatYear(stop.year, t)}</span>}
         </div>
-        {stop.link?.to && (
+        {stop.link?.to && displayLinkLabel && (
           <Link
             to={stop.link.to}
             className="inline-flex items-center gap-3 mt-8 px-6 py-3 border border-gold/40 text-gold text-xs uppercase tracking-[0.25em] hover:bg-gold hover:text-ebony transition-colors"
             data-testid={`journey-link-${stop.id}`}
           >
-            {linkLabel || stop.link.label} <ArrowRight size={14} />
+            {displayLinkLabel} <ArrowRight size={14} />
           </Link>
         )}
       </div>
       <div className={`relative aspect-[4/3] overflow-hidden ${index % 2 === 0 ? "" : "lg:order-1"}`}>
-        <SmartImage src={stop.image_url} wikipediaTitle={stop.wikipedia_title} alt={title || displayedHeading} wrapperClassName="absolute inset-0" className="h-full w-full object-cover" credit={stop.image_credit} sourceUrl={stop.image_source_url} />
+        <SmartImage src={stop.image_url} wikipediaTitle={stop.wikipedia_title} alt={title || displayedHeading} wrapperClassName="absolute inset-0" className="h-full w-full object-cover" credit={credit} sourceUrl={stop.image_source_url} />
         <div className="absolute inset-0 bg-gradient-to-tr from-ebony/70 to-transparent" />
-        {(stop.image_credit || stop.image_source_url) && (
+        {(credit || stop.image_source_url) && (
           <div className="absolute bottom-3 left-3 right-3 rounded-lg bg-ebony/80 px-3 py-2 text-[10px] text-bone/55 backdrop-blur-sm">
-            {stop.image_credit && <span>{stop.image_credit}</span>}
+            {credit && <span>{credit}</span>}
             {stop.image_source_url && <a href={stop.image_source_url} target="_blank" rel="noreferrer" className="ml-2 text-gold/85 underline underline-offset-2">{copy.sourceRights}</a>}
           </div>
         )}
@@ -91,18 +96,21 @@ const JourneyStop = ({ stop, index, t, copy }) => {
   );
 };
 
-const JourneyIntro = ({ journey }) => {
+const JourneyIntro = ({ journey, lang }) => {
   const title = useTranslated(journey.title || "");
   const subtitle = useTranslated(journey.subtitle || "");
   const blurb = useTranslated(journey.blurb || "");
   const { t } = useI18n();
+  const displayTitle = title || localizedValue(journey.title, lang);
+  const displaySubtitle = subtitle || localizedValue(journey.subtitle, lang);
+  const displayBlurb = blurb || localizedValue(journey.blurb, lang);
 
   return (
     <section className="pt-32 pb-16 max-w-4xl mx-auto px-6 text-center">
       <p className="overline">{t("journey.overline")}</p>
-      <h1 className="font-serif text-5xl md:text-7xl text-bone mt-4 tracking-tight leading-[0.95]">{title || journey.title}</h1>
-      <p className="font-serif italic text-2xl text-gold mt-5">{subtitle || journey.subtitle}</p>
-      <p className="text-bone/70 mt-8 font-light leading-relaxed max-w-2xl mx-auto">{blurb || journey.blurb}</p>
+      <h1 className="font-serif text-5xl md:text-7xl text-bone mt-4 tracking-tight leading-[0.95]">{displayTitle}</h1>
+      {displaySubtitle && <p className="font-serif italic text-2xl text-gold mt-5">{displaySubtitle}</p>}
+      {displayBlurb && <p className="text-bone/70 mt-8 font-light leading-relaxed max-w-2xl mx-auto">{displayBlurb}</p>}
     </section>
   );
 };
@@ -111,12 +119,12 @@ const Journey = () => {
   const { t, lang } = useI18n();
   const [j, setJ] = useState(null);
   const copy = COPY[lang] || COPY.en;
-  useEffect(() => { fetchJourney().then(setJ).catch(() => {}); }, []);
+  useEffect(() => { fetchJourney().then(setJ).catch(() => setJ({ stops: [] })); }, []);
   if (!j) return <div className="pt-32 text-center text-bone/40 overline">{t("common.loading")}</div>;
 
   return (
     <div data-testid="journey-page">
-      <JourneyIntro journey={j} />
+      <JourneyIntro journey={j} lang={lang} />
 
       <div className="max-w-[1400px] mx-auto px-6 md:px-10 pb-24">
         <section className="grid gap-4 md:grid-cols-3 mb-10">
@@ -138,7 +146,7 @@ const Journey = () => {
         </section>
 
         {sortChronologically(j.stops || [], "year", "heading").map((stop, index) => (
-          <JourneyStop key={stop.id} stop={stop} index={index} t={t} copy={copy} />
+          <JourneyStop key={stop.id || `${stop.year || "stop"}-${index}`} stop={stop} index={index} t={t} copy={copy} lang={lang} />
         ))}
 
         <div className="text-center mt-24">
