@@ -1,5 +1,6 @@
 import { useMemo, useState } from "react";
 import { useI18n } from "../i18n";
+import { localizedValue, searchableText } from "../lib/contentSort";
 import { useTranslated } from "../lib/useTranslated";
 
 const COPY = {
@@ -47,14 +48,16 @@ const COPY = {
   },
 };
 
-function TranslatedInline({ value }) {
+function TranslatedInline({ value, lang }) {
   const translated = useTranslated(value || "");
-  return translated || value || null;
+  return translated || localizedValue(value, lang) || null;
 }
 
-function SourceLink({ source }) {
+function SourceLink({ source, lang }) {
   const translatedTitle = useTranslated(source?.title || "");
   if (!source) return null;
+  const publisher = localizedValue(source.publisher, lang);
+  const title = translatedTitle || localizedValue(source.title, lang);
   return (
     <a
       href={source.url}
@@ -62,18 +65,18 @@ function SourceLink({ source }) {
       rel="noreferrer"
       className="rounded-full border border-gold/25 px-3 py-1 text-[11px] text-gold/85 hover:bg-gold/10"
     >
-      {source.publisher}: {translatedTitle || source.title}
+      {publisher ? `${publisher}: ` : ""}{title}
     </a>
   );
 }
 
-function SourceLinks({ ids = [], sourceMap }) {
+function SourceLinks({ ids = [], sourceMap, lang }) {
   if (!ids.length) return null;
   return (
     <div className="mt-4 flex flex-wrap gap-2">
       {ids.map((id) => {
         const source = sourceMap.get(id);
-        return source ? <SourceLink key={id} source={source} /> : null;
+        return source ? <SourceLink key={id} source={source} lang={lang} /> : null;
       })}
     </div>
   );
@@ -87,7 +90,7 @@ const getTitle = (item, copy) =>
 const getBody = (item, copy) => {
   if (typeof item === "string") return item;
   const indicator = item.value
-    ? `${item.value}${item.asOf ? ` · ${copy.datedData} ${item.asOf}` : ""}`
+    ? `${localizedValue(item.value)}${item.asOf ? ` · ${copy.datedData} ${localizedValue(item.asOf)}` : ""}`
     : "";
   return item.text || item.note || item.summary || item.description || indicator;
 };
@@ -127,27 +130,37 @@ export function SouthAfricaEconomyQuality({ dossier, sourceMap }) {
     () => normalizeEconomy(dossier, copy),
     [dossier, copy],
   );
-  const categories = useMemo(
-    () => [...new Set(items.map((item) => getCategory(item, copy)))],
-    [items, copy],
-  );
+  const categories = useMemo(() => {
+    const seen = new Map();
+    items.forEach((item) => {
+      const value = getCategory(item, copy);
+      const key = searchableText(value) || localizedValue(value, lang);
+      if (key && !seen.has(key)) seen.set(key, { key, value });
+    });
+    return [...seen.values()];
+  }, [items, copy, lang]);
 
   const [query, setQuery] = useState("");
   const [category, setCategory] = useState("all");
   const [openId, setOpenId] = useState(items[0]?.id || null);
 
   const visible = useMemo(() => {
-    const needle = query.trim().toLowerCase();
+    const needle = query.trim().toLocaleLowerCase("fr");
     return items.filter((item) => {
       const itemCategory = getCategory(item, copy);
-      const matchesCategory = category === "all" || itemCategory === category;
-      const haystack = `${getTitle(item, copy)} ${getBody(item, copy)} ${itemCategory} ${
-        item.data || ""
-      } ${item.period || ""}`.toLowerCase();
+      const itemCategoryKey = searchableText(itemCategory) || localizedValue(itemCategory, lang);
+      const matchesCategory = category === "all" || itemCategoryKey === category;
+      const haystack = searchableText(
+        getTitle(item, copy),
+        getBody(item, copy),
+        itemCategory,
+        item.data,
+        item.period,
+      );
 
       return matchesCategory && (!needle || haystack.includes(needle));
     });
-  }, [items, query, category, copy]);
+  }, [items, query, category, copy, lang]);
 
   const indicators = useMemo(
     () => dossier.economy?.currentIndicators || dossier.economy?.indicators || dossier.economic_indicators || [],
@@ -160,7 +173,7 @@ export function SouthAfricaEconomyQuality({ dossier, sourceMap }) {
         <p className="overline text-gold">{copy.overline}</p>
         <h2 className="mt-2 font-serif text-3xl text-bone">{copy.title}</h2>
         <p className="mt-3 max-w-3xl leading-7 text-bone/65">
-          {dossier.economy?.intro ? <TranslatedInline value={dossier.economy.intro} /> : copy.intro}
+          {dossier.economy?.intro ? <TranslatedInline value={dossier.economy.intro} lang={lang} /> : copy.intro}
         </p>
       </header>
 
@@ -170,22 +183,22 @@ export function SouthAfricaEconomyQuality({ dossier, sourceMap }) {
           <div className="mt-3 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
             {indicators.map((indicator, index) => (
               <article
-                key={indicator.id || indicator.label || index}
+                key={indicator.id || searchableText(indicator.label, indicator.name) || index}
                 className="rounded-2xl border border-bone/10 bg-bone/[0.025] p-5"
               >
                 <p className="text-[10px] uppercase tracking-[0.18em] text-bone/40">
-                  {indicator.year || indicator.period || indicator.asOf || copy.dateMissing}
+                  <TranslatedInline value={indicator.year || indicator.period || indicator.asOf || copy.dateMissing} lang={lang} />
                 </p>
                 <h3 className="mt-2 text-sm text-bone/65">
-                  <TranslatedInline value={indicator.label || indicator.name} />
+                  <TranslatedInline value={indicator.label || indicator.name} lang={lang} />
                 </h3>
                 <p className="mt-2 font-serif text-2xl text-gold">
-                  {indicator.value}
-                  {indicator.unit ? ` ${indicator.unit}` : ""}
+                  <TranslatedInline value={indicator.value} lang={lang} />
+                  {indicator.unit ? <> <TranslatedInline value={indicator.unit} lang={lang} /></> : null}
                 </p>
                 {indicator.note && (
                   <p className="mt-2 text-xs leading-5 text-bone/45">
-                    <TranslatedInline value={indicator.note} />
+                    <TranslatedInline value={indicator.note} lang={lang} />
                   </p>
                 )}
               </article>
@@ -217,16 +230,16 @@ export function SouthAfricaEconomyQuality({ dossier, sourceMap }) {
 
           {categories.map((itemCategory) => (
             <button
-              key={itemCategory}
+              key={itemCategory.key}
               type="button"
-              onClick={() => setCategory(itemCategory)}
+              onClick={() => setCategory(itemCategory.key)}
               className={`whitespace-nowrap rounded-full border px-3 py-1.5 text-xs ${
-                category === itemCategory
+                category === itemCategory.key
                   ? "border-gold bg-gold/10 text-gold"
                   : "border-bone/15 text-bone/60"
               }`}
             >
-              <TranslatedInline value={itemCategory} />
+              <TranslatedInline value={itemCategory.value} lang={lang} />
             </button>
           ))}
         </div>
@@ -236,7 +249,7 @@ export function SouthAfricaEconomyQuality({ dossier, sourceMap }) {
         {visible.map((item, index) => {
           const title = getTitle(item, copy);
           const body = getBody(item, copy);
-          const id = item.id || `${title}-${index}`;
+          const id = item.id || searchableText(title, item.period, getCategory(item, copy)) || `economy-${index}`;
           const expanded = openId === id;
 
           return (
@@ -253,11 +266,11 @@ export function SouthAfricaEconomyQuality({ dossier, sourceMap }) {
                 <div className="flex flex-wrap items-start justify-between gap-3">
                   <div>
                     <p className="text-[10px] uppercase tracking-[0.18em] text-gold">
-                      <TranslatedInline value={getCategory(item, copy)} />
-                      {item.period ? <> · <TranslatedInline value={item.period} /></> : null}
+                      <TranslatedInline value={getCategory(item, copy)} lang={lang} />
+                      {item.period ? <> · <TranslatedInline value={item.period} lang={lang} /></> : null}
                     </p>
                     <h3 className="mt-2 font-serif text-2xl text-bone">
-                      <TranslatedInline value={title} />
+                      <TranslatedInline value={title} lang={lang} />
                     </h3>
                   </div>
                   <span className="text-xl text-gold">{expanded ? "−" : "+"}</span>
@@ -265,7 +278,7 @@ export function SouthAfricaEconomyQuality({ dossier, sourceMap }) {
 
                 {body && (
                   <p className="mt-4 max-w-4xl leading-7 text-bone/70">
-                    <TranslatedInline value={body} />
+                    <TranslatedInline value={body} lang={lang} />
                   </p>
                 )}
               </button>
@@ -276,28 +289,28 @@ export function SouthAfricaEconomyQuality({ dossier, sourceMap }) {
                     {item.data && (
                       <div className="rounded-xl border border-bone/10 bg-black/10 p-4">
                         <p className="text-[10px] uppercase tracking-[0.18em] text-bone/40">{copy.keyData}</p>
-                        <p className="mt-2 text-sm leading-6 text-bone/72"><TranslatedInline value={item.data} /></p>
+                        <p className="mt-2 text-sm leading-6 text-bone/72"><TranslatedInline value={item.data} lang={lang} /></p>
                       </div>
                     )}
 
                     {item.region && (
                       <div className="rounded-xl border border-bone/10 bg-black/10 p-4">
                         <p className="text-[10px] uppercase tracking-[0.18em] text-bone/40">{copy.region}</p>
-                        <p className="mt-2 text-sm leading-6 text-bone/72"><TranslatedInline value={item.region} /></p>
+                        <p className="mt-2 text-sm leading-6 text-bone/72"><TranslatedInline value={item.region} lang={lang} /></p>
                       </div>
                     )}
 
                     {item.context && (
                       <div className="rounded-xl border border-bone/10 bg-black/10 p-4 md:col-span-2">
                         <p className="text-[10px] uppercase tracking-[0.18em] text-bone/40">{copy.context}</p>
-                        <p className="mt-2 text-sm leading-6 text-bone/72"><TranslatedInline value={item.context} /></p>
+                        <p className="mt-2 text-sm leading-6 text-bone/72"><TranslatedInline value={item.context} lang={lang} /></p>
                       </div>
                     )}
 
                     {item.caution && (
                       <div className="rounded-xl border border-amber-400/20 bg-amber-400/[0.04] p-4 md:col-span-2">
                         <p className="text-[10px] uppercase tracking-[0.18em] text-amber-300/75">{copy.caution}</p>
-                        <p className="mt-2 text-sm leading-6 text-bone/72"><TranslatedInline value={item.caution} /></p>
+                        <p className="mt-2 text-sm leading-6 text-bone/72"><TranslatedInline value={item.caution} lang={lang} /></p>
                       </div>
                     )}
                   </div>
@@ -305,11 +318,11 @@ export function SouthAfricaEconomyQuality({ dossier, sourceMap }) {
                   {item.paragraphs?.length > 0 && (
                     <div className="mt-4 space-y-3">
                       {item.paragraphs.map((paragraph, paragraphIndex) => (
-                        <p key={paragraphIndex} className="text-sm leading-7 text-bone/72"><TranslatedInline value={paragraph} /></p>
+                        <p key={paragraphIndex} className="text-sm leading-7 text-bone/72"><TranslatedInline value={paragraph} lang={lang} /></p>
                       ))}
                     </div>
                   )}
-                  <SourceLinks ids={item.sources || item.sourceIds} sourceMap={sourceMap} />
+                  <SourceLinks ids={item.sources || item.sourceIds} sourceMap={sourceMap} lang={lang} />
                 </div>
               )}
             </article>
