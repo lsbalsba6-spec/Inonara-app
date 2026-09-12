@@ -4,6 +4,7 @@ import { fetchCountries, fetchCountryDossiers } from "../lib/api";
 import { slugify } from "./CountryDetail";
 import { AFRICA_REGIONS, FRENCH_COUNTRY_NAMES } from "../data/africa-regions";
 import { useI18n } from "../i18n";
+import { localizedValue } from "../lib/contentSort";
 
 const REGION_LABELS = {
   "southern-africa": { fr: "Afrique australe", en: "Southern Africa" },
@@ -14,14 +15,17 @@ const REGION_LABELS = {
   "african-atlantic-territories": { fr: "Territoires africains de l'Atlantique", en: "African Atlantic territories" },
 };
 
-export function displayCountryName(country, lang = "fr") {
+export function displayCountryName(country, lang = "fr", dossier = null) {
   if (!country || typeof country !== "object") return lang === "fr" ? "Pays inconnu" : "Unknown country";
-  return (lang === "fr" ? FRENCH_COUNTRY_NAMES[country.iso2] : null) || country.display_name || country.name || country.iso2 || (lang === "fr" ? "Pays inconnu" : "Unknown country");
+  const dossierName = localizedValue(dossier?.name, lang);
+  const registryName = localizedValue(country.display_name ?? country.name, lang);
+  return dossierName || (lang === "fr" ? FRENCH_COUNTRY_NAMES[country.iso2] : "") || registryName || country.iso2 || (lang === "fr" ? "Pays inconnu" : "Unknown country");
 }
 
 export function buildCountrySlug(country, dossierByIso = new Map()) {
   if (!country || typeof country !== "object") return "";
-  return dossierByIso.get(country.iso2)?.slug || slugify(country.display_name || country.name || country.iso2 || "");
+  const dossier = dossierByIso.get(country.iso2);
+  return dossier?.slug || slugify(dossier?.name || country.display_name || country.name || country.iso2 || "");
 }
 
 function asArray(value) {
@@ -76,8 +80,8 @@ export default function CountriesList() {
   const rest = useMemo(
     () => validCountries
       .filter((country) => !africanCodes.has(country.iso2))
-      .sort((a, b) => collator.compare(displayCountryName(a, lang), displayCountryName(b, lang))),
-    [validCountries, africanCodes, lang, collator],
+      .sort((a, b) => collator.compare(displayCountryName(a, lang, dossierByIso.get(a.iso2)), displayCountryName(b, lang, dossierByIso.get(b.iso2)))),
+    [validCountries, africanCodes, lang, collator, dossierByIso],
   );
 
   if (loading) {
@@ -107,8 +111,8 @@ export default function CountriesList() {
             const entries = region.iso2
               .map((code) => byIso.get(code))
               .filter(Boolean)
-              .sort((a, b) => collator.compare(displayCountryName(a, lang), displayCountryName(b, lang)));
-            const regionLabel = REGION_LABELS[region.id]?.[lang] || region.label;
+              .sort((a, b) => collator.compare(displayCountryName(a, lang, dossierByIso.get(a.iso2)), displayCountryName(b, lang, dossierByIso.get(b.iso2))));
+            const regionLabel = localizedValue(REGION_LABELS[region.id], lang) || localizedValue(region.label, lang);
 
             if (entries.length === 0) return null;
 
@@ -125,7 +129,7 @@ export default function CountriesList() {
                         to={`/country/${slug}`}
                         className="flex items-center justify-between gap-3 border border-bone/10 rounded px-3 py-2 text-bone/75 hover:border-gold/40 hover:text-gold"
                       >
-                        <span>{displayCountryName(country, lang)}</span>
+                        <span>{displayCountryName(country, lang, dossier)}</span>
                         {dossier && (
                           <span className="shrink-0 text-[10px] uppercase tracking-wider text-gold">{t("countries.dossier")}</span>
                         )}
@@ -147,7 +151,7 @@ export default function CountriesList() {
                   const slug = buildCountrySlug(country, dossierByIso);
                   return (
                     <Link key={country.iso2} to={`/country/${slug}`} className="flex items-center gap-2 text-bone/65 hover:text-gold text-sm py-1">
-                      <span>{displayCountryName(country, lang)}</span>
+                      <span>{displayCountryName(country, lang, dossier)}</span>
                       {dossier && <span className="text-[9px] uppercase tracking-wider text-gold">{t("countries.dossier")}</span>}
                     </Link>
                   );
