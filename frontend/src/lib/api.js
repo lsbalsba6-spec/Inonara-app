@@ -1,11 +1,20 @@
 import axios from "axios";
 import { LOCAL_COUNTRIES, LOCAL_COUNTRY_DOSSIERS, getLocalCountryDossier } from "../data/localCountryDossiers";
+import { BOTSWANA_LOCAL_COUNTRY, BOTSWANA_LOCAL_DOSSIER } from "../data/localBotswanaDossier";
 import { searchableText } from "./contentSort";
 
 const BACKEND_URL = process.env.REACT_APP_BACKEND_URL || "";
 export const API = BACKEND_URL ? `${BACKEND_URL}/api` : "/api";
 
 export const api = axios.create({ baseURL: API });
+
+const LOCAL_PUBLISHED_COUNTRIES = [...LOCAL_COUNTRIES, BOTSWANA_LOCAL_COUNTRY];
+const LOCAL_PUBLISHED_DOSSIERS = [...LOCAL_COUNTRY_DOSSIERS, BOTSWANA_LOCAL_DOSSIER];
+
+function getPublishedLocalDossier(iso2) {
+  if (!iso2) return null;
+  return getLocalCountryDossier(iso2) || (BOTSWANA_LOCAL_DOSSIER.iso2 === String(iso2).toUpperCase() ? BOTSWANA_LOCAL_DOSSIER : null);
+}
 
 function mergeByIso(remote = [], local = []) {
   const merged = new Map();
@@ -16,15 +25,15 @@ function mergeByIso(remote = [], local = []) {
 }
 
 export const fetchCountries = () => api.get("/countries")
-  .then((r) => mergeByIso(r.data, LOCAL_COUNTRIES))
-  .catch(() => LOCAL_COUNTRIES);
+  .then((r) => mergeByIso(r.data, LOCAL_PUBLISHED_COUNTRIES))
+  .catch(() => LOCAL_PUBLISHED_COUNTRIES);
 
 export const fetchCountryDossiers = () => api.get("/country-dossiers")
-  .then((r) => mergeByIso(r.data, LOCAL_COUNTRY_DOSSIERS))
-  .catch(() => LOCAL_COUNTRY_DOSSIERS);
+  .then((r) => mergeByIso(r.data, LOCAL_PUBLISHED_DOSSIERS))
+  .catch(() => LOCAL_PUBLISHED_DOSSIERS);
 
 export const fetchCountryDossier = (iso2) => {
-  const local = getLocalCountryDossier(iso2);
+  const local = getPublishedLocalDossier(iso2);
   return api.get(`/country-dossiers/${iso2}`)
     .then((r) => r.data || local)
     .catch((error) => {
@@ -67,7 +76,7 @@ export const search = async (q) => {
   ]);
 
   const remote = remoteResult.status === "fulfilled" ? remoteResult.value : { query: q, results: {} };
-  const countries = countryResult.status === "fulfilled" ? countryResult.value : LOCAL_COUNTRY_DOSSIERS;
+  const countries = countryResult.status === "fulfilled" ? countryResult.value : LOCAL_PUBLISHED_DOSSIERS;
   const peoples = peopleResult.status === "fulfilled" ? peopleResult.value : [];
   const matches = (...values) => !needle || searchableText(...values).includes(needle);
 
