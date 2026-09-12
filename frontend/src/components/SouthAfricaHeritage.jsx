@@ -1,5 +1,6 @@
 import { useMemo, useState } from "react";
 import { useI18n } from "../i18n";
+import { localizedValue, searchableText } from "../lib/contentSort";
 import { useTranslated } from "../lib/useTranslated";
 
 const COPY = {
@@ -40,12 +41,18 @@ const COPY = {
 };
 
 function TranslatedInline({ text }) {
+  const { lang } = useI18n();
+  const fallback = localizedValue(text, lang);
   const translated = useTranslated(text || "");
-  return translated || text;
+  return translated || fallback;
 }
 
 function SourceLink({ source }) {
+  const { lang } = useI18n();
+  const title = localizedValue(source?.title, lang);
+  const publisher = localizedValue(source?.publisher, lang);
   const translatedTitle = useTranslated(source?.title || "");
+  const translatedPublisher = useTranslated(source?.publisher || "");
   if (!source) return null;
   return (
     <a
@@ -54,7 +61,7 @@ function SourceLink({ source }) {
       rel="noreferrer"
       className="rounded-full border border-gold/25 px-3 py-1 text-[11px] text-gold/85 hover:bg-gold/10"
     >
-      {source.publisher}: {translatedTitle || source.title}
+      {translatedPublisher || publisher}{publisher || translatedPublisher ? ": " : ""}{translatedTitle || title}
     </a>
   );
 }
@@ -83,11 +90,17 @@ function heritageType(item, fallback) {
   return item.type || item.category || fallback;
 }
 
-function HeritageCard({ item, index, openId, setOpenId, sourceMap, copy }) {
+function HeritageCard({ item, index, openId, setOpenId, sourceMap, copy, lang }) {
   const title = getTitle(item, copy.defaultTitle);
   const body = getBody(item);
   const type = heritageType(item, copy.defaultType);
-  const id = item.id || `${title}-${index}`;
+  const titleFallback = localizedValue(title, lang);
+  const bodyFallback = localizedValue(body, lang);
+  const typeFallback = localizedValue(type, lang);
+  const locationFallback = localizedValue(item.location, lang);
+  const mappingFallback = localizedValue(item.mapping, lang);
+  const periodFallback = localizedValue(item.period, lang);
+  const id = item.id || `${searchableText(title) || "heritage"}-${index}`;
   const expanded = openId === id;
   const translatedTitle = useTranslated(title);
   const translatedBody = useTranslated(body);
@@ -101,21 +114,21 @@ function HeritageCard({ item, index, openId, setOpenId, sourceMap, copy }) {
       <button type="button" onClick={() => setOpenId(expanded ? null : id)} className="w-full p-5 text-left" aria-expanded={expanded}>
         <div className="flex flex-wrap items-start justify-between gap-3">
           <div>
-            <p className="text-[10px] uppercase tracking-[0.18em] text-gold">{translatedType || type}</p>
-            <h3 className="mt-2 font-serif text-2xl text-bone">{translatedTitle || title}</h3>
+            <p className="text-[10px] uppercase tracking-[0.18em] text-gold">{translatedType || typeFallback}</p>
+            <h3 className="mt-2 font-serif text-2xl text-bone">{translatedTitle || titleFallback}</h3>
           </div>
           <span className="text-xl text-gold" aria-hidden="true">{expanded ? "−" : "+"}</span>
         </div>
-        {body && <p className="mt-4 max-w-4xl leading-7 text-bone/70">{translatedBody || body}</p>}
+        {bodyFallback && <p className="mt-4 max-w-4xl leading-7 text-bone/70">{translatedBody || bodyFallback}</p>}
       </button>
 
       {expanded && (
         <div className="border-t border-bone/10 px-5 pb-6 pt-5">
           <div className="grid gap-3 md:grid-cols-2">
-            {item.location && <div className="rounded-xl border border-bone/10 bg-black/10 p-4"><p className="text-[10px] uppercase tracking-[0.18em] text-bone/40">{copy.location}</p><p className="mt-2 text-sm leading-6 text-bone/72">{translatedLocation || item.location}</p></div>}
-            {item.mapping && <div className="rounded-xl border border-bone/10 bg-black/10 p-4"><p className="text-[10px] uppercase tracking-[0.18em] text-bone/40">{copy.mapping}</p><p className="mt-2 text-sm leading-6 text-bone/72">{translatedMapping || item.mapping}</p></div>}
-            {item.period && <div className="rounded-xl border border-bone/10 bg-black/10 p-4"><p className="text-[10px] uppercase tracking-[0.18em] text-bone/40">{copy.period}</p><p className="mt-2 text-sm leading-6 text-bone/72">{translatedPeriod || item.period}</p></div>}
-            {item.status && <div className="rounded-xl border border-bone/10 bg-black/10 p-4"><p className="text-[10px] uppercase tracking-[0.18em] text-bone/40">{copy.editorialStatus}</p><p className="mt-2 text-sm leading-6 text-bone/72">{copy.statuses[item.status] || item.status}</p></div>}
+            {locationFallback && <div className="rounded-xl border border-bone/10 bg-black/10 p-4"><p className="text-[10px] uppercase tracking-[0.18em] text-bone/40">{copy.location}</p><p className="mt-2 text-sm leading-6 text-bone/72">{translatedLocation || locationFallback}</p></div>}
+            {mappingFallback && <div className="rounded-xl border border-bone/10 bg-black/10 p-4"><p className="text-[10px] uppercase tracking-[0.18em] text-bone/40">{copy.mapping}</p><p className="mt-2 text-sm leading-6 text-bone/72">{translatedMapping || mappingFallback}</p></div>}
+            {periodFallback && <div className="rounded-xl border border-bone/10 bg-black/10 p-4"><p className="text-[10px] uppercase tracking-[0.18em] text-bone/40">{copy.period}</p><p className="mt-2 text-sm leading-6 text-bone/72">{translatedPeriod || periodFallback}</p></div>}
+            {item.status && <div className="rounded-xl border border-bone/10 bg-black/10 p-4"><p className="text-[10px] uppercase tracking-[0.18em] text-bone/40">{copy.editorialStatus}</p><p className="mt-2 text-sm leading-6 text-bone/72">{copy.statuses[item.status] || localizedValue(item.status, lang)}</p></div>}
           </div>
           <SourceLinks ids={item.sources || item.sourceIds} sourceMap={sourceMap} />
         </div>
@@ -128,20 +141,29 @@ export function SouthAfricaHeritage({ dossier, sourceMap }) {
   const { lang } = useI18n();
   const copy = COPY[lang] || COPY.en;
   const items = useMemo(() => dossier.heritage || [], [dossier.heritage]);
-  const categories = useMemo(() => [...new Set(items.map((item) => heritageType(item, copy.defaultType)))], [items, copy.defaultType]);
+  const categories = useMemo(() => {
+    const unique = new Map();
+    items.forEach((item) => {
+      const value = heritageType(item, copy.defaultType);
+      const key = searchableText(value);
+      if (key && !unique.has(key)) unique.set(key, value);
+    });
+    return [...unique.entries()].map(([key, value]) => ({ key, value }));
+  }, [items, copy.defaultType]);
   const [category, setCategory] = useState("all");
   const [query, setQuery] = useState("");
   const [openId, setOpenId] = useState(items[0]?.id || null);
 
   const visible = useMemo(() => {
-    const needle = query.trim().toLowerCase();
+    const needle = query.trim().toLocaleLowerCase(lang);
     return items.filter((item) => {
       const type = heritageType(item, copy.defaultType);
-      const matchesCategory = category === "all" || type === category;
-      const haystack = `${getTitle(item, copy.defaultTitle)} ${getBody(item)} ${type}`.toLowerCase();
+      const typeKey = searchableText(type);
+      const matchesCategory = category === "all" || typeKey === category;
+      const haystack = searchableText(getTitle(item, copy.defaultTitle), getBody(item), type, item.location, item.period);
       return matchesCategory && (!needle || haystack.includes(needle));
     });
-  }, [items, category, query, copy.defaultTitle, copy.defaultType]);
+  }, [items, category, query, copy.defaultTitle, copy.defaultType, lang]);
 
   return (
     <div className="space-y-8">
@@ -158,14 +180,14 @@ export function SouthAfricaHeritage({ dossier, sourceMap }) {
         </label>
         <div className="flex gap-2 overflow-x-auto">
           <button type="button" onClick={() => setCategory("all")} className={`whitespace-nowrap rounded-full border px-3 py-1.5 text-xs ${category === "all" ? "border-gold bg-gold/10 text-gold" : "border-bone/15 text-bone/60 hover:text-bone"}`}>{copy.all}</button>
-          {categories.map((itemCategory) => (
-            <button key={itemCategory} type="button" onClick={() => setCategory(itemCategory)} className={`whitespace-nowrap rounded-full border px-3 py-1.5 text-xs ${category === itemCategory ? "border-gold bg-gold/10 text-gold" : "border-bone/15 text-bone/60 hover:text-bone"}`}><TranslatedInline text={itemCategory} /></button>
+          {categories.map(({ key, value }) => (
+            <button key={key} type="button" onClick={() => setCategory(key)} className={`whitespace-nowrap rounded-full border px-3 py-1.5 text-xs ${category === key ? "border-gold bg-gold/10 text-gold" : "border-bone/15 text-bone/60 hover:text-bone"}`}><TranslatedInline text={value} /></button>
           ))}
         </div>
       </div>
 
       <div className="grid gap-4">
-        {visible.map((item, index) => <HeritageCard key={item.id || `${getTitle(item, copy.defaultTitle)}-${index}`} item={item} index={index} openId={openId} setOpenId={setOpenId} sourceMap={sourceMap} copy={copy} />)}
+        {visible.map((item, index) => <HeritageCard key={item.id || `${searchableText(getTitle(item, copy.defaultTitle)) || "heritage"}-${index}`} item={item} index={index} openId={openId} setOpenId={setOpenId} sourceMap={sourceMap} copy={copy} lang={lang} />)}
       </div>
 
       {!visible.length && <div className="rounded-xl border border-bone/10 p-5 text-bone/60">{copy.empty}</div>}
