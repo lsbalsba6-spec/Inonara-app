@@ -1,5 +1,6 @@
 import { useMemo, useState } from "react";
 import { useI18n } from "../i18n";
+import { localizedValue, searchableText } from "../lib/contentSort";
 import { useTranslated } from "../lib/useTranslated";
 
 const COPY = {
@@ -43,14 +44,16 @@ const COPY = {
   },
 };
 
-function TranslatedInline({ value }) {
+function TranslatedInline({ value, lang }) {
   const translated = useTranslated(value || "");
-  return translated || value || null;
+  return translated || localizedValue(value, lang) || null;
 }
 
-function SourceLink({ source }) {
+function SourceLink({ source, lang }) {
   const translatedTitle = useTranslated(source?.title || "");
   if (!source) return null;
+  const publisher = localizedValue(source.publisher, lang);
+  const title = translatedTitle || localizedValue(source.title, lang);
   return (
     <a
       href={source.url}
@@ -58,18 +61,18 @@ function SourceLink({ source }) {
       rel="noreferrer"
       className="rounded-full border border-gold/25 px-3 py-1 text-[11px] text-gold/85 hover:bg-gold/10"
     >
-      {source.publisher}: {translatedTitle || source.title}
+      {publisher ? `${publisher}: ` : ""}{title}
     </a>
   );
 }
 
-function SourceLinks({ ids = [], sourceMap }) {
+function SourceLinks({ ids = [], sourceMap, lang }) {
   if (!ids.length) return null;
   return (
     <div className="mt-4 flex flex-wrap gap-2">
       {ids.map((id) => {
         const source = sourceMap.get(id);
-        return source ? <SourceLink key={id} source={source} /> : null;
+        return source ? <SourceLink key={id} source={source} lang={lang} /> : null;
       })}
     </div>
   );
@@ -79,28 +82,37 @@ const getTitle = (item, copy) => item.title || item.name || item.topic || copy.f
 const getBody = (item) => item.text || item.note || item.summary || item.description || "";
 const getDomain = (item, copy) => item.domain || item.category || item.type || copy.fallbackDomain;
 
-function SectionBlock({ title, intro, items, sourceMap, copy }) {
-  const domains = useMemo(() => [...new Set(items.map((item) => getDomain(item, copy)))], [items, copy]);
+function SectionBlock({ title, intro, items, sourceMap, copy, lang }) {
+  const domains = useMemo(() => {
+    const seen = new Map();
+    items.forEach((item) => {
+      const value = getDomain(item, copy);
+      const key = searchableText(value) || localizedValue(value, lang);
+      if (key && !seen.has(key)) seen.set(key, { key, value });
+    });
+    return [...seen.values()];
+  }, [items, copy, lang]);
   const [domain, setDomain] = useState("all");
   const [query, setQuery] = useState("");
   const [openId, setOpenId] = useState(items[0]?.id || null);
 
   const visible = useMemo(() => {
-    const needle = query.trim().toLowerCase();
+    const needle = query.trim().toLocaleLowerCase(lang === "fr" ? "fr" : "en");
     return items.filter((item) => {
       const itemDomain = getDomain(item, copy);
-      const matchesDomain = domain === "all" || itemDomain === domain;
-      const haystack = `${getTitle(item, copy)} ${getBody(item)} ${itemDomain}`.toLowerCase();
+      const itemDomainKey = searchableText(itemDomain) || localizedValue(itemDomain, lang);
+      const matchesDomain = domain === "all" || itemDomainKey === domain;
+      const haystack = searchableText(getTitle(item, copy), getBody(item), itemDomain);
       return matchesDomain && (!needle || haystack.includes(needle));
     });
-  }, [items, domain, query, copy]);
+  }, [items, domain, query, copy, lang]);
 
   return (
     <section className="space-y-6">
       <div>
         <p className="overline text-gold">{title}</p>
         <p className="mt-2 max-w-3xl text-sm leading-6 text-bone/55">
-          {intro ? <TranslatedInline value={intro} /> : null}
+          {intro ? <TranslatedInline value={intro} lang={lang} /> : null}
         </p>
       </div>
 
@@ -125,16 +137,16 @@ function SectionBlock({ title, intro, items, sourceMap, copy }) {
           </button>
           {domains.map((itemDomain) => (
             <button
-              key={itemDomain}
+              key={itemDomain.key}
               type="button"
-              onClick={() => setDomain(itemDomain)}
+              onClick={() => setDomain(itemDomain.key)}
               className={`whitespace-nowrap rounded-full border px-3 py-1.5 text-xs ${
-                domain === itemDomain
+                domain === itemDomain.key
                   ? "border-gold bg-gold/10 text-gold"
                   : "border-bone/15 text-bone/60"
               }`}
             >
-              <TranslatedInline value={itemDomain} />
+              <TranslatedInline value={itemDomain.value} lang={lang} />
             </button>
           ))}
         </div>
@@ -142,7 +154,8 @@ function SectionBlock({ title, intro, items, sourceMap, copy }) {
 
       <div className="grid gap-4">
         {visible.map((item, index) => {
-          const id = item.id || `${getTitle(item, copy)}-${index}`;
+          const titleValue = getTitle(item, copy);
+          const id = item.id || searchableText(titleValue, getDomain(item, copy), item.period) || `education-health-${index}`;
           const expanded = openId === id;
           return (
             <article
@@ -158,17 +171,17 @@ function SectionBlock({ title, intro, items, sourceMap, copy }) {
                 <div className="flex flex-wrap items-start justify-between gap-3">
                   <div>
                     <p className="text-[10px] uppercase tracking-[0.18em] text-gold">
-                      <TranslatedInline value={getDomain(item, copy)} />
+                      <TranslatedInline value={getDomain(item, copy)} lang={lang} />
                     </p>
                     <h3 className="mt-2 font-serif text-2xl text-bone">
-                      <TranslatedInline value={getTitle(item, copy)} />
+                      <TranslatedInline value={titleValue} lang={lang} />
                     </h3>
                   </div>
                   <span className="text-xl text-gold">{expanded ? "−" : "+"}</span>
                 </div>
                 {getBody(item) && (
                   <p className="mt-4 max-w-4xl leading-7 text-bone/70">
-                    <TranslatedInline value={getBody(item)} />
+                    <TranslatedInline value={getBody(item)} lang={lang} />
                   </p>
                 )}
               </button>
@@ -182,7 +195,7 @@ function SectionBlock({ title, intro, items, sourceMap, copy }) {
                           {copy.keyData}
                         </p>
                         <p className="mt-2 text-sm leading-6 text-bone/72">
-                          <TranslatedInline value={item.data} />
+                          <TranslatedInline value={item.data} lang={lang} />
                         </p>
                       </div>
                     )}
@@ -192,7 +205,7 @@ function SectionBlock({ title, intro, items, sourceMap, copy }) {
                           {copy.period}
                         </p>
                         <p className="mt-2 text-sm leading-6 text-bone/72">
-                          <TranslatedInline value={item.period} />
+                          <TranslatedInline value={item.period} lang={lang} />
                         </p>
                       </div>
                     )}
@@ -202,7 +215,7 @@ function SectionBlock({ title, intro, items, sourceMap, copy }) {
                           {copy.context}
                         </p>
                         <p className="mt-2 text-sm leading-6 text-bone/72">
-                          <TranslatedInline value={item.context} />
+                          <TranslatedInline value={item.context} lang={lang} />
                         </p>
                       </div>
                     )}
@@ -212,7 +225,7 @@ function SectionBlock({ title, intro, items, sourceMap, copy }) {
                           {copy.caution}
                         </p>
                         <p className="mt-2 text-sm leading-6 text-bone/72">
-                          <TranslatedInline value={item.caution} />
+                          <TranslatedInline value={item.caution} lang={lang} />
                         </p>
                       </div>
                     )}
@@ -221,12 +234,12 @@ function SectionBlock({ title, intro, items, sourceMap, copy }) {
                     <div className="mt-4 space-y-3">
                       {item.paragraphs.map((paragraph, paragraphIndex) => (
                         <p key={paragraphIndex} className="text-sm leading-7 text-bone/72">
-                          <TranslatedInline value={paragraph} />
+                          <TranslatedInline value={paragraph} lang={lang} />
                         </p>
                       ))}
                     </div>
                   )}
-                  <SourceLinks ids={item.sources || item.sourceIds} sourceMap={sourceMap} />
+                  <SourceLinks ids={item.sources || item.sourceIds} sourceMap={sourceMap} lang={lang} />
                 </div>
               )}
             </article>
@@ -277,6 +290,7 @@ export function SouthAfricaEducationHealthQuality({ dossier, sourceMap }) {
         items={educationItems}
         sourceMap={sourceMap}
         copy={copy}
+        lang={lang}
       />
 
       <SectionBlock
@@ -285,6 +299,7 @@ export function SouthAfricaEducationHealthQuality({ dossier, sourceMap }) {
         items={healthItems}
         sourceMap={sourceMap}
         copy={copy}
+        lang={lang}
       />
 
       {!educationItems.length && !healthItems.length && (
