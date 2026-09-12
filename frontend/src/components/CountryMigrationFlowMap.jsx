@@ -1,6 +1,6 @@
 import { Fragment, useMemo, useState } from "react";
 import { CircleMarker, Polyline, Popup, Tooltip } from "react-leaflet";
-import InonaraLeafletMap from "./InonaraLeafletMap";
+import CountryShapeMap, { getCountryMapMeta } from "./CountryShapeMap";
 import { useI18n } from "../i18n";
 
 const TYPE_STYLES = {
@@ -13,7 +13,7 @@ const TYPE_STYLES = {
 const COPY = {
   fr: {
     title: "Carte des mobilités et migrations",
-    intro: "Les lignes représentent des axes de mobilité documentés. Zoomez pour lire les lieux et cliquez sur une ligne pour voir le contexte historique.",
+    intro: "La carte garde le pays au centre et superpose les axes de mobilité documentés. Les couleurs distinguent les types de déplacement ; zoomez pour retrouver les lieux et le contexte territorial.",
     all: "Toutes les périodes",
     legend: "Grande légende",
     types: {
@@ -28,11 +28,11 @@ const COPY = {
     period: "Période",
     people: "Population / groupe concerné",
     source: "Source",
-    schematic: "Tracé schématique",
+    schematic: "Territoire et flux",
   },
   en: {
     title: "Mobility and migration map",
-    intro: "Lines represent documented mobility corridors. Zoom to reveal places and select a line to read its historical context.",
+    intro: "The map keeps the country at the center and overlays documented mobility corridors. Colors distinguish movement types; zoom to reconnect routes with places and territory.",
     all: "All periods",
     legend: "Full legend",
     types: {
@@ -47,7 +47,7 @@ const COPY = {
     period: "Period",
     people: "Population / group concerned",
     source: "Source",
-    schematic: "Schematic line",
+    schematic: "Territory and flows",
   },
 };
 
@@ -74,24 +74,27 @@ function routeCurve(origin, destination, steps = 32) {
   });
 }
 
-function boundsFor(routes) {
+function boundsForCountryAndRoutes(routes, iso2) {
+  const meta = getCountryMapMeta(iso2);
+  const base = meta?.bounds || [[-29.5, 11.3], [-16.5, 25.8]];
   const points = routes.flatMap((route) => [route.origin_coordinates, route.destination_coordinates]).filter(Boolean);
-  if (!points.length) return [[-29.5, 11.3], [-16.5, 25.8]];
-  const lats = points.map(([, lat]) => lat);
-  const lons = points.map(([lon]) => lon);
-  return [
-    [Math.min(...lats) - 2.3, Math.min(...lons) - 2.3],
-    [Math.max(...lats) + 2.3, Math.max(...lons) + 2.3],
-  ];
+  const lats = [base[0][0], base[1][0], ...points.map(([, lat]) => lat)];
+  const lons = [base[0][1], base[1][1], ...points.map(([lon]) => lon)];
+
+  const south = Math.max(-40, Math.min(...lats) - 1.4);
+  const north = Math.min(5, Math.max(...lats) + 1.4);
+  const west = Math.max(5, Math.min(...lons) - 1.4);
+  const east = Math.min(42, Math.max(...lons) + 1.4);
+  return [[south, west], [north, east]];
 }
 
-export default function CountryMigrationFlowMap({ routes = [], note }) {
+export default function CountryMigrationFlowMap({ dossier, routes = [], note, places = [] }) {
   const { lang } = useI18n();
   const copy = COPY[lang] || COPY.en;
   const periods = useMemo(() => [...new Set(routes.map((route) => `${route.start}-${route.end}`))], [routes]);
   const [period, setPeriod] = useState("all");
   const visibleRoutes = period === "all" ? routes : routes.filter((route) => `${route.start}-${route.end}` === period);
-  const bounds = useMemo(() => boundsFor(visibleRoutes), [visibleRoutes]);
+  const bounds = useMemo(() => boundsForCountryAndRoutes(visibleRoutes, dossier?.iso2), [visibleRoutes, dossier?.iso2]);
 
   if (!routes.length) return null;
 
@@ -110,7 +113,7 @@ export default function CountryMigrationFlowMap({ routes = [], note }) {
         ))}
       </div>
 
-      <InonaraLeafletMap bounds={bounds} minZoom={3} maxZoom={10} ariaLabel={copy.title} className="h-[560px] w-full md:h-[680px]">
+      <CountryShapeMap dossier={dossier} places={places} boundsOverride={bounds} minZoom={2} className="h-[560px] w-full md:h-[680px]">
         {visibleRoutes.map((route) => {
           const style = TYPE_STYLES[route.type] || { color: "#7A6A58" };
           const [originLon, originLat] = route.origin_coordinates;
@@ -120,7 +123,7 @@ export default function CountryMigrationFlowMap({ routes = [], note }) {
           const destination = localize(route.destination, lang);
           return (
             <Fragment key={route.id}>
-              <Polyline positions={routeCurve(route.origin_coordinates, route.destination_coordinates)} pathOptions={{ color: style.color, weight: 5, opacity: 0.9, dashArray: style.dashArray }}>
+              <Polyline positions={routeCurve(route.origin_coordinates, route.destination_coordinates)} pathOptions={{ color: style.color, weight: 5, opacity: 0.92, dashArray: style.dashArray }}>
                 <Popup>
                   <div className="max-w-[260px]">
                     <strong>{label}</strong><br />
@@ -139,7 +142,7 @@ export default function CountryMigrationFlowMap({ routes = [], note }) {
             </Fragment>
           );
         })}
-      </InonaraLeafletMap>
+      </CountryShapeMap>
 
       <aside className="rounded-2xl border border-[#b8cad8] bg-[#f5f9fb] p-5 text-[#243845]" aria-label={copy.legend}>
         <h4 className="font-serif text-xl">{copy.legend}</h4>
@@ -150,6 +153,7 @@ export default function CountryMigrationFlowMap({ routes = [], note }) {
           })}
           <div className="flex items-center gap-3 text-sm"><span className="h-4 w-4 rounded-full border-[3px] border-[#2F80A3] bg-white" />{copy.origin}</div>
           <div className="flex items-center gap-3 text-sm"><span className="h-4 w-4 rounded-full border-2 border-[#17384a] bg-[#2F80A3]" />{copy.destination}</div>
+          <div className="flex items-center gap-3 text-sm"><span className="h-4 w-7 rounded-sm border-2 border-[#17384a] bg-[#7EB7D1]/30" />{localize(dossier?.name || dossier?.country, lang)}</div>
         </div>
       </aside>
 
