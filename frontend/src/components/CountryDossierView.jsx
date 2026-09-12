@@ -7,7 +7,7 @@ import { SouthAfricaSymbolsQuality } from "./SouthAfricaSymbolsQuality";
 import { SouthAfricaEconomyQuality } from "./SouthAfricaEconomyQuality";
 import { SouthAfricaEducationHealthQuality } from "./SouthAfricaEducationHealthQuality";
 import { SouthAfricaSocietyQuality } from "./SouthAfricaSocietyQuality";
-import { CountryHistoriography, CountryResearchGaps, CountrySources } from "./CountrySourcesQuality";
+import { CountryHistoriography, CountrySources } from "./CountrySourcesQuality";
 import { CountryPolities } from "./CountryPolities";
 import { CountryLanguages, CountryReligions } from "./CountryLanguagesReligions";
 import { CountryPeoples } from "./CountryPeoples";
@@ -42,7 +42,7 @@ const COPY = {
       { id: "heritage", label: "Heritage & nature", items: [["heritage", "Heritage"]] },
       { id: "state", label: "State & economy", items: [["society", "Society"], ["education-health", "Education & health"], ["economy", "Economy"]] },
       { id: "people", label: "Figures", items: [["figures", "Figures"]] },
-      { id: "sources", label: "Sources", items: [["historiography", "Debates"], ["research", "To investigate"], ["library", "Library"], ["sources", "All sources"]] },
+      { id: "sources", label: "Sources", items: [["historiography", "Debates"], ["library", "Library"], ["sources", "All sources"]] },
     ],
     explore: {
       eyebrow: "Explore AfroAtlas",
@@ -73,7 +73,7 @@ const COPY = {
       { id: "heritage", label: "Patrimoine & nature", items: [["heritage", "Patrimoine"]] },
       { id: "state", label: "État & économie", items: [["society", "Société"], ["education-health", "Éducation & santé"], ["economy", "Économie"]] },
       { id: "people", label: "Personnalités", items: [["figures", "Personnalités"]] },
-      { id: "sources", label: "Sources", items: [["historiography", "Débats"], ["research", "À approfondir"], ["library", "Bibliothèque"], ["sources", "Toutes les sources"]] },
+      { id: "sources", label: "Sources", items: [["historiography", "Débats"], ["library", "Bibliothèque"], ["sources", "Toutes les sources"]] },
     ],
     explore: {
       eyebrow: "Explorer AfroAtlas",
@@ -193,7 +193,6 @@ export default function CountryDossierView({ dossier }) {
           {active === "languages" && <CountryLanguages dossier={dossier} sourceMap={sourceMap} />}
           {active === "religions" && <CountryReligions dossier={dossier} sourceMap={sourceMap} />}
           {active === "historiography" && <CountryHistoriography dossier={dossier} />}
-          {active === "research" && <CountryResearchGaps dossier={dossier} />}
           {active === "library" && <SouthAfricaScientificLibrary dossier={dossier} sourceMap={sourceMap} />}
           {active === "sources" && <CountrySources dossier={dossier} />}
         </CountrySectionBoundary>
