@@ -7,36 +7,30 @@ const COPY = {
   en: {
     overline: "Heritage & nature",
     title: "Sites, landscapes and memories",
-    intro: "This section brings together cultural, natural and mixed heritage sites, as well as places of memory and inhabited landscapes. UNESCO listing is not the only measure of heritage significance.",
+    intro: "Explore cultural, natural and mixed heritage, places of memory and inhabited landscapes through documented histories, locations and periods.",
     searchLabel: "Search heritage",
     searchPlaceholder: "Search a site, landscape or place of memory…",
     all: "Show all",
     defaultTitle: "Heritage site",
     defaultType: "heritage",
     location: "Location",
-    mapping: "Mapping",
+    mapping: "Territorial context",
     period: "Period",
-    editorialStatus: "Editorial status",
-    statuses: { ready: "Established", provisional: "Read with context", disputed: "Historical debate", "research-gap": "To investigate" },
     empty: "No heritage item matches this search.",
-    mapNote: "The boundaries of some cultural landscapes and archaeological sites are approximate. Inonara does not automatically turn an area of influence or a memorial space into a political border.",
   },
   fr: {
     overline: "Patrimoine & nature",
     title: "Sites, paysages et mémoires",
-    intro: "Cette section réunit les sites culturels, naturels et mixtes, mais aussi les lieux de mémoire et les paysages habités. Le classement UNESCO ne constitue pas l’unique mesure de l’importance patrimoniale.",
+    intro: "Explorez les patrimoines culturels, naturels et mixtes, les lieux de mémoire et les paysages habités à travers leur histoire, leur localisation et leur période documentées.",
     searchLabel: "Rechercher dans le patrimoine",
     searchPlaceholder: "Rechercher un site, un paysage ou un lieu de mémoire…",
     all: "Tout afficher",
     defaultTitle: "Site patrimonial",
     defaultType: "patrimoine",
     location: "Localisation",
-    mapping: "Cartographie",
+    mapping: "Contexte territorial",
     period: "Période",
-    editorialStatus: "Statut éditorial",
-    statuses: { ready: "Établi", provisional: "À lire avec contexte", disputed: "Débat historique", "research-gap": "À suivre" },
     empty: "Aucun élément patrimonial ne correspond à cette recherche.",
-    mapNote: "Les limites de certains paysages culturels et sites archéologiques sont approximatives. Inonara ne transforme pas automatiquement une zone d’influence ou un espace mémoriel en frontière politique.",
   },
 };
 
@@ -53,7 +47,9 @@ function SourceLink({ source }) {
   const publisher = localizedValue(source?.publisher, lang);
   const translatedTitle = useTranslated(source?.title || "");
   const translatedPublisher = useTranslated(source?.publisher || "");
-  if (!source) return null;
+  if (!source?.url) return null;
+  const label = [translatedPublisher || publisher, translatedTitle || title].filter(Boolean).join(": ");
+  if (!label) return null;
   return (
     <a
       href={source.url}
@@ -61,19 +57,18 @@ function SourceLink({ source }) {
       rel="noreferrer"
       className="rounded-full border border-gold/25 px-3 py-1 text-[11px] text-gold/85 hover:bg-gold/10"
     >
-      {translatedPublisher || publisher}{publisher || translatedPublisher ? ": " : ""}{translatedTitle || title}
+      {label}
     </a>
   );
 }
 
-function SourceLinks({ ids = [], sourceMap }) {
+function SourceLinks({ ids = [], sourceMap = new Map() }) {
   if (!ids.length) return null;
+  const sources = ids.map((id) => sourceMap.get(id)).filter(Boolean);
+  if (!sources.length) return null;
   return (
     <div className="mt-4 flex flex-wrap gap-2">
-      {ids.map((id) => {
-        const source = sourceMap.get(id);
-        return source ? <SourceLink key={id} source={source} /> : null;
-      })}
+      {sources.map((source) => <SourceLink key={source.id || source.url} source={source} />)}
     </div>
   );
 }
@@ -101,6 +96,7 @@ function HeritageCard({ item, index, openId, setOpenId, sourceMap, copy, lang })
   const mappingFallback = localizedValue(item.mapping, lang);
   const periodFallback = localizedValue(item.period, lang);
   const id = item.id || `${searchableText(title) || "heritage"}-${index}`;
+  const panelId = `${String(id).replace(/[^a-zA-Z0-9_-]/g, "-")}-details`;
   const expanded = openId === id;
   const translatedTitle = useTranslated(title);
   const translatedBody = useTranslated(body);
@@ -111,7 +107,7 @@ function HeritageCard({ item, index, openId, setOpenId, sourceMap, copy, lang })
 
   return (
     <article className="overflow-hidden rounded-2xl border border-bone/10 bg-bone/[0.025]">
-      <button type="button" onClick={() => setOpenId(expanded ? null : id)} className="w-full p-5 text-left" aria-expanded={expanded}>
+      <button type="button" onClick={() => setOpenId(expanded ? null : id)} className="w-full p-5 text-left" aria-expanded={expanded} aria-controls={panelId}>
         <div className="flex flex-wrap items-start justify-between gap-3">
           <div>
             <p className="text-[10px] uppercase tracking-[0.18em] text-gold">{translatedType || typeFallback}</p>
@@ -123,12 +119,11 @@ function HeritageCard({ item, index, openId, setOpenId, sourceMap, copy, lang })
       </button>
 
       {expanded && (
-        <div className="border-t border-bone/10 px-5 pb-6 pt-5">
+        <div id={panelId} className="border-t border-bone/10 px-5 pb-6 pt-5">
           <div className="grid gap-3 md:grid-cols-2">
             {locationFallback && <div className="rounded-xl border border-bone/10 bg-black/10 p-4"><p className="text-[10px] uppercase tracking-[0.18em] text-bone/40">{copy.location}</p><p className="mt-2 text-sm leading-6 text-bone/72">{translatedLocation || locationFallback}</p></div>}
             {mappingFallback && <div className="rounded-xl border border-bone/10 bg-black/10 p-4"><p className="text-[10px] uppercase tracking-[0.18em] text-bone/40">{copy.mapping}</p><p className="mt-2 text-sm leading-6 text-bone/72">{translatedMapping || mappingFallback}</p></div>}
             {periodFallback && <div className="rounded-xl border border-bone/10 bg-black/10 p-4"><p className="text-[10px] uppercase tracking-[0.18em] text-bone/40">{copy.period}</p><p className="mt-2 text-sm leading-6 text-bone/72">{translatedPeriod || periodFallback}</p></div>}
-            {item.status && <div className="rounded-xl border border-bone/10 bg-black/10 p-4"><p className="text-[10px] uppercase tracking-[0.18em] text-bone/40">{copy.editorialStatus}</p><p className="mt-2 text-sm leading-6 text-bone/72">{copy.statuses[item.status] || localizedValue(item.status, lang)}</p></div>}
           </div>
           <SourceLinks ids={item.sources || item.sourceIds} sourceMap={sourceMap} />
         </div>
@@ -155,15 +150,15 @@ export function SouthAfricaHeritage({ dossier, sourceMap }) {
   const [openId, setOpenId] = useState(items[0]?.id || null);
 
   const visible = useMemo(() => {
-    const needle = query.trim().toLocaleLowerCase(lang);
+    const needle = searchableText(query).trim();
     return items.filter((item) => {
       const type = heritageType(item, copy.defaultType);
       const typeKey = searchableText(type);
       const matchesCategory = category === "all" || typeKey === category;
-      const haystack = searchableText(getTitle(item, copy.defaultTitle), getBody(item), type, item.location, item.period);
+      const haystack = searchableText(getTitle(item, copy.defaultTitle), getBody(item), type, item.location, item.mapping, item.period);
       return matchesCategory && (!needle || haystack.includes(needle));
     });
-  }, [items, category, query, copy.defaultTitle, copy.defaultType, lang]);
+  }, [items, category, query, copy.defaultTitle, copy.defaultType]);
 
   return (
     <div className="space-y-8">
@@ -179,9 +174,9 @@ export function SouthAfricaHeritage({ dossier, sourceMap }) {
           <input value={query} onChange={(event) => setQuery(event.target.value)} placeholder={copy.searchPlaceholder} className="w-full rounded-xl border border-bone/15 bg-bone/[0.025] px-4 py-3 text-sm text-bone outline-none placeholder:text-bone/35 focus:border-gold/50" />
         </label>
         <div className="flex gap-2 overflow-x-auto">
-          <button type="button" onClick={() => setCategory("all")} className={`whitespace-nowrap rounded-full border px-3 py-1.5 text-xs ${category === "all" ? "border-gold bg-gold/10 text-gold" : "border-bone/15 text-bone/60 hover:text-bone"}`}>{copy.all}</button>
+          <button type="button" aria-pressed={category === "all"} onClick={() => setCategory("all")} className={`whitespace-nowrap rounded-full border px-3 py-1.5 text-xs ${category === "all" ? "border-gold bg-gold/10 text-gold" : "border-bone/15 text-bone/60 hover:text-bone"}`}>{copy.all}</button>
           {categories.map(({ key, value }) => (
-            <button key={key} type="button" onClick={() => setCategory(key)} className={`whitespace-nowrap rounded-full border px-3 py-1.5 text-xs ${category === key ? "border-gold bg-gold/10 text-gold" : "border-bone/15 text-bone/60 hover:text-bone"}`}><TranslatedInline text={value} /></button>
+            <button key={key} type="button" aria-pressed={category === key} onClick={() => setCategory(key)} className={`whitespace-nowrap rounded-full border px-3 py-1.5 text-xs ${category === key ? "border-gold bg-gold/10 text-gold" : "border-bone/15 text-bone/60 hover:text-bone"}`}><TranslatedInline text={value} /></button>
           ))}
         </div>
       </div>
@@ -191,7 +186,6 @@ export function SouthAfricaHeritage({ dossier, sourceMap }) {
       </div>
 
       {!visible.length && <div className="rounded-xl border border-bone/10 p-5 text-bone/60">{copy.empty}</div>}
-      <p className="text-xs leading-relaxed text-bone/45">{copy.mapNote}</p>
     </div>
   );
 }
