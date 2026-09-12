@@ -53,6 +53,8 @@ export default function CountryShapeMap({
   compact = false,
   className,
   showCountryLabel = true,
+  boundsOverride,
+  minZoom,
   children,
 }) {
   const { lang } = useI18n();
@@ -66,8 +68,8 @@ export default function CountryShapeMap({
 
   return (
     <InonaraLeafletMap
-      bounds={meta.bounds}
-      minZoom={compact ? 3 : 4}
+      bounds={boundsOverride || meta.bounds}
+      minZoom={minZoom ?? (compact ? 3 : 4)}
       maxZoom={12}
       ariaLabel={countryName}
       className={className || (compact ? "h-[300px] w-full md:h-[360px]" : "h-[560px] w-full md:h-[680px]")}
@@ -75,7 +77,7 @@ export default function CountryShapeMap({
       {outline && (
         <GeoJSON
           data={outline}
-          style={{ color: "#17384a", weight: compact ? 3 : 4, fillColor: "#7EB7D1", fillOpacity: compact ? 0.18 : 0.16 }}
+          style={{ color: "#17384a", weight: compact ? 3 : 4, fillColor: "#7EB7D1", fillOpacity: compact ? 0.18 : 0.18 }}
         />
       )}
 
