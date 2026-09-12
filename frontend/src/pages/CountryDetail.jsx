@@ -10,6 +10,7 @@ import {
   fetchCountryDossier,
 } from "../lib/api";
 import { ATLAS_COLORS } from "../lib/designTokens";
+import { localizedValue } from "../lib/contentSort";
 import CountryMiniMap from "../components/CountryMiniMap";
 import CountryDossierView from "../components/CountryDossierView";
 import { useI18n } from "../i18n";
@@ -58,13 +59,15 @@ const COPY = {
 };
 
 function TranslatedText({ text, className = "" }) {
+  const { lang } = useI18n();
   const translated = useTranslated(text || "");
-  return <p className={className}>{translated || text}</p>;
+  return <p className={className}>{translated || localizedValue(text, lang, "")}</p>;
 }
 
 function TranslatedInline({ text }) {
+  const { lang } = useI18n();
   const translated = useTranslated(text || "");
-  return translated || text || null;
+  return translated || localizedValue(text, lang, "") || null;
 }
 
 function ColonialPeriod({ period, className = "" }) {
