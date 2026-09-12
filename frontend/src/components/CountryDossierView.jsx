@@ -196,8 +196,8 @@ export default function CountryDossierView({ dossier }) {
   const regionName = dossier.region?.[lang] || dossier.region?.fr || dossier.region?.en || copy.southernAfrica;
   const editorialNote = useTranslated(dossier.editorial_note || "");
   const migrationRouteSet = getCountryMigrationRouteSet(dossier?.iso2);
-  const migrationRoutes = dossier?.map_visuals?.migration_routes?.length ? dossier.map_visuals.migration_routes : (migrationRouteSet?.routes || []);
-  const migrationNote = dossier?.map_visuals?.note || migrationRouteSet?.note;
+  const migrationRoutes = migrationRouteSet?.routes?.length ? migrationRouteSet.routes : (dossier?.map_visuals?.migration_routes || []);
+  const migrationNote = migrationRouteSet?.note || dossier?.map_visuals?.note;
   const groups = useMemo(() => copy.groups.map((group) => ({
     ...group,
     items: group.items.map(([id, label]) => [id, label.replace("{country}", countryName)]),
