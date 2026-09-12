@@ -3,10 +3,12 @@ import { useNavigate } from "react-router-dom";
 import { Search } from "lucide-react";
 import { search } from "../lib/api";
 import { useI18n } from "../i18n";
-import { useTranslated } from "../lib/useTranslated";
+import { localizedValue } from "../lib/contentSort";
 
 const TYPE_LABELS = {
   en: {
+    Country: "Country",
+    People: "People",
     Civilization: "Civilization",
     Figure: "Figure",
     Diaspora: "Diaspora",
@@ -15,6 +17,8 @@ const TYPE_LABELS = {
     Culture: "Culture",
   },
   fr: {
+    Country: "Pays",
+    People: "Peuple",
     Civilization: "Civilisation",
     Figure: "Personnalité",
     Diaspora: "Diaspora",
@@ -24,22 +28,25 @@ const TYPE_LABELS = {
   },
 };
 
-const flatten = (results) => {
+const flatten = (results, lang) => {
   if (!results) return [];
   const out = [];
+  (results.countries || []).slice(0, 3).forEach((country) => {
+    const iso2 = country.iso2 || country.country_iso2;
+    out.push({ type: "Country", title: country.name || country.display_name || country.country, to: iso2 ? `/country/${iso2}` : "/countries" });
+  });
+  (results.peoples || []).slice(0, 3).forEach((people) => out.push({ type: "People", title: people.name, to: `/people/${people.id}` }));
   (results.civilizations || []).slice(0, 3).forEach((c) => out.push({ type: "Civilization", title: c.name, to: `/civilization/${c.id}` }));
   (results.figures || []).slice(0, 4).forEach((f) => out.push({ type: "Figure", title: f.name, to: `/figure/${f.id}` }));
   (results.diaspora || []).slice(0, 3).forEach((d) => out.push({ type: "Diaspora", title: d.name, to: `/diaspora/${d.id}` }));
   (results.modules || []).slice(0, 2).forEach((m) => out.push({ type: "Module", title: m.title, to: `/module/${m.id}` }));
   (results.stories || []).slice(0, 2).forEach((s) => out.push({ type: "Story", title: s.title, to: `/story/${s.id}` }));
-  (results.culture || []).slice(0, 2).forEach((i) => out.push({ type: "Culture", title: i.title, to: `/search?q=${encodeURIComponent(i.title)}` }));
+  (results.culture || []).slice(0, 2).forEach((item) => {
+    const title = localizedValue(item.title, lang);
+    out.push({ type: "Culture", title: item.title, to: `/search?q=${encodeURIComponent(title)}` });
+  });
   return out;
 };
-
-function TranslatedTitle({ value }) {
-  const translated = useTranslated(value || "");
-  return translated || value || null;
-}
 
 export const HeaderSearch = () => {
   const { t, lang } = useI18n();
@@ -64,12 +71,12 @@ export const HeaderSearch = () => {
       setLoading(true);
       try {
         const r = await search(term);
-        setItems(flatten(r.results));
+        setItems(flatten(r.results, lang));
       } catch { setItems([]); }
       finally { setLoading(false); }
     }, 200);
     return () => clearTimeout(handle);
-  }, [q]);
+  }, [q, lang]);
 
   const submit = (e) => {
     e.preventDefault();
@@ -111,14 +118,14 @@ export const HeaderSearch = () => {
           {!loading && items.length > 0 && (
             <ul>
               {items.map((it, i) => (
-                <li key={i}>
+                <li key={`${it.type}-${i}`}>
                   <button
                     onClick={() => { setOpen(false); setQ(""); navigate(it.to); }}
                     className="w-full text-left px-4 py-3 hover:bg-[#1A1614] border-b border-[#2A2421] last:border-b-0"
                     data-testid="header-search-result"
                   >
                     <p className="overline text-[0.6rem]">{typeLabels[it.type] || it.type}</p>
-                    <p className="text-bone text-sm mt-1"><TranslatedTitle value={it.title} /></p>
+                    <p className="text-bone text-sm mt-1">{localizedValue(it.title, lang)}</p>
                   </button>
                 </li>
               ))}
