@@ -1,4 +1,5 @@
 import { useI18n } from "../i18n";
+import { localizedValue } from "../lib/contentSort";
 import { useTranslated } from "../lib/useTranslated";
 
 const COPY = {
@@ -13,14 +14,16 @@ const COPY = {
 };
 
 function TranslatedInline({ value }) {
+  const { lang } = useI18n();
   const translated = useTranslated(value || "");
-  return translated || value;
+  return translated || localizedValue(value, lang, "") || null;
 }
 
 function TranslatedParagraph({ value, className = "" }) {
+  const { lang } = useI18n();
   const translated = useTranslated(value || "");
   if (!value) return null;
-  return <p className={className}>{translated || value}</p>;
+  return <p className={className}>{translated || localizedValue(value, lang, "")}</p>;
 }
 
 function StatusBadge({ status, copy }) {
@@ -33,11 +36,14 @@ function StatusBadge({ status, copy }) {
 }
 
 function SourceLink({ source }) {
+  const { lang } = useI18n();
   const translatedTitle = useTranslated(source?.title || "");
   if (!source) return null;
+  const title = translatedTitle || localizedValue(source.title, lang, "");
+  const publisher = localizedValue(source.publisher, lang, "");
   return (
     <a href={source.url} target="_blank" rel="noreferrer" className="text-[11px] text-gold/80 underline underline-offset-2 hover:text-gold">
-      {source.publisher}: {translatedTitle || source.title}
+      {publisher ? `${publisher}: ` : ""}{title}
     </a>
   );
 }
@@ -53,11 +59,11 @@ function SourceLinks({ ids = [], sourceMap }) {
   );
 }
 
-function TopicCards({ items = [], sourceMap, copy }) {
+function TopicCards({ items = [], sourceMap, copy, lang }) {
   return (
     <div className="grid gap-4 md:grid-cols-2">
       {items.map((item, index) => (
-        <article key={item.id || item.title || index} className="rounded-xl border border-bone/10 bg-bone/[0.025] p-5">
+        <article key={item.id || localizedValue(item.title, lang, `topic-${index}`)} className="rounded-xl border border-bone/10 bg-bone/[0.025] p-5">
           <div className="flex items-start justify-between gap-3">
             <h3 className="font-serif text-xl text-bone"><TranslatedInline value={item.title} /></h3>
             {item.status && <StatusBadge status={item.status} copy={copy} />}
@@ -77,12 +83,12 @@ function TopicCards({ items = [], sourceMap, copy }) {
   );
 }
 
-function LawMemorySection({ section, sourceMap, copy }) {
+function LawMemorySection({ section, sourceMap, copy, lang }) {
   if (!section) return null;
   return (
     <section>
       <h2 className="mb-4 font-serif text-3xl text-gold"><TranslatedInline value={section.title} /></h2>
-      <TopicCards items={section.items} sourceMap={sourceMap} copy={copy} />
+      <TopicCards items={section.items} sourceMap={sourceMap} copy={copy} lang={lang} />
     </section>
   );
 }
@@ -99,7 +105,13 @@ export function SouthAfricaLawMemory({ dossier, sourceMap }) {
     <div className="space-y-10">
       <TranslatedParagraph value={data.intro} className="text-lg leading-relaxed text-bone/80" />
       {sections.map((section, index) => (
-        <LawMemorySection key={section.id || section.title || index} section={section} sourceMap={sourceMap} copy={copy} />
+        <LawMemorySection
+          key={section.id || localizedValue(section.title, lang, `section-${index}`)}
+          section={section}
+          sourceMap={sourceMap}
+          copy={copy}
+          lang={lang}
+        />
       ))}
       {data.editorial_note && (
         <aside className="rounded-xl border border-gold/20 bg-gold/[0.04] p-5 text-sm leading-relaxed text-bone/70">
