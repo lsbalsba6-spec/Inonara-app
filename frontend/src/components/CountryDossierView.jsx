@@ -26,6 +26,7 @@ import { CountryMediaGallery } from "./CountryMediaGallery";
 import CountryTerritory from "./CountryTerritory";
 import CountrySectionBoundary from "./CountrySectionBoundary";
 import { useI18n } from "../i18n";
+import { localizedValue, searchableText } from "../lib/contentSort";
 import { useTranslated } from "../lib/useTranslated";
 import { getCountryMigrationRouteSet } from "../data/countryMigrationRoutes";
 
@@ -110,8 +111,10 @@ function contextualExplorePath(path, countryName) {
 }
 
 function TranslatedInline({ value }) {
+  const { lang } = useI18n();
   const translated = useTranslated(value || "");
-  return translated || value || null;
+  if (!value) return null;
+  return translated || localizedValue(value, lang);
 }
 
 function StatusBadge({ status, copy }) {
@@ -124,11 +127,12 @@ function StatusBadge({ status, copy }) {
 }
 
 function SourceLink({ source }) {
+  const { lang } = useI18n();
   const translatedPublisher = useTranslated(source?.publisher || "");
   const translatedTitle = useTranslated(source?.title || "");
   if (!source) return null;
-  const publisher = translatedPublisher || source.publisher;
-  const title = translatedTitle || source.title;
+  const publisher = translatedPublisher || localizedValue(source.publisher, lang);
+  const title = translatedTitle || localizedValue(source.title, lang);
   return (
     <a href={source.url} target="_blank" rel="noreferrer" className="text-[11px] text-gold/80 hover:text-gold underline underline-offset-2">
       {publisher ? `${publisher}: ` : ""}{title}
@@ -151,8 +155,8 @@ function SourceLinks({ ids, sourceMap }) {
 function Timeline({ items, sourceMap, copy, lang }) {
   return (
     <div className="space-y-5">
-      {items.map((item) => (
-        <article key={item.id} className="border-l border-gold/30 pl-4">
+      {items.map((item, index) => (
+        <article key={item.id || `${searchableText(item.label)}-${index}`} className="border-l border-gold/30 pl-4">
           <div className="flex flex-wrap items-center gap-2">
             <p className="text-gold text-xs tracking-widest uppercase">
               {item.start < 0 ? `${Math.abs(item.start).toLocaleString(lang === "fr" ? "fr-FR" : "en-US")} ${copy.bce}` : item.end ? `${item.start}–${item.end}` : `${item.start}–${copy.present}`}
@@ -172,7 +176,7 @@ function SimpleCards({ items, sourceMap, copy, titleField = "name", bodyField = 
   return (
     <div className="grid gap-4 md:grid-cols-2">
       {items.map((item, index) => (
-        <article key={item.id || item[titleField] || index} className="rounded-lg border border-bone/10 bg-bone/[0.025] p-4">
+        <article key={item.id || `${searchableText(item[titleField])}-${index}`} className="rounded-lg border border-bone/10 bg-bone/[0.025] p-4">
           <div className="flex items-start justify-between gap-2">
             <h3 className="font-serif text-lg text-bone"><TranslatedInline value={item[titleField]} /></h3>
             {item.status && <StatusBadge status={item.status} copy={copy} />}
@@ -195,8 +199,8 @@ export default function CountryDossierView({ dossier }) {
     sections: dossier?.territory_v8?.sections || dossier?.territory_sections || [],
     places: dossier?.territory_v8?.places || dossier?.map_visuals?.territory_places || [],
   }), [dossier?.territory_v8, dossier?.territory_sections, dossier?.map_visuals]);
-  const countryName = dossier.name?.[lang] || dossier.name?.fr || dossier.name?.en || dossier.country || copy.country;
-  const regionName = dossier.region?.[lang] || dossier.region?.fr || dossier.region?.en || copy.southernAfrica;
+  const countryName = localizedValue(dossier.name || dossier.country, lang) || copy.country;
+  const regionName = localizedValue(dossier.region, lang) || copy.southernAfrica;
   const editorialNote = useTranslated(dossier.editorial_note || "");
   const migrationRouteSet = getCountryMigrationRouteSet(dossier?.iso2);
   const migrationRoutes = migrationRouteSet?.routes?.length ? migrationRouteSet.routes : (dossier?.map_visuals?.migration_routes || []);
@@ -211,7 +215,7 @@ export default function CountryDossierView({ dossier }) {
     <div className="pt-[100px] pb-20 px-5 max-w-5xl mx-auto">
       <p className="overline text-gold mb-2">{copy.country} · {regionName}</p>
       <h1 className="font-serif text-4xl md:text-5xl text-bone">{countryName}</h1>
-      <p className="text-bone/55 mt-3 max-w-3xl leading-relaxed">{editorialNote || dossier.editorial_note}</p>
+      {dossier.editorial_note && <p className="text-bone/55 mt-3 max-w-3xl leading-relaxed">{editorialNote || localizedValue(dossier.editorial_note, lang)}</p>}
 
       <nav className="mt-8" aria-label={copy.navLabel}>
         <div className="flex gap-2 overflow-x-auto pb-3">
