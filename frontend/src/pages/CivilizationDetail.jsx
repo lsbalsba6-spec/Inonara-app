@@ -3,7 +3,7 @@ import { useParams, Link } from "react-router-dom";
 import { MapContainer, TileLayer, CircleMarker } from "react-leaflet";
 import { fetchCivilization, fetchCivilizationFigures } from "../lib/api";
 import { useTranslated } from "../lib/useTranslated";
-import { localizedText } from "../lib/contentSort";
+import { localizedValue } from "../lib/contentSort";
 import { useI18n } from "../i18n";
 import { ArrowLeft } from "lucide-react";
 import { SmartImage } from "../components/SmartImage";
@@ -25,14 +25,23 @@ const fmt = (y, t) => {
 };
 
 function LocalizedText({ value, as: Tag = "span", className = "" }) {
+  const { lang } = useI18n();
   const translated = useTranslated(value || "");
   if (!value && !translated) return null;
-  return <Tag className={className}>{translated || localizedText(value)}</Tag>;
+  return <Tag className={className}>{translated || localizedValue(value, lang, "")}</Tag>;
 }
 
-function LocalizedImage({ alt, ...props }) {
+function LocalizedImage({ alt, credit, ...props }) {
+  const { lang } = useI18n();
   const translatedAlt = useTranslated(alt || "");
-  return <SmartImage {...props} alt={translatedAlt || localizedText(alt)} />;
+  const translatedCredit = useTranslated(credit || "");
+  return (
+    <SmartImage
+      {...props}
+      alt={translatedAlt || localizedValue(alt, lang, "")}
+      credit={translatedCredit || localizedValue(credit, lang, "")}
+    />
+  );
 }
 
 const Section = ({ overline, title, children }) => (
@@ -58,6 +67,8 @@ const CivilizationDetail = () => {
   if (!c) return <div className="pt-32 text-center text-bone/40 overline">{t("common.loading")}</div>;
 
   const coords = Array.isArray(c.coords) && c.coords.length >= 2 ? c.coords : null;
+  const displayName = localizedValue(c.name, lang, "");
+  const displaySummary = tSummary || localizedValue(c.summary, lang, "");
 
   return (
     <div data-testid="civilization-detail">
@@ -71,7 +82,7 @@ const CivilizationDetail = () => {
           <p className="overline">{typeof c.region === "string" ? t(`region.${c.region}`) : <LocalizedText value={c.region} />}</p>
           <LocalizedText value={c.name} as="h1" className="font-serif text-5xl md:text-7xl text-bone mt-3 leading-[0.95] tracking-tight" />
           <p className="text-gold text-sm uppercase tracking-[0.25em] mt-4">{fmt(c.era_start, t)} — {fmt(c.era_end, t)}</p>
-          <p className="text-bone/80 mt-6 max-w-2xl text-lg font-light leading-relaxed">{tSummary || localizedText(c.summary)}</p>
+          {displaySummary && <p className="text-bone/80 mt-6 max-w-2xl text-lg font-light leading-relaxed">{displaySummary}</p>}
         </div>
       </div>
 
@@ -101,7 +112,7 @@ const CivilizationDetail = () => {
               <p className="overline">{t("section.modern_locations")}</p>
               <div className="font-serif text-2xl text-bone mt-2">
                 {(c.modern_locations || []).map((location, index) => (
-                  <span key={`${localizedText(location)}-${index}`}>
+                  <span key={`${localizedValue(location, "en", "location")}-${index}`}>
                     {index > 0 ? " · " : ""}<LocalizedText value={location} />
                   </span>
                 ))}
@@ -125,7 +136,7 @@ const CivilizationDetail = () => {
           <Section overline={t("section.key_figures")} title={t("civdetail.h2.figures")}>
             <ul className="grid sm:grid-cols-2 gap-4">
               {c.key_figures.map((p, index) => (
-                <li key={p.id || `${localizedText(p.name)}-${index}`} className="museum-card p-5">
+                <li key={p.id || `${localizedValue(p.name, "en", "figure")}-${index}`} className="museum-card p-5">
                   <LocalizedText value={p.name} as="p" className="font-serif text-xl text-bone" />
                   <LocalizedText value={p.role} as="p" className="text-bone/60 text-sm mt-1" />
                 </li>
@@ -148,7 +159,7 @@ const CivilizationDetail = () => {
         {c.sources?.length > 0 && (
           <Section overline={t("common.sources")} title={t("civdetail.h2.sources")}>
             <ul className="list-disc pl-5 space-y-2 text-bone/70">
-              {c.sources.map((s, index) => <li key={`${localizedText(s)}-${index}`}><LocalizedText value={s} /></li>)}
+              {c.sources.map((s, index) => <li key={`${localizedValue(s, "en", "source")}-${index}`}><LocalizedText value={s} /></li>)}
             </ul>
           </Section>
         )}
