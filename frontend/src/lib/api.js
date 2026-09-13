@@ -1,6 +1,7 @@
 import axios from "axios";
 import { LOCAL_COUNTRIES, LOCAL_COUNTRY_DOSSIERS, getLocalCountryDossier } from "../data/localCountryDossiers";
 import { BOTSWANA_LOCAL_COUNTRY, BOTSWANA_LOCAL_DOSSIER } from "../data/localBotswanaDossier";
+import { FIGURE_PROFILE_BY_ID, FIGURE_PROFILES, mergeFigureCatalog, mergeFigureProfile } from "../data/figureProfiles";
 import { searchableText } from "./contentSort";
 
 const BACKEND_URL = process.env.REACT_APP_BACKEND_URL || "";
@@ -62,23 +63,40 @@ export const fetchPlaces = () => api.get("/places").then((r) => r.data);
 export const fetchJourney = () => api.get("/journey").then((r) => r.data);
 export const fetchEthnicGroups = () => api.get("/ethnic-groups").then((r) => r.data);
 export const fetchEthnicGroup = (id) => api.get(`/ethnic-groups/${id}`).then((r) => r.data);
-export const fetchFigures = () => api.get("/figures").then((r) => r.data);
-export const fetchFigure = (id) => api.get(`/figures/${id}`).then((r) => r.data);
-export const fetchFiguresTimeline = () => api.get("/figures-timeline").then((r) => r.data);
+
+export const fetchFigures = () => api.get("/figures")
+  .then((r) => mergeFigureCatalog(r.data))
+  .catch(() => FIGURE_PROFILES);
+
+export const fetchFigure = (id) => {
+  const local = FIGURE_PROFILE_BY_ID[id];
+  return api.get(`/figures/${id}`)
+    .then((r) => mergeFigureProfile(r.data, local))
+    .catch((error) => {
+      if (local) return local;
+      throw error;
+    });
+};
+
+export const fetchFiguresTimeline = () => api.get("/figures-timeline")
+  .then((r) => r.data)
+  .catch(() => []);
 export const fetchCivilizationFigures = (id) => api.get(`/civilizations/${id}/figures`).then((r) => r.data);
 
 export const search = async (q, lang = "fr") => {
   const locale = lang === "en" ? "en" : "fr";
   const needle = (q || "").trim().toLocaleLowerCase(locale);
-  const [remoteResult, countryResult, peopleResult] = await Promise.allSettled([
+  const [remoteResult, countryResult, peopleResult, figureResult] = await Promise.allSettled([
     api.get("/search", { params: { q } }).then((r) => r.data),
     fetchCountryDossiers(),
     fetchEthnicGroups(),
+    fetchFigures(),
   ]);
 
   const remote = remoteResult.status === "fulfilled" ? remoteResult.value : { query: q, results: {} };
   const countries = countryResult.status === "fulfilled" ? countryResult.value : LOCAL_PUBLISHED_DOSSIERS;
   const peoples = peopleResult.status === "fulfilled" ? peopleResult.value : [];
+  const figures = figureResult.status === "fulfilled" ? figureResult.value : FIGURE_PROFILES;
   const matches = (...values) => !needle || searchableText(...values).toLocaleLowerCase(locale).includes(needle);
 
   return {
@@ -106,6 +124,20 @@ export const search = async (q, lang = "fr") => {
         people.history,
         people.culture,
         people.modern_presence,
+      )),
+      figures: figures.filter((figure) => matches(
+        figure.name,
+        figure.fullName,
+        figure.aliases,
+        figure.summary,
+        figure.region,
+        figure.period,
+        figure.domains,
+        figure.biography,
+        figure.historicalContext,
+        figure.contributions,
+        figure.legacy,
+        figure.works,
       )),
     },
   };
