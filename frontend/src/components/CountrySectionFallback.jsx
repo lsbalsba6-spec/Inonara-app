@@ -1,4 +1,5 @@
 import { useI18n } from "../i18n";
+import { localizedValue } from "../lib/contentSort";
 
 const COPY = {
   en: {
@@ -22,11 +23,13 @@ export default function CountrySectionFallback({ title, message, variant = "prep
   const copy = COPY[lang] || COPY.en;
   const isError = variant === "error";
   const heading = isError ? copy.errorTitle : copy.preparing;
-  const body = message || (isError ? copy.errorMessage : copy.message);
+  const sectionTitle = localizedValue(title, lang) || title || copy.section;
+  const fallbackBody = isError ? copy.errorMessage : copy.message;
+  const body = localizedValue(message, lang) || (typeof message === "string" ? message : "") || fallbackBody;
 
   return (
     <div className="rounded-2xl border border-bone/10 bg-bone/[0.025] p-6">
-      <p className="overline text-gold">{title || copy.section}</p>
+      <p className="overline text-gold">{sectionTitle}</p>
       <h2 className="mt-2 font-serif text-2xl text-bone">{heading}</h2>
       <p className="mt-3 max-w-2xl leading-relaxed text-bone/60">{body}</p>
     </div>
