@@ -1,6 +1,7 @@
 import axios from "axios";
 import { LOCAL_COUNTRIES, LOCAL_COUNTRY_DOSSIERS, getLocalCountryDossier } from "../data/localCountryDossiers";
 import { BOTSWANA_LOCAL_COUNTRY, BOTSWANA_LOCAL_DOSSIER } from "../data/localBotswanaDossier";
+import { CIVILIZATION_ENRICHMENT_BY_ID, LOCAL_CIVILIZATION_ENRICHMENTS, enrichCivilization, mergeCivilizationList } from "../data/localCivilizations";
 import { searchableText } from "./contentSort";
 
 const BACKEND_URL = process.env.REACT_APP_BACKEND_URL || "";
@@ -43,8 +44,18 @@ export const fetchCountryDossier = (iso2) => {
 };
 
 export const fetchModules = () => api.get("/modules").then((r) => r.data);
-export const fetchCivilizations = () => api.get("/civilizations").then((r) => r.data);
-export const fetchCivilization = (id) => api.get(`/civilizations/${id}`).then((r) => r.data);
+export const fetchCivilizations = () => api.get("/civilizations")
+  .then((r) => mergeCivilizationList(r.data))
+  .catch(() => LOCAL_CIVILIZATION_ENRICHMENTS);
+export const fetchCivilization = (id) => {
+  const local = CIVILIZATION_ENRICHMENT_BY_ID[id];
+  return api.get(`/civilizations/${id}`)
+    .then((r) => enrichCivilization(r.data))
+    .catch((error) => {
+      if (local) return local;
+      throw error;
+    });
+};
 export const fetchStories = () => api.get("/stories").then((r) => r.data);
 export const fetchStory = (id) => api.get(`/stories/${id}`).then((r) => r.data);
 export const fetchCulture = (params = {}) => api.get("/culture", { params }).then((r) => r.data);
@@ -70,15 +81,17 @@ export const fetchCivilizationFigures = (id) => api.get(`/civilizations/${id}/fi
 export const search = async (q, lang = "fr") => {
   const locale = lang === "en" ? "en" : "fr";
   const needle = (q || "").trim().toLocaleLowerCase(locale);
-  const [remoteResult, countryResult, peopleResult] = await Promise.allSettled([
+  const [remoteResult, countryResult, peopleResult, civilizationResult] = await Promise.allSettled([
     api.get("/search", { params: { q } }).then((r) => r.data),
     fetchCountryDossiers(),
     fetchEthnicGroups(),
+    fetchCivilizations(),
   ]);
 
   const remote = remoteResult.status === "fulfilled" ? remoteResult.value : { query: q, results: {} };
   const countries = countryResult.status === "fulfilled" ? countryResult.value : LOCAL_PUBLISHED_DOSSIERS;
   const peoples = peopleResult.status === "fulfilled" ? peopleResult.value : [];
+  const civilizations = civilizationResult.status === "fulfilled" ? civilizationResult.value : LOCAL_CIVILIZATION_ENRICHMENTS;
   const matches = (...values) => !needle || searchableText(...values).toLocaleLowerCase(locale).includes(needle);
 
   return {
@@ -86,6 +99,25 @@ export const search = async (q, lang = "fr") => {
     query: q,
     results: {
       ...(remote.results || {}),
+      civilizations: civilizations.filter((civ) => matches(
+        civ.name,
+        civ.alt_names,
+        civ.region,
+        civ.polity_type,
+        civ.summary,
+        civ.territory_and_expansion,
+        civ.political_structure,
+        civ.institutions,
+        civ.economy_and_trade,
+        civ.trade_networks,
+        civ.languages,
+        civ.religions,
+        civ.science_and_knowledge,
+        civ.art_and_culture,
+        civ.legacy,
+        civ.capitals,
+        civ.major_sites,
+      )),
       countries: countries.filter((country) => matches(
         country.name,
         country.country,
