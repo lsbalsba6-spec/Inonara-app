@@ -67,8 +67,9 @@ export const fetchFigure = (id) => api.get(`/figures/${id}`).then((r) => r.data)
 export const fetchFiguresTimeline = () => api.get("/figures-timeline").then((r) => r.data);
 export const fetchCivilizationFigures = (id) => api.get(`/civilizations/${id}/figures`).then((r) => r.data);
 
-export const search = async (q) => {
-  const needle = (q || "").trim().toLocaleLowerCase("fr");
+export const search = async (q, lang = "fr") => {
+  const locale = lang === "en" ? "en" : "fr";
+  const needle = (q || "").trim().toLocaleLowerCase(locale);
   const [remoteResult, countryResult, peopleResult] = await Promise.allSettled([
     api.get("/search", { params: { q } }).then((r) => r.data),
     fetchCountryDossiers(),
@@ -78,7 +79,7 @@ export const search = async (q) => {
   const remote = remoteResult.status === "fulfilled" ? remoteResult.value : { query: q, results: {} };
   const countries = countryResult.status === "fulfilled" ? countryResult.value : LOCAL_PUBLISHED_DOSSIERS;
   const peoples = peopleResult.status === "fulfilled" ? peopleResult.value : [];
-  const matches = (...values) => !needle || searchableText(...values).includes(needle);
+  const matches = (...values) => !needle || searchableText(...values).toLocaleLowerCase(locale).includes(needle);
 
   return {
     ...remote,
