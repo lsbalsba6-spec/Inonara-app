@@ -24,10 +24,15 @@ const COPY = {
       trade: "Trade circulation",
       "regional-mobility": "Regional mobility",
       "forced-displacement": "Forced displacement",
+      "historic-labour": "Historic labour migration",
+      "contemporary-international": "Contemporary international migration",
+      internal: "Internal mobility",
     },
     dating: "Dating to be clarified",
     since: "Since",
     until: "Until",
+    origins: "Origins",
+    destinations: "Destinations",
   },
   fr: {
     country: "ce pays",
@@ -49,10 +54,15 @@ const COPY = {
       trade: "Circulation commerciale",
       "regional-mobility": "Mobilité régionale",
       "forced-displacement": "Déplacement forcé",
+      "historic-labour": "Travail migrant historique",
+      "contemporary-international": "Migration internationale contemporaine",
+      internal: "Mobilité intérieure",
     },
     dating: "Datation à préciser",
     since: "Depuis",
     until: "Jusqu’en",
+    origins: "Origines",
+    destinations: "Destinations",
   },
 };
 
@@ -85,11 +95,16 @@ function routeType(route) {
 }
 
 function periodLabel(route, copy) {
-  if (route?.period) return route.period;
+  if (route?.period) return localizedValue(route.period, "fr") || route.period;
   if (route?.start == null && route?.end == null) return copy.dating;
   if (route?.start != null && route?.end != null) return `${route.start}–${route.end}`;
   if (route?.start != null) return `${copy.since} ${route.start}`;
   return `${copy.until} ${route.end}`;
+}
+
+function labelList(value) {
+  if (!Array.isArray(value)) return [];
+  return value.filter(Boolean);
 }
 
 export function CountryMigrations({ dossier = {}, sourceMap }) {
@@ -102,12 +117,26 @@ export function CountryMigrations({ dossier = {}, sourceMap }) {
     if (Array.isArray(migrationData)) return [];
     return Array.isArray(migrationData?.themes) ? migrationData.themes : [];
   }, [migrationData]);
+
   const routes = useMemo(() => {
-    if (Array.isArray(migrationData)) return migrationData;
-    if (Array.isArray(migrationData?.routes)) return migrationData.routes;
-    if (Array.isArray(dossier?.migration_routes)) return dossier.migration_routes;
-    return [];
-  }, [migrationData, dossier?.migration_routes]);
+    const narrativeRoutes = Array.isArray(migrationData)
+      ? migrationData
+      : Array.isArray(migrationData?.routes)
+        ? migrationData.routes
+        : Array.isArray(dossier?.migration_routes)
+          ? dossier.migration_routes
+          : [];
+    const interactiveRoutes = Array.isArray(dossier?.interactive?.migrationRoutes)
+      ? dossier.interactive.migrationRoutes
+      : [];
+    const seen = new Set();
+    return [...narrativeRoutes, ...interactiveRoutes].filter((route, index) => {
+      const key = route?.id || `${route?.title || route?.label || "route"}-${index}`;
+      if (seen.has(key)) return false;
+      seen.add(key);
+      return true;
+    });
+  }, [migrationData, dossier?.migration_routes, dossier?.interactive?.migrationRoutes]);
 
   const types = useMemo(() => [...new Set(routes.map(routeType))], [routes]);
   const [selectedType, setSelectedType] = useState("all");
@@ -141,7 +170,7 @@ export function CountryMigrations({ dossier = {}, sourceMap }) {
 
       {routes.length > 0 && (
         <section>
-          <div className="flex items-end justify-between gap-4">
+          <div className="flex flex-wrap items-end justify-between gap-4">
             <h3 className="font-serif text-2xl text-bone">{copy.routes}</h3>
             {types.length > 1 && (
               <div className="flex flex-wrap justify-end gap-2">
@@ -153,15 +182,35 @@ export function CountryMigrations({ dossier = {}, sourceMap }) {
             )}
           </div>
           <div className="mt-4 grid gap-4">
-            {visibleRoutes.map((route, index) => (
-              <article key={route.id || `migration-route-${index}`} className="rounded-2xl border border-bone/10 bg-bone/[.025] p-5">
-                <p className="text-[10px] uppercase tracking-[.16em] text-gold/75">{periodLabel(route, copy)} · {copy.types[routeType(route)] || routeType(route)}</p>
-                <h4 className="mt-1 font-serif text-xl text-bone"><TranslatedInline value={route.label || route.title} /></h4>
-                {(route.summary || route.description) && <p className="mt-3 text-sm leading-7 text-bone/65"><TranslatedInline value={route.summary || route.description} /></p>}
-                {(route.origin || route.destination) && <p className="mt-3 text-xs text-bone/45"><TranslatedInline value={route.origin} /> → <TranslatedInline value={route.destination} /></p>}
-                <SourceLinks ids={route.sourceIds || route.sources || []} sourceMap={sourceMap} copy={copy} />
-              </article>
-            ))}
+            {visibleRoutes.map((route, index) => {
+              const origins = labelList(route.originLabels);
+              const destinations = labelList(route.destinationLabels);
+              return (
+                <article key={route.id || `migration-route-${index}`} className="rounded-2xl border border-bone/10 bg-bone/[.025] p-5">
+                  <p className="text-[10px] uppercase tracking-[.16em] text-gold/75">{periodLabel(route, copy)} · {copy.types[routeType(route)] || routeType(route)}</p>
+                  <h4 className="mt-1 font-serif text-xl text-bone"><TranslatedInline value={route.label || route.title} /></h4>
+                  {(route.summary || route.description) && <p className="mt-3 text-sm leading-7 text-bone/65"><TranslatedInline value={route.summary || route.description} /></p>}
+                  {(route.origin || route.destination) && <p className="mt-3 text-xs text-bone/45"><TranslatedInline value={route.origin} /> → <TranslatedInline value={route.destination} /></p>}
+                  {(origins.length > 0 || destinations.length > 0) && (
+                    <div className="mt-4 grid gap-3 sm:grid-cols-2">
+                      {origins.length > 0 && (
+                        <div className="rounded-xl border border-bone/10 bg-black/10 p-3">
+                          <p className="text-[10px] uppercase tracking-[.14em] text-bone/40">{copy.origins}</p>
+                          <p className="mt-2 text-sm leading-6 text-bone/70">{origins.join(" · ")}</p>
+                        </div>
+                      )}
+                      {destinations.length > 0 && (
+                        <div className="rounded-xl border border-bone/10 bg-black/10 p-3">
+                          <p className="text-[10px] uppercase tracking-[.14em] text-bone/40">{copy.destinations}</p>
+                          <p className="mt-2 text-sm leading-6 text-bone/70">{destinations.join(" · ")}</p>
+                        </div>
+                      )}
+                    </div>
+                  )}
+                  <SourceLinks ids={route.sourceIds || route.sources || []} sourceMap={sourceMap} copy={copy} />
+                </article>
+              );
+            })}
           </div>
         </section>
       )}
