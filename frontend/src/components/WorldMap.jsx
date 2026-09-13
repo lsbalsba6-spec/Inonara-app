@@ -8,10 +8,6 @@ import countryContinentMap from "../data/country-continent-map.json";
 import { getPlateGroup, lerpTransform } from "../lib/plateGroups";
 import { ATLAS_COLORS } from "../lib/designTokens";
 
-// PR1: colors now come from the centralized lib/designTokens.js instead of
-// a local object — same values (no visual change), single source of truth.
-// The "geological"/"geologicalBorder" aliases below reuse the Africa land
-// tokens (they were already the same hex values before this change).
 const COLORS = {
   ocean: ATLAS_COLORS.ocean,
   landDefault: ATLAS_COLORS.landDefault,
@@ -23,23 +19,37 @@ const COLORS = {
 };
 
 /**
- * Real-world equal-area map (Equal Earth projection) using ACTUAL modern
- * country coastlines throughout — including in "geological" mode, where the
- * real coastlines are grouped by continental plate and rigidly repositioned
- * (shifted + rotated) toward the classic Pangaea arrangement via `geoFusion`
- * (0 = modern position, 1 = fully-assembled Pangaea). This replaces an
- * earlier version that used hand-drawn schematic blob shapes — real
- * coastlines look far more authentic, the same technique textbook Pangaea
- * diagrams use. See lib/plateGroups.js for the transform math and its
- * honesty caveats (not a precise GPlates reconstruction).
+ * Shared Equal Earth map engine used by the main Atlas.
  *
- * Fully responsive to the actual container size via ResizeObserver.
+ * The projection remains the single source of truth for both country paths and
+ * every overlay supplied through `children`. Country interaction is handled at
+ * this level so Atlas features (search, selection and contextual panels) can
+ * reuse the same geometry instead of maintaining a second hit layer.
+ *
+ * `onCountrySelect` receives a stable map descriptor:
+ * { id, name, continent, centroid, feature }. `focusCountryName` can be used by
+ * a parent search UI to progressively zoom to a country without bypassing the
+ * normal d3-zoom transform.
  */
-const WorldMap = ({ onProjectionReady, onGeoProjectionReady, onZoomChange, highlightAfrica = true, geoFusion = null, children }) => {
+const WorldMap = ({
+  onProjectionReady,
+  onGeoProjectionReady,
+  onZoomChange,
+  onCountrySelect,
+  onCountriesReady,
+  selectedCountryName = null,
+  focusCountryName = null,
+  lang = "en",
+  highlightAfrica = true,
+  geoFusion = null,
+  children,
+}) => {
   const containerRef = useRef(null);
   const svgRef = useRef(null);
+  const zoomBehaviorRef = useRef(null);
   const [size, setSize] = useState({ width: 1000, height: 560 });
   const [transform, setTransform] = useState(zoomIdentity);
+  const [internalSelectedCountry, setInternalSelectedCountry] = useState(null);
 
   useEffect(() => {
     const el = containerRef.current;
@@ -69,8 +79,30 @@ const WorldMap = ({ onProjectionReady, onGeoProjectionReady, onZoomChange, highl
     return geo.features;
   }, []);
 
-  // Group countries by plate group for geological-mode rendering, and
-  // precompute each group's own projected centroid (rotation pivot).
+  const countryDescriptors = useMemo(
+    () => countries.map((country) => {
+      const name = country.properties?.name || "";
+      const centroid = pathGen.centroid(country);
+      return {
+        id: String(country.id || name),
+        name,
+        continent: countryContinentMap[name] || null,
+        centroid,
+        feature: country,
+      };
+    }).filter((country) => country.name && country.centroid && !Number.isNaN(country.centroid[0]) && !Number.isNaN(country.centroid[1])),
+    [countries, pathGen]
+  );
+
+  const countryByName = useMemo(
+    () => new Map(countryDescriptors.map((country) => [country.name.toLocaleLowerCase("en"), country])),
+    [countryDescriptors]
+  );
+
+  useEffect(() => {
+    if (onCountriesReady) onCountriesReady(countryDescriptors);
+  }, [countryDescriptors, onCountriesReady]);
+
   const groupedCountries = useMemo(() => {
     const groups = {};
     for (const c of countries) {
@@ -102,29 +134,36 @@ const WorldMap = ({ onProjectionReady, onGeoProjectionReady, onZoomChange, highl
     const zoomBehavior = d3zoom()
       .scaleExtent([1, 8])
       .on("zoom", (event) => setTransform(event.transform));
+    zoomBehaviorRef.current = zoomBehavior;
     svg.call(zoomBehavior);
-    return () => svg.on(".zoom", null);
+    return () => {
+      svg.on(".zoom", null);
+      zoomBehaviorRef.current = null;
+    };
   }, []);
 
   useEffect(() => {
     if (onZoomChange) onZoomChange(transform.k);
   }, [transform, onZoomChange]);
 
+  useEffect(() => {
+    if (!focusCountryName || geoFusion !== null || !zoomBehaviorRef.current || !svgRef.current) return;
+    const country = countryByName.get(String(focusCountryName).toLocaleLowerCase("en"));
+    if (!country) return;
+    const [cx, cy] = country.centroid;
+    const targetScale = Math.max(2.8, Math.min(5, transform.k));
+    const next = zoomIdentity
+      .translate(width / 2, height / 2)
+      .scale(targetScale)
+      .translate(-cx, -cy);
+    select(svgRef.current).call(zoomBehaviorRef.current.transform, next);
+  }, [focusCountryName, countryByName, geoFusion, height, width]);
+
   const projectRef = useRef(null);
   projectRef.current = useCallback(
     (lat, lon) => {
       const p = projection([lon, lat]);
       if (!p) return null;
-      // FIX: return RAW projected coordinates. The zoom/pan transform is
-      // applied ONCE, uniformly, by the <g transform={transform.toString()}>
-      // wrapper below (which contains both the map paths AND {children} —
-      // i.e. every marker rendered via this callback). Previously this
-      // function also applied transform.applyX/Y here, which combined with
-      // the wrapper's transform to apply zoom/pan TWICE to every marker —
-      // harmless at the initial identity transform, but causing markers to
-      // drift away from their correct position as soon as the user panned
-      // or zoomed (the exact bug reported: points scatter away from the
-      // map on interaction).
       return [p[0], p[1]];
     },
     [projection]
@@ -134,12 +173,6 @@ const WorldMap = ({ onProjectionReady, onGeoProjectionReady, onZoomChange, highl
     if (onProjectionReady) onProjectionReady((lat, lon) => projectRef.current(lat, lon));
   }, [projection, onProjectionReady]);
 
-  // Geological-mode projection: applies a group's transform (translate+rotate
-  // around its own centroid) to a modern lat/lon point. Returns RAW
-  // coordinates for the same reason as projectRef above — the <g transform>
-  // wrapper (and each group's own nested <g transform> for the Pangaea
-  // rigid-body shift) already handles positioning; applying the zoom
-  // transform again here was the same double-transform bug.
   const geoProjectRef = useRef(null);
   geoProjectRef.current = useCallback(
     (group, lat, lon) => {
@@ -154,9 +187,7 @@ const WorldMap = ({ onProjectionReady, onGeoProjectionReady, onZoomChange, highl
       const rx = p[0] - cx, ry = p[1] - cy;
       const rotX = rx * Math.cos(rad) - ry * Math.sin(rad);
       const rotY = rx * Math.sin(rad) + ry * Math.cos(rad);
-      const fx = cx + rotX + dx;
-      const fy = cy + rotY + dy;
-      return [fx, fy];
+      return [cx + rotX + dx, cy + rotY + dy];
     },
     [projection, geoFusion, groupCentroids, width, height]
   );
@@ -177,8 +208,27 @@ const WorldMap = ({ onProjectionReady, onGeoProjectionReady, onZoomChange, highl
     [geoFusion, groupCentroids, width, height]
   );
 
+  const activeCountryName = selectedCountryName || internalSelectedCountry;
+
+  const activateCountry = useCallback((country) => {
+    if (!country || country.continent !== "Africa" || geoFusion !== null) return;
+    setInternalSelectedCountry(country.name);
+    if (onCountrySelect) onCountrySelect(country);
+  }, [geoFusion, onCountrySelect]);
+
+  const handleCountryKeyDown = useCallback((event, country) => {
+    if (event.key !== "Enter" && event.key !== " ") return;
+    event.preventDefault();
+    activateCountry(country);
+  }, [activateCountry]);
+
+  const resetView = useCallback(() => {
+    if (!zoomBehaviorRef.current || !svgRef.current) return;
+    select(svgRef.current).call(zoomBehaviorRef.current.transform, zoomIdentity);
+  }, []);
+
   return (
-    <div ref={containerRef} className="w-full h-full" data-testid="world-map-container">
+    <div ref={containerRef} className="w-full h-full relative" data-testid="world-map-container">
       <svg
         ref={svgRef}
         viewBox={`0 0 ${width} ${height}`}
@@ -187,32 +237,41 @@ const WorldMap = ({ onProjectionReady, onGeoProjectionReady, onZoomChange, highl
         preserveAspectRatio="xMidYMid meet"
         style={{ background: COLORS.ocean, touchAction: "none", display: "block" }}
         data-testid="world-map-svg"
+        role="img"
+        aria-label={lang === "fr" ? "Carte interactive Equal Earth" : "Interactive Equal Earth map"}
       >
         <g transform={transform.toString()}>
           {geoFusion === null &&
-            countries.map((c) => {
-              const name = c.properties?.name || "";
-              const isAfrica = highlightAfrica && countryContinentMap[name] === "Africa";
+            countryDescriptors.map((country) => {
+              const isAfrica = highlightAfrica && country.continent === "Africa";
+              const isInteractive = isAfrica;
+              const isSelected = isInteractive && activeCountryName === country.name;
               return (
                 <path
-                  key={c.id || name}
-                  d={pathGen(c)}
+                  key={country.id}
+                  d={pathGen(country.feature)}
                   fill={isAfrica ? COLORS.landAfrica : COLORS.landDefault}
-                  stroke={isAfrica ? COLORS.landAfricaBorder : COLORS.landDefaultBorder}
-                  strokeWidth={isAfrica ? 0.9 : 0.5}
-                  strokeOpacity={isAfrica ? 0.8 : 0.5}
-                />
+                  stroke={isSelected ? ATLAS_COLORS.gold : isAfrica ? COLORS.landAfricaBorder : COLORS.landDefaultBorder}
+                  strokeWidth={isSelected ? 2.2 / transform.k : isAfrica ? 0.9 : 0.5}
+                  strokeOpacity={isSelected ? 1 : isAfrica ? 0.8 : 0.5}
+                  vectorEffect="non-scaling-stroke"
+                  tabIndex={isInteractive ? 0 : undefined}
+                  role={isInteractive ? "button" : undefined}
+                  aria-label={isInteractive ? (lang === "fr" ? `Ouvrir ${country.name}` : `Open ${country.name}`) : undefined}
+                  data-country-name={country.name}
+                  data-continent={country.continent || undefined}
+                  data-testid={isInteractive ? `atlas-country-${country.id}` : undefined}
+                  onClick={isInteractive ? () => activateCountry(country) : undefined}
+                  onKeyDown={isInteractive ? (event) => handleCountryKeyDown(event, country) : undefined}
+                  style={isInteractive ? { cursor: "pointer", outline: "none" } : undefined}
+                >
+                  <title>{country.name}</title>
+                </path>
               );
             })}
 
           {geoFusion !== null &&
             (() => {
-              // At full Pangaea (geoFusion=1), internal modern-country
-              // borders are hidden entirely so the supercontinent reads as
-              // ONE undivided landmass — not a patchwork of visible modern
-              // borders, per explicit user feedback ("la Pangée n'était pas
-              // délimitée, c'était une seule terre"). Borders fade back in
-              // progressively as geoFusion decreases toward 0 (modern day).
               const borderOpacity = Math.max(0, (0.9 - geoFusion) / 0.9) * 0.75;
               const borderWidth = borderOpacity > 0 ? 0.8 : 0;
               return Object.entries(groupedCountries).map(([group, feats]) => (
@@ -234,6 +293,17 @@ const WorldMap = ({ onProjectionReady, onGeoProjectionReady, onZoomChange, highl
           {children}
         </g>
       </svg>
+
+      {geoFusion === null && transform.k > 1 && (
+        <button
+          type="button"
+          onClick={resetView}
+          className="absolute top-3 right-3 z-10 rounded border border-gold/30 bg-black/55 px-3 py-2 text-[0.65rem] uppercase tracking-[0.14em] text-gold backdrop-blur"
+          data-testid="atlas-reset-view"
+        >
+          {lang === "fr" ? "Vue Afrique" : "Africa view"}
+        </button>
+      )}
     </div>
   );
 };
