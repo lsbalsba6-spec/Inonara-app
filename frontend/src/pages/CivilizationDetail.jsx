@@ -44,6 +44,40 @@ function LocalizedImage({ alt, credit, ...props }) {
   );
 }
 
+function SourceEntry({ source }) {
+  const { lang } = useI18n();
+  const isRecord = source && typeof source === "object" && !Array.isArray(source);
+  const rawTitle = isRecord
+    ? (source.title || source.name || source.label || source.text || "")
+    : source;
+  const rawPublisher = isRecord
+    ? (source.publisher || source.institution || source.author || "")
+    : "";
+  const title = useTranslated(rawTitle || "") || localizedValue(rawTitle, lang, "");
+  const publisher = useTranslated(rawPublisher || "") || localizedValue(rawPublisher, lang, "");
+  const year = isRecord ? source.year : null;
+  const url = isRecord ? (source.url || source.source_url || source.link || "") : "";
+
+  if (!title && !publisher && !year) return null;
+
+  return (
+    <li>
+      {url ? (
+        <a href={url} target="_blank" rel="noreferrer" className="text-gold/85 underline underline-offset-2 hover:text-gold">
+          {title || url}
+        </a>
+      ) : (
+        <span>{title}</span>
+      )}
+      {(publisher || year) && (
+        <span className="text-bone/45">
+          {title || url ? " — " : ""}{publisher}{publisher && year ? ", " : ""}{year || ""}
+        </span>
+      )}
+    </li>
+  );
+}
+
 const Section = ({ overline, title, children }) => (
   <section className="py-10 border-t border-[#2A2421]" data-testid={`section-${String(overline).toLowerCase().replace(/[^a-z0-9]/g, "-")}`}>
     <p className="overline">{overline}</p>
@@ -159,7 +193,12 @@ const CivilizationDetail = () => {
         {c.sources?.length > 0 && (
           <Section overline={t("common.sources")} title={t("civdetail.h2.sources")}>
             <ul className="list-disc pl-5 space-y-2 text-bone/70">
-              {c.sources.map((s, index) => <li key={`${localizedValue(s, "en", "source")}-${index}`}><LocalizedText value={s} /></li>)}
+              {c.sources.map((source, index) => (
+                <SourceEntry
+                  key={(source && typeof source === "object" && source.id) || `${localizedValue(source, "en", "source")}-${index}`}
+                  source={source}
+                />
+              ))}
             </ul>
           </Section>
         )}
