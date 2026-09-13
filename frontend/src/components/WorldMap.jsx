@@ -5,8 +5,10 @@ import { select } from "d3-selection";
 import { feature } from "topojson-client";
 import worldTopo from "../data/world-countries-50m.json";
 import countryContinentMap from "../data/country-continent-map.json";
+import { getAtlasCountryMetadata, getAtlasCountryLabel } from "../data/atlasCountryGeometry";
 import { getPlateGroup, lerpTransform } from "../lib/plateGroups";
 import { ATLAS_COLORS } from "../lib/designTokens";
+import { selectNonOverlappingLabels } from "../lib/atlasDisplay";
 
 const COLORS = {
   ocean: ATLAS_COLORS.ocean,
@@ -27,9 +29,9 @@ const COLORS = {
  * reuse the same geometry instead of maintaining a second hit layer.
  *
  * `onCountrySelect` receives a stable map descriptor:
- * { id, name, continent, centroid, feature }. `focusCountryName` can be used by
- * a parent search UI to progressively zoom to a country without bypassing the
- * normal d3-zoom transform.
+ * { id, countryId, territoryId, name, label, continent, centroid, feature }.
+ * `focusCountryName` accepts a Natural Earth name, localized label or stable
+ * country/territory ID and zooms through the normal d3-zoom transform.
  */
 const WorldMap = ({
   onProjectionReady,
@@ -83,21 +85,39 @@ const WorldMap = ({
     () => countries.map((country) => {
       const name = country.properties?.name || "";
       const centroid = pathGen.centroid(country);
+      const metadata = getAtlasCountryMetadata(name);
       return {
         id: String(country.id || name),
+        countryId: metadata?.countryId || null,
+        territoryId: metadata?.territoryId || null,
+        kind: metadata?.kind || "country",
         name,
+        label: getAtlasCountryLabel(name, lang),
+        labels: metadata ? { fr: metadata.fr, en: metadata.en } : { fr: name, en: name },
         continent: countryContinentMap[name] || null,
         centroid,
+        area: pathGen.area(country),
         feature: country,
       };
     }).filter((country) => country.name && country.centroid && !Number.isNaN(country.centroid[0]) && !Number.isNaN(country.centroid[1])),
-    [countries, pathGen]
+    [countries, pathGen, lang]
   );
 
-  const countryByName = useMemo(
-    () => new Map(countryDescriptors.map((country) => [country.name.toLocaleLowerCase("en"), country])),
-    [countryDescriptors]
-  );
+  const countryLookup = useMemo(() => {
+    const lookup = new Map();
+    for (const country of countryDescriptors) {
+      const aliases = [
+        country.name,
+        country.label,
+        country.labels?.fr,
+        country.labels?.en,
+        country.countryId,
+        country.territoryId,
+      ].filter(Boolean);
+      for (const alias of aliases) lookup.set(String(alias).toLocaleLowerCase(), country);
+    }
+    return lookup;
+  }, [countryDescriptors]);
 
   useEffect(() => {
     if (onCountriesReady) onCountriesReady(countryDescriptors);
@@ -148,16 +168,16 @@ const WorldMap = ({
 
   useEffect(() => {
     if (!focusCountryName || geoFusion !== null || !zoomBehaviorRef.current || !svgRef.current) return;
-    const country = countryByName.get(String(focusCountryName).toLocaleLowerCase("en"));
+    const country = countryLookup.get(String(focusCountryName).toLocaleLowerCase());
     if (!country) return;
     const [cx, cy] = country.centroid;
-    const targetScale = Math.max(2.8, Math.min(5, transform.k));
+    const targetScale = 3.6;
     const next = zoomIdentity
       .translate(width / 2, height / 2)
       .scale(targetScale)
       .translate(-cx, -cy);
     select(svgRef.current).call(zoomBehaviorRef.current.transform, next);
-  }, [focusCountryName, countryByName, geoFusion, height, width]);
+  }, [focusCountryName, countryLookup, geoFusion, height, width]);
 
   const projectRef = useRef(null);
   projectRef.current = useCallback(
@@ -210,6 +230,28 @@ const WorldMap = ({
 
   const activeCountryName = selectedCountryName || internalSelectedCountry;
 
+  const visibleCountryLabels = useMemo(() => {
+    if (geoFusion !== null || !highlightAfrica) return [];
+    const maxLabels = transform.k < 1.35 ? 0 : transform.k < 1.8 ? 10 : transform.k < 2.6 ? 22 : transform.k < 4 ? 38 : 60;
+    if (maxLabels === 0 && !activeCountryName) return [];
+
+    const candidates = countryDescriptors
+      .filter((country) => country.continent === "Africa")
+      .sort((a, b) => b.area - a.area)
+      .map((country) => ({
+        id: country.countryId || country.territoryId || country.id,
+        text: country.label,
+        x: country.centroid[0],
+        y: country.centroid[1],
+        fontSizePx: country.name === activeCountryName ? 12 : 10,
+        priority: (country.name === activeCountryName ? 100000 : 0) + country.area,
+        active: country.name === activeCountryName,
+      }));
+
+    candidates.sort((a, b) => b.priority - a.priority);
+    return selectNonOverlappingLabels(candidates, transform.k, { maxLabels: Math.max(maxLabels, activeCountryName ? 1 : 0), paddingPx: 5 });
+  }, [activeCountryName, countryDescriptors, geoFusion, highlightAfrica, transform.k]);
+
   const activateCountry = useCallback((country) => {
     if (!country || country.continent !== "Africa" || geoFusion !== null) return;
     setInternalSelectedCountry(country.name);
@@ -224,6 +266,7 @@ const WorldMap = ({
 
   const resetView = useCallback(() => {
     if (!zoomBehaviorRef.current || !svgRef.current) return;
+    setInternalSelectedCountry(null);
     select(svgRef.current).call(zoomBehaviorRef.current.transform, zoomIdentity);
   }, []);
 
@@ -252,20 +295,22 @@ const WorldMap = ({
                   d={pathGen(country.feature)}
                   fill={isAfrica ? COLORS.landAfrica : COLORS.landDefault}
                   stroke={isSelected ? ATLAS_COLORS.gold : isAfrica ? COLORS.landAfricaBorder : COLORS.landDefaultBorder}
-                  strokeWidth={isSelected ? 2.2 / transform.k : isAfrica ? 0.9 : 0.5}
+                  strokeWidth={isSelected ? 2.2 : isAfrica ? 0.9 : 0.5}
                   strokeOpacity={isSelected ? 1 : isAfrica ? 0.8 : 0.5}
                   vectorEffect="non-scaling-stroke"
                   tabIndex={isInteractive ? 0 : undefined}
                   role={isInteractive ? "button" : undefined}
-                  aria-label={isInteractive ? (lang === "fr" ? `Ouvrir ${country.name}` : `Open ${country.name}`) : undefined}
+                  aria-label={isInteractive ? (lang === "fr" ? `Ouvrir ${country.label}` : `Open ${country.label}`) : undefined}
+                  data-country-id={country.countryId || undefined}
+                  data-territory-id={country.territoryId || undefined}
                   data-country-name={country.name}
                   data-continent={country.continent || undefined}
-                  data-testid={isInteractive ? `atlas-country-${country.id}` : undefined}
+                  data-testid={isInteractive ? `atlas-country-${country.countryId || country.territoryId || country.id}` : undefined}
                   onClick={isInteractive ? () => activateCountry(country) : undefined}
                   onKeyDown={isInteractive ? (event) => handleCountryKeyDown(event, country) : undefined}
                   style={isInteractive ? { cursor: "pointer", outline: "none" } : undefined}
                 >
-                  <title>{country.name}</title>
+                  <title>{country.label}</title>
                 </path>
               );
             })}
@@ -291,6 +336,26 @@ const WorldMap = ({
             })()}
 
           {children}
+
+          {geoFusion === null && visibleCountryLabels.map((label) => (
+            <text
+              key={`country-label-${label.id}`}
+              x={label.x}
+              y={label.y}
+              fontSize={label.fontSizePx / transform.k}
+              fill={label.active ? ATLAS_COLORS.gold : ATLAS_COLORS.textBone}
+              textAnchor="middle"
+              dominantBaseline="middle"
+              paintOrder="stroke"
+              stroke={ATLAS_COLORS.ocean}
+              strokeWidth={3 / transform.k}
+              strokeLinejoin="round"
+              style={{ fontFamily: "serif", pointerEvents: "none" }}
+              data-testid={`atlas-country-label-${label.id}`}
+            >
+              {label.text}
+            </text>
+          ))}
         </g>
       </svg>
 
