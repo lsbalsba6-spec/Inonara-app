@@ -39,7 +39,7 @@ const WorldMap = ({
   onZoomChange,
   onCountrySelect,
   onCountriesReady,
-  selectedCountryName = null,
+  selectedCountryName,
   focusCountryName = null,
   lang = "en",
   highlightAfrica = true,
@@ -228,7 +228,7 @@ const WorldMap = ({
     [geoFusion, groupCentroids, width, height]
   );
 
-  const activeCountryName = selectedCountryName || internalSelectedCountry;
+  const activeCountryName = selectedCountryName !== undefined ? selectedCountryName : internalSelectedCountry;
 
   const visibleCountryLabels = useMemo(() => {
     if (geoFusion !== null || !highlightAfrica) return [];
