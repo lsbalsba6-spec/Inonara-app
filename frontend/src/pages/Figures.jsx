@@ -13,6 +13,29 @@ function displayValue(value, translated, lang) {
   return translated || localizedValue(value, lang, "");
 }
 
+const FigureSource = ({ source, lang }) => {
+  const structured = source && typeof source === "object" && !Array.isArray(source);
+  const sourceValue = structured ? (source.title || source.name || source.label || source.text || "") : source;
+  const translated = useTranslated(sourceValue || "");
+  const label = displayValue(sourceValue, translated, lang);
+  const publisher = structured ? localizedValue(source.publisher || source.institution || source.author, lang, "") : "";
+  const year = structured ? source.year : "";
+  const url = structured ? (source.url || source.source_url) : "";
+  const metadata = [publisher, year].filter(Boolean).join(" · ");
+
+  if (!label && !metadata) return null;
+  return (
+    <li>
+      {url ? (
+        <a href={url} target="_blank" rel="noreferrer" className="text-gold/90 underline underline-offset-2 hover:text-gold">
+          {label || url}
+        </a>
+      ) : label}
+      {metadata && <span className="text-bone/45">{label ? " — " : ""}{metadata}</span>}
+    </li>
+  );
+};
+
 const FigureCard = ({ f, t, lang }) => {
   const translatedName = useTranslated(f.name || "");
   const translatedSummary = useTranslated(f.summary || "");
@@ -192,7 +215,7 @@ export const FigureDetail = () => {
           <section className="border-t border-[#2A2421] pt-10">
             <p className="overline">{t("common.sources")}</p>
             <ul className="list-disc pl-5 space-y-2 mt-4 text-bone/70">
-              {f.sources.map((s, index) => <li key={`${localizedValue(s, "en", "source")}-${index}`}>{localizedValue(s, lang, "")}</li>)}
+              {f.sources.map((s, index) => <FigureSource key={`${localizedValue(s, "en", "source")}-${index}`} source={s} lang={lang} />)}
             </ul>
           </section>
         )}
