@@ -15,22 +15,26 @@ const asText = (value) => {
 
 const resolveLocalizedValue = (value, lang) => {
   if (!value) return { text: "", localized: true };
+
+  // The historical corpus is French-first. Plain strings are therefore
+  // considered already localized in French, but must be translated when the
+  // interface is switched to English. Structured { fr, en } values still win
+  // immediately and never trigger a translation request when the requested
+  // locale exists.
   if (typeof value !== "object" || Array.isArray(value)) {
-    return { text: asText(value), localized: lang === "en" };
+    return { text: asText(value), localized: lang === "fr" };
   }
 
   const direct = asText(value[lang]);
   if (direct) return { text: direct, localized: true };
 
-  const english = asText(value.en);
   const french = asText(value.fr);
+  const english = asText(value.en);
   const generic = asText(value.text);
-  const fallback = english || french || generic;
 
-  // English is the source language for the translation endpoint. If an
-  // object lacks the requested locale, keep a stable textual fallback and
-  // only call the translator for non-English targets.
-  return { text: fallback, localized: lang === "en" || (!english && lang === "fr" && Boolean(french)) };
+  if (french) return { text: french, localized: lang === "fr" };
+  if (english) return { text: english, localized: lang === "en" };
+  return { text: generic, localized: false };
 };
 
 const fetchTranslation = async (text, target) => {
@@ -51,10 +55,11 @@ const fetchTranslation = async (text, target) => {
 };
 
 /**
- * Returns localized text for either plain strings or structured values such
- * as { fr, en }. Structured values use the requested locale immediately when
- * available; otherwise the textual fallback is translated for non-English
- * locales. Falls back gracefully on error and caches translations per session.
+ * Returns localized text for either French-first plain strings or structured
+ * values such as { fr, en }. Structured values use the requested locale
+ * immediately when available. Missing locales and plain French-first strings
+ * are translated to the active locale, with graceful fallback on failure and
+ * a per-session translation cache.
  */
 export const useTranslated = (value) => {
   const { lang } = useI18n();
@@ -69,7 +74,7 @@ export const useTranslated = (value) => {
       setOut("");
       return;
     }
-    if (lang === "en" || alreadyLocalized) {
+    if (alreadyLocalized) {
       setOut(sourceText);
       return;
     }
