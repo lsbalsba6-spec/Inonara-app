@@ -18,9 +18,17 @@ export const CIVILIZATION_ENRICHMENT_BY_ID = Object.fromEntries(
 
 export function mergeCivilizationRecord(remote = {}, local = {}) {
   const merged = { ...remote, ...local };
-  // Enriched records keep media empty until rights metadata is explicit.
-  // The UI can therefore distinguish sourced editorial content from legacy imagery.
-  if (Object.prototype.hasOwnProperty.call(local, "media")) merged.media = local.media;
+  // Enriched records deliberately hide legacy imagery when rights metadata has
+  // not been curated. This keeps the module compliant with the editorial rule
+  // that every displayed medium needs provenance, author/source and rights.
+  if (Object.prototype.hasOwnProperty.call(local, "media")) {
+    merged.media = local.media;
+    const primary = Array.isArray(local.media) ? local.media.find((item) => item?.url && item?.license) : null;
+    merged.image_url = primary?.url || null;
+    merged.image_credit = primary?.credit || null;
+    merged.image_source_url = primary?.sourceUrl || null;
+    merged.wikipedia_title = null;
+  }
   return merged;
 }
 
