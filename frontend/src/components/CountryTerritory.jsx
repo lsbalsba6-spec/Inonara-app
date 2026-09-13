@@ -9,12 +9,6 @@ const COPY = {
     overline: "Territory",
     title: "{country}: spaces, waters and landscapes",
     intro: "Territorial data is presented according to available sources and does not automatically project contemporary borders onto ancient periods.",
-    statuses: {
-      ready: "Documented",
-      provisional: "Read with context",
-      disputed: "Historical debate",
-      "research-gap": "To investigate",
-    },
     mapping: "Interactive geography",
     places: "Reference places",
     mapIntro: "The map is centered on the country itself. Zoom to reveal more local detail; documented places are layered above the national outline.",
@@ -33,12 +27,6 @@ const COPY = {
     overline: "Territoire",
     title: "{country} : espaces, eaux et paysages",
     intro: "Les données territoriales sont présentées selon les sources disponibles et ne projettent pas automatiquement les frontières contemporaines sur les périodes anciennes.",
-    statuses: {
-      ready: "Documenté",
-      provisional: "À lire avec contexte",
-      disputed: "Débat historique",
-      "research-gap": "À approfondir",
-    },
     mapping: "Géographie interactive",
     places: "Lieux de référence",
     mapIntro: "La carte est centrée sur le pays lui-même. Zoomez pour faire apparaître davantage de détails locaux ; les lieux documentés sont superposés au contour national.",
@@ -129,7 +117,7 @@ export function CountryTerritory({ dossier = {}, territory = {}, sourceMap = new
               <div key={place.id || `territory-place-${index}`} className="rounded-xl border border-bone/10 p-3">
                 <p className="text-sm font-medium text-bone"><TranslatedInline value={place.displayName} /></p>
                 {place.kind && <p className="mt-1 text-xs text-bone/50">{copy.kinds[place.kind] || place.kind}</p>}
-                <SourceLinks ids={place.sources} sourceMap={sourceMap} />
+                <SourceLinks ids={place.sourceIds || place.sources || []} sourceMap={sourceMap} />
               </div>
             ))}
           </div>
@@ -139,21 +127,14 @@ export function CountryTerritory({ dossier = {}, territory = {}, sourceMap = new
       <div className="grid gap-4">
         {sections.map((section, index) => (
           <article key={section.id || `territory-section-${index}`} className="rounded-2xl border border-bone/10 bg-bone/[0.025] p-5">
-            <div className="flex flex-wrap items-start justify-between gap-3">
-              <h3 className="font-serif text-2xl text-bone"><TranslatedInline value={section.title || section.name} /></h3>
-              {section.status && (
-                <span className="rounded-full border border-bone/15 px-2.5 py-1 text-[10px] uppercase tracking-wider text-bone/50">
-                  {copy.statuses[section.status] || section.status}
-                </span>
-              )}
-            </div>
+            <h3 className="font-serif text-2xl text-bone"><TranslatedInline value={section.title || section.name} /></h3>
             {section.summary && <TranslatedText value={section.summary} className="mt-3 leading-7 text-bone/70" />}
             {section.facts?.length > 0 && (
               <ul className="mt-4 space-y-2 text-sm leading-6 text-bone/65">
                 {section.facts.map((fact, i) => <li key={i}>• <TranslatedInline value={fact} /></li>)}
               </ul>
             )}
-            <SourceLinks ids={section.sources} sourceMap={sourceMap} />
+            <SourceLinks ids={section.sourceIds || section.sources || []} sourceMap={sourceMap} />
           </article>
         ))}
       </div>
