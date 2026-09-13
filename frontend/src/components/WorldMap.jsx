@@ -363,7 +363,7 @@ const WorldMap = ({
         <button
           type="button"
           onClick={resetView}
-          className="absolute top-3 right-3 z-10 rounded border border-gold/30 bg-black/55 px-3 py-2 text-[0.65rem] uppercase tracking-[0.14em] text-gold backdrop-blur"
+          className="absolute top-20 right-3 z-10 rounded border border-gold/30 bg-black/55 px-3 py-2 text-[0.65rem] uppercase tracking-[0.14em] text-gold backdrop-blur"
           data-testid="atlas-reset-view"
         >
           {lang === "fr" ? "Vue Afrique" : "Africa view"}
