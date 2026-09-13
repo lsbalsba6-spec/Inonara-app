@@ -20,8 +20,8 @@ const SearchPage = () => {
     const term = initial.trim();
     if (!term || term.length < 2) { setResults(null); return; }
     setLoading(true);
-    search(term).then((r) => setResults(r.results)).catch(() => setResults(null)).finally(() => setLoading(false));
-  }, [initial]);
+    search(term, lang).then((r) => setResults(r.results)).catch(() => setResults(null)).finally(() => setLoading(false));
+  }, [initial, lang]);
 
   const submit = (e) => {
     e?.preventDefault();
