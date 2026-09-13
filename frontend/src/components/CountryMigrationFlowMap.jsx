@@ -12,6 +12,9 @@ const TYPE_STYLES = {
   forced: { color: "#A33A32", dashArray: "5 7" },
   mixed: { color: "#7C5AA6", dashArray: "12 5 3 5" },
   voluntary: { color: "#4F8A67", dashArray: undefined },
+  "colonial-settlement": { color: "#80624A", dashArray: "14 5" },
+  ancient: { color: "#2B7A78", dashArray: "3 6" },
+  trade: { color: "#3569A8", dashArray: "8 5" },
 };
 
 const COPY = {
@@ -19,6 +22,9 @@ const COPY = {
     title: "Carte des mobilités et migrations",
     intro: "La carte garde le pays au centre et superpose les axes de mobilité documentés. Les couleurs distinguent les types de déplacement ; zoomez pour retrouver les lieux et le contexte territorial.",
     all: "Toutes les périodes",
+    allTypes: "Tous les types",
+    filterType: "Filtrer par type de mobilité",
+    filterPeriod: "Filtrer par période",
     legend: "Grande légende",
     types: {
       "regional-mobility": "Mobilité régionale / peuplement",
@@ -27,6 +33,9 @@ const COPY = {
       forced: "Déplacement forcé",
       mixed: "Mobilités mixtes",
       voluntary: "Migration volontaire",
+      "colonial-settlement": "Installation coloniale",
+      ancient: "Mobilité ancienne",
+      trade: "Circulation commerciale",
     },
     origin: "Point de départ / zone d’origine",
     destination: "Point d’arrivée / zone de destination",
@@ -41,6 +50,9 @@ const COPY = {
     title: "Mobility and migration map",
     intro: "The map keeps the country at the center and overlays documented mobility corridors. Colors distinguish movement types; zoom to reconnect routes with places and territory.",
     all: "All periods",
+    allTypes: "All types",
+    filterType: "Filter by mobility type",
+    filterPeriod: "Filter by period",
     legend: "Full legend",
     types: {
       "regional-mobility": "Regional mobility / settlement",
@@ -49,6 +61,9 @@ const COPY = {
       forced: "Forced displacement",
       mixed: "Mixed mobility",
       voluntary: "Voluntary migration",
+      "colonial-settlement": "Colonial settlement",
+      ancient: "Ancient mobility",
+      trade: "Trade circulation",
     },
     origin: "Starting point / origin area",
     destination: "Arrival point / destination area",
@@ -65,6 +80,10 @@ function TranslatedValue({ value, fallback = "" }) {
   const { lang } = useI18n();
   const translated = useTranslated(value || "");
   return translated || localizedValue(value, lang) || fallback || null;
+}
+
+function routeType(route) {
+  return route?.type || route?.migration_type || "mixed";
 }
 
 function periodKey(route) {
@@ -110,19 +129,43 @@ function boundsForCountryAndRoutes(routes, iso2) {
 export default function CountryMigrationFlowMap({ dossier, routes = [], note, places = [] }) {
   const { lang } = useI18n();
   const copy = COPY[lang] || COPY.en;
+  const [type, setType] = useState("all");
+  const [period, setPeriod] = useState("all");
+
+  const types = useMemo(
+    () => [...new Set(routes.map(routeType).filter(Boolean))],
+    [routes],
+  );
+
+  const routesForType = useMemo(
+    () => type === "all" ? routes : routes.filter((route) => routeType(route) === type),
+    [routes, type],
+  );
+
   const periods = useMemo(() => {
     const unique = new Map();
-    routes.forEach((route) => {
+    routesForType.forEach((route) => {
       const key = periodKey(route);
       if (!unique.has(key)) unique.set(key, route);
     });
     return [...unique.entries()].map(([key, route]) => ({ key, label: periodLabel(route, copy) }));
-  }, [routes, copy]);
-  const [period, setPeriod] = useState("all");
-  const visibleRoutes = period === "all" ? routes : routes.filter((route) => periodKey(route) === period);
-  const bounds = useMemo(() => boundsForCountryAndRoutes(visibleRoutes, dossier?.iso2), [visibleRoutes, dossier?.iso2]);
+  }, [routesForType, copy]);
+
+  const visibleRoutes = period === "all"
+    ? routesForType
+    : routesForType.filter((route) => periodKey(route) === period);
+
+  const bounds = useMemo(
+    () => boundsForCountryAndRoutes(visibleRoutes.length ? visibleRoutes : routesForType, dossier?.iso2),
+    [visibleRoutes, routesForType, dossier?.iso2],
+  );
 
   if (!routes.length) return null;
+
+  const selectType = (nextType) => {
+    setType(nextType);
+    setPeriod("all");
+  };
 
   return (
     <section className="space-y-5" aria-labelledby="migration-flow-map-title">
@@ -132,16 +175,40 @@ export default function CountryMigrationFlowMap({ dossier, routes = [], note, pl
         <p className="mt-2 max-w-3xl text-sm leading-relaxed text-bone/60">{copy.intro}</p>
       </div>
 
-      <div className="flex flex-wrap gap-2">
-        <button type="button" aria-pressed={period === "all"} onClick={() => setPeriod("all")} className={`rounded-full border px-3 py-1.5 text-xs ${period === "all" ? "border-gold bg-gold/10 text-gold" : "border-bone/15 text-bone/65"}`}>{copy.all}</button>
-        {periods.map((item) => (
-          <button key={item.key} type="button" aria-pressed={period === item.key} onClick={() => setPeriod(item.key)} className={`rounded-full border px-3 py-1.5 text-xs ${period === item.key ? "border-gold bg-gold/10 text-gold" : "border-bone/15 text-bone/65"}`}>{item.label}</button>
-        ))}
-      </div>
+      {types.length > 1 && (
+        <div>
+          <p className="mb-2 text-[10px] uppercase tracking-[0.18em] text-bone/40">{copy.filterType}</p>
+          <div className="flex flex-wrap gap-2">
+            <button type="button" aria-pressed={type === "all"} onClick={() => selectType("all")} className={`rounded-full border px-3 py-1.5 text-xs ${type === "all" ? "border-gold bg-gold/10 text-gold" : "border-bone/15 text-bone/65"}`}>{copy.allTypes}</button>
+            {types.map((item) => {
+              const style = TYPE_STYLES[item] || { color: "#7A6A58" };
+              return (
+                <button key={item} type="button" aria-pressed={type === item} onClick={() => selectType(item)} className={`flex items-center gap-2 rounded-full border px-3 py-1.5 text-xs ${type === item ? "border-gold bg-gold/10 text-gold" : "border-bone/15 text-bone/65"}`}>
+                  <span className="h-2 w-2 rounded-full" style={{ background: style.color }} />
+                  {copy.types[item] || item}
+                </button>
+              );
+            })}
+          </div>
+        </div>
+      )}
+
+      {periods.length > 1 && (
+        <div>
+          <p className="mb-2 text-[10px] uppercase tracking-[0.18em] text-bone/40">{copy.filterPeriod}</p>
+          <div className="flex flex-wrap gap-2">
+            <button type="button" aria-pressed={period === "all"} onClick={() => setPeriod("all")} className={`rounded-full border px-3 py-1.5 text-xs ${period === "all" ? "border-gold bg-gold/10 text-gold" : "border-bone/15 text-bone/65"}`}>{copy.all}</button>
+            {periods.map((item) => (
+              <button key={item.key} type="button" aria-pressed={period === item.key} onClick={() => setPeriod(item.key)} className={`rounded-full border px-3 py-1.5 text-xs ${period === item.key ? "border-gold bg-gold/10 text-gold" : "border-bone/15 text-bone/65"}`}>{item.label}</button>
+            ))}
+          </div>
+        </div>
+      )}
 
       <CountryShapeMap dossier={dossier} places={places} boundsOverride={bounds} minZoom={2} className="h-[560px] w-full md:h-[680px]">
         {visibleRoutes.map((route) => {
-          const style = TYPE_STYLES[route.type] || { color: "#7A6A58" };
+          const currentType = routeType(route);
+          const style = TYPE_STYLES[currentType] || { color: "#7A6A58" };
           if (!Array.isArray(route.origin_coordinates) || !Array.isArray(route.destination_coordinates)) return null;
           const [originLon, originLat] = route.origin_coordinates;
           const [destinationLon, destinationLat] = route.destination_coordinates;
@@ -151,9 +218,10 @@ export default function CountryMigrationFlowMap({ dossier, routes = [], note, pl
                 <Popup>
                   <div className="max-w-[260px]">
                     <strong><TranslatedValue value={route.label} /></strong><br />
-                    <span>{periodLabel(route, copy)}</span><br />
+                    <span>{copy.types[currentType] || currentType} · {periodLabel(route, copy)}</span><br />
                     <span><TranslatedValue value={route.origin} /> → <TranslatedValue value={route.destination} /></span>
                     {route.description && <p style={{ marginTop: 8 }}><TranslatedValue value={route.description} /></p>}
+                    {route.source_url && <p style={{ marginTop: 8 }}><a href={route.source_url} target="_blank" rel="noreferrer">{copy.source}</a></p>}
                   </div>
                 </Popup>
               </Polyline>
@@ -171,9 +239,9 @@ export default function CountryMigrationFlowMap({ dossier, routes = [], note, pl
       <aside className="rounded-2xl border border-[#b8cad8] bg-[#f5f9fb] p-5 text-[#243845]" aria-label={copy.legend}>
         <h4 className="font-serif text-xl">{copy.legend}</h4>
         <div className="mt-4 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
-          {Object.entries(copy.types).map(([type, label]) => {
-            const style = TYPE_STYLES[type];
-            return <div key={type} className="flex items-center gap-3 text-sm"><span className="block h-1 w-10 rounded-full" style={{ background: style?.color }} />{label}</div>;
+          {types.map((item) => {
+            const style = TYPE_STYLES[item] || { color: "#7A6A58" };
+            return <div key={item} className="flex items-center gap-3 text-sm"><span className="block h-1 w-10 rounded-full" style={{ background: style.color }} />{copy.types[item] || item}</div>;
           })}
           <div className="flex items-center gap-3 text-sm"><span className="h-4 w-4 rounded-full border-[3px] border-[#2F80A3] bg-white" />{copy.origin}</div>
           <div className="flex items-center gap-3 text-sm"><span className="h-4 w-4 rounded-full border-2 border-[#17384a] bg-[#2F80A3]" />{copy.destination}</div>
@@ -183,13 +251,14 @@ export default function CountryMigrationFlowMap({ dossier, routes = [], note, pl
 
       <div className="grid gap-3 md:grid-cols-2">
         {visibleRoutes.map((route) => {
-          const style = TYPE_STYLES[route.type] || { color: "#7A6A58" };
+          const currentType = routeType(route);
+          const style = TYPE_STYLES[currentType] || { color: "#7A6A58" };
           return (
             <article key={route.id} className="rounded-xl border border-bone/10 bg-bone/[0.02] p-4">
               <div className="flex items-start gap-3">
                 <span className="mt-2 h-2.5 w-2.5 shrink-0 rounded-full" style={{ background: style.color }} />
                 <div>
-                  <p className="text-xs uppercase tracking-wider text-gold">{copy.period} · {periodLabel(route, copy)}</p>
+                  <p className="text-xs uppercase tracking-wider text-gold">{copy.types[currentType] || currentType} · {copy.period} · {periodLabel(route, copy)}</p>
                   <h4 className="mt-1 text-bone"><TranslatedValue value={route.label} /></h4>
                   <p className="mt-1 text-xs text-bone/55"><TranslatedValue value={route.origin} /> → <TranslatedValue value={route.destination} /></p>
                   {route.people && <p className="mt-2 text-xs text-bone/55">{copy.people} : <TranslatedValue value={route.people} /></p>}
