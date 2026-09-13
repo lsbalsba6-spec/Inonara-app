@@ -145,7 +145,7 @@ const Journey = () => {
           </Link>
         </section>
 
-        {sortChronologically(j.stops || [], "year", "heading").map((stop, index) => (
+        {sortChronologically(j.stops || [], "year", "heading", lang).map((stop, index) => (
           <JourneyStop key={stop.id || `${stop.year || "stop"}-${index}`} stop={stop} index={index} t={t} copy={copy} lang={lang} />
         ))}
 
