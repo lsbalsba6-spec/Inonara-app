@@ -3,7 +3,7 @@ import { Link, useSearchParams } from "react-router-dom";
 import { MapContainer, TileLayer, CircleMarker, Popup } from "react-leaflet";
 import { fetchCivilizations } from "../lib/api";
 import { useI18n } from "../i18n";
-import { localizedValue, searchableText, sortLocalized } from "../lib/contentSort";
+import { localizedValue, searchableText, sortAlphabetically } from "../lib/contentSort";
 import { useTranslated } from "../lib/useTranslated";
 import { SmartImage } from "../components/SmartImage";
 
@@ -84,8 +84,8 @@ const Civilizations = () => {
   const types = useMemo(() => {
     const byKey = new Map();
     civs.forEach((c) => {
-      const key = localizedValue(c.polity_type, "en", "");
-      if (key) byKey.set(key, localizedValue(c.polity_type, lang, key));
+      const key = localizedValue(c.polity_type, "en");
+      if (key) byKey.set(key, localizedValue(c.polity_type, lang));
     });
     return [...byKey.entries()].sort((a, b) => a[1].localeCompare(b[1], lang));
   }, [civs, lang]);
@@ -95,14 +95,14 @@ const Civilizations = () => {
     const periodDef = PERIODS.find(([key]) => key === period);
     const filtered = civs.filter((c) => {
       const matchesRegion = region === "all" || c.region === region;
-      const typeKey = localizedValue(c.polity_type, "en", "");
+      const typeKey = localizedValue(c.polity_type, "en");
       const matchesType = type === "all" || typeKey === type;
       const matchesPeriod = !periodDef || overlaps(c, periodDef[1], periodDef[2]);
       const haystack = searchableText(c.name, c.summary, c.region, c.alt_names, c.polity_type, c.legacy, c.languages, c.religions, c.capitals, c.major_sites);
       return matchesRegion && matchesType && matchesPeriod && (!needle || haystack.includes(needle));
     });
-    if (sort === "name") return sortLocalized(filtered, "name", lang);
-    return [...filtered].sort((a, b) => (a.era_start ?? 0) - (b.era_start ?? 0) || localizedValue(a.name, lang, "").localeCompare(localizedValue(b.name, lang, ""), lang));
+    if (sort === "name") return sortAlphabetically(filtered, "name", lang);
+    return [...filtered].sort((a, b) => (a.era_start ?? 0) - (b.era_start ?? 0) || localizedValue(a.name, lang).localeCompare(localizedValue(b.name, lang), lang));
   }, [civs, region, type, period, query, sort, lang]);
 
   const earliest = civs.length ? Math.min(...civs.map((c) => c.era_start).filter(Number.isFinite)) : null;
@@ -141,13 +141,13 @@ const Civilizations = () => {
           <MapContainer center={[4, 19]} zoom={3} minZoom={2} className="h-[420px] w-full" style={{ background: "#0A0908" }}>
             <TileLayer url="https://{s}.basemaps.cartocdn.com/dark_nolabels/{z}/{x}/{y}{r}.png" attribution='&copy; OSM &copy; CARTO' subdomains="abcd" />
             <TileLayer url="https://{s}.basemaps.cartocdn.com/dark_only_labels/{z}/{x}/{y}{r}.png" subdomains="abcd" opacity={0.65} />
-            {mapItems.map((c) => <CircleMarker key={c.id} center={c.coords} radius={7} pathOptions={{ color: "#D4AF37", fillColor: "#D4AF37", fillOpacity: 0.8, weight: 1.5 }}><Popup><strong>{localizedValue(c.name, lang, c.id)}</strong><br />{fmt(c.era_start, t)} — {fmt(c.era_end, t)}</Popup></CircleMarker>)}
+            {mapItems.map((c) => <CircleMarker key={c.id} center={c.coords} radius={7} pathOptions={{ color: "#D4AF37", fillColor: "#D4AF37", fillOpacity: 0.8, weight: 1.5 }}><Popup><strong>{localizedValue(c.name, lang)}</strong><br />{fmt(c.era_start, t)} — {fmt(c.era_end, t)}</Popup></CircleMarker>)}
           </MapContainer>
         </div>
         <div className="rounded-2xl border border-bone/10 bg-bone/[0.02] p-6">
           <p className="overline text-gold">{copy.mapOverline}</p><h2 className="mt-2 font-serif text-3xl text-bone">{copy.mapTitle}</h2><p className="mt-3 text-sm leading-6 text-bone/55">{copy.mapCopy}</p>
           <div className="mt-7 border-t border-bone/10 pt-6"><p className="overline text-gold">{copy.timelineOverline}</p><h3 className="mt-2 font-serif text-2xl text-bone">{copy.timelineTitle}</h3>
-            <div className="mt-4 max-h-[250px] space-y-3 overflow-y-auto pr-2">{visible.slice(0, 12).map((c) => <Link key={c.id} to={`/civilization/${c.id}`} className="flex items-start justify-between gap-4 border-b border-bone/10 pb-3"><span className="text-sm text-bone/80">{localizedValue(c.name, lang, c.id)}</span><span className="shrink-0 text-[11px] text-gold">{fmt(c.era_start, t)} → {fmt(c.era_end, t)}</span></Link>)}</div>
+            <div className="mt-4 max-h-[250px] space-y-3 overflow-y-auto pr-2">{visible.slice(0, 12).map((c) => <Link key={c.id} to={`/civilization/${c.id}`} className="flex items-start justify-between gap-4 border-b border-bone/10 pb-3"><span className="text-sm text-bone/80">{localizedValue(c.name, lang)}</span><span className="shrink-0 text-[11px] text-gold">{fmt(c.era_start, t)} → {fmt(c.era_end, t)}</span></Link>)}</div>
           </div>
         </div>
       </section>
