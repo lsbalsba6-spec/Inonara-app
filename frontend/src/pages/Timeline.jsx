@@ -28,7 +28,7 @@ const TranslatedInline = ({ value }) => {
 };
 
 const Timeline = () => {
-  const { t } = useI18n();
+  const { t, lang } = useI18n();
   const [searchParams, setSearchParams] = useSearchParams();
   const [figures, setFigures] = useState([]);
   const [hovered, setHovered] = useState(null);
@@ -97,7 +97,7 @@ const Timeline = () => {
     return true;
   };
 
-  const needle = query.trim().toLocaleLowerCase("fr");
+  const needle = query.trim().toLocaleLowerCase(lang === "fr" ? "fr" : "en");
   const visibleFigures = figures.filter((f) => {
     const matchesSearch = !needle || searchableText(f.name, f.summary, f.region, f.category, f.era).includes(needle);
     return activeCats[f.category] && matchesEra(f.year) && matchesSearch;
