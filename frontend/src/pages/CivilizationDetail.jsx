@@ -12,10 +12,28 @@ const COPY = {
   en: {
     notFound: "Civilization not found.",
     unknownLocation: "Location not documented",
+    exploreLabel: "Continue exploring",
+    exploreTitle: "Follow this civilization across AfroAtlas",
+    exploreCopy: "Move from this dossier into the wider historical and cultural network without losing the current context.",
+    timelineTitle: "Historical timeline",
+    timelineCopy: "Find people and events connected to this civilization across time.",
+    peoplesTitle: "Peoples & communities",
+    peoplesCopy: "Explore peoples whose histories, territories or cultures intersect with this civilization.",
+    searchTitle: "Search AfroAtlas",
+    searchCopy: "Search the whole platform for related countries, figures, stories, culture and diaspora entries.",
   },
   fr: {
     notFound: "Civilisation introuvable.",
     unknownLocation: "Localisation non documentée",
+    exploreLabel: "Poursuivre l’exploration",
+    exploreTitle: "Suivre cette civilisation dans AfroAtlas",
+    exploreCopy: "Passez de ce dossier au réseau historique et culturel plus large sans perdre le contexte en cours.",
+    timelineTitle: "Chronologie historique",
+    timelineCopy: "Retrouvez les personnes et événements reliés à cette civilisation à travers le temps.",
+    peoplesTitle: "Peuples et communautés",
+    peoplesCopy: "Explorez les peuples dont les histoires, territoires ou cultures croisent cette civilisation.",
+    searchTitle: "Rechercher dans AfroAtlas",
+    searchCopy: "Recherchez dans toute la plateforme les pays, personnalités, histoires, cultures et diasporas associés.",
   },
 };
 
@@ -103,6 +121,7 @@ const CivilizationDetail = () => {
   const coords = Array.isArray(c.coords) && c.coords.length >= 2 ? c.coords : null;
   const displayName = localizedValue(c.name, lang, "");
   const displaySummary = tSummary || localizedValue(c.summary, lang, "");
+  const exploreQuery = encodeURIComponent(displayName);
 
   return (
     <div data-testid="civilization-detail">
@@ -189,6 +208,28 @@ const CivilizationDetail = () => {
             ))}
           </ol>
         </Section>
+
+        {displayName && (
+          <section className="py-10 border-t border-[#2A2421]" data-testid="civilization-explore-links">
+            <p className="overline">{copy.exploreLabel}</p>
+            <h2 className="font-serif text-3xl md:text-4xl text-bone mt-3">{copy.exploreTitle}</h2>
+            <p className="mt-4 max-w-3xl text-sm md:text-base leading-relaxed text-bone/60">{copy.exploreCopy}</p>
+            <div className="mt-6 grid gap-4 md:grid-cols-3">
+              <Link to={`/timeline?q=${exploreQuery}`} className="rounded-xl border border-gold/20 bg-gold/[0.04] p-5 transition hover:border-gold/50" data-testid="civilization-explore-timeline">
+                <p className="font-serif text-xl text-bone">{copy.timelineTitle}</p>
+                <p className="mt-2 text-xs leading-5 text-bone/55">{copy.timelineCopy}</p>
+              </Link>
+              <Link to={`/people?q=${exploreQuery}`} className="rounded-xl border border-bone/10 bg-bone/[0.025] p-5 transition hover:border-gold/40" data-testid="civilization-explore-peoples">
+                <p className="font-serif text-xl text-bone">{copy.peoplesTitle}</p>
+                <p className="mt-2 text-xs leading-5 text-bone/55">{copy.peoplesCopy}</p>
+              </Link>
+              <Link to={`/search?q=${exploreQuery}`} className="rounded-xl border border-bone/10 bg-bone/[0.025] p-5 transition hover:border-gold/40" data-testid="civilization-explore-search">
+                <p className="font-serif text-xl text-bone">{copy.searchTitle}</p>
+                <p className="mt-2 text-xs leading-5 text-bone/55">{copy.searchCopy}</p>
+              </Link>
+            </div>
+          </section>
+        )}
 
         {c.sources?.length > 0 && (
           <Section overline={t("common.sources")} title={t("civdetail.h2.sources")}>
