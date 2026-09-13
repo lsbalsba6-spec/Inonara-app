@@ -47,6 +47,14 @@ function TranslatedInline({ value }) {
   return translated || localizedValue(value, lang) || null;
 }
 
+function TranslatedPreview({ value, limit = 180 }) {
+  const { lang } = useI18n();
+  const translated = useTranslated(value || "");
+  const text = translated || localizedValue(value, lang) || "";
+  if (!text) return null;
+  return <>{text.length > limit ? `${text.slice(0, limit)}…` : text}</>;
+}
+
 /**
  * A self-contained, country-scoped mini-map: its own timeline slider, its
  * own legend, and its own zoom/pan — independent of the main Atlas page.
@@ -77,9 +85,8 @@ export default function CountryMiniMap({
   const visibleCivs = civs.filter((c) => year >= c.era_start && year <= c.era_end);
   const visibleDiaspora = diasporaEntries.filter((d) => year >= d.era_start && year <= d.era_end);
   const visibleRoutes = routes.filter((r) => year >= r.era_start && year <= r.era_end);
-  const selectedSummary = selected ? localizedValue(selected.summary || selected.description || selected.text, lang) : "";
-  const selectedSummaryPreview = selectedSummary.length > 180 ? `${selectedSummary.slice(0, 180)}…` : selectedSummary;
   const selectedName = selected ? (selected.name || selected.label || selected.title) : "";
+  const selectedSummary = selected ? (selected.summary || selected.description || selected.text) : "";
 
   return (
     <div className="relative overflow-hidden rounded-xl border border-[#2A2421]" style={{ height }} data-testid="country-mini-map">
@@ -205,7 +212,7 @@ export default function CountryMiniMap({
             </div>
             <button onClick={() => setSelected(null)} className="text-bone/60" aria-label={copy.close}>✕</button>
           </div>
-          {selectedSummaryPreview && <p className="mt-2 text-bone/70">{selectedSummaryPreview}</p>}
+          {selectedSummary && <p className="mt-2 text-bone/70"><TranslatedPreview value={selectedSummary} /></p>}
         </div>
       )}
     </div>
