@@ -2,6 +2,11 @@ import { useI18n } from "../i18n";
 import { localizedValue, searchableText } from "../lib/contentSort";
 import { useTranslated } from "../lib/useTranslated";
 
+const COPY = {
+  en: { institutionsMemory: "Institutions & memory" },
+  fr: { institutionsMemory: "Institutions & mémoire" },
+};
+
 function TranslatedInline({ value }) {
   const { lang } = useI18n();
   const translated = useTranslated(value || "");
@@ -42,15 +47,15 @@ function SourceLinks({ ids = [], sourceMap = new Map() }) {
   );
 }
 
-function TopicCards({ items = [], sourceMap, lang }) {
+function TopicCards({ items = [], sourceMap }) {
   return (
     <div className="grid gap-4 md:grid-cols-2">
       {items.map((item, index) => {
         const titleKey = searchableText(item.title) || `topic-${index}`;
         return (
           <article key={item.id || titleKey} className="rounded-xl border border-bone/10 bg-bone/[0.025] p-5">
-            <h3 className="font-serif text-xl text-bone"><TranslatedInline value={item.title} /></h3>
-            <TranslatedParagraph value={item.text || item.summary || item.note} className="mt-2 text-sm leading-relaxed text-bone/70" />
+            <h3 className="font-serif text-xl text-bone"><TranslatedInline value={item.title || item.name} /></h3>
+            <TranslatedParagraph value={item.text || item.summary || item.note || item.context} className="mt-2 text-sm leading-relaxed text-bone/70" />
             {item.paragraphs?.length > 0 && (
               <div className="mt-4 space-y-3">
                 {item.paragraphs.map((paragraph, paragraphIndex) => (
@@ -66,36 +71,53 @@ function TopicCards({ items = [], sourceMap, lang }) {
   );
 }
 
-function LawMemorySection({ section, sourceMap, lang }) {
+function LawMemorySection({ section, sourceMap }) {
   if (!section?.items?.length) return null;
   return (
     <section>
       <h2 className="mb-4 font-serif text-3xl text-gold"><TranslatedInline value={section.title} /></h2>
       {section.intro && <TranslatedParagraph value={section.intro} className="mb-5 max-w-4xl leading-7 text-bone/70" />}
-      <TopicCards items={section.items} sourceMap={sourceMap} lang={lang} />
+      <TopicCards items={section.items} sourceMap={sourceMap} />
     </section>
   );
 }
 
 export function SouthAfricaLawMemory({ dossier, sourceMap }) {
   const { lang } = useI18n();
-  const data = dossier?.law_memory;
-  if (!data) return null;
+  const copy = COPY[lang] || COPY.en;
+  const lawMemory = dossier?.law_memory;
+  const institutionsMemory = dossier?.institutions_memory;
 
-  const sections = [data.constitutional_democracy, data.justice_system, data.memory_reconciliation].filter((section) => section?.items?.length);
-  if (!sections.length && !data.intro) return null;
+  const sections = [
+    lawMemory?.constitutional_democracy,
+    lawMemory?.justice_system,
+    lawMemory?.memory_reconciliation,
+  ].filter((section) => section?.items?.length);
+
+  const institutionThemes = [
+    ...(institutionsMemory?.themes || []),
+    ...(institutionsMemory?.items || []),
+    ...(institutionsMemory?.sections || []),
+  ].filter(Boolean);
+
+  if (!sections.length && !lawMemory?.intro && !institutionThemes.length) return null;
 
   return (
     <div className="space-y-10">
-      <TranslatedParagraph value={data.intro} className="text-lg leading-relaxed text-bone/80" />
+      <TranslatedParagraph value={lawMemory?.intro || institutionsMemory?.intro} className="text-lg leading-relaxed text-bone/80" />
       {sections.map((section, index) => (
         <LawMemorySection
           key={section.id || searchableText(section.title) || `section-${index}`}
           section={section}
           sourceMap={sourceMap}
-          lang={lang}
         />
       ))}
+      {institutionThemes.length > 0 && (
+        <section>
+          <h2 className="mb-4 font-serif text-3xl text-gold">{copy.institutionsMemory}</h2>
+          <TopicCards items={institutionThemes} sourceMap={sourceMap} />
+        </section>
+      )}
     </div>
   );
 }
