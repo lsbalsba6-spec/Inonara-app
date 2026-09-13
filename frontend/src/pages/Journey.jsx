@@ -1,162 +1,289 @@
-import { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
-import { motion } from "framer-motion";
-import { ArrowRight } from "lucide-react";
-import { fetchJourney } from "../lib/api";
+import { useEffect, useMemo, useState } from "react";
+import { ArrowLeft, ArrowRight, BookOpen, CalendarDays, ExternalLink, MapPin, Network } from "lucide-react";
 import { useI18n } from "../i18n";
-import { useTranslated } from "../lib/useTranslated";
-import { localizedValue, sortChronologically } from "../lib/contentSort";
-import { SmartImage } from "../components/SmartImage";
+import JourneyMap from "../components/JourneyMap";
+import { JOURNEY_CATEGORIES, getLocalized, journeys } from "../data/journeys";
 
 const COPY = {
   fr: {
-    timeLabel: "Dans le temps",
-    timeTitle: "Chronologie complète",
-    timeCopy: "Quitter le récit guidé pour explorer librement les périodes et événements.",
-    spaceLabel: "Dans l’espace",
-    spaceTitle: "Atlas interactif",
-    spaceCopy: "Situer chaque étape, route, société et déplacement sur la carte Equal Earth.",
-    deepenLabel: "Approfondir",
-    deepenTitle: "Civilisations",
-    deepenCopy: "Explorer les formations historiques rencontrées dans le parcours.",
-    sourceRights: "source / droits",
+    overline: "Parcours · Journey",
+    heading: "Traverser l’histoire par étapes",
+    intro: "Choisissez un parcours, puis avancez étape par étape. La carte, le contexte et les relations documentaires évoluent avec votre progression.",
+    choose: "Choisir un parcours",
+    stop: "Étape",
+    of: "sur",
+    previous: "Précédente",
+    next: "Suivante",
+    relatedEvent: "Événement lié",
+    futureLinks: "Connexions préparées",
+    futureLinksCopy: "Ces identifiants sont prêts pour relier plus tard cette étape aux pays, civilisations, peuples, personnalités et événements sans dépendre aujourd’hui de leurs branches.",
+    sources: "Sources du parcours",
+    sourcesCopy: "Les textes sont synthétisés et paraphrasés. Les sources servent à vérifier et approfondir le parcours.",
+    completed: "Parcours terminé",
+    restart: "Revenir au début",
+    steps: "étapes",
   },
   en: {
-    timeLabel: "Across time",
-    timeTitle: "Full timeline",
-    timeCopy: "Leave the guided narrative and freely explore periods and events.",
-    spaceLabel: "Across space",
-    spaceTitle: "Interactive atlas",
-    spaceCopy: "Locate each stage, route, society and movement on the Equal Earth map.",
-    deepenLabel: "Go deeper",
-    deepenTitle: "Civilizations",
-    deepenCopy: "Explore the historical formations encountered along the journey.",
-    sourceRights: "source / rights",
+    overline: "Journey · Parcours",
+    heading: "Move through history one stop at a time",
+    intro: "Choose a journey, then progress stop by stop. The map, context and documentary relationships evolve as you move forward.",
+    choose: "Choose a journey",
+    stop: "Stop",
+    of: "of",
+    previous: "Previous",
+    next: "Next",
+    relatedEvent: "Related event",
+    futureLinks: "Prepared connections",
+    futureLinksCopy: "These identifiers are ready to connect this stop later to countries, civilizations, peoples, figures and timeline events without depending on their branches today.",
+    sources: "Journey sources",
+    sourcesCopy: "The texts are synthesized and paraphrased. Sources are provided for verification and further reading.",
+    completed: "Journey complete",
+    restart: "Return to the beginning",
+    steps: "stops",
   },
 };
 
-const formatYear = (year, t) => year < 0 ? `${Math.abs(year)} ${t("date.bce")}` : `${year} ${t("date.ce")}`;
-
-const JourneyStop = ({ stop, index, t, copy, lang }) => {
-  const heading = useTranslated(stop.heading || "");
-  const era = useTranslated(stop.era || "");
-  const place = useTranslated(stop.place || "");
-  const story = useTranslated(stop.story || "");
-  const linkLabel = useTranslated(stop.link?.label || "");
-  const displayedHeading = heading || localizedValue(stop.heading, lang);
-  const displayEra = era || localizedValue(stop.era, lang);
-  const displayPlace = place || localizedValue(stop.place, lang);
-  const displayStory = story || localizedValue(stop.story, lang);
-  const displayLinkLabel = linkLabel || localizedValue(stop.link?.label, lang);
-  const credit = localizedValue(stop.image_credit, lang);
-  const headingParts = displayedHeading.split(".");
-  const stepNumber = headingParts.length > 1 ? headingParts[0] : String(index + 1).padStart(2, "0");
-  const title = headingParts.length > 1 ? headingParts.slice(1).join(".").trim() : displayedHeading;
+const RelationPills = ({ stop }) => {
+  const groups = [
+    ["country", stop.countryIds],
+    ["civilization", stop.civilizationIds],
+    ["figure", stop.figureIds],
+    ["people", stop.peopleIds],
+    ["timeline", stop.timelineEventIds],
+  ];
 
   return (
-    <motion.section
-      initial={{ opacity: 0, y: 40 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, margin: "-100px" }}
-      transition={{ duration: 1 }}
-      className="grid lg:grid-cols-2 gap-12 items-center py-16 border-t border-[#2A2421]"
-      data-testid={`journey-stop-${stop.id}`}
-    >
-      <div className={index % 2 === 0 ? "" : "lg:order-2"}>
-        <p className="font-serif text-7xl text-gold/30 leading-none">{stepNumber}</p>
-        {(displayEra || displayPlace) && <p className="overline mt-4">{displayEra}{displayEra && displayPlace ? " · " : ""}{displayPlace}</p>}
-        <h2 className="font-serif text-4xl md:text-5xl text-bone mt-4 leading-tight">{title}</h2>
-        {displayStory && <p className="text-bone/80 mt-6 text-lg font-light leading-relaxed">{displayStory}</p>}
-        <div className="mt-5 flex flex-wrap gap-2 text-[10px] uppercase tracking-[0.15em] text-bone/45">
-          {displayEra && <span className="rounded-full border border-bone/15 px-3 py-1">{displayEra}</span>}
-          {displayPlace && <span className="rounded-full border border-bone/15 px-3 py-1">{displayPlace}</span>}
-          {Number.isFinite(stop.year) && <span className="rounded-full border border-gold/20 px-3 py-1 text-gold/75">{formatYear(stop.year, t)}</span>}
-        </div>
-        {stop.link?.to && displayLinkLabel && (
-          <Link
-            to={stop.link.to}
-            className="inline-flex items-center gap-3 mt-8 px-6 py-3 border border-gold/40 text-gold text-xs uppercase tracking-[0.25em] hover:bg-gold hover:text-ebony transition-colors"
-            data-testid={`journey-link-${stop.id}`}
-          >
-            {displayLinkLabel} <ArrowRight size={14} />
-          </Link>
-        )}
-      </div>
-      <div className={`relative aspect-[4/3] overflow-hidden ${index % 2 === 0 ? "" : "lg:order-1"}`}>
-        <SmartImage src={stop.image_url} wikipediaTitle={stop.wikipedia_title} alt={title || displayedHeading} wrapperClassName="absolute inset-0" className="h-full w-full object-cover" credit={credit} sourceUrl={stop.image_source_url} />
-        <div className="absolute inset-0 bg-gradient-to-tr from-ebony/70 to-transparent" />
-        {(credit || stop.image_source_url) && (
-          <div className="absolute bottom-3 left-3 right-3 rounded-lg bg-ebony/80 px-3 py-2 text-[10px] text-bone/55 backdrop-blur-sm">
-            {credit && <span>{credit}</span>}
-            {stop.image_source_url && <a href={stop.image_source_url} target="_blank" rel="noreferrer" className="ml-2 text-gold/85 underline underline-offset-2">{copy.sourceRights}</a>}
-          </div>
-        )}
-      </div>
-    </motion.section>
+    <div className="flex flex-wrap gap-2">
+      {groups.flatMap(([type, ids]) => (ids || []).map((id) => (
+        <span key={`${type}-${id}`} className="rounded-full border border-bone/10 bg-bone/[0.025] px-3 py-1 text-[10px] uppercase tracking-[0.12em] text-bone/50">
+          {type}: {id}
+        </span>
+      )))}
+    </div>
   );
 };
 
-const JourneyIntro = ({ journey, lang }) => {
-  const title = useTranslated(journey.title || "");
-  const subtitle = useTranslated(journey.subtitle || "");
-  const blurb = useTranslated(journey.blurb || "");
-  const { t } = useI18n();
-  const displayTitle = title || localizedValue(journey.title, lang);
-  const displaySubtitle = subtitle || localizedValue(journey.subtitle, lang);
-  const displayBlurb = blurb || localizedValue(journey.blurb, lang);
-
-  return (
-    <section className="pt-32 pb-16 max-w-4xl mx-auto px-6 text-center">
-      <p className="overline">{t("journey.overline")}</p>
-      <h1 className="font-serif text-5xl md:text-7xl text-bone mt-4 tracking-tight leading-[0.95]">{displayTitle}</h1>
-      {displaySubtitle && <p className="font-serif italic text-2xl text-gold mt-5">{displaySubtitle}</p>}
-      {displayBlurb && <p className="text-bone/70 mt-8 font-light leading-relaxed max-w-2xl mx-auto">{displayBlurb}</p>}
-    </section>
-  );
-};
+const JourneyCard = ({ journey, active, onClick, lang, copy }) => (
+  <button
+    type="button"
+    onClick={onClick}
+    className={`w-full rounded-xl border p-5 text-left transition-colors ${active ? "border-gold/60 bg-gold/[0.08]" : "border-bone/10 bg-bone/[0.02] hover:border-gold/30"}`}
+    aria-pressed={active}
+  >
+    <div className="flex items-start justify-between gap-4">
+      <div>
+        <p className="text-[10px] uppercase tracking-[0.18em] text-gold/80">{getLocalized(journey.period, lang)}</p>
+        <h3 className="mt-2 font-serif text-2xl leading-tight text-bone">{getLocalized(journey.title, lang)}</h3>
+        <p className="mt-2 text-sm leading-6 text-bone/55">{getLocalized(journey.subtitle, lang)}</p>
+      </div>
+      <span className="shrink-0 rounded-full border border-bone/10 px-3 py-1 text-[10px] uppercase tracking-[0.12em] text-bone/45">
+        {journey.stops.length} {copy.steps}
+      </span>
+    </div>
+  </button>
+);
 
 const Journey = () => {
-  const { t, lang } = useI18n();
-  const [j, setJ] = useState(null);
+  const { lang } = useI18n();
   const copy = COPY[lang] || COPY.en;
-  useEffect(() => { fetchJourney().then(setJ).catch(() => setJ({ stops: [] })); }, []);
-  if (!j) return <div className="pt-32 text-center text-bone/40 overline">{t("common.loading")}</div>;
+  const [category, setCategory] = useState("all");
+  const [journeyId, setJourneyId] = useState(journeys[0].journeyId);
+  const [activeIndex, setActiveIndex] = useState(0);
+
+  const filteredJourneys = useMemo(
+    () => journeys.filter((journey) => category === "all" || journey.category === category),
+    [category]
+  );
+
+  const activeJourney = journeys.find((journey) => journey.journeyId === journeyId) || filteredJourneys[0] || journeys[0];
+  const stops = activeJourney.stops || [];
+  const activeStop = stops[activeIndex] || stops[0];
+  const progress = stops.length ? ((activeIndex + 1) / stops.length) * 100 : 0;
+
+  useEffect(() => {
+    if (!filteredJourneys.some((journey) => journey.journeyId === journeyId)) {
+      setJourneyId(filteredJourneys[0]?.journeyId || journeys[0].journeyId);
+      setActiveIndex(0);
+    }
+  }, [filteredJourneys, journeyId]);
+
+  useEffect(() => {
+    setActiveIndex(0);
+  }, [journeyId]);
+
+  const selectJourney = (id) => {
+    setJourneyId(id);
+    setActiveIndex(0);
+  };
+
+  const selectStop = (index) => {
+    setActiveIndex(Math.max(0, Math.min(index, stops.length - 1)));
+  };
 
   return (
-    <div data-testid="journey-page">
-      <JourneyIntro journey={j} lang={lang} />
+    <div data-testid="journey-page" className="pb-24">
+      <section className="mx-auto max-w-6xl px-6 pb-12 pt-32 md:px-10 md:pt-36">
+        <p className="overline text-gold">{copy.overline}</p>
+        <h1 className="mt-4 max-w-4xl font-serif text-5xl leading-[0.95] text-bone md:text-7xl">{copy.heading}</h1>
+        <p className="mt-7 max-w-3xl text-base font-light leading-7 text-bone/65 md:text-lg">{copy.intro}</p>
+      </section>
 
-      <div className="max-w-[1400px] mx-auto px-6 md:px-10 pb-24">
-        <section className="grid gap-4 md:grid-cols-3 mb-10">
-          <Link to="/timeline" className="rounded-xl border border-gold/20 bg-gold/[0.04] p-5 transition hover:border-gold/50">
-            <p className="overline text-gold">{copy.timeLabel}</p>
-            <p className="mt-2 font-serif text-xl text-bone">{copy.timeTitle}</p>
-            <p className="mt-2 text-xs leading-5 text-bone/50">{copy.timeCopy}</p>
-          </Link>
-          <Link to="/atlas" className="rounded-xl border border-bone/10 bg-bone/[0.025] p-5 transition hover:border-gold/40">
-            <p className="overline">{copy.spaceLabel}</p>
-            <p className="mt-2 font-serif text-xl text-bone">{copy.spaceTitle}</p>
-            <p className="mt-2 text-xs leading-5 text-bone/50">{copy.spaceCopy}</p>
-          </Link>
-          <Link to="/civilizations" className="rounded-xl border border-bone/10 bg-bone/[0.025] p-5 transition hover:border-gold/40">
-            <p className="overline">{copy.deepenLabel}</p>
-            <p className="mt-2 font-serif text-xl text-bone">{copy.deepenTitle}</p>
-            <p className="mt-2 text-xs leading-5 text-bone/50">{copy.deepenCopy}</p>
-          </Link>
-        </section>
+      <section className="mx-auto max-w-6xl px-6 md:px-10" aria-labelledby="journey-picker-title">
+        <div className="flex flex-col gap-5 border-y border-bone/10 py-6">
+          <div className="flex flex-wrap items-center justify-between gap-4">
+            <h2 id="journey-picker-title" className="font-serif text-2xl text-bone">{copy.choose}</h2>
+            <div className="flex flex-wrap gap-2">
+              {JOURNEY_CATEGORIES.map((item) => (
+                <button
+                  key={item.id}
+                  type="button"
+                  onClick={() => setCategory(item.id)}
+                  className={`rounded-full border px-4 py-2 text-[10px] uppercase tracking-[0.14em] transition-colors ${category === item.id ? "border-gold bg-gold text-ebony" : "border-bone/15 text-bone/55 hover:border-gold/40 hover:text-gold"}`}
+                  aria-pressed={category === item.id}
+                >
+                  {getLocalized(item.label, lang)}
+                </button>
+              ))}
+            </div>
+          </div>
 
-        {sortChronologically(j.stops || [], "year", "heading", lang).map((stop, index) => (
-          <JourneyStop key={stop.id || `${stop.year || "stop"}-${index}`} stop={stop} index={index} t={t} copy={copy} lang={lang} />
-        ))}
-
-        <div className="text-center mt-24">
-          <p className="overline">{t("journey.continues")}</p>
-          <h3 className="font-serif text-3xl text-bone mt-3">{t("journey.exploreDiaspora")}</h3>
-          <Link to="/diaspora" className="inline-flex items-center gap-3 mt-6 px-7 py-4 bg-gold text-ebony text-xs uppercase tracking-[0.25em] hover:bg-bone transition-colors" data-testid="journey-cta-diaspora">
-            {t("journey.meetCommunities")} <ArrowRight size={14} />
-          </Link>
+          <div className="grid gap-3 lg:grid-cols-3">
+            {filteredJourneys.map((journey) => (
+              <JourneyCard key={journey.journeyId} journey={journey} active={journey.journeyId === activeJourney.journeyId} onClick={() => selectJourney(journey.journeyId)} lang={lang} copy={copy} />
+            ))}
+          </div>
         </div>
-      </div>
+      </section>
+
+      <article className="mx-auto mt-12 max-w-6xl px-6 md:px-10" key={activeJourney.journeyId}>
+        <header className="grid gap-8 lg:grid-cols-[1fr_0.34fr] lg:items-end">
+          <div>
+            <div className="flex flex-wrap items-center gap-3 text-[10px] uppercase tracking-[0.16em] text-gold/80">
+              <span className="inline-flex items-center gap-2"><CalendarDays size={13} /> {getLocalized(activeJourney.period, lang)}</span>
+              <span className="text-bone/20">•</span>
+              <span>{stops.length} {copy.steps}</span>
+            </div>
+            <h2 className="mt-3 font-serif text-4xl leading-tight text-bone md:text-5xl">{getLocalized(activeJourney.title, lang)}</h2>
+            <p className="mt-3 font-serif text-xl italic text-gold/90">{getLocalized(activeJourney.subtitle, lang)}</p>
+            <p className="mt-6 max-w-4xl text-sm leading-7 text-bone/65 md:text-base">{getLocalized(activeJourney.introduction, lang)}</p>
+          </div>
+          <div className="rounded-xl border border-bone/10 bg-bone/[0.025] p-4">
+            <div className="flex items-center justify-between text-[10px] uppercase tracking-[0.14em] text-bone/45">
+              <span>{copy.stop} {activeIndex + 1} {copy.of} {stops.length}</span>
+              <span>{Math.round(progress)}%</span>
+            </div>
+            <div className="mt-3 h-1.5 overflow-hidden rounded-full bg-bone/10">
+              <div className="h-full rounded-full bg-gold transition-[width] duration-300" style={{ width: `${progress}%` }} />
+            </div>
+          </div>
+        </header>
+
+        <div className="mt-9">
+          <JourneyMap journey={activeJourney} activeIndex={activeIndex} onSelectStop={selectStop} lang={lang} />
+        </div>
+
+        <nav className="mt-5 overflow-x-auto pb-2" aria-label={lang === "fr" ? "Étapes du parcours" : "Journey stops"}>
+          <div className="flex min-w-max gap-2">
+            {stops.map((stop, index) => (
+              <button
+                key={stop.stopId}
+                type="button"
+                onClick={() => selectStop(index)}
+                className={`min-w-[180px] rounded-xl border px-4 py-3 text-left transition-colors ${index === activeIndex ? "border-gold/60 bg-gold/[0.08]" : index < activeIndex ? "border-gold/20 bg-gold/[0.025]" : "border-bone/10 bg-bone/[0.015]"}`}
+                aria-current={index === activeIndex ? "step" : undefined}
+              >
+                <span className="text-[10px] uppercase tracking-[0.15em] text-gold/70">{String(index + 1).padStart(2, "0")}</span>
+                <span className="mt-1 block max-w-[190px] truncate text-sm text-bone/75">{getLocalized(stop.place.name, lang)}</span>
+              </button>
+            ))}
+          </div>
+        </nav>
+
+        {activeStop && (
+          <section className="mt-7 grid gap-7 rounded-2xl border border-bone/10 bg-bone/[0.025] p-6 md:p-8 lg:grid-cols-[0.36fr_1fr]" data-testid={`journey-stop-${activeStop.stopId}`}>
+            <aside className="border-b border-bone/10 pb-6 lg:border-b-0 lg:border-r lg:pb-0 lg:pr-7">
+              <p className="overline text-gold">{copy.stop} {activeIndex + 1}</p>
+              <div className="mt-5 flex items-start gap-3">
+                <MapPin size={18} className="mt-1 shrink-0 text-gold" />
+                <div>
+                  <p className="font-serif text-2xl text-bone">{getLocalized(activeStop.place.name, lang)}</p>
+                  <p className="mt-1 text-xs uppercase tracking-[0.14em] text-bone/40">{getLocalized(activeStop.period, lang)}</p>
+                </div>
+              </div>
+              <div className="mt-6 rounded-xl border border-bone/10 p-4">
+                <p className="flex items-center gap-2 text-[10px] uppercase tracking-[0.15em] text-bone/45"><Network size={13} /> IDs</p>
+                <p className="mt-2 break-all font-mono text-[11px] leading-5 text-gold/70">journeyId: {activeJourney.journeyId}</p>
+                <p className="break-all font-mono text-[11px] leading-5 text-gold/70">stopId: {activeStop.stopId}</p>
+              </div>
+            </aside>
+
+            <div>
+              <h3 className="font-serif text-3xl leading-tight text-bone md:text-4xl">{getLocalized(activeStop.title, lang)}</h3>
+              <p className="mt-5 text-base font-light leading-8 text-bone/75">{getLocalized(activeStop.context, lang)}</p>
+
+              {(activeStop.linkedEvents || []).length > 0 && (
+                <div className="mt-7 rounded-xl border border-gold/15 bg-gold/[0.035] p-5">
+                  <p className="flex items-center gap-2 text-[10px] uppercase tracking-[0.16em] text-gold"><BookOpen size={13} /> {copy.relatedEvent}</p>
+                  <div className="mt-3 space-y-2">
+                    {activeStop.linkedEvents.map((event, index) => <p key={index} className="text-sm text-bone/70">{getLocalized(event, lang)}</p>)}
+                  </div>
+                </div>
+              )}
+
+              <details className="mt-5 rounded-xl border border-bone/10 p-5">
+                <summary className="cursor-pointer text-xs uppercase tracking-[0.15em] text-bone/65">{copy.futureLinks}</summary>
+                <p className="mt-3 max-w-3xl text-xs leading-5 text-bone/45">{copy.futureLinksCopy}</p>
+                <div className="mt-4"><RelationPills stop={activeStop} /></div>
+              </details>
+            </div>
+          </section>
+        )}
+
+        <div className="mt-6 flex flex-col-reverse gap-3 sm:flex-row sm:items-center sm:justify-between">
+          <button
+            type="button"
+            onClick={() => selectStop(activeIndex - 1)}
+            disabled={activeIndex === 0}
+            className="inline-flex items-center justify-center gap-2 rounded-full border border-bone/15 px-5 py-3 text-xs uppercase tracking-[0.14em] text-bone/65 transition-colors hover:border-gold/40 hover:text-gold disabled:cursor-not-allowed disabled:opacity-30"
+          >
+            <ArrowLeft size={15} /> {copy.previous}
+          </button>
+
+          {activeIndex < stops.length - 1 ? (
+            <button
+              type="button"
+              onClick={() => selectStop(activeIndex + 1)}
+              className="inline-flex items-center justify-center gap-2 rounded-full bg-gold px-6 py-3 text-xs uppercase tracking-[0.14em] text-ebony transition-colors hover:bg-bone"
+            >
+              {copy.next} <ArrowRight size={15} />
+            </button>
+          ) : (
+            <div className="flex flex-wrap items-center justify-end gap-3">
+              <span className="text-xs uppercase tracking-[0.14em] text-gold">{copy.completed}</span>
+              <button type="button" onClick={() => selectStop(0)} className="rounded-full border border-gold/30 px-5 py-3 text-xs uppercase tracking-[0.14em] text-gold hover:bg-gold hover:text-ebony">
+                {copy.restart}
+              </button>
+            </div>
+          )}
+        </div>
+
+        <section className="mt-16 border-t border-bone/10 pt-8" aria-labelledby="journey-sources-title">
+          <p className="overline text-gold">Documentation</p>
+          <h3 id="journey-sources-title" className="mt-2 font-serif text-3xl text-bone">{copy.sources}</h3>
+          <p className="mt-3 max-w-3xl text-sm leading-6 text-bone/50">{copy.sourcesCopy}</p>
+          <div className="mt-6 grid gap-3 md:grid-cols-2 lg:grid-cols-3">
+            {activeJourney.sources.map((source) => (
+              <a key={source.sourceId} href={source.url} target="_blank" rel="noreferrer" className="group rounded-xl border border-bone/10 bg-bone/[0.02] p-5 transition-colors hover:border-gold/35">
+                <div className="flex items-start justify-between gap-3">
+                  <p className="text-[10px] uppercase tracking-[0.14em] text-gold/75">{source.publisher}</p>
+                  <ExternalLink size={13} className="shrink-0 text-bone/35 group-hover:text-gold" />
+                </div>
+                <p className="mt-3 text-sm leading-6 text-bone/70">{source.title}</p>
+              </a>
+            ))}
+          </div>
+        </section>
+      </article>
     </div>
   );
 };
