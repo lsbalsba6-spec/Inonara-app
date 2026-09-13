@@ -28,9 +28,10 @@ function SectionBlock({ title,intro,items,sourceMap,copy,lang }){
 
 export function SouthAfricaEducationHealthQuality({ dossier={},sourceMap=new Map() }){
  const{lang}=useI18n(),copy=COPY[lang]||COPY.en;
- const education=dossier.education_health?.education||dossier.education||{},health=dossier.education_health?.health||dossier.health||{};
+ const education=dossier.education_health?.education||dossier.education||{};
+ const health=dossier.education_health?.health||dossier.health||{};
  const societyThemes=contentArray(dossier.society);
- const educationItems=useMemo(()=>unique([...contentArray(education),...societyMatches(societyThemes,"education")]),[education,societyThemes]);
- const healthItems=useMemo(()=>unique([...contentArray(health),...societyMatches(societyThemes,"health")]),[health,societyThemes]);
+ const educationItems=unique([...contentArray(education),...societyMatches(societyThemes,"education")]);
+ const healthItems=unique([...contentArray(health),...societyMatches(societyThemes,"health")]);
  return <div className="space-y-10"><header className="rounded-2xl border border-gold/20 bg-gradient-to-br from-gold/[0.08] to-transparent p-6"><p className="overline text-gold">{copy.overline}</p><h2 className="mt-2 font-serif text-3xl text-bone">{copy.title}</h2><p className="mt-3 max-w-3xl leading-7 text-bone/65">{copy.intro}</p></header><SectionBlock title={copy.education} intro={education.intro||copy.educationIntro} items={educationItems} sourceMap={sourceMap} copy={copy} lang={lang}/><SectionBlock title={copy.health} intro={health.intro||copy.healthIntro} items={healthItems} sourceMap={sourceMap} copy={copy} lang={lang}/>{!educationItems.length&&!healthItems.length&&<div className="rounded-xl border border-bone/10 p-5 text-bone/60">{copy.emptyData}</div>}</div>;
 }
