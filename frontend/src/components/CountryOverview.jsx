@@ -1,6 +1,6 @@
 import { useI18n } from "../i18n";
 import { useTranslated } from "../lib/useTranslated";
-import { localizedText } from "../lib/contentSort";
+import { localizedText, localizedValue } from "../lib/contentSort";
 import CountryShapeMap from "./CountryShapeMap";
 
 const COPY = {
@@ -17,6 +17,10 @@ const COPY = {
     references: "Reference sources",
     map: "Country map",
     mapHint: "Interactive country outline. Zoom to reveal more geographic detail.",
+    author: "Author",
+    license: "License",
+    source: "Source",
+    viewSource: "View source and rights information",
   },
   fr: {
     country: "Pays",
@@ -31,6 +35,10 @@ const COPY = {
     references: "Sources de référence",
     map: "Carte du pays",
     mapHint: "Contour interactif du pays. Zoomez pour faire apparaître davantage de détails géographiques.",
+    author: "Auteur",
+    license: "Licence",
+    source: "Source",
+    viewSource: "Voir la source et les informations de droits",
   },
 };
 
@@ -62,6 +70,13 @@ function FactCard({ label, value }) {
 function SourcePublisher({ value }) {
   const translated = useTranslated(value || "");
   return translated || localizedText(value);
+}
+
+function MediaMetadataValue({ value }) {
+  const { lang } = useI18n();
+  const translated = useTranslated(value || "");
+  if (!value) return null;
+  return translated || localizedValue(value, lang) || localizedText(value);
 }
 
 export function CountryOverview({ dossier, sourceMap = new Map() }) {
@@ -151,11 +166,23 @@ export function CountryOverview({ dossier, sourceMap = new Map() }) {
           <p className="overline text-gold">{copy.visualMarkers}</p>
           <div className="mt-4 grid gap-4 md:grid-cols-3">
             {gallery.map((item) => (
-              <figure key={item.id} className="overflow-hidden rounded-xl border border-bone/10">
+              <figure key={item.id} className="overflow-hidden rounded-xl border border-bone/10 bg-bone/[0.02]">
                 <TranslatedImage src={item.image_url} alt={item.alt || item.title} className="h-56 w-full object-cover" />
                 <figcaption className="p-4">
                   <Translated text={item.title} as="p" className="font-serif text-lg text-bone" />
                   {item.caption && <Translated text={item.caption} as="p" className="mt-1 text-xs text-bone/50" />}
+                  {(item.author || item.license || item.source_name || item.provenance) && (
+                    <div className="mt-3 space-y-1 border-t border-bone/10 pt-3 text-[11px] leading-relaxed text-bone/40">
+                      {item.author && <p>{copy.author}: <MediaMetadataValue value={item.author} /></p>}
+                      {item.license && <p>{copy.license}: <MediaMetadataValue value={item.license} /></p>}
+                      {(item.source_name || item.provenance) && <p>{copy.source}: <MediaMetadataValue value={item.source_name || item.provenance} /></p>}
+                    </div>
+                  )}
+                  {item.source_page && (
+                    <a href={item.source_page} target="_blank" rel="noreferrer" className="mt-3 inline-flex text-xs text-gold/85 underline underline-offset-2">
+                      {copy.viewSource}
+                    </a>
+                  )}
                 </figcaption>
               </figure>
             ))}
