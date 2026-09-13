@@ -2,6 +2,8 @@ import { Fragment, useMemo, useState } from "react";
 import { CircleMarker, Polyline, Popup, Tooltip } from "react-leaflet";
 import CountryShapeMap, { getCountryMapMeta } from "./CountryShapeMap";
 import { useI18n } from "../i18n";
+import { useTranslated } from "../lib/useTranslated";
+import { localizedValue } from "../lib/contentSort";
 
 const TYPE_STYLES = {
   "regional-mobility": { color: "#2F80A3", dashArray: undefined },
@@ -59,12 +61,10 @@ const COPY = {
   },
 };
 
-function localize(value, lang) {
-  if (value == null) return "";
-  if (typeof value === "string" || typeof value === "number") return String(value);
-  if (Array.isArray(value)) return value.map((item) => localize(item, lang)).filter(Boolean).join(", ");
-  if (typeof value === "object") return value[lang] || value.fr || value.en || "";
-  return "";
+function TranslatedValue({ value, fallback = "" }) {
+  const { lang } = useI18n();
+  const translated = useTranslated(value || "");
+  return translated || localizedValue(value, lang) || fallback || null;
 }
 
 function periodKey(route) {
@@ -145,26 +145,23 @@ export default function CountryMigrationFlowMap({ dossier, routes = [], note, pl
           if (!Array.isArray(route.origin_coordinates) || !Array.isArray(route.destination_coordinates)) return null;
           const [originLon, originLat] = route.origin_coordinates;
           const [destinationLon, destinationLat] = route.destination_coordinates;
-          const label = localize(route.label, lang);
-          const origin = localize(route.origin, lang);
-          const destination = localize(route.destination, lang);
           return (
             <Fragment key={route.id}>
               <Polyline positions={routeCurve(route.origin_coordinates, route.destination_coordinates)} pathOptions={{ color: style.color, weight: 5, opacity: 0.92, dashArray: style.dashArray }}>
                 <Popup>
                   <div className="max-w-[260px]">
-                    <strong>{label}</strong><br />
+                    <strong><TranslatedValue value={route.label} /></strong><br />
                     <span>{periodLabel(route, copy)}</span><br />
-                    <span>{origin} → {destination}</span>
-                    {route.description && <p style={{ marginTop: 8 }}>{localize(route.description, lang)}</p>}
+                    <span><TranslatedValue value={route.origin} /> → <TranslatedValue value={route.destination} /></span>
+                    {route.description && <p style={{ marginTop: 8 }}><TranslatedValue value={route.description} /></p>}
                   </div>
                 </Popup>
               </Polyline>
               <CircleMarker center={[originLat, originLon]} radius={5} pathOptions={{ color: style.color, fillColor: "#ffffff", fillOpacity: 1, weight: 3 }}>
-                <Tooltip direction="top">{origin}</Tooltip>
+                <Tooltip direction="top"><TranslatedValue value={route.origin} /></Tooltip>
               </CircleMarker>
               <CircleMarker center={[destinationLat, destinationLon]} radius={8} pathOptions={{ color: "#17384a", fillColor: style.color, fillOpacity: 1, weight: 2 }}>
-                <Tooltip permanent direction="bottom" offset={[0, 7]}>{destination}</Tooltip>
+                <Tooltip permanent direction="bottom" offset={[0, 7]}><TranslatedValue value={route.destination} /></Tooltip>
               </CircleMarker>
             </Fragment>
           );
@@ -180,7 +177,7 @@ export default function CountryMigrationFlowMap({ dossier, routes = [], note, pl
           })}
           <div className="flex items-center gap-3 text-sm"><span className="h-4 w-4 rounded-full border-[3px] border-[#2F80A3] bg-white" />{copy.origin}</div>
           <div className="flex items-center gap-3 text-sm"><span className="h-4 w-4 rounded-full border-2 border-[#17384a] bg-[#2F80A3]" />{copy.destination}</div>
-          <div className="flex items-center gap-3 text-sm"><span className="h-4 w-7 rounded-sm border-2 border-[#17384a] bg-[#7EB7D1]/30" />{localize(dossier?.name || dossier?.country, lang)}</div>
+          <div className="flex items-center gap-3 text-sm"><span className="h-4 w-7 rounded-sm border-2 border-[#17384a] bg-[#7EB7D1]/30" /><TranslatedValue value={dossier?.name || dossier?.country} /></div>
         </div>
       </aside>
 
@@ -193,11 +190,11 @@ export default function CountryMigrationFlowMap({ dossier, routes = [], note, pl
                 <span className="mt-2 h-2.5 w-2.5 shrink-0 rounded-full" style={{ background: style.color }} />
                 <div>
                   <p className="text-xs uppercase tracking-wider text-gold">{copy.period} · {periodLabel(route, copy)}</p>
-                  <h4 className="mt-1 text-bone">{localize(route.label, lang)}</h4>
-                  <p className="mt-1 text-xs text-bone/55">{localize(route.origin, lang)} → {localize(route.destination, lang)}</p>
-                  {route.people && <p className="mt-2 text-xs text-bone/55">{copy.people} : {localize(route.people, lang)}</p>}
-                  {route.description && <p className="mt-2 text-sm leading-relaxed text-bone/65">{localize(route.description, lang)}</p>}
-                  {route.source_url && <a href={route.source_url} target="_blank" rel="noreferrer" className="mt-3 inline-block text-xs text-gold underline underline-offset-2">{copy.source} · {localize(route.source_label, lang) || route.source_url}</a>}
+                  <h4 className="mt-1 text-bone"><TranslatedValue value={route.label} /></h4>
+                  <p className="mt-1 text-xs text-bone/55"><TranslatedValue value={route.origin} /> → <TranslatedValue value={route.destination} /></p>
+                  {route.people && <p className="mt-2 text-xs text-bone/55">{copy.people} : <TranslatedValue value={route.people} /></p>}
+                  {route.description && <p className="mt-2 text-sm leading-relaxed text-bone/65"><TranslatedValue value={route.description} /></p>}
+                  {route.source_url && <a href={route.source_url} target="_blank" rel="noreferrer" className="mt-3 inline-block text-xs text-gold underline underline-offset-2">{copy.source} · <TranslatedValue value={route.source_label} fallback={route.source_url} /></a>}
                 </div>
               </div>
             </article>
@@ -205,7 +202,7 @@ export default function CountryMigrationFlowMap({ dossier, routes = [], note, pl
         })}
       </div>
 
-      {note && <p className="rounded-xl border border-amber-400/20 bg-amber-400/[0.04] p-4 text-sm leading-relaxed text-bone/70">{localize(note, lang)}</p>}
+      {note && <p className="rounded-xl border border-amber-400/20 bg-amber-400/[0.04] p-4 text-sm leading-relaxed text-bone/70"><TranslatedValue value={note} /></p>}
     </section>
   );
 }
