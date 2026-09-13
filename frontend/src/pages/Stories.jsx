@@ -3,7 +3,7 @@ import { Link, useParams } from "react-router-dom";
 import { fetchStories, fetchStory } from "../lib/api";
 import { ArrowLeft, BookOpen, Volume2 } from "lucide-react";
 import { useI18n } from "../i18n";
-import { searchableText, sortChronologically } from "../lib/contentSort";
+import { localizedValue, searchableText, sortChronologically } from "../lib/contentSort";
 import { SmartImage } from "../components/SmartImage";
 import { Translated } from "../lib/useTranslated";
 
@@ -55,7 +55,7 @@ export const StoriesList = () => {
       <div className="grid md:grid-cols-2 gap-6 mt-8">
         {visible.map((s) => (
           <Link key={s.id} to={`/story/${s.id}`} data-testid={`story-card-${s.id}`} className="museum-card overflow-hidden group block">
-            <SmartImage src={s.image_url} wikipediaTitle={s.wikipedia_title} alt={s.title} wrapperClassName="aspect-[16/9]" className="h-full w-full object-cover opacity-70 transition duration-700 group-hover:scale-105 group-hover:opacity-90" credit={s.image_credit} sourceUrl={s.image_source_url} />
+            <SmartImage src={s.image_url} wikipediaTitle={s.wikipedia_title} alt={s.title} wrapperClassName="aspect-[16/9]" className="h-full w-full object-cover opacity-70 transition duration-700 group-hover:scale-105 group-hover:opacity-90" credit={localizedValue(s.image_credit, lang)} sourceUrl={s.image_source_url} />
             <div className="p-8">
               <div className="flex items-center gap-2 text-gold"><BookOpen size={14} /><Translated as="span" className="overline text-[0.65rem]">{s.era || ""}</Translated></div>
               <Translated as="h3" className="font-serif text-3xl text-bone mt-4 group-hover:text-gold transition-colors">{s.title || ""}</Translated>
@@ -79,18 +79,38 @@ const NarrateButton = () => {
   );
 };
 
+const StorySource = ({ source, lang }) => {
+  if (!source) return null;
+  if (typeof source === "string") return <Translated>{source}</Translated>;
+
+  const title = localizedValue(source.title || source.name || source.label, lang);
+  const publisher = localizedValue(source.publisher || source.institution || source.author, lang);
+  const year = source.year || source.date;
+  const url = source.url || source.source_url;
+  const label = title || publisher || url;
+  if (!label) return null;
+
+  return (
+    <>
+      {url ? <a href={url} target="_blank" rel="noreferrer" className="text-gold hover:underline underline-offset-2">{label}</a> : <span>{label}</span>}
+      {(publisher && publisher !== label) || year ? <span className="text-bone/45">{publisher && publisher !== label ? ` — ${publisher}` : ""}{year ? ` (${year})` : ""}</span> : null}
+    </>
+  );
+};
+
 export const StoryDetail = () => {
-  const { t } = useI18n();
+  const { t, lang } = useI18n();
   const { id } = useParams();
   const [s, setS] = useState(null);
   useEffect(() => { fetchStory(id).then(setS).catch(() => {}); }, [id]);
   if (!s) return <div className="pt-32 text-center text-bone/40 overline">{t("common.loading")}</div>;
   const chapters = Array.isArray(s.chapters) ? s.chapters : [];
+  const imageCredit = localizedValue(s.image_credit, lang);
 
   return (
     <div className="pt-32 pb-24 max-w-3xl mx-auto px-6" data-testid="story-detail">
       <Link to="/stories" className="text-bone/60 hover:text-gold text-xs uppercase tracking-[0.2em] flex items-center gap-2" data-testid="back-to-stories"><ArrowLeft size={14} /> {t("common.back.stories")}</Link>
-      <SmartImage src={s.image_url} wikipediaTitle={s.wikipedia_title} alt={s.title} wrapperClassName="mt-8 aspect-[16/9] rounded-2xl" className="h-full w-full object-cover" credit={s.image_credit} sourceUrl={s.image_source_url} />
+      <SmartImage src={s.image_url} wikipediaTitle={s.wikipedia_title} alt={s.title} wrapperClassName="mt-8 aspect-[16/9] rounded-2xl" className="h-full w-full object-cover" credit={imageCredit} sourceUrl={s.image_source_url} />
       <Translated as="p" className="overline mt-8">{s.era || ""}</Translated>
       <Translated as="h1" className="font-serif text-5xl text-bone mt-3 leading-tight">{s.title || ""}</Translated>
       <Translated as="p" className="text-bone/70 mt-6 text-lg font-light leading-relaxed">{s.summary || ""}</Translated>
@@ -103,7 +123,7 @@ export const StoryDetail = () => {
 
       <div className="mt-16 space-y-14">
         {chapters.map((ch, i) => (
-          <article key={i} data-testid={`chapter-${i}`} className="animate-fade-up" style={{ animationDelay: `${i * 100}ms` }}>
+          <article key={ch.id || i} data-testid={`chapter-${i}`} className="animate-fade-up" style={{ animationDelay: `${i * 100}ms` }}>
             <p className="overline">{t("story.chapter")} {i + 1}</p>
             <Translated as="h2" className="font-serif text-3xl text-bone mt-3">{ch.heading || ""}</Translated>
             <Translated as="p" className="text-bone/80 mt-5 text-lg font-light leading-relaxed">{ch.body || ""}</Translated>
@@ -112,17 +132,17 @@ export const StoryDetail = () => {
         ))}
       </div>
 
-      {(s.image_credit || s.image_source_url) && (
+      {(imageCredit || s.image_source_url) && (
         <section className="mt-16 border-t border-[#2A2421] pt-10">
           <p className="overline text-gold">{t("stories.visualDocs")}</p>
-          {s.image_credit && <p className="mt-3 text-sm text-bone/65">{t("stories.credit")} : {s.image_credit}</p>}
+          {imageCredit && <p className="mt-3 text-sm text-bone/65">{t("stories.credit")} : {imageCredit}</p>}
           {s.image_source_url && <a href={s.image_source_url} target="_blank" rel="noreferrer" className="mt-3 inline-flex text-xs text-gold underline underline-offset-2">{t("stories.visualRights")}</a>}
         </section>
       )}
       {s.sources?.length > 0 && (
         <div className="mt-20 border-t border-[#2A2421] pt-10">
           <p className="overline">{t("common.sources")}</p>
-          <ul className="list-disc pl-5 space-y-2 mt-4 text-bone/70">{s.sources.map((src, index) => <Translated as="li" key={src?.id || src?.url || index}>{src}</Translated>)}</ul>
+          <ul className="list-disc pl-5 space-y-2 mt-4 text-bone/70">{s.sources.map((src, index) => <li key={src?.id || src?.url || index}><StorySource source={src} lang={lang} /></li>)}</ul>
         </div>
       )}
     </div>
