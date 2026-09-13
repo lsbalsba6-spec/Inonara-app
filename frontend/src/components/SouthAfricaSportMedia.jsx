@@ -50,25 +50,63 @@ function SourceLinks({ ids = [], sourceMap }) {
   );
 }
 
-export function SouthAfricaSportMedia({ dossier, sourceMap }) {
+function TopicGrid({ items = [], sourceMap }) {
+  if (!items.length) return null;
+  return (
+    <div className="grid gap-4 md:grid-cols-2">
+      {items.map((item, index) => (
+        <article
+          key={item.id || `${searchableText(item.title || item.name) || "item"}-${index}`}
+          className="rounded-xl border border-bone/10 bg-bone/[0.025] p-5"
+        >
+          <h3 className="font-serif text-xl text-bone">
+            <TranslatedInline value={item.title || item.name} />
+          </h3>
+          {(item.text || item.note || item.summary || item.context) && (
+            <p className="mt-2 text-sm leading-relaxed text-bone/70">
+              <TranslatedInline value={item.text || item.note || item.summary || item.context} />
+            </p>
+          )}
+          <SourceLinks ids={item.sourceIds || item.sources} sourceMap={sourceMap} />
+        </article>
+      ))}
+    </div>
+  );
+}
+
+export function SouthAfricaSportMedia({ dossier, sourceMap, mode = "all" }) {
   const { lang } = useI18n();
   const copy = COPY[lang] || COPY.en;
   const data = dossier?.sport_media;
+  const enrichedMedia = dossier?.media;
 
-  if (!data) return null;
-
-  const sections = Array.isArray(data.sections)
+  const legacySections = Array.isArray(data?.sections)
     ? data.sections
     : [
-        ...(Array.isArray(data.sports) ? [{ id: "sports", title: copy.sports, items: data.sports }] : []),
-        ...(Array.isArray(data.media) ? [{ id: "media", title: copy.media, items: data.media }] : []),
+        ...(Array.isArray(data?.sports) ? [{ id: "sports", title: copy.sports, items: data.sports }] : []),
+        ...(Array.isArray(data?.media) ? [{ id: "media", title: copy.media, items: data.media }] : []),
       ];
+
+  const sections = legacySections.filter((section) => {
+    if (mode === "sports") return section.id === "sports" || searchableText(section.title).includes("sport");
+    if (mode === "media") return section.id === "media" || searchableText(section.title).includes("media") || searchableText(section.title).includes("média");
+    return true;
+  });
+
+  const enrichedMediaItems = [
+    ...(enrichedMedia?.themes || []),
+    ...(enrichedMedia?.items || []),
+    ...(enrichedMedia?.sections || []),
+  ].filter(Boolean);
+
+  const showEnrichedMedia = mode === "media" || mode === "all";
+  if (!sections.length && (!showEnrichedMedia || !enrichedMediaItems.length) && !data?.intro && !enrichedMedia?.intro) return null;
 
   return (
     <div className="space-y-8">
-      {data.intro && (
+      {(data?.intro || (showEnrichedMedia && enrichedMedia?.intro)) && (
         <p className="text-lg leading-relaxed text-bone/80">
-          <TranslatedInline value={data.intro} />
+          <TranslatedInline value={data?.intro || enrichedMedia?.intro} />
         </p>
       )}
       {sections.map((section, sectionIndex) => (
@@ -76,26 +114,15 @@ export function SouthAfricaSportMedia({ dossier, sourceMap }) {
           <h2 className="mb-4 font-serif text-3xl text-gold">
             <TranslatedInline value={section.title} />
           </h2>
-          <div className="grid gap-4 md:grid-cols-2">
-            {(section.items || []).map((item, index) => (
-              <article
-                key={item.id || `${searchableText(item.title || item.name) || "item"}-${index}`}
-                className="rounded-xl border border-bone/10 bg-bone/[0.025] p-5"
-              >
-                <h3 className="font-serif text-xl text-bone">
-                  <TranslatedInline value={item.title || item.name} />
-                </h3>
-                {(item.text || item.note || item.summary) && (
-                  <p className="mt-2 text-sm leading-relaxed text-bone/70">
-                    <TranslatedInline value={item.text || item.note || item.summary} />
-                  </p>
-                )}
-                <SourceLinks ids={item.sourceIds || item.sources} sourceMap={sourceMap} />
-              </article>
-            ))}
-          </div>
+          <TopicGrid items={section.items || []} sourceMap={sourceMap} />
         </section>
       ))}
+      {showEnrichedMedia && enrichedMediaItems.length > 0 && (
+        <section>
+          <h2 className="mb-4 font-serif text-3xl text-gold">{copy.media}</h2>
+          <TopicGrid items={enrichedMediaItems} sourceMap={sourceMap} />
+        </section>
+      )}
     </div>
   );
 }
