@@ -76,7 +76,8 @@ const Civilizations = () => {
         return matchesRegion && (!needle || haystack.includes(needle));
       }),
       "era_start",
-      "name"
+      "name",
+      lang
     );
   }, [civs, region, query, lang]);
 
