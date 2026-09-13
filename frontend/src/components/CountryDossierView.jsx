@@ -23,6 +23,7 @@ import { useMemo, useState } from "react";
 import { Link } from "react-router-dom";
 import { CountryMediaGallery } from "./CountryMediaGallery";
 import CountryTerritory from "./CountryTerritory";
+import CountryEnvironment from "./CountryEnvironment";
 import CountrySectionBoundary from "./CountrySectionBoundary";
 import { useI18n } from "../i18n";
 import { localizedValue } from "../lib/contentSort";
@@ -34,12 +35,12 @@ const COPY = {
     southernAfrica: "Southern Africa",
     navLabel: "Country dossier sections",
     groups: [
-      { id: "identity", label: "Discover", items: [["overview", "Overview"], ["media", "Gallery"], ["symbols", "Symbols"]] },
+      { id: "identity", label: "Discover", items: [["overview", "Overview"], ["gallery", "Gallery"], ["symbols", "Symbols"]] },
       { id: "maps", label: "Territory", items: [["provinces-cities", "Provinces & cities"]] },
-      { id: "history", label: "History", items: [["timeline", "Historical narrative"], ["interactive-timeline", "Timeline"], ["polities", "Kingdoms & states"], ["law-memory", "Law & memory"]] },
+      { id: "history", label: "History", items: [["timeline", "Historical narrative"], ["interactive-timeline", "Timeline"], ["polities", "Kingdoms & states"], ["law-memory", "Institutions & memory"]] },
       { id: "mobility", label: "Migrations", items: [["migrations", "Migrations & diasporas"], ["international", "{country} in the world"]] },
-      { id: "society", label: "Society & culture", items: [["peoples", "Peoples"], ["languages", "Languages"], ["religions", "Religions"], ["culture", "Culture"], ["sport-media", "Sports & media"]] },
-      { id: "heritage", label: "Heritage & nature", items: [["heritage", "Heritage"]] },
+      { id: "society", label: "Society & culture", items: [["peoples", "Peoples"], ["languages", "Languages"], ["religions", "Religions"], ["culture", "Culture"], ["sport-media", "Sports"], ["media", "Media"]] },
+      { id: "heritage", label: "Heritage & nature", items: [["heritage", "Heritage"], ["environment", "Environment"]] },
       { id: "state", label: "State & economy", items: [["society", "Society"], ["education-health", "Education & health"], ["economy", "Economy"]] },
       { id: "people", label: "Figures", items: [["figures", "Figures"]] },
       { id: "sources", label: "Sources", items: [["historiography", "Debates"], ["library", "Library"], ["sources", "All sources"]] },
@@ -65,12 +66,12 @@ const COPY = {
     southernAfrica: "Afrique australe",
     navLabel: "Grandes sections du dossier pays",
     groups: [
-      { id: "identity", label: "Découvrir", items: [["overview", "Présentation"], ["media", "Galerie"], ["symbols", "Symboles"]] },
+      { id: "identity", label: "Découvrir", items: [["overview", "Présentation"], ["gallery", "Galerie"], ["symbols", "Symboles"]] },
       { id: "maps", label: "Territoire", items: [["provinces-cities", "Provinces & villes"]] },
-      { id: "history", label: "Histoire", items: [["timeline", "Récit historique"], ["interactive-timeline", "Chronologie"], ["polities", "Royaumes & États"], ["law-memory", "Droit & mémoire"]] },
+      { id: "history", label: "Histoire", items: [["timeline", "Récit historique"], ["interactive-timeline", "Chronologie"], ["polities", "Royaumes & États"], ["law-memory", "Institutions & mémoire"]] },
       { id: "mobility", label: "Migrations", items: [["migrations", "Migrations & diasporas"], ["international", "{country} dans le monde"]] },
-      { id: "society", label: "Société & culture", items: [["peoples", "Peuples"], ["languages", "Langues"], ["religions", "Religions"], ["culture", "Culture"], ["sport-media", "Sports & médias"]] },
-      { id: "heritage", label: "Patrimoine & nature", items: [["heritage", "Patrimoine"]] },
+      { id: "society", label: "Société & culture", items: [["peoples", "Peuples"], ["languages", "Langues"], ["religions", "Religions"], ["culture", "Culture"], ["sport-media", "Sports"], ["media", "Médias"]] },
+      { id: "heritage", label: "Patrimoine & nature", items: [["heritage", "Patrimoine"], ["environment", "Environnement"]] },
       { id: "state", label: "État & économie", items: [["society", "Société"], ["education-health", "Éducation & santé"], ["economy", "Économie"]] },
       { id: "people", label: "Personnalités", items: [["figures", "Personnalités"]] },
       { id: "sources", label: "Sources", items: [["historiography", "Débats"], ["library", "Bibliothèque"], ["sources", "Toutes les sources"]] },
@@ -162,7 +163,7 @@ export default function CountryDossierView({ dossier }) {
       <section className="mt-8">
         <CountrySectionBoundary resetKey={active} title={activeGroup.label}>
           {active === "overview" && <CountryOverview dossier={dossier} sourceMap={sourceMap} />}
-          {active === "media" && <CountryMediaGallery items={dossier?.media_gallery || []} />}
+          {active === "gallery" && <CountryMediaGallery items={dossier?.media_gallery || []} />}
           {active === "timeline" && (
             <div className="space-y-10">
               <SouthAfricaDeepHistory data={dossier?.deep_history} sourceMap={sourceMap} />
@@ -176,7 +177,8 @@ export default function CountryDossierView({ dossier }) {
           {active === "education-health" && <SouthAfricaEducationHealthQuality dossier={dossier} sourceMap={sourceMap} />}
           {active === "symbols" && <SouthAfricaSymbolsQuality dossier={dossier} sourceMap={sourceMap} />}
           {active === "international" && <SouthAfricaInternationalQuality dossier={dossier} sourceMap={sourceMap} />}
-          {active === "sport-media" && <SouthAfricaSportMedia dossier={dossier} sourceMap={sourceMap} />}
+          {active === "sport-media" && <SouthAfricaSportMedia dossier={dossier} sourceMap={sourceMap} mode="sports" />}
+          {active === "media" && <SouthAfricaSportMedia dossier={dossier} sourceMap={sourceMap} mode="media" />}
           {active === "law-memory" && <SouthAfricaLawMemory dossier={dossier} sourceMap={sourceMap} />}
           {active === "peoples" && <CountryPeoples dossier={dossier} sourceMap={sourceMap} />}
           {active === "polities" && <CountryPolities dossier={dossier} sourceMap={sourceMap} />}
@@ -188,6 +190,7 @@ export default function CountryDossierView({ dossier }) {
             </div>
           )}
           {active === "heritage" && <SouthAfricaHeritage dossier={dossier} sourceMap={sourceMap} />}
+          {active === "environment" && <CountryEnvironment dossier={dossier} sourceMap={sourceMap} />}
           {active === "figures" && <CountryFigures dossier={dossier} sourceMap={sourceMap} />}
           {active === "culture" && <SouthAfricaCulture dossier={dossier} sourceMap={sourceMap} />}
           {active === "languages" && <CountryLanguages dossier={dossier} sourceMap={sourceMap} />}
