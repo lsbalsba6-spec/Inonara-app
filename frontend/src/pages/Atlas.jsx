@@ -10,6 +10,7 @@ import {
   fetchPaleoGeography,
   fetchPlateTectonics,
   fetchPilotV3,
+  fetchCountryDossiers,
 } from "../lib/api";
 import { Slider } from "../components/ui/slider";
 import { useI18n } from "../i18n";
@@ -111,6 +112,11 @@ const Atlas = () => {
   const [polities, setPolities] = useState([]);
   const [paleo, setPaleo] = useState([]);
   const [plateEpochs, setPlateEpochs] = useState([]);
+  const [countryDossiers, setCountryDossiers] = useState([]);
+  const [mapCountries, setMapCountries] = useState([]);
+  const [countryQuery, setCountryQuery] = useState("");
+  const [selectedCountry, setSelectedCountry] = useState(null);
+  const [focusCountryName, setFocusCountryName] = useState(null);
   const [sliderPos, setSliderPos] = useState(yearToSlider(-70000));
   const [activeRoutes, setActiveRoutes] = useState({});
   const [showDiasporaRoutesList, setShowDiasporaRoutesList] = useState(false);
@@ -129,6 +135,7 @@ const Atlas = () => {
     fetchCivilizations().then(setCivs).catch(() => {});
     fetchPlaces().then(setPlaces).catch(() => {});
     fetchDiaspora().then(setDiaspora).catch(() => {});
+    fetchCountryDossiers().then(setCountryDossiers).catch(() => {});
     // PR3: feature-flagged data source (?historicalDataSource=v2 in the URL).
     // v1 (default): fetch the original, already-shipped shape directly.
     // v2 (opt-in): fetch the migrated HistoricalEntity schema and adapt it
@@ -161,10 +168,50 @@ const Atlas = () => {
 
   const onProjectionReady = useCallback((fn) => setProject(() => fn), []);
   const onGeoProjectionReady = useCallback((fn) => setGeoProject(() => fn), []);
+  const onCountrySelect = useCallback((country) => {
+    setSelectedCountry(country);
+    setSelected(null);
+    setSelectedPilotV3Marker(null);
+  }, []);
 
   const jumpToYear = (y) => {
     setSliderPos(yearToSlider(y));
     setSelected(null);
+  };
+
+  const searchableCountries = useMemo(
+    () => mapCountries
+      .filter((country) => country.continent === "Africa")
+      .sort((a, b) => (a.label || a.name).localeCompare(b.label || b.name, lang === "fr" ? "fr" : "en")),
+    [mapCountries, lang]
+  );
+
+  const countrySearchResults = useMemo(() => {
+    const needle = countryQuery.trim().toLocaleLowerCase(lang === "fr" ? "fr" : "en");
+    if (!needle) return [];
+    return searchableCountries.filter((country) => [
+      country.label,
+      country.name,
+      country.labels?.fr,
+      country.labels?.en,
+      country.countryId,
+      country.territoryId,
+    ].filter(Boolean).some((value) => String(value).toLocaleLowerCase().includes(needle))).slice(0, 8);
+  }, [countryQuery, searchableCountries, lang]);
+
+  const selectedCountryDossier = useMemo(
+    () => selectedCountry?.countryId
+      ? countryDossiers.find((dossier) => dossier?.iso2 === selectedCountry.countryId) || null
+      : null,
+    [countryDossiers, selectedCountry]
+  );
+
+  const selectCountryFromSearch = (country) => {
+    setSelectedCountry(country);
+    setSelected(null);
+    setSelectedPilotV3Marker(null);
+    setFocusCountryName(country.countryId || country.territoryId || country.name);
+    setCountryQuery("");
   };
 
   const pilotV3Markers = useMemo(
@@ -296,6 +343,46 @@ const Atlas = () => {
 
       {/* Map */}
       <div className="flex-1 relative">
+        {mode !== "geological" && (
+          <div className="absolute top-4 right-4 md:top-6 md:right-6 z-[550] w-[min(88vw,320px)]" data-testid="atlas-country-search">
+            <label htmlFor="atlas-country-search-input" className="sr-only">
+              {lang === "fr" ? "Rechercher un pays sur la carte" : "Search for a country on the map"}
+            </label>
+            <input
+              id="atlas-country-search-input"
+              type="search"
+              value={countryQuery}
+              onChange={(event) => setCountryQuery(event.target.value)}
+              placeholder={lang === "fr" ? "Rechercher un pays…" : "Search a country…"}
+              className="w-full glass rounded-lg border border-gold/20 px-4 py-3 text-sm text-bone placeholder:text-bone/35 outline-none focus:border-gold/60"
+              autoComplete="off"
+              aria-controls="atlas-country-search-results"
+              aria-expanded={countrySearchResults.length > 0}
+            />
+            {countryQuery.trim() && (
+              <div id="atlas-country-search-results" className="mt-1 glass rounded-lg border border-gold/20 overflow-hidden" role="listbox">
+                {countrySearchResults.length > 0 ? countrySearchResults.map((country) => (
+                  <button
+                    type="button"
+                    key={country.countryId || country.territoryId || country.id}
+                    onClick={() => selectCountryFromSearch(country)}
+                    className="w-full flex items-center justify-between gap-3 px-4 py-2.5 text-left text-sm text-bone/80 hover:bg-gold/10 hover:text-gold focus:bg-gold/10 focus:text-gold outline-none"
+                    role="option"
+                    aria-selected={selectedCountry?.name === country.name}
+                  >
+                    <span>{country.label}</span>
+                    <span className="text-[0.65rem] uppercase tracking-wider text-bone/35">{country.countryId || (lang === "fr" ? "territoire" : "territory")}</span>
+                  </button>
+                )) : (
+                  <p className="px-4 py-3 text-xs text-bone/55" role="status">
+                    {lang === "fr" ? "Aucun pays trouvé." : "No country found."}
+                  </p>
+                )}
+              </div>
+            )}
+          </div>
+        )}
+
         <div className="absolute bottom-3 left-3 z-[500] glass rounded-lg border border-gold/20 px-3 py-2 max-w-[250px]" data-testid="equal-earth-badge">
           <p className="text-[0.6rem] uppercase tracking-[0.18em] text-gold">{lang === "fr" ? "Projection Equal Earth" : "Equal Earth projection"}</p>
           <p className="mt-1 text-[0.65rem] leading-4 text-bone/55">{t("atlas.equalEarth.copy")}</p>
@@ -304,6 +391,11 @@ const Atlas = () => {
           onProjectionReady={onProjectionReady}
           onGeoProjectionReady={onGeoProjectionReady}
           onZoomChange={setZoomScale}
+          onCountrySelect={onCountrySelect}
+          onCountriesReady={setMapCountries}
+          selectedCountryName={selectedCountry?.name ?? null}
+          focusCountryName={focusCountryName}
+          lang={lang}
           highlightAfrica={mode !== "geological"}
           geoFusion={mode === "geological" && currentEpoch ? currentEpoch.fusion_factor : null}
         >
@@ -507,6 +599,42 @@ const Atlas = () => {
             })()
           )}
         </WorldMap>
+
+        {selectedCountry && mode !== "geological" && (
+          <section className="absolute top-24 right-4 md:right-6 z-[525] glass w-[min(88vw,320px)] p-5" data-testid="atlas-country-panel" aria-live="polite">
+            <button
+              type="button"
+              onClick={() => setSelectedCountry(null)}
+              className="absolute top-3 right-4 text-bone/50 hover:text-bone text-lg"
+              aria-label={lang === "fr" ? "Fermer le panneau pays" : "Close country panel"}
+            >×</button>
+            <p className="overline text-gold text-[0.6rem]">
+              {selectedCountry.kind === "territory"
+                ? (lang === "fr" ? "Territoire" : "Territory")
+                : (lang === "fr" ? "Pays" : "Country")}
+            </p>
+            <h2 className="font-serif text-2xl text-bone mt-1 pr-6">{selectedCountry.label}</h2>
+            {(selectedCountry.countryId || selectedCountry.territoryId) && (
+              <p className="mt-2 text-[0.65rem] uppercase tracking-[0.16em] text-bone/45">
+                {selectedCountry.countryId ? `countryId · ${selectedCountry.countryId}` : selectedCountry.territoryId}
+              </p>
+            )}
+            <p className="text-bone/65 text-sm mt-3 leading-relaxed">
+              {selectedCountryDossier
+                ? (lang === "fr" ? "Un dossier pays est publié et relié à cette géométrie cartographique." : "A published country dossier is linked to this map geometry.")
+                : (lang === "fr" ? "La géométrie est active dans l’Atlas. Le dossier éditorial détaillé sera relié ici dès sa publication." : "The geometry is active in the Atlas. The detailed editorial dossier will be linked here as soon as it is published.")}
+            </p>
+            {selectedCountryDossier?.slug ? (
+              <Link to={`/country/${selectedCountryDossier.slug}`} className="inline-block mt-4 uppercase tracking-[0.18em] text-[0.65rem] text-gold">
+                {lang === "fr" ? "Ouvrir le dossier pays →" : "Open country dossier →"}
+              </Link>
+            ) : (
+              <Link to="/countries" className="inline-block mt-4 uppercase tracking-[0.18em] text-[0.65rem] text-gold">
+                {lang === "fr" ? "Voir les pays publiés →" : "View published countries →"}
+              </Link>
+            )}
+          </section>
+        )}
 
         {/* Side panel */}
         <aside className="hidden lg:block absolute top-6 left-6 z-[400] glass w-[320px] max-h-[70vh] overflow-y-auto" data-testid="atlas-side-panel">
