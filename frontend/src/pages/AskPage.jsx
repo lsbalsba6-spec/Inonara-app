@@ -4,7 +4,7 @@ import { askAtlas } from "../lib/api";
 import { useI18n } from "../i18n";
 
 const AskPage = () => {
-  const { t } = useI18n();
+  const { t, lang } = useI18n();
   const [question, setQuestion] = useState("");
   const [sessionId, setSessionId] = useState(null);
   const [messages, setMessages] = useState([]);
@@ -22,7 +22,13 @@ const AskPage = () => {
     setQuestion("");
     setLoading(true);
     try {
-      const res = await askAtlas({ session_id: sessionId, question: text });
+      const languageInstruction = lang === "fr"
+        ? "Réponds en français. Ne change de langue que si l'utilisateur le demande explicitement."
+        : "Answer in English. Only switch languages if the user explicitly asks you to.";
+      const res = await askAtlas({
+        session_id: sessionId,
+        question: `${languageInstruction}\n\n${text}`,
+      });
       setSessionId(res.session_id);
       setMessages((m) => [...m, { role: "atlas", text: res.answer }]);
     } catch (e) {
