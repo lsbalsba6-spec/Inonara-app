@@ -264,6 +264,11 @@ const WorldMap = ({
     activateCountry(country);
   }, [activateCountry]);
 
+  const zoomBy = useCallback((factor) => {
+    if (!zoomBehaviorRef.current || !svgRef.current || geoFusion !== null) return;
+    select(svgRef.current).call(zoomBehaviorRef.current.scaleBy, factor);
+  }, [geoFusion]);
+
   const resetView = useCallback(() => {
     if (!zoomBehaviorRef.current || !svgRef.current) return;
     setInternalSelectedCountry(null);
@@ -359,15 +364,39 @@ const WorldMap = ({
         </g>
       </svg>
 
-      {geoFusion === null && transform.k > 1 && (
-        <button
-          type="button"
-          onClick={resetView}
-          className="absolute top-20 right-3 z-10 rounded border border-gold/30 bg-black/55 px-3 py-2 text-[0.65rem] uppercase tracking-[0.14em] text-gold backdrop-blur"
-          data-testid="atlas-reset-view"
-        >
-          {lang === "fr" ? "Vue Afrique" : "Africa view"}
-        </button>
+      {geoFusion === null && (
+        <div className="absolute top-20 right-3 z-10 flex flex-col gap-2" data-testid="atlas-zoom-controls">
+          <div className="flex overflow-hidden rounded border border-gold/30 bg-black/55 backdrop-blur">
+            <button
+              type="button"
+              onClick={() => zoomBy(1.35)}
+              className="min-w-10 px-3 py-2 text-base leading-none text-gold hover:bg-gold/10 focus:bg-gold/10 outline-none"
+              aria-label={lang === "fr" ? "Zoomer sur la carte" : "Zoom in on map"}
+              data-testid="atlas-zoom-in"
+            >+
+            </button>
+            <span className="w-px bg-gold/20" aria-hidden="true" />
+            <button
+              type="button"
+              onClick={() => zoomBy(1 / 1.35)}
+              disabled={transform.k <= 1.001}
+              className="min-w-10 px-3 py-2 text-base leading-none text-gold hover:bg-gold/10 focus:bg-gold/10 disabled:cursor-not-allowed disabled:opacity-35 outline-none"
+              aria-label={lang === "fr" ? "Dézoomer la carte" : "Zoom out on map"}
+              data-testid="atlas-zoom-out"
+            >−
+            </button>
+          </div>
+          {transform.k > 1 && (
+            <button
+              type="button"
+              onClick={resetView}
+              className="rounded border border-gold/30 bg-black/55 px-3 py-2 text-[0.65rem] uppercase tracking-[0.14em] text-gold backdrop-blur hover:bg-gold/10 focus:bg-gold/10 outline-none"
+              data-testid="atlas-reset-view"
+            >
+              {lang === "fr" ? "Vue Afrique" : "Africa view"}
+            </button>
+          )}
+        </div>
       )}
     </div>
   );
