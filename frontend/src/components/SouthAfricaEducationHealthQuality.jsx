@@ -51,18 +51,18 @@ function TranslatedInline({ value, lang }) {
 
 function SourceLink({ source, lang }) {
   const translatedTitle = useTranslated(source?.title || "");
+  const translatedPublisher = useTranslated(source?.publisher || source?.institution || source?.author || "");
   if (!source) return null;
-  const publisher = localizedValue(source.publisher, lang);
+  const publisher = translatedPublisher || localizedValue(source.publisher || source.institution || source.author, lang);
   const title = translatedTitle || localizedValue(source.title, lang);
-  return (
-    <a
-      href={source.url}
-      target="_blank"
-      rel="noreferrer"
-      className="rounded-full border border-gold/25 px-3 py-1 text-[11px] text-gold/85 hover:bg-gold/10"
-    >
-      {publisher ? `${publisher}: ` : ""}{title}
-    </a>
+  const label = publisher ? `${publisher}: ${title || ""}` : title;
+  if (!label) return null;
+  const meta = [source.year, localizedValue(source.license || source.rights, lang)].filter(Boolean).join(" · ");
+  const content = <>{label}{meta ? <span className="ml-1 text-bone/40">· {meta}</span> : null}</>;
+  return source.url ? (
+    <a href={source.url} target="_blank" rel="noreferrer" className="rounded-full border border-gold/25 px-3 py-1 text-[11px] text-gold/85 hover:bg-gold/10">{content}</a>
+  ) : (
+    <span className="rounded-full border border-bone/10 px-3 py-1 text-[11px] text-bone/55">{content}</span>
   );
 }
 
