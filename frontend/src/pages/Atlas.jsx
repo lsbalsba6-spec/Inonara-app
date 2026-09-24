@@ -25,6 +25,7 @@ import { buildPilotV3Markers, buildFangProcessDisplay } from "../lib/pilotV3Adap
 import { getMigrationVisualStyle, selectNonOverlappingLabels } from "../lib/atlasDisplay";
 import PilotV3InfoPanel from "../components/PilotV3InfoPanel";
 import populatedPlacesData from "../data/africa-populated-places.json";
+import { ATLAS_LAYERS, getAtlasLayerLabel } from "../lib/atlasLayers";
 
 // Milestone markers shown along the non-linear slider track, so users stay
 // oriented even though early (geological) time is heavily compressed.
@@ -369,6 +370,19 @@ const Atlas = () => {
     return selectNonOverlappingLabels(candidates, zoomScale, { paddingPx: 6, maxLabels: zoomScale < 2.5 ? 8 : zoomScale < 4 ? 20 : 45 });
   }, [project, visiblePopulatedPlaces, zoomScale]);
 
+  const activeLayerSummary = useMemo(() => {
+    if (mode === "geological") return [];
+    const rows = [
+      { id: "countries", count: searchableCountries.length, visible: true },
+      { id: "civilizations", count: visibleCivs.length, visible: mode === "historical" },
+      { id: "migrations", count: visibleRoutes.filter((route) => activeRoutes[route.id] !== false).length, visible: true },
+      { id: "diasporas", count: diaspora.length, visible: mode === "historical" && showDiaspora },
+      { id: "heritage", count: places.length, visible: mode === "historical" && showPlaces },
+      { id: "cities", count: visiblePopulatedPlaces.length, visible: mode === "historical" && year >= 1800 && showCities },
+    ];
+    return rows.filter((row) => row.visible && row.count > 0);
+  }, [mode, searchableCountries.length, visibleCivs.length, visibleRoutes, activeRoutes, diaspora.length, showDiaspora, places.length, showPlaces, visiblePopulatedPlaces.length, year, showCities]);
+
   const currentEpoch = useMemo(() => {
     if (mode !== "geological" || plateEpochs.length === 0) return null;
     let best = plateEpochs[0];
@@ -464,6 +478,20 @@ const Atlas = () => {
                 )}
               </div>
             )}
+          </div>
+        )}
+
+        {mode !== "geological" && (
+          <div className="absolute top-4 left-4 md:top-6 md:left-[350px] z-[390] glass rounded-lg border border-gold/15 px-3 py-2 max-w-[calc(100vw-2rem)]" data-testid="atlas-visible-layer-summary">
+            <div className="flex flex-wrap items-center gap-x-3 gap-y-1">
+              <span className="text-[0.58rem] uppercase tracking-[0.16em] text-bone/45">{lang === "fr" ? "Visible" : "Visible"}</span>
+              {activeLayerSummary.map((row) => (
+                <span key={row.id} className="text-[0.62rem] text-bone/70 whitespace-nowrap">
+                  <span className="text-gold">{row.count}</span>{" "}
+                  {row.id === "cities" ? (lang === "fr" ? "villes" : "cities") : getAtlasLayerLabel(row.id, lang)}
+                </span>
+              ))}
+            </div>
           </div>
         )}
 
