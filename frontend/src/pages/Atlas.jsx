@@ -174,6 +174,7 @@ const Atlas = () => {
     setSelectedCountry(country);
     setSelected(null);
     setSelectedPilotV3Marker(null);
+    setFocusCountryName(country.countryId || country.territoryId || country.name);
   }, []);
 
   const jumpToYear = (y) => {
