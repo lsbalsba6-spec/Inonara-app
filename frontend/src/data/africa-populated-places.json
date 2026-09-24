@@ -1,0 +1,1711 @@
+{
+  "source": {
+    "name": "Natural Earth populated places simple",
+    "url": "https://www.naturalearthdata.com/downloads/10m-cultural-vectors/10m-populated-places/",
+    "license": "Public domain"
+  },
+  "selection": {
+    "continent": "Africa",
+    "includes": [
+      "adm0cap",
+      "capalt",
+      "worldcity",
+      "megacity"
+    ],
+    "note": "minZoom is inherited from Natural Earth and should drive progressive disclosure in the Atlas."
+  },
+  "count": 89,
+  "places": [
+    {
+      "id": "ne-1159151603",
+      "name": "Cairo",
+      "nameAscii": "Cairo",
+      "countryId": "EG",
+      "kind": "capital",
+      "featureClass": "Admin-0 capital",
+      "coords": [
+        30.051906,
+        31.248022
+      ],
+      "populationMax": 11893000,
+      "populationMin": 7734614,
+      "rankMax": 14,
+      "labelRank": 3,
+      "scaleRank": 0,
+      "minZoom": 1.7,
+      "naturalEarthId": 1159151603
+    },
+    {
+      "id": "ne-1159151583",
+      "name": "Cape Town",
+      "nameAscii": "Cape Town",
+      "countryId": "ZA",
+      "kind": "capital",
+      "featureClass": "Admin-0 capital",
+      "coords": [
+        -33.918065,
+        18.433042
+      ],
+      "populationMax": 3215000,
+      "populationMin": 2432858,
+      "rankMax": 12,
+      "labelRank": 3,
+      "scaleRank": 0,
+      "minZoom": 1.7,
+      "naturalEarthId": 1159151583
+    },
+    {
+      "id": "ne-1159151597",
+      "name": "Nairobi",
+      "nameAscii": "Nairobi",
+      "countryId": "KE",
+      "kind": "capital",
+      "featureClass": "Admin-0 capital",
+      "coords": [
+        -1.281401,
+        36.814711
+      ],
+      "populationMax": 3010000,
+      "populationMin": 2750547,
+      "rankMax": 12,
+      "labelRank": 5,
+      "scaleRank": 0,
+      "minZoom": 2,
+      "naturalEarthId": 1159151597
+    },
+    {
+      "id": "ne-1159151539",
+      "name": "Kinshasa",
+      "nameAscii": "Kinshasa",
+      "countryId": "CD",
+      "kind": "capital",
+      "featureClass": "Admin-0 capital",
+      "coords": [
+        -4.327778,
+        15.313026
+      ],
+      "populationMax": 7843000,
+      "populationMin": 5565703,
+      "rankMax": 13,
+      "labelRank": 3,
+      "scaleRank": 1,
+      "minZoom": 3,
+      "naturalEarthId": 1159151539
+    },
+    {
+      "id": "ne-1159151549",
+      "name": "Addis Ababa",
+      "nameAscii": "Addis Ababa",
+      "countryId": "ET",
+      "kind": "capital",
+      "featureClass": "Admin-0 capital",
+      "coords": [
+        9.035256,
+        38.698059
+      ],
+      "populationMax": 3100000,
+      "populationMin": 2757729,
+      "rankMax": 12,
+      "labelRank": 3,
+      "scaleRank": 1,
+      "minZoom": 3,
+      "naturalEarthId": 1159151549
+    },
+    {
+      "id": "ne-1159151513",
+      "name": "Dakar",
+      "nameAscii": "Dakar",
+      "countryId": "SN",
+      "kind": "capital",
+      "featureClass": "Admin-0 capital",
+      "coords": [
+        14.717778,
+        -17.475076
+      ],
+      "populationMax": 2604000,
+      "populationMin": 2476400,
+      "rankMax": 12,
+      "labelRank": 8,
+      "scaleRank": 1,
+      "minZoom": 3,
+      "naturalEarthId": 1159151513
+    },
+    {
+      "id": "ne-1159151469",
+      "name": "Luanda",
+      "nameAscii": "Luanda",
+      "countryId": "AO",
+      "kind": "capital",
+      "featureClass": "Admin-0 capital",
+      "coords": [
+        -8.83634,
+        13.232481
+      ],
+      "populationMax": 5172900,
+      "populationMin": 1951272,
+      "rankMax": 13,
+      "labelRank": 6,
+      "scaleRank": 2,
+      "minZoom": 4,
+      "naturalEarthId": 1159151469
+    },
+    {
+      "id": "ne-1159151275",
+      "name": "Khartoum",
+      "nameAscii": "Khartoum",
+      "countryId": "SD",
+      "kind": "capital",
+      "featureClass": "Admin-0 capital",
+      "coords": [
+        15.590024,
+        32.532233
+      ],
+      "populationMax": 4754000,
+      "populationMin": 1974647,
+      "rankMax": 12,
+      "labelRank": 5,
+      "scaleRank": 2,
+      "minZoom": 4,
+      "naturalEarthId": 1159151275
+    },
+    {
+      "id": "ne-1159151439",
+      "name": "Abidjan",
+      "nameAscii": "Abidjan",
+      "countryId": "CI",
+      "kind": "capital",
+      "featureClass": "Admin-0 capital",
+      "coords": [
+        5.323126,
+        -4.020207
+      ],
+      "populationMax": 3802000,
+      "populationMin": 3190395,
+      "rankMax": 12,
+      "labelRank": 8,
+      "scaleRank": 2,
+      "minZoom": 4,
+      "naturalEarthId": 1159151439
+    },
+    {
+      "id": "ne-1159151471",
+      "name": "Algiers",
+      "nameAscii": "Algiers",
+      "countryId": "DZ",
+      "kind": "capital",
+      "featureClass": "Admin-0 capital",
+      "coords": [
+        36.765011,
+        3.048607
+      ],
+      "populationMax": 3354000,
+      "populationMin": 1977663,
+      "rankMax": 12,
+      "labelRank": 5,
+      "scaleRank": 2,
+      "minZoom": 4,
+      "naturalEarthId": 1159151471
+    },
+    {
+      "id": "ne-1159151305",
+      "name": "Dar es Salaam",
+      "nameAscii": "Dar es Salaam",
+      "countryId": "TZ",
+      "kind": "capital",
+      "featureClass": "Admin-0 capital",
+      "coords": [
+        -6.798067,
+        39.266396
+      ],
+      "populationMax": 2930000,
+      "populationMin": 2698652,
+      "rankMax": 12,
+      "labelRank": 5,
+      "scaleRank": 2,
+      "minZoom": 4,
+      "naturalEarthId": 1159151305
+    },
+    {
+      "id": "ne-1159151415",
+      "name": "Tripoli",
+      "nameAscii": "Tripoli",
+      "countryId": "LY",
+      "kind": "capital",
+      "featureClass": "Admin-0 capital",
+      "coords": [
+        32.8925,
+        13.180012
+      ],
+      "populationMax": 2189000,
+      "populationMin": 229398,
+      "rankMax": 12,
+      "labelRank": 7,
+      "scaleRank": 2,
+      "minZoom": 4,
+      "naturalEarthId": 1159151415
+    },
+    {
+      "id": "ne-1159151403",
+      "name": "Accra",
+      "nameAscii": "Accra",
+      "countryId": "GH",
+      "kind": "capital",
+      "featureClass": "Admin-0 capital",
+      "coords": [
+        5.55198,
+        -0.218662
+      ],
+      "populationMax": 2121000,
+      "populationMin": 1963264,
+      "rankMax": 12,
+      "labelRank": 6,
+      "scaleRank": 2,
+      "minZoom": 4,
+      "naturalEarthId": 1159151403
+    },
+    {
+      "id": "ne-1159150799",
+      "name": "Abuja",
+      "nameAscii": "Abuja",
+      "countryId": "NG",
+      "kind": "capital",
+      "featureClass": "Admin-0 capital",
+      "coords": [
+        9.05462,
+        7.489505
+      ],
+      "populationMax": 1576000,
+      "populationMin": 162135,
+      "rankMax": 12,
+      "labelRank": 2,
+      "scaleRank": 3,
+      "minZoom": 4,
+      "naturalEarthId": 1159150799
+    },
+    {
+      "id": "ne-1159150573",
+      "name": "Harare",
+      "nameAscii": "Harare",
+      "countryId": "ZW",
+      "kind": "capital",
+      "featureClass": "Admin-0 capital",
+      "coords": [
+        -17.815844,
+        31.042764
+      ],
+      "populationMax": 1572000,
+      "populationMin": 1542813,
+      "rankMax": 12,
+      "labelRank": 6,
+      "scaleRank": 3,
+      "minZoom": 4,
+      "naturalEarthId": 1159150573
+    },
+    {
+      "id": "ne-1159150945",
+      "name": "Bamako",
+      "nameAscii": "Bamako",
+      "countryId": "ML",
+      "kind": "capital",
+      "featureClass": "Admin-0 capital",
+      "coords": [
+        12.65196,
+        -8.001985
+      ],
+      "populationMax": 1494000,
+      "populationMin": 1297281,
+      "rankMax": 12,
+      "labelRank": 6,
+      "scaleRank": 3,
+      "minZoom": 4,
+      "naturalEarthId": 1159150945
+    },
+    {
+      "id": "ne-1159150571",
+      "name": "Lusaka",
+      "nameAscii": "Lusaka",
+      "countryId": "ZM",
+      "kind": "capital",
+      "featureClass": "Admin-0 capital",
+      "coords": [
+        -15.414698,
+        28.281382
+      ],
+      "populationMax": 1328000,
+      "populationMin": 1267440,
+      "rankMax": 12,
+      "labelRank": 6,
+      "scaleRank": 3,
+      "minZoom": 4,
+      "naturalEarthId": 1159150571
+    },
+    {
+      "id": "ne-1159150715",
+      "name": "Mogadishu",
+      "nameAscii": "Mogadishu",
+      "countryId": "SO",
+      "kind": "capital",
+      "featureClass": "Admin-0 capital",
+      "coords": [
+        2.068627,
+        45.364732
+      ],
+      "populationMax": 1100000,
+      "populationMin": 875388,
+      "rankMax": 12,
+      "labelRank": 8,
+      "scaleRank": 3,
+      "minZoom": 4,
+      "naturalEarthId": 1159150715
+    },
+    {
+      "id": "ne-1159151311",
+      "name": "Monrovia",
+      "nameAscii": "Monrovia",
+      "countryId": "LR",
+      "kind": "capital",
+      "featureClass": "Admin-0 capital",
+      "coords": [
+        6.314582,
+        -10.79966
+      ],
+      "populationMax": 1041000,
+      "populationMin": 785662,
+      "rankMax": 12,
+      "labelRank": 8,
+      "scaleRank": 2,
+      "minZoom": 4,
+      "naturalEarthId": 1159151311
+    },
+    {
+      "id": "ne-1159150537",
+      "name": "Tunis",
+      "nameAscii": "Tunis",
+      "countryId": "TN",
+      "kind": "capital",
+      "featureClass": "Admin-0 capital",
+      "coords": [
+        36.802778,
+        10.179678
+      ],
+      "populationMax": 2412500,
+      "populationMin": 728453,
+      "rankMax": 12,
+      "labelRank": 7,
+      "scaleRank": 3,
+      "minZoom": 5,
+      "naturalEarthId": 1159150537
+    },
+    {
+      "id": "ne-1159150673",
+      "name": "Rabat",
+      "nameAscii": "Rabat",
+      "countryId": "MA",
+      "kind": "capital",
+      "featureClass": "Admin-0 capital",
+      "coords": [
+        34.025307,
+        -6.836408
+      ],
+      "populationMax": 1705000,
+      "populationMin": 1655753,
+      "rankMax": 12,
+      "labelRank": 5,
+      "scaleRank": 3,
+      "minZoom": 5,
+      "naturalEarthId": 1159150673
+    },
+    {
+      "id": "ne-1159150835",
+      "name": "Antananarivo",
+      "nameAscii": "Antananarivo",
+      "countryId": "MG",
+      "kind": "capital",
+      "featureClass": "Admin-0 capital",
+      "coords": [
+        -18.914691,
+        47.514678
+      ],
+      "populationMax": 1697000,
+      "populationMin": 1391433,
+      "rankMax": 12,
+      "labelRank": 6,
+      "scaleRank": 3,
+      "minZoom": 5,
+      "naturalEarthId": 1159150835
+    },
+    {
+      "id": "ne-1159151115",
+      "name": "Yaoundé",
+      "nameAscii": "Yaounde",
+      "countryId": "CM",
+      "kind": "capital",
+      "featureClass": "Admin-0 capital",
+      "coords": [
+        3.868647,
+        11.514705
+      ],
+      "populationMax": 1611000,
+      "populationMin": 1060587,
+      "rankMax": 12,
+      "labelRank": 6,
+      "scaleRank": 3,
+      "minZoom": 5,
+      "naturalEarthId": 1159151115
+    },
+    {
+      "id": "ne-1159150997",
+      "name": "Conakry",
+      "nameAscii": "Conakry",
+      "countryId": "GN",
+      "kind": "capital",
+      "featureClass": "Admin-0 capital",
+      "coords": [
+        9.533469,
+        -13.682181
+      ],
+      "populationMax": 1494000,
+      "populationMin": 1494000,
+      "rankMax": 12,
+      "labelRank": 8,
+      "scaleRank": 3,
+      "minZoom": 5,
+      "naturalEarthId": 1159150997
+    },
+    {
+      "id": "ne-1159150535",
+      "name": "Lomé",
+      "nameAscii": "Lome",
+      "countryId": "TG",
+      "kind": "capital",
+      "featureClass": "Admin-0 capital",
+      "coords": [
+        6.133883,
+        1.220811
+      ],
+      "populationMax": 1452000,
+      "populationMin": 749700,
+      "rankMax": 12,
+      "labelRank": 8,
+      "scaleRank": 3,
+      "minZoom": 5,
+      "naturalEarthId": 1159150535
+    },
+    {
+      "id": "ne-1159150683",
+      "name": "Maputo",
+      "nameAscii": "Maputo",
+      "countryId": "MZ",
+      "kind": "capital",
+      "featureClass": "Admin-0 capital",
+      "coords": [
+        -25.953332,
+        32.587217
+      ],
+      "populationMax": 1446000,
+      "populationMin": 1191613,
+      "rankMax": 12,
+      "labelRank": 6,
+      "scaleRank": 3,
+      "minZoom": 5,
+      "naturalEarthId": 1159150683
+    },
+    {
+      "id": "ne-1159150593",
+      "name": "Kampala",
+      "nameAscii": "Kampala",
+      "countryId": "UG",
+      "kind": "capital",
+      "featureClass": "Admin-0 capital",
+      "coords": [
+        0.318605,
+        32.581378
+      ],
+      "populationMax": 1420000,
+      "populationMin": 1353189,
+      "rankMax": 12,
+      "labelRank": 5,
+      "scaleRank": 3,
+      "minZoom": 5,
+      "naturalEarthId": 1159150593
+    },
+    {
+      "id": "ne-1159150993",
+      "name": "Brazzaville",
+      "nameAscii": "Brazzaville",
+      "countryId": "CG",
+      "kind": "capital",
+      "featureClass": "Admin-0 capital",
+      "coords": [
+        -4.25724,
+        15.282744
+      ],
+      "populationMax": 1355000,
+      "populationMin": 1163890,
+      "rankMax": 12,
+      "labelRank": 7,
+      "scaleRank": 3,
+      "minZoom": 5,
+      "naturalEarthId": 1159150993
+    },
+    {
+      "id": "ne-1159150661",
+      "name": "Pretoria",
+      "nameAscii": "Pretoria",
+      "countryId": "ZA",
+      "kind": "capital",
+      "featureClass": "Admin-0 capital",
+      "coords": [
+        -25.704975,
+        28.227483
+      ],
+      "populationMax": 1338000,
+      "populationMin": 1338000,
+      "rankMax": 12,
+      "labelRank": 3,
+      "scaleRank": 3,
+      "minZoom": 5,
+      "naturalEarthId": 1159150661
+    },
+    {
+      "id": "ne-1159151173",
+      "name": "Ouagadougou",
+      "nameAscii": "Ouagadougou",
+      "countryId": "BF",
+      "kind": "capital",
+      "featureClass": "Admin-0 capital",
+      "coords": [
+        12.372262,
+        -1.52667
+      ],
+      "populationMax": 1149000,
+      "populationMin": 835457,
+      "rankMax": 12,
+      "labelRank": 8,
+      "scaleRank": 3,
+      "minZoom": 5,
+      "naturalEarthId": 1159151173
+    },
+    {
+      "id": "ne-1159150863",
+      "name": "N'Djamena",
+      "nameAscii": "Ndjamena",
+      "countryId": "TD",
+      "kind": "capital",
+      "featureClass": "Admin-0 capital",
+      "coords": [
+        12.115042,
+        15.047202
+      ],
+      "populationMax": 989000,
+      "populationMin": 681387,
+      "rankMax": 11,
+      "labelRank": 7,
+      "scaleRank": 3,
+      "minZoom": 5,
+      "naturalEarthId": 1159150863
+    },
+    {
+      "id": "ne-1159150605",
+      "name": "Niamey",
+      "nameAscii": "Niamey",
+      "countryId": "NE",
+      "kind": "capital",
+      "featureClass": "Admin-0 capital",
+      "coords": [
+        13.518652,
+        2.11471
+      ],
+      "populationMax": 915000,
+      "populationMin": 742791,
+      "rankMax": 11,
+      "labelRank": 6,
+      "scaleRank": 3,
+      "minZoom": 5,
+      "naturalEarthId": 1159150605
+    },
+    {
+      "id": "ne-1159151111",
+      "name": "Bangui",
+      "nameAscii": "Bangui",
+      "countryId": "CF",
+      "kind": "capital",
+      "featureClass": "Admin-0 capital",
+      "coords": [
+        4.366644,
+        18.558288
+      ],
+      "populationMax": 831925,
+      "populationMin": 622771,
+      "rankMax": 11,
+      "labelRank": 7,
+      "scaleRank": 3,
+      "minZoom": 5,
+      "naturalEarthId": 1159151111
+    },
+    {
+      "id": "ne-1159150625",
+      "name": "Freetown",
+      "nameAscii": "Freetown",
+      "countryId": "SL",
+      "kind": "capital",
+      "featureClass": "Admin-0 capital",
+      "coords": [
+        8.471957,
+        -13.236162
+      ],
+      "populationMax": 827000,
+      "populationMin": 13768,
+      "rankMax": 11,
+      "labelRank": 8,
+      "scaleRank": 3,
+      "minZoom": 5,
+      "naturalEarthId": 1159150625
+    },
+    {
+      "id": "ne-1159151141",
+      "name": "Cotonou",
+      "nameAscii": "Cotonou",
+      "countryId": "BJ",
+      "kind": "capital",
+      "featureClass": "Admin-0 capital",
+      "coords": [
+        6.36298,
+        2.404355
+      ],
+      "populationMax": 762000,
+      "populationMin": 690584,
+      "rankMax": 11,
+      "labelRank": 8,
+      "scaleRank": 3,
+      "minZoom": 5,
+      "naturalEarthId": 1159151141
+    },
+    {
+      "id": "ne-1159150943",
+      "name": "Nouakchott",
+      "nameAscii": "Nouakchott",
+      "countryId": "MR",
+      "kind": "capital",
+      "featureClass": "Admin-0 capital",
+      "coords": [
+        18.086427,
+        -15.97534
+      ],
+      "populationMax": 742144,
+      "populationMin": 661400,
+      "rankMax": 11,
+      "labelRank": 7,
+      "scaleRank": 3,
+      "minZoom": 5,
+      "naturalEarthId": 1159150943
+    },
+    {
+      "id": "ne-1159150907",
+      "name": "Lilongwe",
+      "nameAscii": "Lilongwe",
+      "countryId": "MW",
+      "kind": "capital",
+      "featureClass": "Admin-0 capital",
+      "coords": [
+        -13.983295,
+        33.783302
+      ],
+      "populationMax": 646750,
+      "populationMin": 646750,
+      "rankMax": 11,
+      "labelRank": 8,
+      "scaleRank": 3,
+      "minZoom": 5,
+      "naturalEarthId": 1159150907
+    },
+    {
+      "id": "ne-1159150873",
+      "name": "Asmara",
+      "nameAscii": "Asmara",
+      "countryId": "ER",
+      "kind": "capital",
+      "featureClass": "Admin-0 capital",
+      "coords": [
+        15.333339,
+        38.933324
+      ],
+      "populationMax": 620802,
+      "populationMin": 563930,
+      "rankMax": 11,
+      "labelRank": 8,
+      "scaleRank": 3,
+      "minZoom": 5,
+      "naturalEarthId": 1159150873
+    },
+    {
+      "id": "ne-1159150913",
+      "name": "Libreville",
+      "nameAscii": "Libreville",
+      "countryId": "GA",
+      "kind": "capital",
+      "featureClass": "Admin-0 capital",
+      "coords": [
+        0.385389,
+        9.457965
+      ],
+      "populationMax": 578156,
+      "populationMin": 483355,
+      "rankMax": 11,
+      "labelRank": 7,
+      "scaleRank": 3,
+      "minZoom": 5,
+      "naturalEarthId": 1159150913
+    },
+    {
+      "id": "ne-1159150659",
+      "name": "Bloemfontein",
+      "nameAscii": "Bloemfontein",
+      "countryId": "ZA",
+      "kind": "capital",
+      "featureClass": "Admin-0 capital",
+      "coords": [
+        -29.119994,
+        26.229913
+      ],
+      "populationMax": 463064,
+      "populationMin": 456669,
+      "rankMax": 10,
+      "labelRank": 3,
+      "scaleRank": 3,
+      "minZoom": 5,
+      "naturalEarthId": 1159150659
+    },
+    {
+      "id": "ne-1159150803",
+      "name": "Bissau",
+      "nameAscii": "Bissau",
+      "countryId": "GW",
+      "kind": "capital",
+      "featureClass": "Admin-0 capital",
+      "coords": [
+        11.865024,
+        -15.598361
+      ],
+      "populationMax": 403339,
+      "populationMin": 388028,
+      "rankMax": 10,
+      "labelRank": 8,
+      "scaleRank": 3,
+      "minZoom": 5,
+      "naturalEarthId": 1159150803
+    },
+    {
+      "id": "ne-1159150831",
+      "name": "Maseru",
+      "nameAscii": "Maseru",
+      "countryId": "LS",
+      "kind": "capital",
+      "featureClass": "Admin-0 capital",
+      "coords": [
+        -29.316674,
+        27.483273
+      ],
+      "populationMax": 361324,
+      "populationMin": 118355,
+      "rankMax": 10,
+      "labelRank": 8,
+      "scaleRank": 3,
+      "minZoom": 5,
+      "naturalEarthId": 1159150831
+    },
+    {
+      "id": "ne-1159150785",
+      "name": "Windhoek",
+      "nameAscii": "Windhoek",
+      "countryId": "NA",
+      "kind": "capital",
+      "featureClass": "Admin-0 capital",
+      "coords": [
+        -22.570006,
+        17.083546
+      ],
+      "populationMax": 268132,
+      "populationMin": 262796,
+      "rankMax": 10,
+      "labelRank": 6,
+      "scaleRank": 3,
+      "minZoom": 5,
+      "naturalEarthId": 1159150785
+    },
+    {
+      "id": "ne-1159151153",
+      "name": "Gaborone",
+      "nameAscii": "Gaborone",
+      "countryId": "BW",
+      "kind": "capital",
+      "featureClass": "Admin-0 capital",
+      "coords": [
+        -24.646314,
+        25.911948
+      ],
+      "populationMax": 208411,
+      "populationMin": 159243,
+      "rankMax": 10,
+      "labelRank": 7,
+      "scaleRank": 3,
+      "minZoom": 5,
+      "naturalEarthId": 1159151153
+    },
+    {
+      "id": "ne-1159150999",
+      "name": "Yamoussoukro",
+      "nameAscii": "Yamoussoukro",
+      "countryId": "CI",
+      "kind": "capital",
+      "featureClass": "Admin-0 capital",
+      "coords": [
+        6.818381,
+        -5.275503
+      ],
+      "populationMax": 206499,
+      "populationMin": 194530,
+      "rankMax": 10,
+      "labelRank": 8,
+      "scaleRank": 3,
+      "minZoom": 5,
+      "naturalEarthId": 1159150999
+    },
+    {
+      "id": "ne-1159150867",
+      "name": "Malabo",
+      "nameAscii": "Malabo",
+      "countryId": "GQ",
+      "kind": "capital",
+      "featureClass": "Admin-0 capital",
+      "coords": [
+        3.750015,
+        8.783278
+      ],
+      "populationMax": 155963,
+      "populationMin": 155963,
+      "rankMax": 9,
+      "labelRank": 8,
+      "scaleRank": 3,
+      "minZoom": 5,
+      "naturalEarthId": 1159150867
+    },
+    {
+      "id": "ne-1159151205",
+      "name": "Praia",
+      "nameAscii": "Praia",
+      "countryId": "CV",
+      "kind": "capital",
+      "featureClass": "Admin-0 capital",
+      "coords": [
+        14.916698,
+        -23.516689
+      ],
+      "populationMax": 113364,
+      "populationMin": 88859,
+      "rankMax": 9,
+      "labelRank": 0,
+      "scaleRank": 3,
+      "minZoom": 5,
+      "naturalEarthId": 1159151205
+    },
+    {
+      "id": "ne-1159151195",
+      "name": "São Tomé",
+      "nameAscii": "Sao Tome",
+      "countryId": "ST",
+      "kind": "capital",
+      "featureClass": "Admin-0 capital",
+      "coords": [
+        0.337466,
+        6.72965
+      ],
+      "populationMax": 88219,
+      "populationMin": 56166,
+      "rankMax": 8,
+      "labelRank": 0,
+      "scaleRank": 3,
+      "minZoom": 5,
+      "naturalEarthId": 1159151195
+    },
+    {
+      "id": "ne-1159151191",
+      "name": "Victoria",
+      "nameAscii": "Victoria",
+      "countryId": "SC",
+      "kind": "capital",
+      "featureClass": "Admin-0 capital",
+      "coords": [
+        -4.616632,
+        55.44999
+      ],
+      "populationMax": 33576,
+      "populationMin": 22881,
+      "rankMax": 7,
+      "labelRank": 0,
+      "scaleRank": 3,
+      "minZoom": 5,
+      "naturalEarthId": 1159151191
+    },
+    {
+      "id": "ne-1159149385",
+      "name": "Kigali",
+      "nameAscii": "Kigali",
+      "countryId": "RW",
+      "kind": "capital",
+      "featureClass": "Admin-0 capital",
+      "coords": [
+        -1.951644,
+        30.058586
+      ],
+      "populationMax": 860000,
+      "populationMin": 745261,
+      "rankMax": 11,
+      "labelRank": 0,
+      "scaleRank": 4,
+      "minZoom": 5.1,
+      "naturalEarthId": 1159149385
+    },
+    {
+      "id": "ne-1159149869",
+      "name": "Djibouti",
+      "nameAscii": "Djibouti",
+      "countryId": "DJ",
+      "kind": "capital",
+      "featureClass": "Admin-0 capital",
+      "coords": [
+        11.595014,
+        43.148002
+      ],
+      "populationMax": 923000,
+      "populationMin": 604013,
+      "rankMax": 11,
+      "labelRank": 8,
+      "scaleRank": 4,
+      "minZoom": 5.6,
+      "naturalEarthId": 1159149869
+    },
+    {
+      "id": "ne-1159150443",
+      "name": "Port Louis",
+      "nameAscii": "Port Louis",
+      "countryId": "MU",
+      "kind": "capital",
+      "featureClass": "Admin-0 capital",
+      "coords": [
+        -20.166639,
+        57.499994
+      ],
+      "populationMax": 595491,
+      "populationMin": 148416,
+      "rankMax": 11,
+      "labelRank": 0,
+      "scaleRank": 4,
+      "minZoom": 5.6,
+      "naturalEarthId": 1159150443
+    },
+    {
+      "id": "ne-1159150427",
+      "name": "Bujumbura",
+      "nameAscii": "Bujumbura",
+      "countryId": "BI",
+      "kind": "capital",
+      "featureClass": "Admin-0 capital",
+      "coords": [
+        -3.376087,
+        29.360006
+      ],
+      "populationMax": 331700,
+      "populationMin": 331700,
+      "rankMax": 10,
+      "labelRank": 8,
+      "scaleRank": 4,
+      "minZoom": 5.6,
+      "naturalEarthId": 1159150427
+    },
+    {
+      "id": "ne-1159149413",
+      "name": "Mbabane",
+      "nameAscii": "Mbabane",
+      "countryId": "SZ",
+      "kind": "capital",
+      "featureClass": "Admin-0 capital",
+      "coords": [
+        -26.316651,
+        31.133335
+      ],
+      "populationMax": 90138,
+      "populationMin": 76218,
+      "rankMax": 8,
+      "labelRank": 8,
+      "scaleRank": 4,
+      "minZoom": 5.6,
+      "naturalEarthId": 1159149413
+    },
+    {
+      "id": "ne-1159149997",
+      "name": "Banjul",
+      "nameAscii": "Banjul",
+      "countryId": "GM",
+      "kind": "capital",
+      "featureClass": "Admin-0 capital",
+      "coords": [
+        13.453876,
+        -16.591701
+      ],
+      "populationMax": 43094,
+      "populationMin": 34589,
+      "rankMax": 7,
+      "labelRank": 8,
+      "scaleRank": 4,
+      "minZoom": 5.6,
+      "naturalEarthId": 1159149997
+    },
+    {
+      "id": "ne-1159149083",
+      "name": "Moroni",
+      "nameAscii": "Moroni",
+      "countryId": "KM",
+      "kind": "capital",
+      "featureClass": "Admin-0 capital",
+      "coords": [
+        -11.704158,
+        43.240244
+      ],
+      "populationMax": 128698,
+      "populationMin": 42872,
+      "rankMax": 9,
+      "labelRank": 0,
+      "scaleRank": 6,
+      "minZoom": 6,
+      "naturalEarthId": 1159149083
+    },
+    {
+      "id": "ne-1159151591",
+      "name": "Lagos",
+      "nameAscii": "Lagos",
+      "countryId": "NG",
+      "kind": "capital-alt",
+      "featureClass": "Admin-0 capital alt",
+      "coords": [
+        6.445208,
+        3.389585
+      ],
+      "populationMax": 9466000,
+      "populationMin": 1536,
+      "rankMax": 13,
+      "labelRank": 2,
+      "scaleRank": 0,
+      "minZoom": 2,
+      "naturalEarthId": 1159151591
+    },
+    {
+      "id": "ne-1159150345",
+      "name": "Porto-Novo",
+      "nameAscii": "Porto-Novo",
+      "countryId": "BJ",
+      "kind": "capital-alt",
+      "featureClass": "Admin-0 capital alt",
+      "coords": [
+        6.483311,
+        2.616626
+      ],
+      "populationMax": 300000,
+      "populationMin": 234168,
+      "rankMax": 10,
+      "labelRank": 8,
+      "scaleRank": 4,
+      "minZoom": 5.6,
+      "naturalEarthId": 1159150345
+    },
+    {
+      "id": "ne-1159149731",
+      "name": "Dodoma",
+      "nameAscii": "Dodoma",
+      "countryId": "TZ",
+      "kind": "capital-alt",
+      "featureClass": "Admin-0 capital alt",
+      "coords": [
+        -6.183306,
+        35.750004
+      ],
+      "populationMax": 218269,
+      "populationMin": 180541,
+      "rankMax": 10,
+      "labelRank": 5,
+      "scaleRank": 4,
+      "minZoom": 5.6,
+      "naturalEarthId": 1159149731
+    },
+    {
+      "id": "ne-1159149741",
+      "name": "Laayoune",
+      "nameAscii": "Laayoune",
+      "countryId": "MA",
+      "kind": "capital-alt",
+      "featureClass": "Admin-0 capital alt",
+      "coords": [
+        27.149982,
+        -13.200006
+      ],
+      "populationMax": 188084,
+      "populationMin": 176365,
+      "rankMax": 9,
+      "labelRank": 5,
+      "scaleRank": 4,
+      "minZoom": 5.6,
+      "naturalEarthId": 1159149741
+    },
+    {
+      "id": "ne-1159146343",
+      "name": "Lobamba",
+      "nameAscii": "Lobamba",
+      "countryId": "SZ",
+      "kind": "capital-alt",
+      "featureClass": "Admin-0 capital alt",
+      "coords": [
+        -26.466667,
+        31.199997
+      ],
+      "populationMax": 9782,
+      "populationMin": 4557,
+      "rankMax": 5,
+      "labelRank": 8,
+      "scaleRank": 6,
+      "minZoom": 6,
+      "naturalEarthId": 1159146343
+    },
+    {
+      "id": "ne-1159149075",
+      "name": "Bir Lehlou",
+      "nameAscii": "Bir Lehlou",
+      "countryId": "EH",
+      "kind": "capital-alt",
+      "featureClass": "Admin-0 capital alt",
+      "coords": [
+        26.119167,
+        -9.652522
+      ],
+      "populationMax": 500,
+      "populationMin": 200,
+      "rankMax": 2,
+      "labelRank": 0,
+      "scaleRank": 6,
+      "minZoom": 6,
+      "naturalEarthId": 1159149075
+    },
+    {
+      "id": "ne-1159151515",
+      "name": "Johannesburg",
+      "nameAscii": "Johannesburg",
+      "countryId": "ZA",
+      "kind": "megacity",
+      "featureClass": "Admin-0 capital",
+      "coords": [
+        -26.168099,
+        28.028064
+      ],
+      "populationMax": 3435000,
+      "populationMin": 2026469,
+      "rankMax": 12,
+      "labelRank": 3,
+      "scaleRank": 1,
+      "minZoom": 3,
+      "naturalEarthId": 1159151515
+    },
+    {
+      "id": "ne-1159151521",
+      "name": "Casablanca",
+      "nameAscii": "Casablanca",
+      "countryId": "MA",
+      "kind": "megacity",
+      "featureClass": "Admin-1 capital",
+      "coords": [
+        33.601922,
+        -7.618313
+      ],
+      "populationMax": 3181000,
+      "populationMin": 3144909,
+      "rankMax": 12,
+      "labelRank": 5,
+      "scaleRank": 1,
+      "minZoom": 3.7,
+      "naturalEarthId": 1159151521
+    },
+    {
+      "id": "ne-1159151349",
+      "name": "Alexandria",
+      "nameAscii": "Alexandria",
+      "countryId": "EG",
+      "kind": "megacity",
+      "featureClass": "Populated place",
+      "coords": [
+        31.201965,
+        29.94805
+      ],
+      "populationMax": 4165000,
+      "populationMin": 3811516,
+      "rankMax": 12,
+      "labelRank": 3,
+      "scaleRank": 2,
+      "minZoom": 4,
+      "naturalEarthId": 1159151349
+    },
+    {
+      "id": "ne-1159151289",
+      "name": "Durban",
+      "nameAscii": "Durban",
+      "countryId": "ZA",
+      "kind": "megacity",
+      "featureClass": "Populated place",
+      "coords": [
+        -29.860662,
+        31.010944
+      ],
+      "populationMax": 2729000,
+      "populationMin": 2729000,
+      "rankMax": 12,
+      "labelRank": 3,
+      "scaleRank": 2,
+      "minZoom": 4,
+      "naturalEarthId": 1159151289
+    },
+    {
+      "id": "ne-1159151297",
+      "name": "Kano",
+      "nameAscii": "Kano",
+      "countryId": "NG",
+      "kind": "megacity",
+      "featureClass": "Admin-1 capital",
+      "coords": [
+        12.001923,
+        8.518092
+      ],
+      "populationMax": 3140000,
+      "populationMin": 3140000,
+      "rankMax": 12,
+      "labelRank": 2,
+      "scaleRank": 2,
+      "minZoom": 4.7,
+      "naturalEarthId": 1159151297
+    },
+    {
+      "id": "ne-1159150953",
+      "name": "Banghazi",
+      "nameAscii": "Banghazi",
+      "countryId": "LY",
+      "kind": "megacity",
+      "featureClass": "Admin-1 capital",
+      "coords": [
+        32.118679,
+        20.064777
+      ],
+      "populationMax": 1180000,
+      "populationMin": 582374,
+      "rankMax": 12,
+      "labelRank": 7,
+      "scaleRank": 3,
+      "minZoom": 4.7,
+      "naturalEarthId": 1159150953
+    },
+    {
+      "id": "ne-1159150903",
+      "name": "Lubumbashi",
+      "nameAscii": "Lubumbashi",
+      "countryId": "CD",
+      "kind": "megacity",
+      "featureClass": "Admin-1 capital",
+      "coords": [
+        -11.678079,
+        27.478072
+      ],
+      "populationMax": 1352000,
+      "populationMin": 876634,
+      "rankMax": 12,
+      "labelRank": 3,
+      "scaleRank": 3,
+      "minZoom": 5,
+      "naturalEarthId": 1159150903
+    },
+    {
+      "id": "ne-1159151131",
+      "name": "Huambo",
+      "nameAscii": "Huambo",
+      "countryId": "AO",
+      "kind": "megacity",
+      "featureClass": "Admin-1 capital",
+      "coords": [
+        -12.74804,
+        15.758064
+      ],
+      "populationMax": 1100000,
+      "populationMin": 872000,
+      "rankMax": 12,
+      "labelRank": 6,
+      "scaleRank": 3,
+      "minZoom": 5,
+      "naturalEarthId": 1159151131
+    },
+    {
+      "id": "ne-1159150681",
+      "name": "Port Elizabeth",
+      "nameAscii": "Port Elizabeth",
+      "countryId": "ZA",
+      "kind": "megacity",
+      "featureClass": "Populated place",
+      "coords": [
+        -33.968088,
+        25.598083
+      ],
+      "populationMax": 1021000,
+      "populationMin": 640054,
+      "rankMax": 12,
+      "labelRank": 3,
+      "scaleRank": 3,
+      "minZoom": 5,
+      "naturalEarthId": 1159150681
+    },
+    {
+      "id": "ne-1159150669",
+      "name": "Fez",
+      "nameAscii": "Fez",
+      "countryId": "MA",
+      "kind": "megacity",
+      "featureClass": "Admin-1 capital",
+      "coords": [
+        34.056545,
+        -5.002323
+      ],
+      "populationMax": 1002000,
+      "populationMin": 964891,
+      "rankMax": 12,
+      "labelRank": 5,
+      "scaleRank": 3,
+      "minZoom": 5,
+      "naturalEarthId": 1159150669
+    },
+    {
+      "id": "ne-1159150829",
+      "name": "Mombasa",
+      "nameAscii": "Mombasa",
+      "countryId": "KE",
+      "kind": "megacity",
+      "featureClass": "Admin-1 capital",
+      "coords": [
+        -4.03808,
+        39.687972
+      ],
+      "populationMax": 882000,
+      "populationMin": 799668,
+      "rankMax": 11,
+      "labelRank": 5,
+      "scaleRank": 3,
+      "minZoom": 5,
+      "naturalEarthId": 1159150829
+    },
+    {
+      "id": "ne-1159150675",
+      "name": "Marrakesh",
+      "nameAscii": "Marrakesh",
+      "countryId": "MA",
+      "kind": "megacity",
+      "featureClass": "Admin-1 capital",
+      "coords": [
+        31.631939,
+        -8.001933
+      ],
+      "populationMax": 872000,
+      "populationMin": 839296,
+      "rankMax": 11,
+      "labelRank": 5,
+      "scaleRank": 3,
+      "minZoom": 5,
+      "naturalEarthId": 1159150675
+    },
+    {
+      "id": "ne-1159151137",
+      "name": "Oran",
+      "nameAscii": "Oran",
+      "countryId": "DZ",
+      "kind": "megacity",
+      "featureClass": "Populated place",
+      "coords": [
+        35.711948,
+        -0.621919
+      ],
+      "populationMax": 798000,
+      "populationMin": 645984,
+      "rankMax": 11,
+      "labelRank": 5,
+      "scaleRank": 3,
+      "minZoom": 5,
+      "naturalEarthId": 1159151137
+    },
+    {
+      "id": "ne-1159149697",
+      "name": "Ibadan",
+      "nameAscii": "Ibadan",
+      "countryId": "NG",
+      "kind": "megacity",
+      "featureClass": "Admin-1 capital",
+      "coords": [
+        7.381972,
+        3.928036
+      ],
+      "populationMax": 2628000,
+      "populationMin": 1814570,
+      "rankMax": 12,
+      "labelRank": 2,
+      "scaleRank": 4,
+      "minZoom": 5.1,
+      "naturalEarthId": 1159149697
+    },
+    {
+      "id": "ne-1159149365",
+      "name": "Douala",
+      "nameAscii": "Douala",
+      "countryId": "CM",
+      "kind": "megacity",
+      "featureClass": "Admin-1 capital",
+      "coords": [
+        4.062356,
+        9.708045
+      ],
+      "populationMax": 1906000,
+      "populationMin": 1338082,
+      "rankMax": 12,
+      "labelRank": 6,
+      "scaleRank": 4,
+      "minZoom": 5.6,
+      "naturalEarthId": 1159149365
+    },
+    {
+      "id": "ne-1159149705",
+      "name": "Kaduna",
+      "nameAscii": "Kaduna",
+      "countryId": "NG",
+      "kind": "megacity",
+      "featureClass": "Admin-1 capital",
+      "coords": [
+        10.521961,
+        7.438054
+      ],
+      "populationMax": 1442000,
+      "populationMin": 940593,
+      "rankMax": 12,
+      "labelRank": 2,
+      "scaleRank": 4,
+      "minZoom": 5.6,
+      "naturalEarthId": 1159149705
+    },
+    {
+      "id": "ne-1159149981",
+      "name": "Mbuji-Mayi",
+      "nameAscii": "Mbuji-Mayi",
+      "countryId": "CD",
+      "kind": "megacity",
+      "featureClass": "Admin-1 capital",
+      "coords": [
+        -6.148081,
+        23.59805
+      ],
+      "populationMax": 1295000,
+      "populationMin": 874761,
+      "rankMax": 12,
+      "labelRank": 3,
+      "scaleRank": 4,
+      "minZoom": 5.6,
+      "naturalEarthId": 1159149981
+    },
+    {
+      "id": "ne-1159149127",
+      "name": "Benin City",
+      "nameAscii": "Benin City",
+      "countryId": "NG",
+      "kind": "megacity",
+      "featureClass": "Admin-1 capital",
+      "coords": [
+        6.342423,
+        5.618062
+      ],
+      "populationMax": 1190000,
+      "populationMin": 668026,
+      "rankMax": 12,
+      "labelRank": 2,
+      "scaleRank": 4,
+      "minZoom": 5.6,
+      "naturalEarthId": 1159149127
+    },
+    {
+      "id": "ne-1159149693",
+      "name": "Port Harcourt",
+      "nameAscii": "Port Harcourt",
+      "countryId": "NG",
+      "kind": "megacity",
+      "featureClass": "Admin-1 capital",
+      "coords": [
+        4.811948,
+        7.008055
+      ],
+      "populationMax": 1020000,
+      "populationMin": 1020000,
+      "rankMax": 12,
+      "labelRank": 2,
+      "scaleRank": 4,
+      "minZoom": 5.6,
+      "naturalEarthId": 1159149693
+    },
+    {
+      "id": "ne-1159149701",
+      "name": "Ogbomosho",
+      "nameAscii": "Ogbomosho",
+      "countryId": "NG",
+      "kind": "megacity",
+      "featureClass": "Populated place",
+      "coords": [
+        8.131952,
+        4.238043
+      ],
+      "populationMax": 951000,
+      "populationMin": 239127,
+      "rankMax": 11,
+      "labelRank": 2,
+      "scaleRank": 4,
+      "minZoom": 5.6,
+      "naturalEarthId": 1159149701
+    },
+    {
+      "id": "ne-1159149691",
+      "name": "Maiduguri",
+      "nameAscii": "Maiduguri",
+      "countryId": "NG",
+      "kind": "megacity",
+      "featureClass": "Admin-1 capital",
+      "coords": [
+        11.851906,
+        13.158067
+      ],
+      "populationMax": 896000,
+      "populationMin": 512460,
+      "rankMax": 11,
+      "labelRank": 2,
+      "scaleRank": 4,
+      "minZoom": 5.6,
+      "naturalEarthId": 1159149691
+    },
+    {
+      "id": "ne-1159149977",
+      "name": "Kananga",
+      "nameAscii": "Kananga",
+      "countryId": "CD",
+      "kind": "megacity",
+      "featureClass": "Admin-1 capital",
+      "coords": [
+        -5.888096,
+        22.398072
+      ],
+      "populationMax": 765000,
+      "populationMin": 463546,
+      "rankMax": 11,
+      "labelRank": 3,
+      "scaleRank": 4,
+      "minZoom": 5.6,
+      "naturalEarthId": 1159149977
+    },
+    {
+      "id": "ne-1159146483",
+      "name": "Benoni",
+      "nameAscii": "Benoni",
+      "countryId": "ZA",
+      "kind": "megacity",
+      "featureClass": "Populated place",
+      "coords": [
+        -26.147635,
+        28.327994
+      ],
+      "populationMax": 2986000,
+      "populationMin": 605344,
+      "rankMax": 12,
+      "labelRank": 3,
+      "scaleRank": 6,
+      "minZoom": 6,
+      "naturalEarthId": 1159146483
+    },
+    {
+      "id": "ne-1159148507",
+      "name": "Kumasi",
+      "nameAscii": "Kumasi",
+      "countryId": "GH",
+      "kind": "megacity",
+      "featureClass": "Admin-1 capital",
+      "coords": [
+        6.691937,
+        -1.63196
+      ],
+      "populationMax": 1646000,
+      "populationMin": 1291151,
+      "rankMax": 12,
+      "labelRank": 6,
+      "scaleRank": 6,
+      "minZoom": 6,
+      "naturalEarthId": 1159148507
+    },
+    {
+      "id": "ne-1159146485",
+      "name": "Vereeniging",
+      "nameAscii": "Vereeniging",
+      "countryId": "ZA",
+      "kind": "megacity",
+      "featureClass": "Populated place",
+      "coords": [
+        -26.647656,
+        27.958042
+      ],
+      "populationMax": 1074000,
+      "populationMin": 474681,
+      "rankMax": 12,
+      "labelRank": 3,
+      "scaleRank": 6,
+      "minZoom": 6,
+      "naturalEarthId": 1159146485
+    },
+    {
+      "id": "ne-1159148217",
+      "name": "Zaria",
+      "nameAscii": "Zaria",
+      "countryId": "NG",
+      "kind": "megacity",
+      "featureClass": "Populated place",
+      "coords": [
+        11.081927,
+        7.708064
+      ],
+      "populationMax": 889000,
+      "populationMin": 620673,
+      "rankMax": 11,
+      "labelRank": 2,
+      "scaleRank": 6,
+      "minZoom": 6,
+      "naturalEarthId": 1159148217
+    },
+    {
+      "id": "ne-1159148213",
+      "name": "Ilorin",
+      "nameAscii": "Ilorin",
+      "countryId": "NG",
+      "kind": "megacity",
+      "featureClass": "Admin-1 capital",
+      "coords": [
+        8.491956,
+        4.54805
+      ],
+      "populationMax": 771000,
+      "populationMin": 632484,
+      "rankMax": 11,
+      "labelRank": 2,
+      "scaleRank": 6,
+      "minZoom": 6,
+      "naturalEarthId": 1159148213
+    }
+  ]
+}
