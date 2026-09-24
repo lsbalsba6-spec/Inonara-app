@@ -41,6 +41,7 @@ const WorldMap = ({
   onCountriesReady,
   selectedCountryName,
   focusCountryName = null,
+  focusPoint = null,
   lang = "en",
   highlightAfrica = true,
   geoFusion = null,
@@ -178,6 +179,18 @@ const WorldMap = ({
       .translate(-cx, -cy);
     select(svgRef.current).call(zoomBehaviorRef.current.transform, next);
   }, [focusCountryName, countryLookup, geoFusion, height, width]);
+
+  useEffect(() => {
+    if (!focusPoint || geoFusion !== null || !zoomBehaviorRef.current || !svgRef.current) return;
+    const p = projection([focusPoint.lon, focusPoint.lat]);
+    if (!p) return;
+    const targetScale = Math.max(1, Math.min(8, focusPoint.scale || 4.8));
+    const next = zoomIdentity
+      .translate(width / 2, height / 2)
+      .scale(targetScale)
+      .translate(-p[0], -p[1]);
+    select(svgRef.current).call(zoomBehaviorRef.current.transform, next);
+  }, [focusPoint, projection, geoFusion, height, width]);
 
   const projectRef = useRef(null);
   projectRef.current = useCallback(
@@ -365,7 +378,7 @@ const WorldMap = ({
       </svg>
 
       {geoFusion === null && (
-        <div className="absolute top-20 right-3 z-10 flex flex-col gap-2" data-testid="atlas-zoom-controls">
+        <div className="absolute top-1/2 right-3 z-10 flex -translate-y-1/2 flex-col gap-2" data-testid="atlas-zoom-controls">
           <div className="flex overflow-hidden rounded border border-gold/30 bg-black/55 backdrop-blur">
             <button
               type="button"
