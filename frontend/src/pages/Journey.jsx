@@ -25,6 +25,9 @@ const COPY = {
     completed: "Parcours terminé",
     restart: "Revenir au début",
     steps: "étapes",
+    results: "parcours disponibles",
+    noResults: "Aucun parcours ne correspond à ces filtres.",
+    discover: "Découvrir",
     exploreBy: "Explorer par",
     region: "Région", periodFilter: "Période", theme: "Thème", people: "Peuple", clearFilters: "Effacer les filtres",
   },
@@ -45,6 +48,9 @@ const COPY = {
     completed: "Journey complete",
     restart: "Return to the beginning",
     steps: "stops",
+    results: "journeys available",
+    noResults: "No journey matches these filters.",
+    discover: "Discover",
     exploreBy: "Explore by",
     region: "Region", periodFilter: "Period", theme: "Theme", people: "People", clearFilters: "Clear filters",
   },
@@ -82,6 +88,7 @@ const JourneyCard = ({ journey, active, onClick, lang, copy }) => (
         <p className="text-[10px] uppercase tracking-[0.18em] text-gold/80">{getLocalized(journey.period, lang)}</p>
         <h3 className="mt-2 font-serif text-2xl leading-tight text-bone">{getLocalized(journey.title, lang)}</h3>
         <p className="mt-2 text-sm leading-6 text-bone/55">{getLocalized(journey.subtitle, lang)}</p>
+        <div className="mt-4 flex flex-wrap gap-1.5">{(journey.themeIds || []).slice(0, 3).map((themeId) => { const theme = JOURNEY_DIMENSIONS.themes.find((item) => item.id === themeId); return theme ? <span key={themeId} className="rounded-full bg-bone/[0.04] px-2.5 py-1 text-[9px] uppercase tracking-[0.1em] text-bone/40">{getLocalized(theme.label, lang)}</span> : null; })}</div>
       </div>
       <span className="shrink-0 rounded-full border border-bone/10 px-3 py-1 text-[10px] uppercase tracking-[0.12em] text-bone/45">
         {journey.stops.length} {copy.steps}
@@ -184,6 +191,10 @@ const Journey = () => {
               ))}
             </div>
           </div>
+
+          <div className="flex items-center justify-between gap-3"><p className="text-xs text-bone/45"><span className="text-gold">{filteredJourneys.length}</span> {copy.results}</p></div>
+
+          {filteredJourneys.length === 0 ? <div className="rounded-xl border border-bone/10 bg-bone/[0.02] p-8 text-center text-sm text-bone/50">{copy.noResults}</div> : null}
 
           <div className="grid gap-3 lg:grid-cols-3">
             {filteredJourneys.map((journey) => (
