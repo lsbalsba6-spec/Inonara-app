@@ -116,6 +116,7 @@ const Atlas = () => {
   const [countryDossiers, setCountryDossiers] = useState([]);
   const [mapCountries, setMapCountries] = useState([]);
   const [countryQuery, setCountryQuery] = useState("");
+  const [focusPoint, setFocusPoint] = useState(null);
   const [selectedCountry, setSelectedCountry] = useState(null);
   const [focusCountryName, setFocusCountryName] = useState(null);
   const [sliderPos, setSliderPos] = useState(yearToSlider(-70000));
@@ -189,18 +190,16 @@ const Atlas = () => {
     [mapCountries, lang]
   );
 
-  const countrySearchResults = useMemo(() => {
+  const atlasSearchResults = useMemo(() => {
     const needle = countryQuery.trim().toLocaleLowerCase(lang === "fr" ? "fr" : "en");
     if (!needle) return [];
-    return searchableCountries.filter((country) => [
-      country.label,
-      country.name,
-      country.labels?.fr,
-      country.labels?.en,
-      country.countryId,
-      country.territoryId,
-    ].filter(Boolean).some((value) => String(value).toLocaleLowerCase().includes(needle))).slice(0, 8);
-  }, [countryQuery, searchableCountries, lang]);
+    const matches = (values) => values.filter(Boolean).some((value) => rawText(value).toLocaleLowerCase().includes(needle));
+    const countryResults = searchableCountries.filter((country) => matches([country.label, country.name, country.labels?.fr, country.labels?.en, country.countryId, country.territoryId])).map((country) => ({ type: "country", id: country.countryId || country.territoryId || country.id, label: country.label, meta: country.countryId || (lang === "fr" ? "territoire" : "territory"), country }));
+    const cityResults = (populatedPlacesData.places || []).filter((place) => matches([place.name, place.nameAscii, place.countryId])).map((place) => ({ type: "city", id: place.id, label: place.name, meta: place.kind === "capital" || place.kind === "capital-alt" ? (lang === "fr" ? "capitale" : "capital") : (lang === "fr" ? "ville" : "city"), entity: place }));
+    const civResults = civs.filter((civ) => matches([civ.name, civ.id, civ.region])).map((civ) => ({ type: "civ", id: civ.id, label: rawText(civ.name), meta: lang === "fr" ? "civilisation" : "civilization", entity: civ }));
+    const placeResults = places.filter((place) => matches([place.name, place.id, place.type])).map((place) => ({ type: "place", id: place.id, label: rawText(place.name), meta: lang === "fr" ? "patrimoine" : "heritage", entity: place }));
+    return [...countryResults, ...cityResults, ...civResults, ...placeResults].slice(0, 10);
+  }, [countryQuery, searchableCountries, civs, places, lang]);
 
   const selectedCountryDossier = useMemo(
     () => selectedCountry?.countryId
@@ -214,6 +213,26 @@ const Atlas = () => {
     setSelected(null);
     setSelectedPilotV3Marker(null);
     setFocusCountryName(country.countryId || country.territoryId || country.name);
+    setCountryQuery("");
+  };
+
+  const selectAtlasSearchResult = (result) => {
+    if (result.type === "country") {
+      setFocusPoint(null);
+      selectCountryFromSearch(result.country);
+      return;
+    }
+    const entity = result.entity;
+    if (!entity?.coords) return;
+    setSelectedCountry(null);
+    setSelectedPilotV3Marker(null);
+    setSelected(result.type === "city" ? { ...entity, placeKind: entity.kind, kind: "city" } : { ...entity, kind: result.type });
+    setFocusCountryName(null);
+    setFocusPoint({ lat: entity.coords[0], lon: entity.coords[1], scale: result.type === "city" ? 5.2 : 4.6, key: `${result.type}-${result.id}-${Date.now()}` });
+    if (result.type === "city") {
+      setSliderPos(yearToSlider(CURRENT_YEAR));
+      setShowCities(true);
+    }
     setCountryQuery("");
   };
 
@@ -378,36 +397,36 @@ const Atlas = () => {
         {mode !== "geological" && (
           <div className="absolute top-4 right-4 md:top-6 md:right-6 z-[550] w-[min(88vw,320px)]" data-testid="atlas-country-search">
             <label htmlFor="atlas-country-search-input" className="sr-only">
-              {lang === "fr" ? "Rechercher un pays sur la carte" : "Search for a country on the map"}
+              {lang === "fr" ? "Rechercher dans l’Atlas" : "Search the Atlas"}
             </label>
             <input
               id="atlas-country-search-input"
               type="search"
               value={countryQuery}
               onChange={(event) => setCountryQuery(event.target.value)}
-              placeholder={lang === "fr" ? "Rechercher un pays…" : "Search a country…"}
+              placeholder={lang === "fr" ? "Pays, ville, civilisation, patrimoine…" : "Country, city, civilization, heritage…"}
               className="w-full glass rounded-lg border border-gold/20 px-4 py-3 text-sm text-bone placeholder:text-bone/35 outline-none focus:border-gold/60"
               autoComplete="off"
               aria-controls="atlas-country-search-results"
-              aria-expanded={countrySearchResults.length > 0}
+              aria-expanded={atlasSearchResults.length > 0}
             />
             {countryQuery.trim() && (
               <div id="atlas-country-search-results" className="mt-1 glass rounded-lg border border-gold/20 overflow-hidden" role="listbox">
-                {countrySearchResults.length > 0 ? countrySearchResults.map((country) => (
+                {atlasSearchResults.length > 0 ? atlasSearchResults.map((result) => (
                   <button
                     type="button"
-                    key={country.countryId || country.territoryId || country.id}
-                    onClick={() => selectCountryFromSearch(country)}
+                    key={`${result.type}-${result.id}`}
+                    onClick={() => selectAtlasSearchResult(result)}
                     className="w-full flex items-center justify-between gap-3 px-4 py-2.5 text-left text-sm text-bone/80 hover:bg-gold/10 hover:text-gold focus:bg-gold/10 focus:text-gold outline-none"
                     role="option"
-                    aria-selected={selectedCountry?.name === country.name}
+                    aria-selected={result.type === "country" ? selectedCountry?.name === result.country?.name : selected?.id === result.id}
                   >
-                    <span>{country.label}</span>
-                    <span className="text-[0.65rem] uppercase tracking-wider text-bone/35">{country.countryId || (lang === "fr" ? "territoire" : "territory")}</span>
+                    <span>{result.label}</span>
+                    <span className="text-[0.65rem] uppercase tracking-wider text-bone/35">{result.meta}</span>
                   </button>
                 )) : (
                   <p className="px-4 py-3 text-xs text-bone/55" role="status">
-                    {lang === "fr" ? "Aucun pays trouvé." : "No country found."}
+                    {lang === "fr" ? "Aucun résultat dans l’Atlas." : "No Atlas result found."}
                   </p>
                 )}
               </div>
@@ -427,6 +446,7 @@ const Atlas = () => {
           onCountriesReady={setMapCountries}
           selectedCountryName={selectedCountry?.name ?? null}
           focusCountryName={focusCountryName}
+          focusPoint={focusPoint}
           lang={lang}
           highlightAfrica={mode !== "geological"}
           geoFusion={mode === "geological" && currentEpoch ? currentEpoch.fusion_factor : null}
