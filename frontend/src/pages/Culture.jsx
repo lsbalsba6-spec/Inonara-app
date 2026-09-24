@@ -1,4 +1,5 @@
 import { useEffect, useState, useMemo } from "react";
+import { useSearchParams } from "react-router-dom";
 import { fetchCulture } from "../lib/api";
 import { useI18n } from "../i18n";
 import { localizedValue, searchableText, sortAlphabetically } from "../lib/contentSort";
@@ -16,8 +17,10 @@ const Culture = () => {
   const { t, lang } = useI18n();
   const [items, setItems] = useState([]);
   const [cat, setCat] = useState("all");
-  const [query, setQuery] = useState("");
+  const [searchParams] = useSearchParams();
+  const [query, setQuery] = useState(() => searchParams.get("q") || "");
   useEffect(() => { fetchCulture().then(setItems).catch(() => {}); }, []);
+  useEffect(() => { setQuery(searchParams.get("q") || ""); }, [searchParams]);
 
   const filtered = useMemo(() => {
     const needle = searchableText(query).trim();
