@@ -15,7 +15,6 @@ const COPY = {
     keyData: "Key data",
     period: "Period",
     context: "Context",
-    caution: "Reading caution",
     empty: "No society theme matches this search.",
   },
   fr: {
@@ -29,7 +28,6 @@ const COPY = {
     keyData: "Donnée clé",
     period: "Période",
     context: "Contexte",
-    caution: "Précaution de lecture",
     empty: "Aucun thème de société ne correspond à cette recherche.",
   },
 };
@@ -214,12 +212,6 @@ export function SouthAfricaSocietyQuality({ dossier, sourceMap }) {
                       <div className="rounded-xl border border-bone/10 bg-black/10 p-4 md:col-span-2">
                         <p className="text-[10px] uppercase tracking-[0.18em] text-bone/40">{copy.context}</p>
                         <p className="mt-2 text-sm leading-6 text-bone/72"><TranslatedInline value={item.context} lang={lang} /></p>
-                      </div>
-                    )}
-                    {item.caution && (
-                      <div className="rounded-xl border border-amber-400/20 bg-amber-400/[0.04] p-4 md:col-span-2">
-                        <p className="text-[10px] uppercase tracking-[0.18em] text-amber-300/75">{copy.caution}</p>
-                        <p className="mt-2 text-sm leading-6 text-bone/72"><TranslatedInline value={item.caution} lang={lang} /></p>
                       </div>
                     )}
                   </div>
