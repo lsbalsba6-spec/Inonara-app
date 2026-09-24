@@ -14,10 +14,21 @@ function LanguageItem({ item, notSpecified }) { const percent = item.percent == 
 export function CountryLanguages({ dossier = {}, sourceMap = new Map() }) {
   const { lang } = useI18n();
   const languages = useMemo(() => dossier.languages || {}, [dossier.languages]);
-  const official = languages.official || [];
+  const languageThemes = useMemo(() => {
+    const primary = themesFrom(languages);
+    const supplemental = Array.isArray(dossier.languages_themes) ? dossier.languages_themes : [];
+    const seen = new Set();
+    return [...primary, ...supplemental].filter((item) => {
+      const key = item?.id || searchableText(item?.title, item?.name, item?.text, item?.summary);
+      if (!key || seen.has(key)) return false;
+      seen.add(key);
+      return true;
+    });
+  }, [languages, dossier.languages_themes]);
+  const official = Array.isArray(languages) ? [] : (languages.official || []);
   const householdDataset = useMemo(() => datedCollection(languages,"household"), [languages]);
   const household = householdDataset.value;
-  const themes = useMemo(() => themesFrom(languages), [languages]);
+  const themes = languageThemes;
   const [query,setQuery] = useState("");
   const labels = lang === "fr" ? {overline:"Langues",title:"Langues officielles, usages et transmission",intro:"Le statut officiel d’une langue ne signifie pas qu’elle est parlée de la même manière dans toutes les régions. Les données et synthèses ci-dessous distinguent statut, usages au foyer et diversité sociale.",official:"Langues officielles",search:"Rechercher une langue",placeholder:"Rechercher une langue…",household:"Langue parlée au foyer",census:householdDataset.year?`Recensement ${householdDataset.year}`:"Données de recensement",notSpecified:"Non indiqué",themes:"Contexte linguistique"} : {overline:"Languages",title:"Official languages, usage and transmission",intro:"Official status does not mean a language is spoken in the same way across every region. The data and syntheses below distinguish legal status, household usage and social diversity.",official:"Official languages",search:"Search for a language",placeholder:"Search for a language…",household:"Language spoken at home",census:householdDataset.year?`${householdDataset.year} census`:"Census data",notSpecified:"Not specified",themes:"Language context"};
   const visible = useMemo(()=>{const needle=searchableText(query);return needle?household.filter(item=>searchableText(item.language,item.note).includes(needle)):household;},[household,query]);
