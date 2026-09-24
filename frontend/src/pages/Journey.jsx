@@ -2,7 +2,10 @@ import { useEffect, useMemo, useState } from "react";
 import { ArrowLeft, ArrowRight, BookOpen, CalendarDays, ExternalLink, MapPin, Network } from "lucide-react";
 import { useI18n } from "../i18n";
 import JourneyMap from "../components/JourneyMap";
-import { JOURNEY_CATEGORIES, JOURNEY_DIMENSIONS, getLocalized, journeys } from "../data/journeys";
+import { JOURNEY_DIMENSIONS, getLocalized, journeys } from "../data/journeys";
+import { JOURNEY_CATEGORIES_EXPANDED, expandedJourneys } from "../data/journeysExpanded";
+
+const ALL_JOURNEYS = [...journeys, ...expandedJourneys];
 
 const COPY = {
   fr: {
@@ -91,12 +94,12 @@ const Journey = () => {
   const { lang } = useI18n();
   const copy = COPY[lang] || COPY.en;
   const [category, setCategory] = useState("all");
-  const [journeyId, setJourneyId] = useState(journeys[0].journeyId);
+  const [journeyId, setJourneyId] = useState(ALL_JOURNEYS[0].journeyId);
   const [activeIndex, setActiveIndex] = useState(0);
   const [dimensionFilters, setDimensionFilters] = useState({ region: "all", period: "all", theme: "all", people: "all" });
 
   const filteredJourneys = useMemo(
-    () => journeys.filter((journey) => {
+    () => ALL_JOURNEYS.filter((journey) => {
       if (category !== "all" && journey.category !== category) return false;
       if (dimensionFilters.region !== "all" && !(journey.regionIds || []).includes(dimensionFilters.region)) return false;
       if (dimensionFilters.period !== "all" && !(journey.periodIds || []).includes(dimensionFilters.period)) return false;
@@ -107,14 +110,14 @@ const Journey = () => {
     [category, dimensionFilters]
   );
 
-  const activeJourney = journeys.find((journey) => journey.journeyId === journeyId) || filteredJourneys[0] || journeys[0];
+  const activeJourney = ALL_JOURNEYS.find((journey) => journey.journeyId === journeyId) || filteredJourneys[0] || ALL_JOURNEYS[0];
   const stops = activeJourney.stops || [];
   const activeStop = stops[activeIndex] || stops[0];
   const progress = stops.length ? ((activeIndex + 1) / stops.length) * 100 : 0;
 
   useEffect(() => {
     if (!filteredJourneys.some((journey) => journey.journeyId === journeyId)) {
-      setJourneyId(filteredJourneys[0]?.journeyId || journeys[0].journeyId);
+      setJourneyId(filteredJourneys[0]?.journeyId || ALL_JOURNEYS[0].journeyId);
       setActiveIndex(0);
     }
   }, [filteredJourneys, journeyId]);
@@ -145,7 +148,7 @@ const Journey = () => {
           <div className="flex flex-wrap items-center justify-between gap-4">
             <h2 id="journey-picker-title" className="font-serif text-2xl text-bone">{copy.choose}</h2>
             <div className="flex flex-wrap gap-2">
-              {JOURNEY_CATEGORIES.map((item) => (
+              {JOURNEY_CATEGORIES_EXPANDED.map((item) => (
                 <button
                   key={item.id}
                   type="button"
@@ -169,7 +172,7 @@ const Journey = () => {
                 ["region", copy.region, JOURNEY_DIMENSIONS.regions],
                 ["period", copy.periodFilter, JOURNEY_DIMENSIONS.periods],
                 ["theme", copy.theme, JOURNEY_DIMENSIONS.themes],
-                ["people", copy.people, Array.from(new Set(journeys.flatMap((journey) => journey.peopleIds || []))).map((id) => ({ id, label: { fr: id.replaceAll("-", " "), en: id.replaceAll("-", " ") } }))],
+                ["people", copy.people, Array.from(new Set(ALL_JOURNEYS.flatMap((journey) => journey.peopleIds || []))).map((id) => ({ id, label: { fr: id.replaceAll("-", " "), en: id.replaceAll("-", " ") } }))],
               ].map(([key, label, options]) => (
                 <label key={key} className="text-[10px] uppercase tracking-[0.12em] text-bone/45">
                   {label}
