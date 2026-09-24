@@ -28,6 +28,9 @@ const COPY = {
     results: "parcours disponibles",
     noResults: "Aucun parcours ne correspond à ces filtres.",
     discover: "Découvrir",
+    overview: "Vue d’ensemble",
+    regionsLabel: "Régions",
+    themesLabel: "Thèmes",
     exploreBy: "Explorer par",
     region: "Région", periodFilter: "Période", theme: "Thème", people: "Peuple", clearFilters: "Effacer les filtres",
   },
@@ -51,6 +54,9 @@ const COPY = {
     results: "journeys available",
     noResults: "No journey matches these filters.",
     discover: "Discover",
+    overview: "Overview",
+    regionsLabel: "Regions",
+    themesLabel: "Themes",
     exploreBy: "Explore by",
     region: "Region", periodFilter: "Period", theme: "Theme", people: "People", clearFilters: "Clear filters",
   },
@@ -226,6 +232,21 @@ const Journey = () => {
             </div>
           </div>
         </header>
+
+        <section className="mt-8 grid gap-3 md:grid-cols-3" aria-label={copy.overview}>
+          <div className="rounded-xl border border-bone/10 bg-bone/[0.02] p-4">
+            <p className="text-[9px] uppercase tracking-[0.15em] text-gold/70">{copy.regionsLabel}</p>
+            <div className="mt-2 flex flex-wrap gap-2">{(activeJourney.regionIds || []).map((id) => { const item = JOURNEY_DIMENSIONS.regions.find((entry) => entry.id === id); return <span key={id} className="rounded-full border border-bone/10 px-2.5 py-1 text-[10px] text-bone/55">{item ? getLocalized(item.label, lang) : id}</span>; })}</div>
+          </div>
+          <div className="rounded-xl border border-bone/10 bg-bone/[0.02] p-4">
+            <p className="text-[9px] uppercase tracking-[0.15em] text-gold/70">{copy.themesLabel}</p>
+            <div className="mt-2 flex flex-wrap gap-2">{(activeJourney.themeIds || []).map((id) => { const item = JOURNEY_DIMENSIONS.themes.find((entry) => entry.id === id); return <span key={id} className="rounded-full border border-bone/10 px-2.5 py-1 text-[10px] text-bone/55">{item ? getLocalized(item.label, lang) : id}</span>; })}</div>
+          </div>
+          <div className="rounded-xl border border-bone/10 bg-bone/[0.02] p-4">
+            <p className="text-[9px] uppercase tracking-[0.15em] text-gold/70">{copy.people}</p>
+            <div className="mt-2 flex flex-wrap gap-2">{(activeJourney.peopleIds || []).map((id) => <span key={id} className="rounded-full border border-bone/10 px-2.5 py-1 text-[10px] capitalize text-bone/55">{id.replaceAll("-", " ")}</span>)}</div>
+          </div>
+        </section>
 
         <div className="mt-9">
           <JourneyMap journey={activeJourney} activeIndex={activeIndex} onSelectStop={selectStop} lang={lang} />
