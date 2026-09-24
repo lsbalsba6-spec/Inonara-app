@@ -13,7 +13,12 @@ function Cards({ items, sourceMap }) { return <div className="grid gap-4 md:grid
 
 export default function CountryEnvironment({ dossier = {}, sourceMap = new Map() }) {
   const { lang } = useI18n(); const copy = COPY[lang] || COPY.en; const raw = dossier.environment || {};
-  const themes = Array.isArray(raw) ? raw : [...(raw.themes || []), ...(raw.items || []), ...(raw.sections || [])];
+  const primaryThemes = Array.isArray(raw) ? raw : [...(raw.themes || []), ...(raw.items || []), ...(raw.sections || [])];
+  const supplementalThemes = Array.isArray(dossier.environment_themes) ? dossier.environment_themes : [];
+  const themes = [...primaryThemes, ...supplementalThemes].filter((item, index, items) => {
+    const key = item?.id || item?.slug || item?.name || item?.title;
+    return !key || items.findIndex((candidate) => (candidate?.id || candidate?.slug || candidate?.name || candidate?.title) === key) === index;
+  });
   const biomes = Array.isArray(raw.biomes) ? raw.biomes : [];
   const landscapes = Array.isArray(raw.landscapes) ? raw.landscapes : [];
   const pressures = Array.isArray(raw.pressures) ? raw.pressures : [];
