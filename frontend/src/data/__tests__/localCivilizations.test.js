@@ -24,7 +24,7 @@ describe("local civilization editorial corpus", () => {
   test("uses unique stable ids", () => {
     const ids = LOCAL_CIVILIZATION_ENRICHMENTS.map((item) => item.id);
     expect(new Set(ids).size).toBe(ids.length);
-    expect(ids).toEqual(expect.arrayContaining(["mali", "songhai", "kush", "axum", "great-zimbabwe", "kongo", "swahili", "benin", "egypt", "asante", "zulu", "hausa", "ghana-wagadu", "kanem-bornu"]));
+    expect(ids).toEqual(expect.arrayContaining(["mali", "songhai", "kush", "axum", "great-zimbabwe", "kongo", "swahili", "benin", "egypt", "asante", "zulu", "hausa", "ghana-wagadu", "kanem-bornu", "ife", "oyo", "dahomey"]));
   });
 
   test.each(LOCAL_CIVILIZATION_ENRICHMENTS.map((item) => [item.id, item]))(
