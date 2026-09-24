@@ -27,7 +27,7 @@ import CountryEnvironment from "./CountryEnvironment";
 import { SouthAfricaStories } from "./SouthAfricaStories";
 import CountrySectionBoundary from "./CountrySectionBoundary";
 import { useI18n } from "../i18n";
-import { localizedValue } from "../lib/contentSort";
+import { localizedValue, searchableText } from "../lib/contentSort";
 import { getCountryMigrationRouteSet } from "../data/countryMigrationRoutes";
 
 const COPY = {
@@ -116,10 +116,21 @@ export default function CountryDossierView({ dossier }) {
   const migrationRouteSet = getCountryMigrationRouteSet(dossier?.iso2);
   const migrationRoutes = migrationRouteSet?.routes?.length ? migrationRouteSet.routes : (dossier?.map_visuals?.migration_routes || []);
   const migrationNote = migrationRouteSet?.note || dossier?.map_visuals?.note;
+  const sectionAvailable = useMemo(() => ({
+    gallery: (dossier?.media_gallery || []).length > 0,
+    stories: (dossier?.stories || []).length > 0,
+    environment: Array.isArray(dossier?.environment) ? dossier.environment.length > 0 : Boolean(dossier?.environment && ((dossier.environment.themes || []).length || (dossier.environment.items || []).length || (dossier.environment.sections || []).length)),
+    media: Boolean(dossier?.media && ((dossier.media.themes || []).length || (dossier.media.items || []).length || (dossier.media.sections || []).length)) || Boolean(dossier?.sport_media?.media?.length),
+    "sport-media": Boolean(dossier?.sport_media && ((dossier.sport_media.sports || []).length || (dossier.sport_media.sections || []).some((section) => searchableText(section.id, section.title).includes("sport")))),
+    heritage: Array.isArray(dossier?.heritage) ? dossier.heritage.length > 0 : Boolean(dossier?.heritage && ((dossier.heritage.themes || []).length || (dossier.heritage.items || []).length || (dossier.heritage.sections || []).length || (dossier.heritage.sites || []).length)),
+  }), [dossier]);
+  const optionalSections = useMemo(() => new Set(["gallery", "stories", "environment", "media", "sport-media", "heritage"]), []);
   const groups = useMemo(() => copy.groups.map((group) => ({
     ...group,
-    items: group.items.map(([id, label]) => [id, label.replace("{country}", countryName)]),
-  })), [copy, countryName]);
+    items: group.items
+      .filter(([id]) => !optionalSections.has(id) || sectionAvailable[id])
+      .map(([id, label]) => [id, label.replace("{country}", countryName)]),
+  })).filter((group) => group.items.length > 0), [copy, countryName, optionalSections, sectionAvailable]);
   const activeGroup = groups.find((group) => group.items.some(([id]) => id === active)) || groups[0];
 
   return (
