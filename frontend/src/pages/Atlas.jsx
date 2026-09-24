@@ -620,7 +620,11 @@ const Atlas = () => {
             return (
               <g
                 key={place.id}
-                onClick={() => setSelected({ ...place, placeKind: place.kind, kind: "city" })}
+                onClick={() => {
+                  setSelected({ ...place, placeKind: place.kind, kind: "city" });
+                  setSelectedCountry(null);
+                  setFocusPoint({ lat: place.coords[0], lon: place.coords[1], scale: Math.max(5.2, zoomScale) });
+                }}
                 style={{ cursor: "pointer" }}
                 data-testid={`atlas-city-${place.id}`}
               >
