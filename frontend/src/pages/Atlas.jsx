@@ -556,7 +556,7 @@ const Atlas = () => {
             const isSelected = selected?.kind === "route" && selected?.id === r.id;
             const migrationStyle = getMigrationVisualStyle(r.migration_type);
             return (
-              <g key={r.id} onClick={() => setSelected({ kind: "route", ...r })} style={{ cursor: "pointer" }}>
+              <g key={r.id} onClick={() => setSelected({ kind: "route", ...r })} style={{ cursor: "pointer" }} role="button" tabIndex={0} aria-label={`${lang === "fr" ? "Route" : "Route"}: ${rawText(r.name)}`} onKeyDown={(event) => { if (event.key === "Enter" || event.key === " ") { event.preventDefault(); setSelected({ kind: "route", ...r }); } }}>
                 <polyline
                   points={toPolyPoints(r.points)}
                   fill="none"
@@ -642,7 +642,7 @@ const Atlas = () => {
             const p = project(c.coords[0], c.coords[1]);
             if (!p) return null;
             return (
-              <g key={c.id} onClick={() => setSelected({ kind: "civ", ...c })} style={{ cursor: "pointer" }}>
+              <g key={c.id} onClick={() => setSelected({ kind: "civ", ...c })} style={{ cursor: "pointer" }} role="button" tabIndex={0} aria-label={`${lang === "fr" ? "Civilisation" : "Civilization"}: ${rawText(c.name)}`} onKeyDown={(event) => { if (event.key === "Enter" || event.key === " ") { event.preventDefault(); setSelected({ kind: "civ", ...c }); } }}>
                 <circle cx={p[0]} cy={p[1]} r={12} fill="transparent" />
                 <circle cx={p[0]} cy={p[1]} r={Math.max(1.5, 6 / zoomScale)} fill={ATLAS_COLORS.gold} stroke={ATLAS_COLORS.gold} strokeWidth={Math.max(0.5, 2 / zoomScale)} fillOpacity={0.9} style={{ pointerEvents: "none" }} />
               </g>
@@ -653,7 +653,7 @@ const Atlas = () => {
             const pt = project(p.coords[0], p.coords[1]);
             if (!pt) return null;
             return (
-              <g key={p.id} onClick={() => setSelected({ kind: "place", ...p })} style={{ cursor: "pointer" }}>
+              <g key={p.id} onClick={() => setSelected({ kind: "place", ...p })} style={{ cursor: "pointer" }} role="button" tabIndex={0} aria-label={`${lang === "fr" ? "Lieu patrimonial" : "Heritage place"}: ${rawText(p.name)}`} onKeyDown={(event) => { if (event.key === "Enter" || event.key === " ") { event.preventDefault(); setSelected({ kind: "place", ...p }); } }}>
                 <circle cx={pt[0]} cy={pt[1]} r={12} fill="transparent" />
                 <circle cx={pt[0]} cy={pt[1]} r={Math.max(0.8, 3 / zoomScale)} fill={ATLAS_COLORS.amber} stroke={ATLAS_COLORS.amber} strokeWidth={Math.max(0.3, 1.2 / zoomScale)} fillOpacity={0.9} style={{ pointerEvents: "none" }} />
               </g>
@@ -688,6 +688,10 @@ const Atlas = () => {
                 }}
                 style={{ cursor: "pointer" }}
                 data-testid={`atlas-city-${place.id}`}
+                role="button"
+                tabIndex={0}
+                aria-label={`${place.name} · ${place.countryId}`}
+                onKeyDown={(event) => { if (event.key === "Enter" || event.key === " ") { event.preventDefault(); setSelected({ ...place, placeKind: place.kind, kind: "city" }); } }}
               >
                 <circle cx={pt[0]} cy={pt[1]} r={Math.max(10, 12 / zoomScale)} fill="transparent" />
                 <circle
