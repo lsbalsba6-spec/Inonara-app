@@ -51,6 +51,9 @@ const JourneyMap = ({ journey, activeIndex, onSelectStop, lang }) => {
             </pattern>
           </defs>
           <rect width={WIDTH} height={HEIGHT} fill="url(#journey-grid)" />
+          <text x="36" y="42" fill="rgba(189,148,74,0.32)" fontSize="11" letterSpacing="2">
+            {lang === "fr" ? "GÉOGRAPHIE DU PARCOURS" : "JOURNEY GEOGRAPHY"}
+          </text>
           {points.length > 1 && <polyline points={fullPath} fill="none" stroke="rgba(245,240,228,0.17)" strokeWidth="3" strokeDasharray="8 9" />}
           {traversedPoints.length > 1 && <polyline points={traversedPath} fill="none" stroke="rgb(189,148,74)" strokeWidth="4" strokeLinecap="round" strokeLinejoin="round" />}
 
@@ -68,6 +71,12 @@ const JourneyMap = ({ journey, activeIndex, onSelectStop, lang }) => {
             );
           })}
         </svg>
+
+        <div className="absolute right-4 top-4 max-w-[220px] rounded-xl border border-bone/10 bg-ebony/75 p-3 backdrop-blur">
+          <p className="text-[9px] uppercase tracking-[0.14em] text-gold/70">{lang === "fr" ? "Étape active" : "Active stop"}</p>
+          <p className="mt-1 font-serif text-base text-bone">{points[activeIndex] ? getLocalized(points[activeIndex].place.name, lang) : ""}</p>
+          <p className="mt-1 text-[10px] text-bone/40">{points[activeIndex] ? getLocalized(points[activeIndex].period, lang) : ""}</p>
+        </div>
 
         <div className="pointer-events-none absolute bottom-4 left-4 flex items-center gap-2 rounded-full border border-bone/10 bg-ebony/80 px-3 py-2 text-[10px] uppercase tracking-[0.14em] text-bone/50 backdrop-blur">
           <MapPin size={12} className="text-gold" />
