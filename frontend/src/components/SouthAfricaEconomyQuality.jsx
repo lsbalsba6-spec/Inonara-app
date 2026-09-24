@@ -20,7 +20,6 @@ const COPY = {
     keyData: "Key data",
     region: "Region or area concerned",
     context: "Context",
-    caution: "Reading caution",
     emptySearch: "No economic theme matches this search.",
     emptyData: "Detailed economic content has not yet been structured in the backend.",
     note: "GDP, unemployment, inflation, foreign trade and other contemporary indicators should remain accompanied by their year, methodology and source.",
@@ -41,7 +40,6 @@ const COPY = {
     keyData: "Donnée clé",
     region: "Région ou espace concerné",
     context: "Contexte",
-    caution: "Précaution de lecture",
     emptySearch: "Aucun thème économique ne correspond à cette recherche.",
     emptyData: "Les contenus économiques détaillés ne sont pas encore structurés dans le backend.",
     note: "PIB, chômage, inflation, commerce extérieur et autres indicateurs contemporains doivent rester accompagnés de leur année, de leur méthode et de leur source.",
@@ -304,13 +302,6 @@ export function SouthAfricaEconomyQuality({ dossier, sourceMap }) {
                       <div className="rounded-xl border border-bone/10 bg-black/10 p-4 md:col-span-2">
                         <p className="text-[10px] uppercase tracking-[0.18em] text-bone/40">{copy.context}</p>
                         <p className="mt-2 text-sm leading-6 text-bone/72"><TranslatedInline value={item.context} lang={lang} /></p>
-                      </div>
-                    )}
-
-                    {item.caution && (
-                      <div className="rounded-xl border border-amber-400/20 bg-amber-400/[0.04] p-4 md:col-span-2">
-                        <p className="text-[10px] uppercase tracking-[0.18em] text-amber-300/75">{copy.caution}</p>
-                        <p className="mt-2 text-sm leading-6 text-bone/72"><TranslatedInline value={item.caution} lang={lang} /></p>
                       </div>
                     )}
                   </div>
