@@ -16,7 +16,8 @@ function SourceLinks({ ids = [], sourceMap = new Map() }) { if (!ids.length) ret
 export function CountryFigures({ dossier = {}, sourceMap = new Map() }) {
   const { lang } = useI18n();
   const copy = COPY[lang] || COPY.en;
-  const figures = Array.isArray(dossier.figures) ? dossier.figures : [...(dossier.figures?.items || []), ...(dossier.figures?.themes || [])];
+  const baseFigures = Array.isArray(dossier.figures) ? dossier.figures : [...(dossier.figures?.items || []), ...(dossier.figures?.themes || [])];
+  const figures = [...baseFigures, ...(dossier.figures_themes || [])];
   const getNameRaw = (item) => item.name || item.title || copy.person;
   const getName = (item) => localizedValue(getNameRaw(item), lang) || copy.person;
   const getSummary = (item) => item.reason || item.why || item.note || item.summary || item.description || item.context || "";

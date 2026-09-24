@@ -5,6 +5,8 @@ French pilot only. Translation remains deliberately blocked until the South
 Africa reference dossier passes its completeness audit.
 """
 
+from ._completion_utils import collection_for, merge_unique
+
 V28_SOURCES = [
  {"id":"v28-statssa-census","category":"A","title":"Census 2022","publisher":"Statistics South Africa","url":"https://census.statssa.gov.za/"},
  {"id":"v28-sanbi-nba","category":"A","title":"National Biodiversity Assessment 2025","publisher":"SANBI","url":"https://nba.sanbi.org.za/"},
@@ -62,20 +64,16 @@ MAP_LAYERS = [
  {"id":"za-map-media-v28","title":"Médias et espaces publics","type":"thematic","filters":["public","commercial","community","digital"],"links":["za-media-ecosystem-v28","za-media-digital-v28"]}
 ]
 
-def _merge_unique(target, incoming):
-    ids={x.get('id') for x in target if isinstance(x,dict)}
-    target.extend(x for x in incoming if x.get('id') not in ids)
-
 def apply_south_africa_v28(dossier):
     if dossier.get('iso2')!='ZA': return dossier
-    _merge_unique(dossier.setdefault('peoples',{}).setdefault('themes',[]),PEOPLES)
-    _merge_unique(dossier.setdefault('culture',{}).setdefault('themes',[]),CULTURE)
-    _merge_unique(dossier.setdefault('environment',{}).setdefault('themes',[]),ENVIRONMENT)
-    _merge_unique(dossier.setdefault('institutions_memory',{}).setdefault('themes',[]),MEMORY)
-    _merge_unique(dossier.setdefault('media',{}).setdefault('themes',[]),MEDIA)
-    _merge_unique(dossier.setdefault('figures',[]),FIGURES)
-    _merge_unique(dossier.setdefault('interactive',{}).setdefault('mapLayers',[]),MAP_LAYERS)
-    _merge_unique(dossier.setdefault('sources',[]),V28_SOURCES)
+    merge_unique(collection_for(dossier, 'peoples'), PEOPLES)
+    merge_unique(collection_for(dossier, 'culture'), CULTURE)
+    merge_unique(collection_for(dossier, 'environment'), ENVIRONMENT)
+    merge_unique(collection_for(dossier, 'institutions_memory'), MEMORY)
+    merge_unique(collection_for(dossier, 'media'), MEDIA)
+    merge_unique(collection_for(dossier, 'figures'), FIGURES)
+    merge_unique(dossier.setdefault('interactive',{}).setdefault('mapLayers',[]), MAP_LAYERS)
+    merge_unique(dossier.setdefault('sources',[]), V28_SOURCES)
     dossier['last_reviewed']='2026-09-13'
     dossier['content_completion']={'fr':'Pilote français : peuples/migrations, culture vivante, environnement, personnalités, institutions-mémoire, médias et couches cartographiques enrichis. Audit final encore requis avant traduction.','phase':'fr-pilot-deepening-v28'}
     return dossier

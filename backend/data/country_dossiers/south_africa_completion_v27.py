@@ -4,6 +4,8 @@ Reader-facing copy is paraphrased from institutional/statistical sources. This
 pass remains French-first; English follows only after the pilot is complete.
 """
 
+from ._completion_utils import collection_for, merge_unique
+
 V27_SOURCES = [
     {"id":"v27-za-gov-glance","category":"A","title":"South Africa at a glance","publisher":"South African Government","url":"https://www.gov.za/about-sa/south-africa-glance"},
     {"id":"v27-za-gov-provinces","category":"A","title":"South Africa's provinces","publisher":"South African Government","url":"https://www.gov.za/about-sa/south-africas-provinces"},
@@ -31,17 +33,12 @@ V27_HERITAGE_THEMES = [
 ]
 
 
-def _merge_unique(target, incoming):
-    ids = {item.get("id") for item in target if isinstance(item, dict)}
-    target.extend(item for item in incoming if item.get("id") not in ids)
-
-
 def apply_south_africa_v27(dossier):
     if dossier.get("iso2") != "ZA": return dossier
-    _merge_unique(dossier.setdefault("territory", {}).setdefault("themes", []), V27_TERRITORY_THEMES)
-    _merge_unique(dossier.setdefault("languages", {}).setdefault("themes", []), V27_LANGUAGE_THEMES)
-    _merge_unique(dossier.setdefault("heritage", {}).setdefault("themes", []), V27_HERITAGE_THEMES)
-    _merge_unique(dossier.setdefault("sources", []), V27_SOURCES)
+    merge_unique(collection_for(dossier, "territory"), V27_TERRITORY_THEMES)
+    merge_unique(collection_for(dossier, "languages"), V27_LANGUAGE_THEMES)
+    merge_unique(collection_for(dossier, "heritage"), V27_HERITAGE_THEMES)
+    merge_unique(dossier.setdefault("sources", []), V27_SOURCES)
     dossier["last_reviewed"] = "2026-09-13"
     dossier["content_completion"] = {"fr":"Dossier pilote français en approfondissement : territoire, langues et patrimoine développés avec sources institutionnelles.","phase":"fr-pilot-deepening-v27"}
     return dossier

@@ -26,7 +26,7 @@ function HeritageCard({ item, index, openId, setOpenId, sourceMap, copy, lang })
 }
 
 export function SouthAfricaHeritage({ dossier = {}, sourceMap = new Map() }) {
-  const { lang } = useI18n(); const copy = COPY[lang] || COPY.en; const items = useMemo(() => normalizeHeritage(dossier.heritage), [dossier.heritage]);
+  const { lang } = useI18n(); const copy = COPY[lang] || COPY.en; const items = useMemo(() => [...normalizeHeritage(dossier.heritage), ...(dossier.heritage_themes || [])], [dossier.heritage, dossier.heritage_themes]);
   const categories = useMemo(() => { const unique = new Map(); items.forEach((item) => { const value = heritageType(item, copy.defaultType); const key = searchableText(value); if (key && !unique.has(key)) unique.set(key, value); }); return [...unique.entries()].map(([key, value]) => ({ key, value })); }, [items, copy.defaultType]);
   const [category, setCategory] = useState("all"); const [query, setQuery] = useState(""); const [openId, setOpenId] = useState(items[0]?.id || null);
   const visible = useMemo(() => { const needle = searchableText(query).trim(); return items.filter((item) => { const type = heritageType(item, copy.defaultType); const matchesCategory = category === "all" || searchableText(type) === category; const haystack = searchableText(getTitle(item, copy.defaultTitle), getBody(item), type, item.location, item.mapping, item.period); return matchesCategory && (!needle || haystack.includes(needle)); }); }, [items, category, query, copy.defaultTitle, copy.defaultType]);

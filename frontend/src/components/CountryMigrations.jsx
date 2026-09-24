@@ -114,9 +114,16 @@ export function CountryMigrations({ dossier = {}, sourceMap }) {
 
   const migrationData = dossier?.migrations;
   const themes = useMemo(() => {
-    if (Array.isArray(migrationData)) return [];
-    return Array.isArray(migrationData?.themes) ? migrationData.themes : [];
-  }, [migrationData]);
+    const sectionThemes = Array.isArray(migrationData?.themes) ? migrationData.themes : [];
+    const completionThemes = Array.isArray(dossier?.migration_themes) ? dossier.migration_themes : [];
+    const seen = new Set();
+    return [...sectionThemes, ...completionThemes].filter((theme, index) => {
+      const key = theme?.id || `${theme?.title || theme?.label || "theme"}-${index}`;
+      if (seen.has(key)) return false;
+      seen.add(key);
+      return true;
+    });
+  }, [migrationData, dossier?.migration_themes]);
 
   const routes = useMemo(() => {
     const narrativeRoutes = Array.isArray(migrationData)

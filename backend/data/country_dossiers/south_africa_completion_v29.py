@@ -4,6 +4,8 @@ This pass deliberately replaces thin cards with contextual synthesis and attache
 institutional sources. It remains French-first until the ZA completeness gate is passed.
 """
 
+from ._completion_utils import collection_for, merge_unique
+
 V29_SOURCES = [
  {"id":"v29-statssa-migration-2025","category":"A","title":"Understanding South Africa’s Immigrant and Internal Migration Stats","publisher":"Statistics South Africa","url":"https://www.statssa.gov.za/?p=18042"},
  {"id":"v29-statssa-migration-profile","category":"A","title":"Migration profile report for South Africa: A country profile 2023","publisher":"Statistics South Africa","url":"https://www.statssa.gov.za/?p=17111"},
@@ -36,19 +38,16 @@ INTERACTIVE_ROUTES = [
 ]
 
 
-def _merge_unique(target, incoming):
-    ids={x.get('id') for x in target if isinstance(x,dict)}
-    target.extend(x for x in incoming if x.get('id') not in ids)
-
-
 def apply_south_africa_v29(dossier):
     if dossier.get('iso2')!='ZA': return dossier
-    _merge_unique(dossier.setdefault('migrations',{}).setdefault('themes',[]),MIGRATION)
-    _merge_unique(dossier.setdefault('culture',{}).setdefault('themes',[]),CULTURE)
-    _merge_unique(dossier.setdefault('media',{}).setdefault('themes',[]),MEDIA)
+    # Keep the legacy migration route list intact. Narrative themes are a
+    # separate collection consumed alongside both old and new route shapes.
+    merge_unique(dossier.setdefault('migration_themes', []), MIGRATION)
+    merge_unique(collection_for(dossier, 'culture'), CULTURE)
+    merge_unique(collection_for(dossier, 'media'), MEDIA)
     interactive=dossier.setdefault('interactive',{})
-    _merge_unique(interactive.setdefault('migrationRoutes',[]),INTERACTIVE_ROUTES)
-    _merge_unique(dossier.setdefault('sources',[]),V29_SOURCES)
+    merge_unique(interactive.setdefault('migrationRoutes',[]), INTERACTIVE_ROUTES)
+    merge_unique(dossier.setdefault('sources',[]), V29_SOURCES)
     dossier['last_reviewed']='2026-09-13'
     dossier['content_completion']={'fr':'Afrique du Sud — audit de fermeture en cours : migrations, culture vivante, médias et routes cartographiques approfondis et sourcés.','phase':'fr-completeness-gate-v29'}
     return dossier

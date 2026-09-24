@@ -52,9 +52,9 @@ function ThematicLayerExplorer({ dossier = {}, sourceMap = new Map(), copy }) {
   const [activeId, setActiveId] = useState(layers[0]?.id || null);
   const contentIndex = useMemo(() => {
     const map = new Map();
-    [dossier.peoples, dossier.migrations, dossier.culture, dossier.environment, dossier.institutions_memory, dossier.media, dossier.heritage].flatMap(contentFrom).forEach((item) => { if (item?.id) map.set(item.id, item); });
+    [dossier.peoples, dossier.peoples_themes, dossier.migrations, dossier.migration_themes, dossier.culture, dossier.culture_themes, dossier.environment, dossier.institutions_memory, dossier.media, dossier.heritage, dossier.heritage_themes].flatMap(contentFrom).forEach((item) => { if (item?.id) map.set(item.id, item); });
     return map;
-  }, [dossier.peoples, dossier.migrations, dossier.culture, dossier.environment, dossier.institutions_memory, dossier.media, dossier.heritage]);
+  }, [dossier.peoples, dossier.peoples_themes, dossier.migrations, dossier.migration_themes, dossier.culture, dossier.culture_themes, dossier.environment, dossier.institutions_memory, dossier.media, dossier.heritage, dossier.heritage_themes]);
   if (!layers.length) return null;
   const active = layers.find((layer) => layer.id === activeId) || layers[0];
   const linked = (active.links || []).map((id) => contentIndex.get(id)).filter(Boolean);

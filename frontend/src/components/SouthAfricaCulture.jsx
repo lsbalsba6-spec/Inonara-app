@@ -14,7 +14,7 @@ function SourceLinks({ids=[],sourceMap}){if(!ids.length)return null;const source
 function normalizeTopic(item,fallbackTopic){return item.topic||item.title||item.name||fallbackTopic;}
 export function SouthAfricaCulture({dossier,sourceMap}){
  const{lang}=useI18n();const copy=COPY[lang]||COPY.en;const countryName=localizedValue(dossier?.name||dossier?.country,lang)||copy.countryFallback;
- const culture=useMemo(()=>{const raw=dossier.culture||[];if(Array.isArray(raw))return raw;return [...(raw.themes||[]),...(raw.items||[]),...(raw.sections||[])];},[dossier.culture]);
+ const culture=useMemo(()=>{const raw=dossier.culture||[];const base=Array.isArray(raw)?raw:[...(raw.themes||[]),...(raw.items||[]),...(raw.sections||[])];return [...base,...(dossier.culture_themes||[])];},[dossier.culture,dossier.culture_themes]);
  const oral=dossier.oral_traditions_and_legends||[];const[query,setQuery]=useState("");const[openId,setOpenId]=useState(culture[0]?.id||null);
  const visible=useMemo(()=>{const needle=query.trim().toLocaleLowerCase(lang);if(!needle)return culture;return culture.filter(item=>searchableText(normalizeTopic(item,copy.fallbackTopic),item.text,item.note,item.context,item.paragraphs).includes(needle));},[culture,query,copy.fallbackTopic,lang]);
  return <div className="space-y-8"><header className="rounded-2xl border border-gold/20 bg-gradient-to-br from-gold/[0.08] to-transparent p-6"><p className="overline text-gold">{copy.culture}</p><h2 className="mt-2 font-serif text-3xl text-bone">{copy.heading}</h2><p className="mt-3 max-w-3xl leading-7 text-bone/65">{copy.introBefore} {countryName} {copy.introAfter}</p></header>

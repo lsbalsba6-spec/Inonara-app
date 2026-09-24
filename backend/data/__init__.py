@@ -560,10 +560,10 @@ FIGURES.extend(
     {
         "id": item["id"],
         "name": item["name"],
-        "category": "athletes" if "Athlétisme" in item["field"] else "artists" if "Littérature" in item["field"] else "leaders",
+        "category": "athletes" if "Athlétisme" in item.get("field", "") else "artists" if "Littérature" in item.get("field", "") else "leaders",
         "era": "XIXe–XXIe siècles",
         "region": "Botswana",
-        "summary": item["reason"],
+        "summary": item.get("reason") or item.get("why", ""),
         "story": " ".join(item.get("paragraphs", [])),
         "sources": item.get("sources", []),
         "wikipedia_title": item.get("wikipedia_title"),
@@ -600,10 +600,10 @@ _existing_bw_culture = {item.get("id") for item in CULTURE_ITEMS}
 CULTURE_ITEMS.extend(
     {
         "id": item["id"],
-        "category": "food" if "Cuisine" in item["topic"] else "music" if any(word in item["topic"] for word in ("danse", "Musiques")) else "heritage",
+        "category": "food" if "Cuisine" in (item.get("topic") or item.get("title", "")) else "music" if any(word in (item.get("topic") or item.get("title", "")) for word in ("danse", "Musiques")) else "heritage",
         "region": "Southern Africa",
-        "title": item["topic"],
-        "blurb": item["text"],
+        "title": item.get("topic") or item.get("title", ""),
+        "blurb": item.get("text") or item.get("summary", ""),
         "sources": item.get("sources", []),
         "image_source_url": item.get("image_source_url"),
         "visual_type": item.get("visual_type"),
