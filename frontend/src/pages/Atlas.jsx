@@ -288,7 +288,40 @@ const Atlas = () => {
       }
     }
 
-    for (const marker of pilotV3Markers) {
+    for (const civ of visibleCivs) {
+      const coords = project(civ.coords[0], civ.coords[1]);
+      if (!coords) continue;
+      candidates.push({
+        id: `civ-${civ.id}`,
+        text: rawText(civ.name),
+        value: civ.name,
+        x: coords[0],
+        y: coords[1] - Math.max(1.5, 6 / zoomScale) - (7 / zoomScale),
+        fontSizePx: 10,
+        priority: 5200,
+        opacity: 1,
+      });
+    }
+
+    if (showPlaces && zoomScale >= 2.2) {
+      for (const place of places) {
+        if (!place.coords) continue;
+        const coords = project(place.coords[0], place.coords[1]);
+        if (!coords) continue;
+        candidates.push({
+          id: `place-${place.id}`,
+          text: rawText(place.name),
+          value: place.name,
+          x: coords[0],
+          y: coords[1] - Math.max(0.8, 3 / zoomScale) - (6 / zoomScale),
+          fontSizePx: 9,
+          priority: 3600,
+          opacity: 0.9,
+        });
+      }
+    }
+
+        for (const marker of pilotV3Markers) {
       const coords = project(marker.coords[0], marker.coords[1]);
       if (!coords) continue;
       candidates.push({
@@ -305,7 +338,7 @@ const Atlas = () => {
 
     candidates.sort((a, b) => b.priority - a.priority || a.text.localeCompare(b.text));
     return selectNonOverlappingLabels(candidates, zoomScale, { paddingPx: 7 });
-  }, [mode, project, showPolities, visiblePolities, pilotV3Markers, zoomScale]);
+  }, [mode, project, showPolities, visiblePolities, visibleCivs, showPlaces, places, pilotV3Markers, zoomScale]);
 
   const visiblePopulatedPlaces = useMemo(() => {
     if (mode !== "historical" || year < 1800 || !showCities) return [];
