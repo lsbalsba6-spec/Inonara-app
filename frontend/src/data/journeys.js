@@ -1,5 +1,30 @@
 const bi = (fr, en) => ({ fr, en });
 
+export const JOURNEY_DIMENSIONS = {
+  regions: [
+    { id: "north-africa-sahara", label: bi("Afrique du Nord & Sahara", "North Africa & Sahara") },
+    { id: "west-africa-sahel", label: bi("Afrique de l’Ouest & Sahel", "West Africa & Sahel") },
+    { id: "east-africa-indian-ocean", label: bi("Afrique de l’Est & océan Indien", "East Africa & Indian Ocean") },
+    { id: "central-africa", label: bi("Afrique centrale", "Central Africa") },
+    { id: "southern-africa", label: bi("Afrique australe", "Southern Africa") },
+    { id: "continental", label: bi("Continental", "Continental") },
+  ],
+  periods: [
+    { id: "ancient", label: bi("Antiquité", "Ancient") },
+    { id: "medieval", label: bi("Médiéval", "Medieval") },
+    { id: "early-modern", label: bi("Époque moderne", "Early modern") },
+    { id: "modern", label: bi("XIXe–XXIe siècles", "19th–21st centuries") },
+  ],
+  themes: [
+    { id: "trade-networks", label: bi("Échanges & réseaux", "Trade & networks") },
+    { id: "states-power", label: bi("États & pouvoir", "States & power") },
+    { id: "knowledge-religion", label: bi("Savoirs & religions", "Knowledge & religion") },
+    { id: "heritage-cities", label: bi("Patrimoines & villes", "Heritage & cities") },
+    { id: "migration-diaspora", label: bi("Migrations & diasporas", "Migration & diasporas") },
+    { id: "colonialism-independence", label: bi("Colonisation & indépendances", "Colonialism & independence") },
+  ],
+};
+
 export const JOURNEY_CATEGORIES = [
   { id: "all", label: bi("Tous", "All") },
   { id: "trade", label: bi("Routes commerciales", "Trade routes") },
@@ -11,6 +36,10 @@ export const journeys = [
   {
     journeyId: "trans-saharan-gold-salt",
     category: "trade",
+    regionIds: ["north-africa-sahara", "west-africa-sahel"],
+    periodIds: ["medieval", "early-modern"],
+    themeIds: ["trade-networks", "states-power", "knowledge-religion"],
+    peopleIds: [],
     title: bi("Or, sel et villes du Sahara", "Gold, salt and cities across the Sahara"),
     subtitle: bi("Un réseau de caravanes entre Maghreb et Sahel", "A caravan network between the Maghreb and the Sahel"),
     period: bi("XIe–XVIe siècles", "11th–16th centuries"),
@@ -90,6 +119,10 @@ export const journeys = [
   {
     journeyId: "swahili-indian-ocean-network",
     category: "culture",
+    regionIds: ["east-africa-indian-ocean"],
+    periodIds: ["medieval", "early-modern", "modern"],
+    themeIds: ["trade-networks", "heritage-cities", "knowledge-religion"],
+    peopleIds: ["swahili"],
     title: bi("Cités swahilies et océan Indien", "Swahili cities and the Indian Ocean"),
     subtitle: bi("Ports, cultures urbaines et connexions maritimes", "Ports, urban cultures and maritime connections"),
     period: bi("IXe–XIXe siècles", "9th–19th centuries"),
@@ -162,6 +195,10 @@ export const journeys = [
   {
     journeyId: "roads-to-african-independence",
     category: "independence",
+    regionIds: ["west-africa-sahel", "east-africa-indian-ocean", "continental"],
+    periodIds: ["modern"],
+    themeIds: ["colonialism-independence", "states-power"],
+    peopleIds: [],
     title: bi("Des indépendances à l’unité africaine", "From independence to African unity"),
     subtitle: bi("1957–1963 : États nouveaux, projets continentaux", "1957–1963: new states, continental projects"),
     period: bi("1957–1963", "1957–1963"),
