@@ -4,6 +4,7 @@ import { SOUTH_CENTRAL_CIVILIZATIONS } from "./civilizationsSouthCentral";
 import { COAST_CIVILIZATIONS } from "./civilizationsCoast";
 import { LEGACY_CIVILIZATIONS } from "./civilizationsLegacy";
 import { WEST_EXPANSION_CIVILIZATIONS } from "./civilizationsWestExpansion";
+import { WEST_EXPANSION_2_CIVILIZATIONS } from "./civilizationsWestExpansion2";
 
 export const CIVILIZATION_SCHEMA_VERSION = 1;
 
@@ -14,6 +15,7 @@ export const LOCAL_CIVILIZATION_ENRICHMENTS = [
   ...COAST_CIVILIZATIONS,
   ...LEGACY_CIVILIZATIONS,
   ...WEST_EXPANSION_CIVILIZATIONS,
+  ...WEST_EXPANSION_2_CIVILIZATIONS,
 ];
 
 export const CIVILIZATION_ENRICHMENT_BY_ID = Object.fromEntries(
