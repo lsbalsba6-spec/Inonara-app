@@ -2,7 +2,7 @@ import { useEffect, useMemo, useState } from "react";
 import { ArrowLeft, ArrowRight, BookOpen, CalendarDays, ExternalLink, MapPin, Network } from "lucide-react";
 import { useI18n } from "../i18n";
 import JourneyMap from "../components/JourneyMap";
-import { JOURNEY_CATEGORIES, getLocalized, journeys } from "../data/journeys";
+import { JOURNEY_CATEGORIES, JOURNEY_DIMENSIONS, getLocalized, journeys } from "../data/journeys";
 
 const COPY = {
   fr: {
@@ -22,6 +22,8 @@ const COPY = {
     completed: "Parcours terminé",
     restart: "Revenir au début",
     steps: "étapes",
+    exploreBy: "Explorer par",
+    region: "Région", periodFilter: "Période", theme: "Thème", people: "Peuple", clearFilters: "Effacer les filtres",
   },
   en: {
     overline: "Journey · Parcours",
@@ -40,6 +42,8 @@ const COPY = {
     completed: "Journey complete",
     restart: "Return to the beginning",
     steps: "stops",
+    exploreBy: "Explore by",
+    region: "Region", periodFilter: "Period", theme: "Theme", people: "People", clearFilters: "Clear filters",
   },
 };
 
@@ -89,10 +93,18 @@ const Journey = () => {
   const [category, setCategory] = useState("all");
   const [journeyId, setJourneyId] = useState(journeys[0].journeyId);
   const [activeIndex, setActiveIndex] = useState(0);
+  const [dimensionFilters, setDimensionFilters] = useState({ region: "all", period: "all", theme: "all", people: "all" });
 
   const filteredJourneys = useMemo(
-    () => journeys.filter((journey) => category === "all" || journey.category === category),
-    [category]
+    () => journeys.filter((journey) => {
+      if (category !== "all" && journey.category !== category) return false;
+      if (dimensionFilters.region !== "all" && !(journey.regionIds || []).includes(dimensionFilters.region)) return false;
+      if (dimensionFilters.period !== "all" && !(journey.periodIds || []).includes(dimensionFilters.period)) return false;
+      if (dimensionFilters.theme !== "all" && !(journey.themeIds || []).includes(dimensionFilters.theme)) return false;
+      if (dimensionFilters.people !== "all" && !(journey.peopleIds || []).includes(dimensionFilters.people)) return false;
+      return true;
+    }),
+    [category, dimensionFilters]
   );
 
   const activeJourney = journeys.find((journey) => journey.journeyId === journeyId) || filteredJourneys[0] || journeys[0];
@@ -143,6 +155,29 @@ const Journey = () => {
                 >
                   {getLocalized(item.label, lang)}
                 </button>
+              ))}
+            </div>
+          </div>
+
+          <div className="rounded-xl border border-bone/10 bg-bone/[0.015] p-4">
+            <div className="flex flex-wrap items-center justify-between gap-3">
+              <p className="text-[10px] uppercase tracking-[0.16em] text-bone/45">{copy.exploreBy}</p>
+              <button type="button" onClick={() => setDimensionFilters({ region: "all", period: "all", theme: "all", people: "all" })} className="text-[10px] uppercase tracking-[0.12em] text-gold/70 hover:text-gold">{copy.clearFilters}</button>
+            </div>
+            <div className="mt-3 grid gap-3 md:grid-cols-2 lg:grid-cols-4">
+              {[
+                ["region", copy.region, JOURNEY_DIMENSIONS.regions],
+                ["period", copy.periodFilter, JOURNEY_DIMENSIONS.periods],
+                ["theme", copy.theme, JOURNEY_DIMENSIONS.themes],
+                ["people", copy.people, Array.from(new Set(journeys.flatMap((journey) => journey.peopleIds || []))).map((id) => ({ id, label: { fr: id.replaceAll("-", " "), en: id.replaceAll("-", " ") } }))],
+              ].map(([key, label, options]) => (
+                <label key={key} className="text-[10px] uppercase tracking-[0.12em] text-bone/45">
+                  {label}
+                  <select value={dimensionFilters[key]} onChange={(event) => setDimensionFilters((current) => ({ ...current, [key]: event.target.value }))} className="mt-2 w-full rounded-lg border border-bone/10 bg-ebony px-3 py-2 text-xs normal-case tracking-normal text-bone/70 outline-none focus:border-gold/50">
+                    <option value="all">{lang === "fr" ? "Tous" : "All"}</option>
+                    {options.map((option) => <option key={option.id} value={option.id}>{getLocalized(option.label, lang)}</option>)}
+                  </select>
+                </label>
               ))}
             </div>
           </div>
