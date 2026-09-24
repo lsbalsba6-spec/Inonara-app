@@ -22,7 +22,6 @@ const COPY = {
     bce: "BCE",
     documentedGoods: "Documented goods:",
     mapLabel: "Interactive historical map of South Africa and regional connections",
-    statuses: { ready: "Established", provisional: "Read with context", disputed: "Debated" },
   },
   fr: {
     overline: "Carte interactive",
@@ -31,7 +30,6 @@ const COPY = {
     bce: "av. n. è.",
     documentedGoods: "Biens documentés :",
     mapLabel: "Carte historique interactive de l’Afrique du Sud et de ses connexions régionales",
-    statuses: { ready: "Établi", provisional: "À nuancer", disputed: "Débattu" },
   },
 };
 
@@ -75,7 +73,7 @@ function MobilityPopup({ item, sourceMap, copy, showGoods = false }) {
   return (
     <>
       <strong>{translatedLabel || item.label}</strong><br />
-      {item.start == null && translatedPeriod ? translatedPeriod : displayPeriod(item, copy)} · {copy.statuses[item.status] || item.status}
+      {item.start == null && translatedPeriod ? translatedPeriod : displayPeriod(item, copy)}
       {item.note && <p>{translatedNote || item.note}</p>}
       {showGoods && item.goods?.length > 0 && <p><strong>{copy.documentedGoods}</strong> {translatedGoods.join(", ")}</p>}
       <SourceLinks ids={item.sources} sourceMap={sourceMap} />
