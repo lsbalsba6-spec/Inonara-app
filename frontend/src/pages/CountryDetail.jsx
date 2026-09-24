@@ -40,6 +40,9 @@ const COPY = {
     fullProfile: "View full profile →",
     sources: "Sources",
     editorial: "This page uses content already validated on the site. Master dossiers are published progressively, country by country.",
+    explore: "Explore this country across AfroAtlas",
+    exploreLead: "Continue through connected histories, peoples, cultures, migrations and places.",
+    atlas: "Atlas", timeline: "Timeline", peoples: "Peoples", culture: "Culture", diasporaExplore: "Diaspora", figures: "Figures",
   },
   fr: {
     unavailable: "Page non encore disponible",
@@ -55,6 +58,9 @@ const COPY = {
     fullProfile: "Voir la fiche complète →",
     sources: "Sources",
     editorial: "Cette page utilise le contenu déjà validé du site. Les dossiers maîtres sont publiés progressivement pays par pays.",
+    explore: "Explorer ce pays dans AfroAtlas",
+    exploreLead: "Poursuivre à travers les histoires, peuples, cultures, migrations et lieux liés.",
+    atlas: "Atlas", timeline: "Chronologie", peoples: "Peuples", culture: "Culture", diasporaExplore: "Diaspora", figures: "Personnalités",
   },
 };
 
@@ -68,6 +74,28 @@ function TranslatedInline({ text }) {
   const { lang } = useI18n();
   const translated = useTranslated(text || "");
   return translated || localizedValue(text, lang, "") || null;
+}
+
+function CountryExploreLinks({ countryName, copy }) {
+  if (!countryName) return null;
+  const q = encodeURIComponent(countryName);
+  const items = [
+    ["/atlas", copy.atlas],
+    [`/timeline?q=${q}`, copy.timeline],
+    [`/people?q=${q}`, copy.peoples],
+    [`/culture?q=${q}`, copy.culture],
+    [`/diaspora?q=${q}`, copy.diasporaExplore],
+    [`/figures?q=${q}`, copy.figures],
+  ];
+  return (
+    <section className="mt-12 border-t border-bone/10 pt-8">
+      <p className="overline text-gold">{copy.explore}</p>
+      <p className="mt-2 max-w-2xl text-sm leading-6 text-bone/55">{copy.exploreLead}</p>
+      <nav className="mt-5 flex flex-wrap gap-2" aria-label={copy.explore}>
+        {items.map(([to, label]) => <Link key={to} to={to} className="rounded-full border border-bone/15 px-4 py-2 text-xs text-bone/70 transition hover:border-gold/40 hover:text-gold">{label} →</Link>)}
+      </nav>
+    </section>
+  );
 }
 
 function ColonialPeriod({ period, className = "" }) {
@@ -259,6 +287,7 @@ export default function CountryDetail() {
             ))}
           </div>
         </div>
+        <CountryExploreLinks countryName={localizedValue(bespoke.name, lang)} copy={copy} />
         <div className="mt-12 pt-6 border-t border-[#2A2421]">
           <p className="overline text-bone/50 mb-2">{copy.sources}</p>
           {bespoke.sources.map((s, i) => <p key={i} className="text-bone/60 text-xs mb-1"><TranslatedInline text={s} /></p>)}
@@ -322,6 +351,7 @@ export default function CountryDetail() {
         </div>
       )}
 
+      <CountryExploreLinks countryName={localizedValue(displayCountryName, lang)} copy={copy} />
       <p className="text-bone/40 text-xs mt-10">{copy.editorial}</p>
     </div>
   );
