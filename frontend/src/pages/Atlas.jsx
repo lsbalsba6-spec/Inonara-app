@@ -24,6 +24,7 @@ import { adaptHistoricalEntitiesToLegacyShape } from "../lib/historicalEntityAda
 import { buildPilotV3Markers, buildFangProcessDisplay } from "../lib/pilotV3Adapter";
 import { getMigrationVisualStyle, selectNonOverlappingLabels } from "../lib/atlasDisplay";
 import PilotV3InfoPanel from "../components/PilotV3InfoPanel";
+import populatedPlacesData from "../data/africa-populated-places.json";
 
 // Milestone markers shown along the non-linear slider track, so users stay
 // oriented even though early (geological) time is heavily compressed.
@@ -124,6 +125,7 @@ const Atlas = () => {
   const [showPlaces, setShowPlaces] = useState(true);
   const [showDiaspora, setShowDiaspora] = useState(true);
   const [showPolities, setShowPolities] = useState(true);
+  const [showCities, setShowCities] = useState(true);
   const [project, setProject] = useState(null);
   const [geoProject, setGeoProject] = useState(null);
   const [zoomScale, setZoomScale] = useState(1);
@@ -284,6 +286,35 @@ const Atlas = () => {
     candidates.sort((a, b) => b.priority - a.priority || a.text.localeCompare(b.text));
     return selectNonOverlappingLabels(candidates, zoomScale, { paddingPx: 7 });
   }, [mode, project, showPolities, visiblePolities, pilotV3Markers, zoomScale]);
+
+  const visiblePopulatedPlaces = useMemo(() => {
+    if (mode !== "historical" || year < 1800 || !showCities) return [];
+    return (populatedPlacesData.places || []).filter((place) => {
+      const minZoom = Number(place.minZoom ?? 4);
+      return zoomScale >= minZoom;
+    });
+  }, [mode, year, showCities, zoomScale]);
+
+  const visibleCityLabels = useMemo(() => {
+    if (!project || visiblePopulatedPlaces.length === 0) return [];
+    const candidates = visiblePopulatedPlaces.map((place) => {
+      const coords = project(place.coords[0], place.coords[1]);
+      if (!coords) return null;
+      const isCapital = place.kind === "capital" || place.kind === "capital-alt";
+      return {
+        id: `city-${place.id}`,
+        text: place.name,
+        value: place.name,
+        x: coords[0],
+        y: coords[1] - (isCapital ? 7 : 5) / Math.max(1, zoomScale),
+        fontSizePx: isCapital ? 10 : 9,
+        priority: (isCapital ? 10000 : 0) + (place.populationMax || 0) / 1000,
+        opacity: isCapital ? 1 : 0.82,
+      };
+    }).filter(Boolean);
+    candidates.sort((a, b) => b.priority - a.priority || a.text.localeCompare(b.text));
+    return selectNonOverlappingLabels(candidates, zoomScale, { paddingPx: 6, maxLabels: zoomScale < 2.5 ? 8 : zoomScale < 4 ? 20 : 45 });
+  }, [project, visiblePopulatedPlaces, zoomScale]);
 
   const currentEpoch = useMemo(() => {
     if (mode !== "geological" || plateEpochs.length === 0) return null;
@@ -558,6 +589,39 @@ const Atlas = () => {
             );
           })}
 
+          {/* Modern populated places are a reference layer, intentionally
+              limited to 1800+ so current capitals are not projected onto
+              ancient periods as if they were historically equivalent. */}
+          {mode === "historical" && year >= 1800 && project && visiblePopulatedPlaces.map((place) => {
+            const pt = project(place.coords[0], place.coords[1]);
+            if (!pt) return null;
+            const isCapital = place.kind === "capital" || place.kind === "capital-alt";
+            return (
+              <g
+                key={place.id}
+                onClick={() => setSelected({ ...place, placeKind: place.kind, kind: "city" })}
+                style={{ cursor: "pointer" }}
+                data-testid={`atlas-city-${place.id}`}
+              >
+                <circle cx={pt[0]} cy={pt[1]} r={Math.max(10, 12 / zoomScale)} fill="transparent" />
+                <circle
+                  cx={pt[0]}
+                  cy={pt[1]}
+                  r={(isCapital ? 3.4 : 2.4) / Math.max(1, Math.sqrt(zoomScale))}
+                  fill={isCapital ? ATLAS_COLORS.gold : ATLAS_COLORS.textBone}
+                  stroke={ATLAS_COLORS.ocean}
+                  strokeWidth={1 / zoomScale}
+                  fillOpacity={isCapital ? 0.95 : 0.72}
+                  style={{ pointerEvents: "none" }}
+                />
+              </g>
+            );
+          })}
+
+          {mode === "historical" && visibleCityLabels.map((label) => (
+            <AtlasMapLabel key={label.id} label={label} zoomScale={zoomScale} />
+          ))}
+
           {/* LABELS PASS — collision-filtered in screen space. */}
           {mode === "historical" && visibleHistoricalLabels.map((label) => (
             <AtlasMapLabel key={`label-${label.id}`} label={label} zoomScale={zoomScale} />
@@ -779,6 +843,11 @@ const Atlas = () => {
                 </div>
                 <div className="h-px bg-[#2A2421] my-2" />
                 <label className="flex items-center gap-3 cursor-pointer">
+                  <input type="checkbox" checked={showCities} onChange={(e) => setShowCities(e.target.checked)} className="accent-gold" data-testid="toggle-cities" />
+                  <span className="w-2 h-2 rounded-full" style={{ background: ATLAS_COLORS.gold }} />
+                  <span className="text-bone/80 text-xs">{lang === "fr" ? "Capitales et grandes villes (référence moderne)" : "Capitals and major cities (modern reference)"}</span>
+                </label>
+                <label className="flex items-center gap-3 cursor-pointer">
                   <input type="checkbox" checked={showPolities} onChange={(e) => setShowPolities(e.target.checked)} className="accent-gold" data-testid="toggle-polities" />
                   <span className="w-2 h-2 rounded-full border border-dashed" style={{ borderColor: ATLAS_COLORS.gold }} />
                   <span className="text-bone/80 text-xs">{t("atlas.polities")}</span>
@@ -861,10 +930,16 @@ const Atlas = () => {
               {selected.kind === "polity" && t("atlas.kind.polity")}
               {selected.kind === "paleo" && t("atlas.kind.paleo")}
               {selected.kind === "route" && t("atlas.kind.route")}
+              {selected.kind === "city" && (selected.placeKind === "capital" || selected.placeKind === "capital-alt" ? (lang === "fr" ? "Capitale · référence moderne" : "Capital · modern reference") : (lang === "fr" ? "Grande ville · référence moderne" : "Major city · modern reference"))}
             </p>
             <p className="font-serif text-xl text-bone mt-1"><LocalizedText value={selected.name} /></p>
             {selected.kind === "route" && (
               <p className="text-bone/70 text-sm mt-2"><LocalizedText value={selected.era} /></p>
+            )}
+            {selected.kind === "city" && (
+              <p className="text-bone/60 text-xs mt-2">
+                {selected.countryId}{selected.populationMax ? ` · ${new Intl.NumberFormat(lang === "fr" ? "fr-FR" : "en-US").format(selected.populationMax)} ${lang === "fr" ? "hab. max. (Natural Earth)" : "max pop. (Natural Earth)"}` : ""}
+              </p>
             )}
             {selected.kind === "route" && selected.migration_type && (
               <span
