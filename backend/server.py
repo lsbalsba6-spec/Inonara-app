@@ -279,30 +279,29 @@ async def list_culture(category: Optional[str] = None, region: Optional[str] = N
     return items
 
 
-_DIASPORA_DERIVED_ROUTES_CACHE = None
+_DIASPORA_PUBLIC_ROUTES_CACHE = None
 
 
-def _load_diaspora_derived_routes():
-    global _DIASPORA_DERIVED_ROUTES_CACHE
-    if _DIASPORA_DERIVED_ROUTES_CACHE is None:
+def _load_diaspora_public_routes():
+    global _DIASPORA_PUBLIC_ROUTES_CACHE
+    if _DIASPORA_PUBLIC_ROUTES_CACHE is None:
         import json
         try:
-            path = Path(__file__).parent / "data" / "diaspora_derived_routes.json"
-            _DIASPORA_DERIVED_ROUTES_CACHE = json.loads(path.read_text())
+            path = Path(__file__).parent / "data" / "diaspora_public_routes.json"
+            _DIASPORA_PUBLIC_ROUTES_CACHE = json.loads(path.read_text())
         except FileNotFoundError:
-            _DIASPORA_DERIVED_ROUTES_CACHE = []
-    return _DIASPORA_DERIVED_ROUTES_CACHE
+            _DIASPORA_PUBLIC_ROUTES_CACHE = []
+    return _DIASPORA_PUBLIC_ROUTES_CACHE
 
 
 @api_router.get("/migration-routes")
 async def get_migration_routes():
-    """Returns the curated macro-routes (MIGRATION_ROUTES) PLUS one distinct
-    line per (diaspora entry x documented origin region) pair — 175 as of
-    this writing — generated from the already-sourced DIASPORA_COMMUNITIES
-    data (see scripts/generate_diaspora_routes.py). Per explicit user
-    requirement, these are never consolidated into a single summarizing
-    line; each keeps its own era_start/era_end and sources."""
-    return MIGRATION_ROUTES + _load_diaspora_derived_routes()
+    """Returns curated macro-routes plus the reviewed public diaspora routes. The
+    diaspora export is filtered by the publication policy before reaching this
+    public endpoint; candidate/held routes remain out of the Atlas. Routes are
+    schematic links between documented origin/destination areas, not exact
+    historical GPS itineraries."""
+    return MIGRATION_ROUTES + _load_diaspora_public_routes()
 
 
 @api_router.get("/diaspora-communities")
