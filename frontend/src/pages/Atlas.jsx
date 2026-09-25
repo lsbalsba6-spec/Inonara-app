@@ -1024,7 +1024,23 @@ const Atlas = () => {
             </p>
             <p className="font-serif text-xl text-bone mt-1"><LocalizedText value={selected.name} /></p>
             {selected.kind === "route" && (
-              <p className="text-bone/70 text-sm mt-2"><LocalizedText value={selected.era} /></p>
+              <>
+                <p className="text-bone/70 text-sm mt-2"><LocalizedText value={selected.era} /></p>
+                {Array.isArray(selected.points) && selected.points.length >= 2 && (
+                  <p className="text-bone/60 text-xs mt-2" data-testid="migration-origin-destination">
+                    <span className="text-bone/40 uppercase tracking-wider">{lang === "fr" ? "Origine" : "Origin"}</span>
+                    {" "}{selected.points[0][0].toFixed(2)}°, {selected.points[0][1].toFixed(2)}°
+                    <span className="mx-2 text-gold" aria-hidden="true">→</span>
+                    <span className="text-bone/40 uppercase tracking-wider">{lang === "fr" ? "Destination" : "Destination"}</span>
+                    {" "}{selected.points[selected.points.length - 1][0].toFixed(2)}°, {selected.points[selected.points.length - 1][1].toFixed(2)}°
+                  </p>
+                )}
+                <p className="text-amber-400/80 text-[0.68rem] mt-2 leading-relaxed" data-testid="migration-schematic-warning">
+                  ⚠ {lang === "fr"
+                    ? "Tracé schématique reliant des zones documentées ; il ne représente pas un itinéraire historique exact."
+                    : "Schematic line connecting documented areas; it does not represent an exact historical route."}
+                </p>
+              </>
             )}
             {selected.kind === "city" && (
               <p className="text-bone/60 text-xs mt-2">
