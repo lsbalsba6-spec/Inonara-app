@@ -117,6 +117,7 @@ const Atlas = () => {
   const [countryDossiers, setCountryDossiers] = useState([]);
   const [mapCountries, setMapCountries] = useState([]);
   const [countryQuery, setCountryQuery] = useState("");
+  const [activeSearchIndex, setActiveSearchIndex] = useState(-1);
   const [focusPoint, setFocusPoint] = useState(null);
   const [selectedCountry, setSelectedCountry] = useState(null);
   const [focusCountryName, setFocusCountryName] = useState(null);
@@ -203,6 +204,31 @@ const Atlas = () => {
     const diasporaResults = diaspora.filter((community) => matches([community.name, community.id, community.country, community.region, community.summary])).map((community) => ({ type: "diaspora", id: community.id, label: rawText(community.name), meta: lang === "fr" ? "diaspora" : "diaspora", entity: community }));
     return [...countryResults, ...cityResults, ...civResults, ...placeResults, ...routeResults, ...diasporaResults].slice(0, 10);
   }, [countryQuery, searchableCountries, civs, places, routes, diaspora, lang]);
+
+  useEffect(() => {
+    setActiveSearchIndex(atlasSearchResults.length > 0 ? 0 : -1);
+  }, [countryQuery, atlasSearchResults.length]);
+
+  const handleAtlasSearchKeyDown = (event) => {
+    if (!countryQuery.trim()) return;
+    if (event.key === "Escape") {
+      event.preventDefault();
+      setCountryQuery("");
+      setActiveSearchIndex(-1);
+      return;
+    }
+    if (atlasSearchResults.length === 0) return;
+    if (event.key === "ArrowDown") {
+      event.preventDefault();
+      setActiveSearchIndex((index) => (index + 1) % atlasSearchResults.length);
+    } else if (event.key === "ArrowUp") {
+      event.preventDefault();
+      setActiveSearchIndex((index) => (index <= 0 ? atlasSearchResults.length - 1 : index - 1));
+    } else if (event.key === "Enter" && activeSearchIndex >= 0) {
+      event.preventDefault();
+      selectAtlasSearchResult(atlasSearchResults[activeSearchIndex]);
+    }
+  };
 
   const selectedCountryDossier = useMemo(
     () => selectedCountry?.countryId
@@ -463,22 +489,26 @@ const Atlas = () => {
               type="search"
               value={countryQuery}
               onChange={(event) => setCountryQuery(event.target.value)}
+              onKeyDown={handleAtlasSearchKeyDown}
               placeholder={lang === "fr" ? "Pays, ville, civilisation, patrimoine…" : "Country, city, civilization, heritage…"}
               className="w-full glass rounded-lg border border-gold/20 px-4 py-3 text-sm text-bone placeholder:text-bone/35 outline-none focus:border-gold/60"
               autoComplete="off"
               aria-controls="atlas-country-search-results"
               aria-expanded={atlasSearchResults.length > 0}
+              aria-autocomplete="list"
+              aria-activedescendant={activeSearchIndex >= 0 ? `atlas-search-option-${activeSearchIndex}` : undefined}
             />
             {countryQuery.trim() && (
               <div id="atlas-country-search-results" className="mt-1 glass rounded-lg border border-gold/20 overflow-hidden" role="listbox">
                 {atlasSearchResults.length > 0 ? atlasSearchResults.map((result) => (
                   <button
                     type="button"
+                    id={`atlas-search-option-${atlasSearchResults.indexOf(result)}`}
                     key={`${result.type}-${result.id}`}
                     onClick={() => selectAtlasSearchResult(result)}
                     className="w-full flex items-center justify-between gap-3 px-4 py-2.5 text-left text-sm text-bone/80 hover:bg-gold/10 hover:text-gold focus:bg-gold/10 focus:text-gold outline-none"
                     role="option"
-                    aria-selected={result.type === "country" ? selectedCountry?.name === result.country?.name : selected?.id === result.id}
+                    aria-selected={atlasSearchResults.indexOf(result) === activeSearchIndex}
                   >
                     <span>{result.label}</span>
                     <span className="text-[0.65rem] uppercase tracking-wider text-bone/35">{result.meta}</span>
