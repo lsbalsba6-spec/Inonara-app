@@ -611,7 +611,7 @@ const Atlas = () => {
             if (!c) return null;
             const r = Math.max(1.2, Math.max(4, Math.min(14, p.radius_km / 90)) / zoomScale);
             return (
-              <g key={p.id} onClick={() => setSelected({ kind: "polity", ...p })} style={{ cursor: "pointer" }}>
+              <g key={p.id} onClick={() => setSelected({ kind: "polity", ...p })} style={{ cursor: "pointer" }} role="button" tabIndex={0} aria-label={`${lang === "fr" ? "Entité politique historique" : "Historical polity"}: ${rawText(p.name)}`} onKeyDown={(event) => { if (event.key === "Enter" || event.key === " ") { event.preventDefault(); setSelected({ kind: "polity", ...p }); } }}>
                 <circle cx={c[0]} cy={c[1]} r={Math.max(12, r)} fill="transparent" />
                 <circle cx={c[0]} cy={c[1]} r={r} fill={p.color} fillOpacity={0.14} stroke={p.color} strokeWidth={1.3 / zoomScale} strokeDasharray="4 3" style={{ pointerEvents: "none" }} />
               </g>
@@ -628,6 +628,10 @@ const Atlas = () => {
                 key={marker.id}
                 onClick={() => setSelectedPilotV3Marker(marker)}
                 style={{ cursor: "pointer" }}
+                role="button"
+                tabIndex={0}
+                aria-label={`${lang === "fr" ? "Entité historique" : "Historical entity"}: ${rawText(marker.label)}`}
+                onKeyDown={(event) => { if (event.key === "Enter" || event.key === " ") { event.preventDefault(); setSelectedPilotV3Marker(marker); } }}
                 data-testid={`pilot-v3-marker-${marker.id}`}
               >
                 <circle cx={c[0]} cy={c[1]} r={Math.max(10, 16 / zoomScale)} fill="transparent" />
