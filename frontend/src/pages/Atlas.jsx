@@ -199,8 +199,10 @@ const Atlas = () => {
     const cityResults = (populatedPlacesData.places || []).filter((place) => matches([place.name, place.nameAscii, place.countryId])).map((place) => ({ type: "city", id: place.id, label: place.name, meta: place.kind === "capital" || place.kind === "capital-alt" ? (lang === "fr" ? "capitale" : "capital") : (lang === "fr" ? "ville" : "city"), entity: place }));
     const civResults = civs.filter((civ) => matches([civ.name, civ.id, civ.region])).map((civ) => ({ type: "civ", id: civ.id, label: rawText(civ.name), meta: lang === "fr" ? "civilisation" : "civilization", entity: civ }));
     const placeResults = places.filter((place) => matches([place.name, place.id, place.type])).map((place) => ({ type: "place", id: place.id, label: rawText(place.name), meta: lang === "fr" ? "patrimoine" : "heritage", entity: place }));
-    return [...countryResults, ...cityResults, ...civResults, ...placeResults].slice(0, 10);
-  }, [countryQuery, searchableCountries, civs, places, lang]);
+    const routeResults = routes.filter((route) => matches([route.name, route.id, route.era, route.migration_type, route.summary, route.diaspora_id])).map((route) => ({ type: "route", id: route.id, label: rawText(route.name), meta: lang === "fr" ? "migration" : "migration", entity: route }));
+    const diasporaResults = diaspora.filter((community) => matches([community.name, community.id, community.country, community.region, community.summary])).map((community) => ({ type: "diaspora", id: community.id, label: rawText(community.name), meta: lang === "fr" ? "diaspora" : "diaspora", entity: community }));
+    return [...countryResults, ...cityResults, ...civResults, ...placeResults, ...routeResults, ...diasporaResults].slice(0, 10);
+  }, [countryQuery, searchableCountries, civs, places, routes, diaspora, lang]);
 
   const selectedCountryDossier = useMemo(
     () => selectedCountry?.countryId
@@ -224,15 +226,25 @@ const Atlas = () => {
       return;
     }
     const entity = result.entity;
-    if (!entity?.coords) return;
+    const routePoint = result.type === "route" && Array.isArray(entity?.points) ? entity.points[0] : null;
+    const coords = entity?.coords || routePoint;
+    if (!coords) return;
     setSelectedCountry(null);
     setSelectedPilotV3Marker(null);
     setSelected(result.type === "city" ? { ...entity, placeKind: entity.kind, kind: "city" } : { ...entity, kind: result.type });
     setFocusCountryName(null);
-    setFocusPoint({ lat: entity.coords[0], lon: entity.coords[1], scale: result.type === "city" ? 5.2 : 4.6, key: `${result.type}-${result.id}-${Date.now()}` });
+    setFocusPoint({ lat: coords[0], lon: coords[1], scale: result.type === "city" ? 5.2 : result.type === "route" ? 3.2 : 4.6, key: `${result.type}-${result.id}-${Date.now()}` });
     if (result.type === "city") {
       setSliderPos(yearToSlider(CURRENT_YEAR));
       setShowCities(true);
+    } else if (result.type === "route") {
+      const routeYear = Number.isFinite(entity.era_start) ? entity.era_start : CURRENT_YEAR;
+      setSliderPos(yearToSlider(routeYear));
+      setActiveRoutes((current) => ({ ...current, [entity.id]: true }));
+    } else if (result.type === "diaspora") {
+      const diasporaYear = Number.isFinite(entity.era_start) ? entity.era_start : CURRENT_YEAR;
+      setSliderPos(yearToSlider(diasporaYear));
+      setShowDiaspora(true);
     }
     setCountryQuery("");
   };
