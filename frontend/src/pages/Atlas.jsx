@@ -676,7 +676,7 @@ const Atlas = () => {
             const pt = project(d.coords[0], d.coords[1]);
             if (!pt) return null;
             return (
-              <g key={d.id} onClick={() => setSelected({ kind: "diaspora", ...d })} style={{ cursor: "pointer" }}>
+              <g key={d.id} onClick={() => setSelected({ kind: "diaspora", ...d })} style={{ cursor: "pointer" }} role="button" tabIndex={0} aria-label={`${lang === "fr" ? "Diaspora" : "Diaspora"}: ${rawText(d.name)}`} onKeyDown={(event) => { if (event.key === "Enter" || event.key === " ") { event.preventDefault(); setSelected({ kind: "diaspora", ...d }); } }}>
                 <circle cx={pt[0]} cy={pt[1]} r={12} fill="transparent" />
                 <circle cx={pt[0]} cy={pt[1]} r={Math.max(1, 4 / zoomScale)} fill={ATLAS_COLORS.deepRed} stroke={ATLAS_COLORS.deepRed} strokeWidth={Math.max(0.3, 1.2 / zoomScale)} fillOpacity={0.9} style={{ pointerEvents: "none" }} />
               </g>
