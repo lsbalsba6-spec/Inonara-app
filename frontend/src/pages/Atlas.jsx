@@ -244,6 +244,7 @@ const Atlas = () => {
     setSelectedPilotV3Marker(null);
     setFocusCountryName(country.countryId || country.territoryId || country.name);
     setCountryQuery("");
+    setShowMobileExplorer(false);
   };
 
   const selectAtlasSearchResult = (result) => {
@@ -274,6 +275,7 @@ const Atlas = () => {
       setShowDiaspora(true);
     }
     setCountryQuery("");
+    setShowMobileExplorer(false);
   };
 
   const pilotV3Markers = useMemo(
