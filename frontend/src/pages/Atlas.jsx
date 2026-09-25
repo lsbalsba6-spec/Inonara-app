@@ -904,7 +904,7 @@ const Atlas = () => {
             never appeared on phones at all). */}
         <button
           onClick={() => setShowLegendPanel((v) => !v)}
-          className="absolute bottom-28 right-6 z-[401] glass px-3 py-2 text-[0.65rem] uppercase tracking-[0.15em] text-gold"
+          className="absolute bottom-24 right-3 md:bottom-28 md:right-6 z-[401] glass px-3 py-2 text-[0.65rem] uppercase tracking-[0.15em] text-gold"
           data-testid="legend-toggle-button"
           aria-expanded={showLegendPanel}
         >
@@ -915,7 +915,7 @@ const Atlas = () => {
             prehistoric / historical), since lines and points appear in all
             three, not just "historical". */}
         {showLegendPanel && (
-          <div className="absolute bottom-44 right-6 z-[400] glass p-4 max-h-[60vh] overflow-y-auto w-[85vw] max-w-xs" data-testid="route-legend">
+          <div className="absolute bottom-36 right-3 md:bottom-44 md:right-6 z-[400] glass p-4 max-h-[52vh] md:max-h-[60vh] overflow-y-auto overscroll-contain w-[calc(100vw-1.5rem)] max-w-xs" data-testid="route-legend">
             <p className="overline mb-3">{t("atlas.layers")}</p>
 
             {mode === "geological" && (
@@ -1052,7 +1052,7 @@ const Atlas = () => {
 
         {/* Selected marker detail card */}
         {selected && (
-          <div className="absolute bottom-28 left-1/2 -translate-x-1/2 z-[600] glass w-[92%] max-w-[420px] p-5" data-testid="marker-detail-card">
+          <div className="absolute bottom-20 md:bottom-28 left-1/2 -translate-x-1/2 z-[600] glass w-[calc(100%-1.5rem)] max-w-[420px] max-h-[58vh] md:max-h-[70vh] overflow-y-auto overscroll-contain p-4 md:p-5" data-testid="marker-detail-card">
             <button
               onClick={() => setSelected(null)}
               className="absolute top-3 right-4 text-bone/50 hover:text-bone text-lg"
