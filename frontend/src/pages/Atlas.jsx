@@ -125,6 +125,7 @@ const Atlas = () => {
   const [activeRoutes, setActiveRoutes] = useState({});
   const [showDiasporaRoutesList, setShowDiasporaRoutesList] = useState(false);
   const [showLegendPanel, setShowLegendPanel] = useState(false);
+  const [showMobileExplorer, setShowMobileExplorer] = useState(false);
   const [showPlaces, setShowPlaces] = useState(true);
   const [showDiaspora, setShowDiaspora] = useState(true);
   const [showPolities, setShowPolities] = useState(true);
@@ -836,8 +837,25 @@ const Atlas = () => {
           </section>
         )}
 
-        {/* Side panel */}
-        <aside className="hidden lg:block absolute top-6 left-6 z-[400] glass w-[320px] max-h-[70vh] overflow-y-auto" data-testid="atlas-side-panel">
+        {/* Side panel — desktop stays visible; mobile uses an accessible disclosure. */}
+        <button
+          type="button"
+          onClick={() => setShowMobileExplorer((v) => !v)}
+          className="lg:hidden absolute top-3 left-3 z-[410] glass px-3 py-2 text-[0.65rem] uppercase tracking-[0.15em] text-gold"
+          aria-expanded={showMobileExplorer}
+          aria-controls="atlas-explorer-panel"
+          data-testid="atlas-mobile-explorer-toggle"
+        >
+          {showMobileExplorer
+            ? (lang === "fr" ? "Fermer l’exploration" : "Close explorer")
+            : (lang === "fr" ? "Explorer" : "Explore")}
+        </button>
+        <aside
+          id="atlas-explorer-panel"
+          className={`${showMobileExplorer ? "block" : "hidden"} lg:block absolute top-14 left-3 right-3 lg:top-6 lg:left-6 lg:right-auto z-[400] glass w-auto lg:w-[320px] max-h-[58vh] lg:max-h-[70vh] overflow-y-auto overscroll-contain`}
+          data-testid="atlas-side-panel"
+          aria-label={lang === "fr" ? "Exploration de l’Atlas" : "Atlas explorer"}
+        >
           {mode === "historical" && (
             <>
               <div className="p-5 border-b border-[#2A2421]">
