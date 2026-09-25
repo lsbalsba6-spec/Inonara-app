@@ -120,7 +120,7 @@ export default function CountryDossierView({ dossier }) {
   const sectionAvailable = useMemo(() => ({
     gallery: (dossier?.media_gallery || []).length > 0,
     stories: (dossier?.stories || []).length > 0,
-    environment: Array.isArray(dossier?.environment) ? dossier.environment.length > 0 : Boolean(dossier?.environment && ((dossier.environment.themes || []).length || (dossier.environment.items || []).length || (dossier.environment.sections || []).length)),
+    environment: (Array.isArray(dossier?.environment) ? dossier.environment.length > 0 : Boolean(dossier?.environment && ((dossier.environment.themes || []).length || (dossier.environment.items || []).length || (dossier.environment.sections || []).length))) || Boolean(dossier?.environment_themes?.length),
     media: Boolean(dossier?.media && ((dossier.media.themes || []).length || (dossier.media.items || []).length || (dossier.media.sections || []).length)) || Boolean(dossier?.sport_media?.media?.length),
     "sport-media": Boolean(dossier?.sport_media && ((dossier.sport_media.sports || []).length || (dossier.sport_media.sections || []).some((section) => searchableText(section.id, section.title).includes("sport")))),
     heritage: Array.isArray(dossier?.heritage) ? dossier.heritage.length > 0 : Boolean(dossier?.heritage && ((dossier.heritage.themes || []).length || (dossier.heritage.items || []).length || (dossier.heritage.sections || []).length || (dossier.heritage.sites || []).length)),
