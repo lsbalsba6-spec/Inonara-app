@@ -505,6 +505,7 @@ const Atlas = () => {
               type="search"
               value={countryQuery}
               onChange={(event) => setCountryQuery(event.target.value)}
+              onFocus={() => { setShowMobileExplorer(false); setShowLegendPanel(false); }}
               onKeyDown={handleAtlasSearchKeyDown}
               placeholder={lang === "fr" ? "Pays, ville, civilisation, patrimoine…" : "Country, city, civilization, heritage…"}
               className="w-full glass rounded-lg border border-gold/20 px-4 py-3 text-sm text-bone placeholder:text-bone/35 outline-none focus:border-gold/60"
@@ -856,7 +857,13 @@ const Atlas = () => {
         <button
           type="button"
           ref={mobileExplorerToggleRef}
-          onClick={() => setShowMobileExplorer((v) => !v)}
+          onClick={() => {
+            setShowMobileExplorer((v) => {
+              const next = !v;
+              if (next) setShowLegendPanel(false);
+              return next;
+            });
+          }}
           className="lg:hidden absolute top-3 left-3 z-[410] glass px-3 py-2 text-[0.65rem] uppercase tracking-[0.15em] text-gold"
           aria-expanded={showMobileExplorer}
           aria-controls="atlas-explorer-panel"
@@ -939,7 +946,13 @@ const Atlas = () => {
             legend itself was hidden below the md breakpoint, meaning it
             never appeared on phones at all). */}
         <button
-          onClick={() => setShowLegendPanel((v) => !v)}
+          onClick={() => {
+            setShowLegendPanel((v) => {
+              const next = !v;
+              if (next) setShowMobileExplorer(false);
+              return next;
+            });
+          }}
           className="absolute bottom-24 right-3 md:bottom-28 md:right-6 z-[401] glass px-3 py-2 text-[0.65rem] uppercase tracking-[0.15em] text-gold"
           data-testid="legend-toggle-button"
           aria-expanded={showLegendPanel}
