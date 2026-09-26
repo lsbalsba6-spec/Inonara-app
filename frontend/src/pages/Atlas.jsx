@@ -129,6 +129,9 @@ const Atlas = () => {
   const mobileExplorerToggleRef = useRef(null);
   const mobileExplorerPanelRef = useRef(null);
   const mobileExplorerWasOpenRef = useRef(false);
+  const detailCardRef = useRef(null);
+  const detailReturnFocusRef = useRef(null);
+  const detailWasOpenRef = useRef(false);
   const [showPlaces, setShowPlaces] = useState(true);
   const [showDiaspora, setShowDiaspora] = useState(true);
   const [showPolities, setShowPolities] = useState(true);
@@ -181,6 +184,22 @@ const Atlas = () => {
       mobileExplorerWasOpenRef.current = false;
     }
   }, [showMobileExplorer]);
+
+  useEffect(() => {
+    if (selected) {
+      if (!detailWasOpenRef.current) {
+        const activeElement = document.activeElement;
+        detailReturnFocusRef.current = activeElement instanceof HTMLElement && activeElement !== document.body ? activeElement : null;
+      }
+      detailCardRef.current?.focus();
+      detailWasOpenRef.current = true;
+    } else if (detailWasOpenRef.current) {
+      const returnTarget = detailReturnFocusRef.current;
+      if (returnTarget?.isConnected) returnTarget.focus();
+      detailReturnFocusRef.current = null;
+      detailWasOpenRef.current = false;
+    }
+  }, [selected]);
 
   const year = useMemo(() => sliderToYear(sliderPos), [sliderPos]);
   const mode = useMemo(() => modeForYear(year), [year]);
@@ -1101,7 +1120,16 @@ const Atlas = () => {
 
         {/* Selected marker detail card */}
         {selected && (
-          <div className="absolute bottom-20 md:bottom-28 left-1/2 -translate-x-1/2 z-[600] glass w-[calc(100%-1.5rem)] max-w-[420px] max-h-[58vh] md:max-h-[70vh] overflow-y-auto overscroll-contain p-4 md:p-5" data-testid="marker-detail-card">
+          <div
+            ref={detailCardRef}
+            role="dialog"
+            aria-modal="false"
+            aria-labelledby="atlas-marker-detail-title"
+            tabIndex={-1}
+            onKeyDown={(event) => { if (event.key === "Escape") { event.preventDefault(); setSelected(null); } }}
+            className="absolute bottom-20 md:bottom-28 left-1/2 -translate-x-1/2 z-[600] glass w-[calc(100%-1.5rem)] max-w-[420px] max-h-[58vh] md:max-h-[70vh] overflow-y-auto overscroll-contain p-4 md:p-5 focus:outline-none focus-visible:ring-2 focus-visible:ring-gold"
+            data-testid="marker-detail-card"
+          >
             <button
               onClick={() => setSelected(null)}
               className="absolute top-3 right-4 text-bone/50 hover:text-bone text-lg"
@@ -1117,7 +1145,7 @@ const Atlas = () => {
               {selected.kind === "route" && t("atlas.kind.route")}
               {selected.kind === "city" && (selected.placeKind === "capital" || selected.placeKind === "capital-alt" ? (lang === "fr" ? "Capitale · référence moderne" : "Capital · modern reference") : (lang === "fr" ? "Grande ville · référence moderne" : "Major city · modern reference"))}
             </p>
-            <p className="font-serif text-xl text-bone mt-1"><LocalizedText value={selected.name} /></p>
+            <p id="atlas-marker-detail-title" className="font-serif text-xl text-bone mt-1"><LocalizedText value={selected.name} /></p>
             {selected.kind === "route" && (
               <>
                 <p className="text-bone/70 text-sm mt-2"><LocalizedText value={selected.era} /></p>
