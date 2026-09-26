@@ -1,4 +1,4 @@
-import { useEffect, useState, useMemo, useCallback } from "react";
+import { useEffect, useState, useMemo, useCallback, useRef } from "react";
 import { Link } from "react-router-dom";
 import {
   fetchCivilizations,
@@ -126,6 +126,9 @@ const Atlas = () => {
   const [showDiasporaRoutesList, setShowDiasporaRoutesList] = useState(false);
   const [showLegendPanel, setShowLegendPanel] = useState(false);
   const [showMobileExplorer, setShowMobileExplorer] = useState(false);
+  const mobileExplorerToggleRef = useRef(null);
+  const mobileExplorerPanelRef = useRef(null);
+  const mobileExplorerWasOpenRef = useRef(false);
   const [showPlaces, setShowPlaces] = useState(true);
   const [showDiaspora, setShowDiaspora] = useState(true);
   const [showPolities, setShowPolities] = useState(true);
@@ -168,6 +171,16 @@ const Atlas = () => {
       fetchPilotV3().then(setPilotV3Data).catch(() => {});
     }
   }, []);
+
+  useEffect(() => {
+    if (showMobileExplorer) {
+      mobileExplorerPanelRef.current?.focus();
+      mobileExplorerWasOpenRef.current = true;
+    } else if (mobileExplorerWasOpenRef.current) {
+      mobileExplorerToggleRef.current?.focus();
+      mobileExplorerWasOpenRef.current = false;
+    }
+  }, [showMobileExplorer]);
 
   const year = useMemo(() => sliderToYear(sliderPos), [sliderPos]);
   const mode = useMemo(() => modeForYear(year), [year]);
@@ -842,6 +855,7 @@ const Atlas = () => {
         {/* Side panel — desktop stays visible; mobile uses an accessible disclosure. */}
         <button
           type="button"
+          ref={mobileExplorerToggleRef}
           onClick={() => setShowMobileExplorer((v) => !v)}
           className="lg:hidden absolute top-3 left-3 z-[410] glass px-3 py-2 text-[0.65rem] uppercase tracking-[0.15em] text-gold"
           aria-expanded={showMobileExplorer}
@@ -854,6 +868,8 @@ const Atlas = () => {
         </button>
         <aside
           id="atlas-explorer-panel"
+          ref={mobileExplorerPanelRef}
+          tabIndex={showMobileExplorer ? -1 : undefined}
           className={`${showMobileExplorer ? "block" : "hidden"} lg:block absolute top-14 left-3 right-3 lg:top-6 lg:left-6 lg:right-auto z-[400] glass w-auto lg:w-[320px] max-h-[58vh] lg:max-h-[70vh] overflow-y-auto overscroll-contain`}
           data-testid="atlas-side-panel"
           aria-label={lang === "fr" ? "Exploration de l’Atlas" : "Atlas explorer"}
