@@ -1149,6 +1149,13 @@ const Atlas = () => {
             {selected.kind === "route" && (
               <>
                 <p className="text-bone/70 text-sm mt-2"><LocalizedText value={selected.era} /></p>
+                {(Number.isFinite(selected.era_start) || Number.isFinite(selected.era_end)) && (
+                  <p className="text-bone/60 text-xs mt-2" data-testid="migration-documented-period">
+                    <span className="text-bone/40 uppercase tracking-wider">{lang === "fr" ? "Période documentée" : "Documented period"}</span>
+                    {" · "}{Number.isFinite(selected.era_start) ? selected.era_start : "?"}{" → "}
+                    {Number.isFinite(selected.era_end) ? selected.era_end : (lang === "fr" ? "aujourd’hui" : "present")}
+                  </p>
+                )}
                 {Array.isArray(selected.points) && selected.points.length >= 2 && (
                   <p className="text-bone/60 text-xs mt-2" data-testid="migration-origin-destination">
                     <span className="text-bone/40 uppercase tracking-wider">{lang === "fr" ? "Origine" : "Origin"}</span>
