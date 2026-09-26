@@ -915,7 +915,7 @@ const Atlas = () => {
               </div>
               <ul className="divide-y divide-[#2A2421]">
                 {visiblePaleo.map((p) => (
-                  <li key={p.id} className="px-5 py-4 cursor-pointer" onClick={() => setSelected({ kind: "paleo", ...p })}>
+                  <li key={p.id} role="button" tabIndex={0} aria-label={`${lang === "fr" ? "Ouvrir" : "Open"} ${rawText(p.name)}`} className="px-5 py-4 cursor-pointer focus:outline-none focus-visible:ring-2 focus-visible:ring-gold focus-visible:ring-inset" onClick={() => setSelected({ kind: "paleo", ...p })} onKeyDown={(event) => { if (event.key === "Enter" || event.key === " ") { event.preventDefault(); setSelected({ kind: "paleo", ...p }); } }}>
                     <p className="font-serif text-base text-bone"><LocalizedText value={p.name} /></p>
                     <p className="text-bone/60 text-xs mt-1 leading-relaxed"><LocalizedText value={p.summary} /></p>
                   </li>
